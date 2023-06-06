@@ -15,13 +15,22 @@ class DashboardController extends Controller
         $this->authorizeResource(Organization::class);
     }
 
-    public function index(Organization $organization)
+    public function index()
     {
-        $this->authorize('view',$organization);
-        session(['organization' => $organization]);
-        return Inertia::render('Organization/Dashboard',[
-            'organization' => $organization
-        ]);
+        //$this->authorize('view',$organization);
+        $organizations=auth()->user()->organizations;
+        if($organizations->count()==0){
+            return to_route('/');
+        }else if($organizations->count()==1){
+            return Inertia::render('Organization/Dashboard',[
+                'organization' => $organizations[0]
+            ]);
+        }else{
+            return Inertia::render('Organization/Selection',[
+                'organizations' => $organizations
+            ]);
+
+        }
 
     }
     

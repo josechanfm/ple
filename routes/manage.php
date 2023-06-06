@@ -42,14 +42,7 @@ Route::middleware([
     'role:organization',
 ])->group(function () {
     Route::prefix('/manage')->group(function(){
-        // Route::prefix('/admin')->group(function(){
-        //     Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('admin.dashboard');
-        //     Route::prefix('/member')->group(function(){
-        //         Route::resource('/',App\Http\Controllers\Admin\MemberController::class);
-        //         Route::get('/create_login/{member}',[App\Http\Controllers\Admin\MemberController::class,'createLogin']);
-        //     })->name('manage.admin.member');        
-        // })->name('manage.admin');
-        Route::get('/',[App\Http\Controllers\Organization\SelectionController::class,'index']);
+        Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'index']);
         Route::get('/dashboard/{organization}',[App\Http\Controllers\Organization\DashboardController::class,'index']);
         Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class);
         Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);

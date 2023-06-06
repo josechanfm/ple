@@ -17,10 +17,10 @@ class MemberSeeder extends Seeder
     public function run()
     {
         Member::factory()->count(100)->create();
-        DB::table('member_user')->insert([
-            'member_id'=>'1',
-            'user_id'=>'1',
-        ]);
+        // DB::table('member_user')->insert([
+        //     'member_id'=>'1',
+        //     'user_id'=>'1',
+        // ]);
     
     }
 

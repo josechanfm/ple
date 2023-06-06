@@ -9,7 +9,8 @@ use Inertia\Inertia;
 class MembershipController extends Controller
 {
     public function index(){
-        $member=Auth()->user()->member;
+        $member=auth()->user()->member;
+        dd(auth()->user()->member->certificates);
         $certificates=Auth()->user()->member->certificates;
         $cert=$certificates[0];
         echo $cert->number_format;

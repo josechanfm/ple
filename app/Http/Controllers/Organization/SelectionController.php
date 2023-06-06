@@ -11,7 +11,6 @@ use Inertia\Inertia;
 class SelectionController extends Controller
 {
     public function index(){
-
         $organizations=AdminUser::find(Auth()->user()->id)->organizations;
         if($organizations->count()==1){
             return redirect()->route('organizations.show',$organizations[0]->id);
