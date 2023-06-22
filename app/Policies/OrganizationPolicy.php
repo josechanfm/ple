@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Organization;
 use App\Models\User;
-use App\Models\AdminUser;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OrganizationPolicy
@@ -17,7 +16,7 @@ class OrganizationPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(AdminUser $user)
+    public function viewAny(User $user)
     {
         return true;
         //return $organization->hasUser($user);
@@ -30,13 +29,14 @@ class OrganizationPolicy
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(AdminUser $user, Organization $organization)
+    public function view(User $user, Organization $organization)
     {
         if($user->hasRole('admin')){
             return true;
         }
         // dd($user);
         // dd($organization);
+        return auth()->user()->hasRole(['organizer','admin']) && $organization->hasUser($user);
         return $organization->hasUser($user);
     }
 
@@ -46,7 +46,7 @@ class OrganizationPolicy
      * @param  \App\Models\User $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(AdminUser $user)
+    public function create(User $user)
     {
         if($user->hasRole(['admin','organization'])){
             return true;

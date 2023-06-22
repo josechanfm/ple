@@ -100,7 +100,7 @@ defineProps({
                   澳門柔道總會
                 </h1>
                 <p class="text-center text-sm text-gray-400 font-medium">
-                  {{ member.display_name }}
+                  {{ $page.props.user.member.display_name }}
                 </p>
                 <p>
                   <span> </span>

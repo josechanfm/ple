@@ -10,8 +10,8 @@ class Organization extends Model
 {
     use HasFactory;
 
-    public function adminUsers(){
-        return $this->belongsToMany(AdminUser::class);
+    public function users(){
+        return $this->belongsToMany(User::class);
     }
 
     public function members(){
@@ -19,7 +19,7 @@ class Organization extends Model
     }
 
     public function hasUser($user){
-        return in_array($user->id,$this->adminUsers()->get()->pluck('id')->toArray());
+        return in_array($user->id,$this->users()->get()->pluck('id')->toArray());
     }
 
     public function certificates(){

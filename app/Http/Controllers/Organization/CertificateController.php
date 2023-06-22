@@ -13,7 +13,6 @@ class CertificateController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Organization::class);
         $this->authorizeResource(Certificate::class);
     }
 
@@ -22,12 +21,10 @@ class CertificateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Organization $organization)
+    public function index()
     {
-        $this->authorize('view',$organization);
         return Inertia::render('Organization/Certificate',[
-            'organization' => $organization,
-            'certificates'=>$organization->certificates,
+            'certificates'=>session('organization')->fresh()->certificates,
         ]);
 
     }

@@ -12,6 +12,7 @@ use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Notifications\SetPasswordNotification;
+use Attribute;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 
 
@@ -79,7 +80,15 @@ class User extends Authenticatable
         return $this->password !== 'need-to-set';
     }
 
-    public function member(){
+    public function member() {
         return $this->hasOne(Member::class);
     }
+
+    public function membership() : Attribute {
+        return $this->name.'===';
+    }
+    public function organizations(){
+        return $this->belongsToMany(Organization::class);
+    }
+
 }

@@ -13,7 +13,7 @@ class FormFieldController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Organization::class);
+        //$this->authorizeResource(Organization::class);
         $this->authorizeResource(Form::class);
     }
 
@@ -22,10 +22,10 @@ class FormFieldController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Organization $organization, Form $form)
+    public function index(Form $form)
     {
+        $this->authorize('view',$form);
         return Inertia::render('Organization/FormField',[
-            'organization' => $organization,
             'form'=>$form,
             'fields'=>$form->fields,
         ]);

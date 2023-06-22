@@ -1,5 +1,5 @@
 <template>
-    <OrganizationLayout title="Dashboard" :organization="organization">
+    <OrganizationLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Forms
@@ -10,7 +10,7 @@
             <a-table :dataSource="forms" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('organization.form.fields.index',{organization:record.organization_id,form:record.id})" class="ant-btn">Fields</inertia-link>
+                        <inertia-link :href="route('manage.form.fields.index',record.id)" class="ant-btn">Fields</inertia-link>
                         <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record)">Delete</a-button>
                     </template>
@@ -66,7 +66,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['organization','forms'],
+    props: ['forms'],
     data() {
         return {
             modal:{
@@ -133,7 +133,7 @@ export default {
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
                 console.log(this.modal.data.organization_id  );
-                this.$inertia.post(route('organization.forms.store',{organization:this.modal.data.organization_id}) , this.modal.data, {
+                this.$inertia.post(route('manage.forms.store',{organization:this.modal.data.organization_id}) , this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -149,7 +149,7 @@ export default {
 
         deleteRecord(record){
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete(route('organization.forms.destroy', {organization:record.organization_id, form:record.id}),{
+            this.$inertia.delete(route('manage.forms.destroy', {organization:record.organization_id, form:record.id}),{
                 onSuccess: (page)=>{
                     console.log(page);
                 },

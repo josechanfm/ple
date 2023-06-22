@@ -12,7 +12,7 @@ class MemberController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Organization::class);
+        //$this->authorizeResource(Organization::class);
         $this->authorizeResource(Member::class);
     }
 
@@ -21,12 +21,11 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Organization $organization)
+    public function index()
     {
-        $this->authorize('view',$organization);
-        return Inertia::render('Organization/Member',[
-            'organization' => $organization,
-            'members'=>$organization->members,
+        session('organization')->refresh();
+        return Inertia::render('Organization/Members',[
+            'members'=>session('organization')->members,
         ]);
 
     }
@@ -58,10 +57,9 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization, Member $member)
+    public function show(Member $member)
     {
         return Inertia::render('Organization/MemberShow',[
-            //'member'=>$member->belongsToOrganization($organization)->first(),
             'member'=>$member,
         ]);
     }

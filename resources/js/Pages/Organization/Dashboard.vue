@@ -1,12 +1,14 @@
 <template>
-    <OrganizationLayout title="Dashboard" :organization="organization">
+    <OrganizationLayout title="Dashboard" >
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Management Dashboard
             </h2>
         </template>
         <p>Club Management</p>
-        {{ organization }}
+        {{ $page.props.currentOrganization }}
+        {{ $t('Organization') }}
+
     </OrganizationLayout>
 </template>
 
@@ -14,13 +16,12 @@
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import OrganizationList from '@/Components/Organization/OrganizationList.vue';
 
-
 export default {
     components: {
         OrganizationLayout,
         OrganizationList,
     },
-    props: ['organization'],
+    props: [],
     data() {
         return {
 

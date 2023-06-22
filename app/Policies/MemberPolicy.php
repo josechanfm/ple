@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Member;
-use App\Models\AdminUser;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MemberPolicy
@@ -16,7 +16,7 @@ class MemberPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(AdminUser $user)
+    public function viewAny(User $user)
     {
         return true;
     }
@@ -28,18 +28,19 @@ class MemberPolicy
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(AdminUser $user, Member $member)
+    public function view(User $user, Member $member)
     {
         if($user->hasRole('admin')){
             return true;
         }
-        $organizations=$member->organizations;
-        foreach($organizations as $organization){
-            if(in_array($organization->id, $user->organizations->pluck('id')->toArray())){
-                return true;
-            }
-        }
-        return false;
+        return auth()->user()->hasRole(['organizer','admin']);
+        // $organizations=$member->organizations;
+        // foreach($organizations as $organization){
+        //     if(in_array($organization->id, $user->organizations->pluck('id')->toArray())){
+        //         return true;
+        //     }
+        // }
+        // return false;
     }
 
     /**
@@ -48,7 +49,7 @@ class MemberPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(AdminUser $user)
+    public function create(User $user)
     {
         //
     }
@@ -60,7 +61,7 @@ class MemberPolicy
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(AdminUser $user, Member $member)
+    public function update(User $user, Member $member)
     {
         if($user->hasRole('admin')){
             return true;
@@ -81,7 +82,7 @@ class MemberPolicy
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(AdminUser $user, Member $member)
+    public function delete(User $user, Member $member)
     {
         //
     }
@@ -93,7 +94,7 @@ class MemberPolicy
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(AdminUser $user, Member $member)
+    public function restore(User $user, Member $member)
     {
         //
     }
@@ -105,7 +106,7 @@ class MemberPolicy
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(AdminUser $user, Member $member)
+    public function forceDelete(User $user, Member $member)
     {
         //
     }

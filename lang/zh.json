@@ -1,0 +1,9 @@
+{
+    "Organization": "社团",
+    "Affiliate": "属会",
+    "Member": "会员",
+    "Course": {
+        "Label": "课程",
+        "List": "课程列表"
+    }
+}

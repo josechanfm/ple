@@ -17,19 +17,27 @@ class OrganizationSeeder extends Seeder
     public function run()
     {
         Organization::factory()->count(10)->create();
-        DB::table('admin_user_organization')->insert([
-            'admin_user_id'=>'2',
+        $organization=Organization::find(1);
+        $organization->abbr="MJA";
+        $organization->full_name="澳門柔道協會";
+        $organization->save();  
+
+        DB::table('organization_user')->insert([
+            'user_id'=>'1',
             'organization_id'=>'1',
         ]);
-        DB::table('admin_user_organization')->insert([
-            'admin_user_id'=>'2',
+        DB::table('organization_user')->insert([
+            'user_id'=>'2',
             'organization_id'=>'3',
         ]);
-        DB::table('admin_user_organization')->insert([
-            'admin_user_id'=>'3',
-            'organization_id'=>'2',
+        DB::table('organization_user')->insert([
+            'user_id'=>'3',
+            'organization_id'=>'3',
         ]);
-
+        DB::table('organization_user')->insert([
+            'user_id'=>'4',
+            'organization_id'=>'4',
+        ]);
 
 
         DB::table('member_organization')->insert([
@@ -64,3 +72,4 @@ class OrganizationSeeder extends Seeder
 
     }
 }
+

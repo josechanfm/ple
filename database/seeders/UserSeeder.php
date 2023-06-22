@@ -6,6 +6,9 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use App\Models\User;
+use App\Models\Team;
 
 class UserSeeder extends Seeder
 {
@@ -17,41 +20,57 @@ class UserSeeder extends Seeder
     public function run()
     {
         
-        DB::table('users')->insert([
+        $masterRole=Role::create(['name'=>'master']);
+        $adminRole=Role::create(['name'=>'admin']);
+        $organizerRole=Role::create(['name'=>'organizer']);
+
+        $user=User::create([
+            'name' => 'Master',
+            'email' => 'master@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        $user->assignRole('master');
+        $user->ownedTeams()->save(Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'personal_team' => true,
+        ]));
+
+        $user=User::create([
             'name' => 'Admin',
-            'identity' => 'admin',
             'email' => 'admin@example.com',
-            'password'=> Hash::make('password')
+            'password' => Hash::make('password'),
         ]);
+        $user->assignRole('admin');
+        $user->ownedTeams()->save(Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'personal_team' => true,
+        ]));
 
-        DB::table('users')->insert([
-            'name' => 'David Ma',
-            'identity' => 'student',
-            'email' => 'david@example.com',
-            'password'=> Hash::make('password')
+        $user=User::create([
+            'name' => 'Organizer',
+            'email' => 'organizer@example.com',
+            'password' => Hash::make('password'),
         ]);
+        $user->assignRole('organizer');
+        $user->ownedTeams()->save(Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'personal_team' => true,
+        ]));
+
+        $user=User::create([
+            'name' => 'Member',
+            'email' => 'member@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        $user->ownedTeams()->save(Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'personal_team' => true,
+        ]));
         
-        DB::table('teams')->insert([
-            'user_id' => '1',
-            'name' => 'team',
-            'personal_team' => '1',
-        ]);
-        DB::table('teams')->insert([
-            'user_id' => '2',
-            'name' => 'team',
-            'personal_team' => '1',
-        ]);
 
-        DB::table('team_user')->insert([
-            'team_id' => '1',
-            'user_id' => '1',
-        ]);
-
-        DB::table('team_user')->insert([
-            'team_id' => '1',
-            'user_id' => '2',
-        ]);
-
-        
     }
 }

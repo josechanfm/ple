@@ -12,7 +12,7 @@ class FormController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Organization::class);
+        //$this->authorizeResource(Organization::class);
         $this->authorizeResource(Form::class);
     }
 
@@ -21,12 +21,12 @@ class FormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Organization $organization)
+    public function index()
     {
-        $this->authorize('view',$organization);
-        return Inertia::render('Organization/Form',[
-            'organization'=>$organization,
-            'forms'=>$organization->forms
+        //$this->authorize('view',$organization);
+
+        return Inertia::render('Organization/Forms',[
+            'forms'=>session('organization')->fresh()->forms
         ]);
     }
 

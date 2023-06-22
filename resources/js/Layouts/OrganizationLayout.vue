@@ -3,13 +3,13 @@
 
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible theme="light" width="250px" class="shadow-md " >
             <div class="m-4 text-center text-lg" v-if="collapsed">
-                <inertia-link href='/organization'>Org </inertia-link>
+                <inertia-link href='/'>{{$page.props.currentOrganization.abbr}}</inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                <inertia-link :href="route('organizations.show',organization)">Organization </inertia-link>
+                <inertia-link :href="route('manage.list')">{{$page.props.currentOrganization.full_name}} </inertia-link>
             </div>
 
-            <OrganizationMenu :menuKeys='menuKeys' :organization="organization"/>
+            <OrganizationMenu :menuKeys='menuKeys'/>
         </a-layout-sider>
         
         <a-layout>
@@ -79,7 +79,6 @@ import OrganizationMenu from '@/Components/Organization/OrganizationMenu.vue';
 
 defineProps({
     title: String,
-    organization:Object,
 });
 
 const menuKeys = reactive({

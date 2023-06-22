@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Form;
-use App\Models\AdminUser;
+use App\Models\User;
 use App\Models\Organization;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -17,7 +17,7 @@ class FormPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(AdminUser $user)
+    public function viewAny(User $user)
     {
         return true;
     }
@@ -29,12 +29,12 @@ class FormPolicy
      * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(AdminUser $user, Form $form)
+    public function view(User $user, Form $form)
     {
         if($user->hasRole('admin')){
             return true;
         }
-        return $form->organization->hasUser($user);
+        return $form->organization_id==session('organization')->id;
     }
 
     /**
@@ -43,7 +43,7 @@ class FormPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(AdminUser $user)
+    public function create(User $user)
     {
         if($user->hasRole(['admin','organization'])){
             return true;
@@ -58,7 +58,7 @@ class FormPolicy
      * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(AdminUser $user, Form $form)
+    public function update(User $user, Form $form)
     {
         if($user->hasRole('admin')){
             return true;
@@ -73,7 +73,7 @@ class FormPolicy
      * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(AdminUser $user, Form $form)
+    public function delete(User $user, Form $form)
     {
         if($user->hasRole('admin')){
             return true;
@@ -88,7 +88,7 @@ class FormPolicy
      * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(AdminUser $user, Form $form)
+    public function restore(User $user, Form $form)
     {
         //
     }
@@ -100,7 +100,7 @@ class FormPolicy
      * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(AdminUser $user, Form $form)
+    public function forceDelete(User $user, Form $form)
     {
         //
     }

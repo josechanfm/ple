@@ -12,8 +12,8 @@
             <PieChartOutlined />
           </template>
           <span>
-            <inertia-link :href="route('organizations.show',organization.id)">
-              Organizations
+            <inertia-link :href="route('manage.dashboard')">
+              {{ $t('Affiliate') }}
             </inertia-link>
           </span>
         </a-menu-item>
@@ -22,8 +22,8 @@
             <DesktopOutlined />
           </template>
           <span>
-            <inertia-link :href="route('organization.members.index',organization.id)">
-              Members
+            <inertia-link :href="route('manage.members.index')">
+              {{ $t('Member') }}
             </inertia-link>
           </span>
         </a-menu-item>
@@ -32,7 +32,7 @@
             <InboxOutlined />
           </template>
           <span>
-            <inertia-link :href="route('organization.certificates.index',organization.id)">
+            <inertia-link :href="route('manage.certificates.index')">
               Certificates
             </inertia-link>
           </span>
@@ -42,7 +42,7 @@
             <InboxOutlined />
           </template>
           <span>
-            <inertia-link :href="route('organization.forms.index',organization.id)">
+            <inertia-link :href="route('manage.forms.index')">
               Forms
             </inertia-link>
           </span>

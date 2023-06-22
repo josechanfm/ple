@@ -1,0 +1,9 @@
+{
+    "Organization": "Organization",
+    "Affiliate": "Affiliate",
+    "Member": "Member",
+    "Course": {
+        "Label": "Course",
+        "List": "Course List"
+    }
+}

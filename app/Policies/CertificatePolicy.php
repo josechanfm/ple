@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Certificate;
-use App\Models\AdminUser;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CertificatePolicy
@@ -16,7 +16,7 @@ class CertificatePolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(AdminUser $user)
+    public function viewAny(User $user)
     {
         return true;
     }
@@ -28,7 +28,7 @@ class CertificatePolicy
      * @param  \App\Models\Certificate  $certificate
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(AdminUser $user, Certificate $certificate)
+    public function view(User $user, Certificate $certificate)
     {
         if($user->hasRole('admin')){
             return true;
@@ -43,7 +43,7 @@ class CertificatePolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(AdminUser $user)
+    public function create(User $user)
     {
         //
     }
@@ -55,7 +55,7 @@ class CertificatePolicy
      * @param  \App\Models\Certificate  $certificate
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(AdminUser $user, Certificate $certificate)
+    public function update(User $user, Certificate $certificate)
     {
         //
     }
@@ -67,7 +67,7 @@ class CertificatePolicy
      * @param  \App\Models\Certificate  $certificate
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(AdminUser $user, Certificate $certificate)
+    public function delete(User $user, Certificate $certificate)
     {
         //
     }
@@ -79,7 +79,7 @@ class CertificatePolicy
      * @param  \App\Models\Certificate  $certificate
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(AdminUser $user, Certificate $certificate)
+    public function restore(User $user, Certificate $certificate)
     {
         //
     }
@@ -91,7 +91,7 @@ class CertificatePolicy
      * @param  \App\Models\Certificate  $certificate
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(AdminUser $user, Certificate $certificate)
+    public function forceDelete(User $user, Certificate $certificate)
     {
         //
     }

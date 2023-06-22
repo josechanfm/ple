@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import i18n from 'laravel-vue-i18n/vite';
+
 // import basicSsl from '@vitejs/plugin-basic-ssl'
 
 export default defineConfig({
@@ -25,5 +27,6 @@ export default defineConfig({
                 },
             },
         }),
+        i18n(),
     ],
 });

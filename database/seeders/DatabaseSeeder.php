@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MemberSeeder::class,
             OrganizationSeeder::class,
-            FormSeeder::class
+            FormSeeder::class,
+            UserSeeder::class
         ]);
 
 
@@ -83,12 +84,12 @@ class DatabaseSeeder extends Seeder
         ])->create();
         $organization->assignRole('organization');
 
-        $member=\App\Models\User::factory([
-            'name' => 'Member',
-            'email' => 'member@example.com',
-            'password'=> Hash::make('password')
-        ])->withPersonalTeam()->create();
-        $member->assignRole('member');
+        // $member=\App\Models\User::factory([
+        //     'name' => 'Member',
+        //     'email' => 'member@example.com',
+        //     'password'=> Hash::make('password')
+        // ])->withPersonalTeam()->create();
+        // $member->assignRole('member');
 
     }
 }

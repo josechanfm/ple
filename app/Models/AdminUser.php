@@ -66,8 +66,4 @@ class AdminUser extends Authenticatable
     public function organizations(){
         return $this->belongsToMany(Organization::class);
     }
-    public function isOrganizationAdmin($organization ){
-        dd($this->organizations);
-        //return $organization->hasOrganizations();
-    }
 }

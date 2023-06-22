@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('admin_user_organization', function (Blueprint $table) {
+        Schema::create('organization_user', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('admin_user_id');
+            $table->bigInteger('user_id');
             $table->bigInteger('organization_id');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_user_organization');
+        Schema::dropIfExists('organization_user');
     }
 };

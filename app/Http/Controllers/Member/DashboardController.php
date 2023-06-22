@@ -10,8 +10,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        auth()->user()->member;
         return Inertia::render('Member/Dashboard',[
-            'member'=>auth()->user()->member
+            //'member'=>auth()->user()->member
         ]);
     }
     
