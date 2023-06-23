@@ -3,10 +3,10 @@
 
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible theme="light" width="250px" class="shadow-md " >
             <div class="m-4 text-center text-lg" v-if="collapsed">
-                <inertia-link href='/'>{{$page.props.currentOrganization.abbr}}</inertia-link>
+                <inertia-link href='/'>{{ $page.props.organization.abbr }}</inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                <inertia-link :href="route('manage.list')">{{$page.props.currentOrganization.full_name}} </inertia-link>
+                <inertia-link :href="route('manage.list')">{{ $page.props.organization.full_name }}</inertia-link>
             </div>
 
             <OrganizationMenu :menuKeys='menuKeys'/>
@@ -22,7 +22,7 @@
                 <a-dropdown placement="bottomRight">
                     <a class="trigger" @click.prevent>
                         <!-- {{ $page.props.currentUser.roles }} -->
-                        {{ $page.props.currentUser.name }}
+                        {{ $page.props.user.name }}
                     </a>
                     <template #overlay>
                         <a-menu>
@@ -99,7 +99,7 @@ const switchToTeam = (team) => {
 };
 
 const logout = () => {
-    Inertia.post(route('manage.logout'));
+    Inertia.post(route('logout'));
 };
 </script>
   

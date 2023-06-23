@@ -6,7 +6,7 @@
             </h2>
         </template>
         <p>Club Management</p>
-        {{ $page.props.currentOrganization }}
+        {{ organization }}
         {{ $t('Organization') }}
 
     </OrganizationLayout>
@@ -21,7 +21,7 @@ export default {
         OrganizationLayout,
         OrganizationList,
     },
-    props: [],
+    props: ['organization'],
     data() {
         return {
 

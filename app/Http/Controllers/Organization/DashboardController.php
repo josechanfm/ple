@@ -18,9 +18,6 @@ class DashboardController extends Controller
 
     public function list()
     {
-        // App::setLocale('en');
-        // session()->put('locale','en');
-        // $this->authorize('view',$organization);
         $organizations=auth()->user()->organizations;
         if($organizations->count()==0){
             return redirect('/');
@@ -40,12 +37,11 @@ class DashboardController extends Controller
         return redirect()->route('manage.dashboard');
     }
 
-    public function organization(){
-        //dd(auth()->user());
-        //dd(session('organization')  );
+    public function index(){
         $this->authorize('view',session('organization'));
         if(session('organization')){
             return Inertia::render('Organization/Dashboard',[
+                'organization' => session('organization')
             ]);
         };
         return redirect()->route('manage.list');

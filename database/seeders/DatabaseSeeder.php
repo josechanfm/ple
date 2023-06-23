@@ -31,7 +31,8 @@ class DatabaseSeeder extends Seeder
             MemberSeeder::class,
             OrganizationSeeder::class,
             FormSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            GuardianSeeder::class
         ]);
 
 

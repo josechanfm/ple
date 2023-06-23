@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Team;
+use App\Models\Member;
 
 class UserSeeder extends Seeder
 {
@@ -61,8 +62,8 @@ class UserSeeder extends Seeder
         ]));
 
         $user=User::create([
-            'name' => 'Member',
-            'email' => 'member@example.com',
+            'name' => 'Guardian',
+            'email' => 'guardian@example.com',
             'password' => Hash::make('password'),
         ]);
         $user->ownedTeams()->save(Team::forceCreate([
@@ -70,7 +71,42 @@ class UserSeeder extends Seeder
             'name' => explode(' ', $user->name, 2)[0]."'s Team",
             'personal_team' => true,
         ]));
-        
 
+        $user=User::create([
+            'name' => 'Member 1',
+            'email' => 'member1@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        $user->ownedTeams()->save(Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'personal_team' => true,
+        ]));
+        Member::find(1)->update(['user_id'=>$user->id]);
+
+        $user=User::create([
+            'name' => 'Member 2',
+            'email' => 'member2@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        $user->ownedTeams()->save(Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'personal_team' => true,
+        ]));
+        Member::find(2)->update(['user_id'=>$user->id]);
+
+        $user=User::create([
+            'name' => 'Member3',
+            'email' => 'member3@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        $user->ownedTeams()->save(Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'personal_team' => true,
+        ]));
+        Member::find(3)->update(['user_id'=>$user->id]);
+        
     }
 }

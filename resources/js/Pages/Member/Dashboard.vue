@@ -100,7 +100,7 @@ defineProps({
                   澳門柔道總會
                 </h1>
                 <p class="text-center text-sm text-gray-400 font-medium">
-                  {{ $page.props.user.member.display_name }}
+                  {{ member.display_name }}
                 </p>
                 <p>
                   <span> </span>
@@ -140,18 +140,17 @@ defineProps({
                   <div
                     class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm"
                   >
-                    <a
-                      href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
-                    >
+                  <template v-for="organization in member.organizations">
+                    <a href="#" class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
                       <img
                         src="https://avatars0.githubusercontent.com/u/35900628?v=4"
                         alt=""
                         class="rounded-full h-6 shadow-md inline-block mr-2"
                       />
-                      Updated his status
+                      {{organization.abbr}} - {{organization.full_name}}
                       <span class="text-gray-500 text-xs">24 min ago</span>
                     </a>
+                    </template>
 
                     <a
                       href="#"
