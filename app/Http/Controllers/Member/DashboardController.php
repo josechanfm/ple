@@ -11,11 +11,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $member=Member::where('user_id',auth()->user()->id)->first();
+        $member=Member::where('user_id',auth()->user()->id)->with('guardian')->first();
 
         if(auth()->user()->guardian){
             session(['guardian'=>auth()->user()->guardian]);
-            return redirect('guardian');
+            return redirect()->route('member.guardian');
         }
 
         // dd(auth()->user()->personalTeam());
@@ -23,6 +23,7 @@ class DashboardController extends Controller
         if($member){
             $organizations=$member->organizations;
             $member->portfolios;
+            session(['organization'=>$member->organizations[0]]);
             return Inertia::render('Member/Dashboard',[
                 'member'=>$member,
             ]);

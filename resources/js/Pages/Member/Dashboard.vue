@@ -58,8 +58,8 @@ defineProps({
             <div class="bg-white relative shadow rounded-lg">
 
               <!-- card start -->
-              <div class="relative py-4 w-96 hover:scale-105 transform transition-transform mb-4">
-                <div class="absolute z-50 flex flex-col py-3 px-8 text-white shadow-xl text-sm font-serif w-full">
+              <div class="mx-auto relative py-4 w-96 hover:scale-105 transform transition-transform mb-4">
+                <div class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 text-white shadow-xl text-sm font-serif w-full">
                   <div class="flex flex-col w-xl">
                     <div class="flex justify-center">
                       <div class="text-lg font-bold">澳門機電工程師學會</div>
@@ -88,7 +88,7 @@ defineProps({
                   </div>
                 </div>
                 <img
-                  class="relative object-cover w-full h-full rounded-lg z-0"
+                  class="relative object-cover w-96 h-52 rounded-lg z-0"
                   src="/images/card_blue.png"
                   width="10px"
                 />

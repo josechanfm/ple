@@ -58,6 +58,9 @@ const logout = () => {
                                 <NavLink :href="route('member.portfolios.index')" >
                                     Portfolios
                                 </NavLink>
+                                <NavLink :href="route('member.guardian.back')" v-if="$page.props.by_guardian">
+                                    Guardian
+                                </NavLink>
                                 <NavLink :href="route('manage.list')" v-if="$page.props.user.roles.includes('admin')">
                                     Admin
                                 </NavLink>

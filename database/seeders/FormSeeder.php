@@ -94,7 +94,7 @@ class FormSeeder extends Seeder
             'form_id' => '3',
             'field_name'=>'柔道年資',
             'field_label'=>'柔道年資',
-            'options'=>'',
+            'options'=>NULL,
             'direction'=>'V',
             'in_column'=>'0',
             'type'=>'input',

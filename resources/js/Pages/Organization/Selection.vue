@@ -3,7 +3,7 @@
         <OrganizationList :organizations="organizations"/>
 
         <div v-for="organization in organizations">
-            <inertia-link :href="route('organizations',organization.id)">All clubs</inertia-link>
+            <inertia-link :href="route('manage.organizations.index',organization.id)">All clubs</inertia-link>
         </div>
 </template>
 

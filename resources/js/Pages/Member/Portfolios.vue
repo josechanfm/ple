@@ -84,8 +84,20 @@ export default {
                 title:"Modal",
                 mode:""
             },
-            title: '',
-            card: {},
+            rules:{
+                field:{required:true},
+                label:{required:true},
+            },
+            validateMessages:{
+                required: '${label} is required!',
+                types: {
+                    email: '${label} is not a valid email!',
+                    number: '${label} is not a valid number!',
+                },
+                number: {
+                    range: '${label} must be between ${min} and ${max}',
+                },
+            },
         }
     },
     created() {

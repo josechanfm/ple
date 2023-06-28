@@ -153,7 +153,7 @@ export default {
     methods: {
         createRecord(record){
             this.modal.data={};
-            this.modal.data.organization_id=this.$page.props.organization.id,
+            this.modal.data.organization_id=this.$page.props.current_organization.id,
             this.modal.data.media=[],
             this.modal.mode="CREATE";
             
