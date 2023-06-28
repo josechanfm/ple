@@ -37,8 +37,9 @@ class HandleInertiaAdminRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'currentUser' => $request->user(),
-            'currentOrganization' => session('organization')
+            'user' => $request->user(),
+            'organization' => session('organization'),
+            // 'is_admin'=>$request->user()->hasRole(['organizer','admin','master'])
         ]);
     }
 }

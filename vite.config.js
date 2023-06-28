@@ -27,6 +27,9 @@ export default defineConfig({
                 },
             },
         }),
-        i18n(),
+        i18n()
     ],
+    optimizeDeps: {
+        include: ["quill"]
+    }    
 });

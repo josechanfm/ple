@@ -5,20 +5,20 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Inertia\Inertia;
 
 
-// Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], function () {
-//     $limiter = config('fortify.limiters.login');
-//     Route::get('/manage/login', function () {
-//         return Inertia::render('Organization/Login');
-//     })->middleware(['guest:'.config('fortify.guard')]);
+Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], function () {
+    $limiter = config('fortify.limiters.login');
+    Route::get('/manage/login', function () {
+        return Inertia::render('Organization/Login');
+    })->middleware(['guest:'.config('fortify.guard')])->name('manage.login');
    
-//     Route::post('/manage/login', [AuthenticatedSessionController::class, 'store'])
-//     ->middleware(array_filter([
-//         'guest:'.config('fortify.guard'),
-//         $limiter ? 'throttle:'.$limiter : null,
-//     ]));
-//     Route::post('/manage/logout', [AuthenticatedSessionController::class, 'destroy'])
-//     ->name('manage.logout');
-// });
+    Route::post('/manage/login', [AuthenticatedSessionController::class, 'store'])
+    ->middleware(array_filter([
+        'guest:'.config('fortify.guard'),
+        $limiter ? 'throttle:'.$limiter : null,
+    ]));
+    Route::get('/manage/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('manage.logout');
+});
 
 
 // Route::middleware([
@@ -41,13 +41,14 @@ Route::middleware([
     Route::prefix('/manage')->group(function(){
         Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'list'])->name('manage.list');
         Route::get('/select/{organization}',[App\Http\Controllers\Organization\DashboardController::class,'select'])->name('manage.select');
-        Route::get('/dashboard',[App\Http\Controllers\Organization\DashboardController::class,'organization'])->name('manage.dashboard');
+        Route::get('/dashboard',[App\Http\Controllers\Organization\DashboardController::class,'index'])->name('manage.dashboard');
         Route::resource('members', App\Http\Controllers\Organization\MemberController::class)->names('manage.members');
         Route::resource('forms',App\Http\Controllers\Organization\FormController::class)->names('manage.forms');
         Route::resource('form/{form}/fields',App\Http\Controllers\Organization\FormFieldController::class)->names('manage.form.fields');
-        Route::resource('certificates', App\Http\Controllers\Organization\CertificateController::class)->names('manage.certificates');
+        
+        //Route::resource('certificates', App\Http\Controllers\Organization\CertificateController::class)->names('manage.certificates');
 
-        Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
+        //Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
 
         // Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);
         // Route::resource('organization.certificates', App\Http\Controllers\Organization\CertificateController::class);

@@ -2,7 +2,14 @@
     <a-layout style="min-height: 100vh">
 
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible theme="light" width="250px" class="shadow-md " >
-            <AdminMenu :menuKeys='menuKeys' />
+            <div class="m-4 text-center text-lg" v-if="collapsed">
+                <inertia-link href='/'>{{ $page.props.organization.abbr }}</inertia-link>
+            </div>
+            <div class="m-4 text-center text-lg" v-else>
+                <inertia-link :href="route('manage.list')"></inertia-link>
+            </div>
+
+            <OrganizationMenu :menuKeys='menuKeys'/>
         </a-layout-sider>
         
         <a-layout>
@@ -15,7 +22,7 @@
                 <a-dropdown placement="bottomRight">
                     <a class="trigger" @click.prevent>
                         <!-- {{ $page.props.currentUser.roles }} -->
-                        {{ $page.props.currentUser.name }}
+                        {{ $page.props.user.name }}
                     </a>
                     <template #overlay>
                         <a-menu>
@@ -61,15 +68,14 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import PageHeader from '@/Components/Admin/PageHeader.vue';
+import PageHeader from '@/Components/Organization/PageHeader.vue';
 
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
 } from '@ant-design/icons-vue';
 
-import AdminMenu from '@/Components/Admin/AdminMenu.vue';
-// import AdminMenu from '@/Layouts/Menu/Menu.vue';
+import OrganizationMenu from '@/Components/Organization/OrganizationMenu.vue';
 
 defineProps({
     title: String,
@@ -93,7 +99,7 @@ const switchToTeam = (team) => {
 };
 
 const logout = () => {
-    Inertia.post(route('manage.logout'));
+    Inertia.post(route('logout'));
 };
 </script>
   

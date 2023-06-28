@@ -44,7 +44,9 @@ class Member extends Model
     public function belongsToOrganization($organization){
         return $this->belongsToMany(Organization::class)->wherePivot('organization_id', $organization->id);
     }
-
+    public function portfolios(){
+        return $this->hasMany(Portfolio::class);
+    }
     public function certificates(){
         return $this->belongsToMany(Certificate::class)->withPivot(
             'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');

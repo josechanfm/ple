@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from "@/Layouts/AppLayout.vue";
+import MemberLayout from "@/Layouts/MemberLayout.vue";
 import Welcome from "@/Components/Welcome.vue";
 
 const data = [
@@ -23,7 +23,7 @@ defineProps({
 </script>
 
 <template>
-  <AppLayout title="Dashboard">
+  <MemberLayout title="Dashboard">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
         Dashboard..
@@ -72,7 +72,7 @@ defineProps({
                         <div class="font-sans mb-2">00001</div>
                       </div>
                       <div class="flex-auto text-right">
-                        <img class="w-14 h-14" src="images/aeemm_logo.jpg" />
+                        <img class="w-14 h-14" src="/images/judo_logo.png" />
                       </div>
                     </div>
                   </div>
@@ -134,7 +134,6 @@ defineProps({
                     >Email</a
                   >
                 </div>
-
                 <div class="w-full">
                   <h3 class="font-medium text-gray-900 text-left px-6">近況</h3>
                   <div
@@ -152,58 +151,17 @@ defineProps({
                     </a>
                     </template>
 
-                    <a
-                      href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
-                    >
+                    <template v-for="portfolio in member.portfolios">
+                    <a href="#" class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
                       <img
                         src="https://avatars0.githubusercontent.com/u/35900628?v=4"
                         alt=""
                         class="rounded-full h-6 shadow-md inline-block mr-2"
                       />
-                      Added new profile picture
-                      <span class="text-gray-500 text-xs">42 min ago</span>
+                      {{portfolio.title}} - {{portfolio.description}}
+                      <span class="text-gray-500 text-xs">{{ portfolio.start_date }}</span>
                     </a>
-
-                    <a
-                      href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
-                    >
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                        alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2"
-                      />
-                      Posted new article in
-                      <span class="font-bold">#Web Dev</span>
-                      <span class="text-gray-500 text-xs">49 min ago</span>
-                    </a>
-
-                    <a
-                      href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
-                    >
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                        alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2"
-                      />
-                      Edited website settings
-                      <span class="text-gray-500 text-xs">1 day ago</span>
-                    </a>
-
-                    <a
-                      href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150 overflow-hidden"
-                    >
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                        alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2"
-                      />
-                      Added new rank
-                      <span class="text-gray-500 text-xs">5 days ago</span>
-                    </a>
+                    </template>
                   </div>
                 </div>
               </div>
@@ -212,5 +170,5 @@ defineProps({
         </div>
       </div>
     </div>
-  </AppLayout>
+  </MemberLayout>
 </template>

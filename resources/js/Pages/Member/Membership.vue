@@ -1,5 +1,5 @@
 <template>
-    <AppLayout title="Dashboard">
+    <MemberLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Dashboard..
@@ -16,17 +16,17 @@
                 </div>
             </div>
         </div>
-    </AppLayout>
+    </MemberLayout>
 </template>
 
 
 <script>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import MemberLayout from '@/Layouts/MemberLayout.vue';
 import MembershipCard from '@/Components/Member/MembershipCard.vue';
 
 export default {
     components: {
-        AppLayout,
+        MemberLayout,
         MembershipCard,
     },
     props: ['member','certificates'],

@@ -22,11 +22,15 @@ class Organization extends Model
         return in_array($user->id,$this->users()->get()->pluck('id')->toArray());
     }
 
+    public function approbates(){
+        return $this->hasMany(Approbate::class);
+    }
+
     public function certificates(){
         return $this->hasMany(Certificate::class);
     }
     public function forms(){
-        return $this->hasMany(Form::class);
+        return $this->hasMany(Form::class)->with('media');
     }
 
 }

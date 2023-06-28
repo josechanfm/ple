@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Organization;
 use App\Models\Member;
+use App\Exports\MemberExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MemberController extends Controller
 {
@@ -111,5 +113,8 @@ class MemberController extends Controller
         Password::broker(config('fortify.passwords'))->sendResetLink(
             [ 'email' => $user->email ]
         );
-    }    
+    }
+    public function export(){
+        return Excel::download(new MemberExport, 'member.xlsx');
+    }
 }

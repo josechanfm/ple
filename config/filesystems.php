@@ -55,6 +55,32 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'media' => [
+            'driver' => 'local',
+            'root'   => public_path('/media'),
+            'url'    => env('APP_URL').'/media',
+        ],
+        'form' => [
+            'driver' => 'local',
+            'root'   => public_path('/media/organization'),
+            'url'    => env('APP_URL').'/media/organization',
+        ],
+        'form' => [
+            'driver' => 'local',
+            'root'   => public_path('/media/form'),
+            'url'    => env('APP_URL').'/media/form',
+            // 'permissions' =>[
+            //     'file'=>[
+            //         'public'=> 0774,
+            //         'private'=>0600,
+            //     ],
+            //     'dir'=>[
+            //         'public'=>0775,
+            //         'private'=>0775,
+            //     ]
+            // ]
+        ],
+
 
     ],
 

@@ -47,27 +47,28 @@ class FormFieldController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Organization $organization, Form $form, Request $request)
+    public function store(Form $form, Request $request)
     {
         $this->validate($request,[
             'form_id' => 'required',
-            'field_name'=>'required',
             'field_label'=>'required',
+            'type'=>'required',
         ]);
 
-        if($organization->hasUser(Auth()->user())){
-            $field=new FormField();
-            $field->form_id=$request->form_id;
-            $field->field_name=$request->field_name;
-            $field->field_label=$request->field_label;
-            $field->type=$request->type;
-            $field->required=$request->required;
-            $field->rule=$request->rule;
-            $field->validate=$request->validate;
-            $field->remark=$request->remark;
-            $field->save();
-            return redirect()->back();
-        }
+        $field=new FormField();
+        $field->form_id=$request->form_id;
+        $field->field_name=$request->field_name;
+        $field->field_label=$request->field_label;
+        $field->type=$request->type;
+        $field->options=json_encode($request->options);
+        $field->required=isset($request->required)?$request->required:false;
+        $field->in_column=isset($request->in_column)?$request->in_column:false;
+        $field->direction=isset($request->direction)?$request->direction:'H';
+        $field->rule=$request->rule;
+        $field->validate=$request->validate;
+        $field->remark=$request->remark;
+        $field->save();
+        return redirect()->back();
 
     }
 
@@ -100,26 +101,25 @@ class FormFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Organization $organization, Form $form, Request $request )
+    public function update(Form $form, Request $request )
     {
         $this->validate($request,[
             'form_id' => 'required',
-            'field_name'=>'required',
             'field_label'=>'required',
+            'type'=>'required',
         ]);
-        if($organization->hasUser(Auth()->user())){
-            $field=FormField::find($form->id);
-            $field->form_id=$request->form_id;
-            $field->field_name=$request->field_name;
-            $field->field_label=$request->field_label;
-            $field->type=$request->type;
-            $field->required=$request->required;
-            $field->rule=$request->rule;
-            $field->validate=$request->validate;
-            $field->remark=$request->remark;
-            $field->save();
-            return redirect()->back();
-        }
+        $field=FormField::find($request->id);
+        $field->form_id=$request->form_id;
+        $field->field_name=$request->field_name;
+        $field->field_label=$request->field_label;
+        $field->type=$request->type;
+        $field->options=json_encode($request->options);
+        $field->direction=isset($request->direction)?$request->direction:'H';
+        $field->required=isset($request->required)?$request->required:false;
+        $field->in_column=isset($request->in_column)?$request->in_column:false;
+        $field->remark=$request->remark;
+        $field->save();
+        return redirect()->back();
     }
 
     /**

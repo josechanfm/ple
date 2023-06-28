@@ -48,7 +48,7 @@ class FormPolicy
         if($user->hasRole(['admin','organization'])){
             return true;
         }
-
+        return $form->organization_id==session('organization')->id;
     }
 
     /**
@@ -63,7 +63,8 @@ class FormPolicy
         if($user->hasRole('admin')){
             return true;
         }
-        return $form->organization->hasUser($user);
+        //return $form->organization->hasUser($user);
+        return $form->organization_id==session('organization')->id;
     }
 
     /**

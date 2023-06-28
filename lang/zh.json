@@ -1,9 +1,20 @@
 {
-    "Organization": "社团",
-    "Affiliate": "属会",
-    "Member": "会员",
+    "Application Name":"澳門柔道館",
+    "Organization": "社團",
+    "Affiliate": "屬會",
+    "Member": "會員",
     "Course": {
         "Label": "课程",
         "List": "课程列表"
-    }
+    },
+    "Create Form":"創建表格",
+    "Name": "名稱",
+    "Title": "標題",
+    "Description": "簡要描述",
+    "Require Login":"需要登錄",
+    "For Members":"對於會員",
+    "Email":"電郵",
+    "Password":"密碼",
+    "Remember me":"記住賬號",
+    "Forgot your password?":"忘記密碼了嗎？"
 }

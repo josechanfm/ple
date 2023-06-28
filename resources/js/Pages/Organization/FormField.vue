@@ -1,17 +1,17 @@
 <template>
-    <OrganizationLayout title="Dashboard" :organization="organization">
+    <OrganizationLayout title="Dashboard" :department="department">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Forms
+                資料欄位管理
             </h2>
         </template>
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Field</button>
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增資料欄位</button>
             <a-table :dataSource="fields" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                        <a-button @click="deleteRecord(record)">Delete</a-button>
+                        <a-button @click="editRecord(record)">修改</a-button>
+                        <a-button @click="deleteRecord(record)">刪除</a-button>
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -20,43 +20,67 @@
             </a-table>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.mode=='CREATE'?'Create Form':'Edit Form'" width="60%" >
-            {{ modal.data }}
+        <a-modal v-model:visible="modal.isOpen" :title="modal.mode=='CREATE'?'新增':'修改'" width="60%" >
         <a-form
             ref="modalRef"
             :model="modal.data"
-            name="Teacher"
+            name="formField"
             :label-col="{ span: 4 }"
             :wrapper-col="{ span: 20 }"
             autocomplete="off"
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-form-item label="Field Name" name="field_name">
+            <a-form-item label="名稱" name="field_name">
                 <a-input v-model:value="modal.data.field_name" />
             </a-form-item>
-            <a-form-item label="Field Label" name="field_label">
-                <a-input v-model:value="modal.data.field_label" />
+            <a-form-item label="標簽" name="field_label">
+                <a-input v-model:value="modal.data.field_label" @blur="onFieldLabelChanged"/>
             </a-form-item>
-            <a-form-item label="Type" name="type">
-                <a-input v-model:value="modal.data.type" />
+            <a-form-item label="類型" name="type">
+                <a-select v-model:value="modal.data.type" placeholder="欄位類型" :options="fieldTypes" @change="onChangeType"/>
             </a-form-item>
-            <a-form-item label="Required" name="required">
-                <a-input v-model:value="modal.data.required" />
+            <a-form-item label="Rows" name="rows" v-if="['textarea','longtext','richtext'].includes(modal.data.type)">
+                <a-input-number v-model:value="modal.data.options"/>
             </a-form-item>
-            <a-form-item label="Rule" name="rule">
+
+            <template v-if="['radio','checkbox','dropdown'].includes(modal.data.type)">
+                <a-form-item label="Options" name="options">
+                    <a-radio-group>
+                        <template v-for="option in modal.data.options">
+                            <a-radio :style="verticalStyle" :value="option.value" >
+                                <a-input v-model:value="option.label"/>
+                            </a-radio>
+                        </template>
+                        <a-radio @click="addOptionItem"> Add option</a-radio>
+                    </a-radio-group>
+                </a-form-item>
+                <a-form-item label="Template" name="optionTemplate">
+                    <a-select :options="optionTemplates" @change="onChangeOptionTemplate"/>
+                </a-form-item>
+                <a-form-item label="Template" name="optionTemplate" v-if="['radio','checkbox'].includes(modal.data.type)">
+                    <a-radio-group v-model:value="modal.data.direction">
+                        <a-radio value="H">Horizontal</a-radio>
+                        <a-radio value="V">Vertical</a-radio>
+                    </a-radio-group>
+                </a-form-item>
+            </template>
+            <a-form-item label="必填" name="required">
+                <a-switch v-model:checked="modal.data.required" :unCheckedValue="0" :checkedValue="1"/>
+            </a-form-item>
+            <!-- <a-form-item label="規則" name="rule">
                 <a-input v-model:value="modal.data.rule" />
+            </a-form-item> -->
+            <a-form-item label="在資料欄" name="in_column" v-if="modal.data.required">
+                <a-switch v-model:checked="modal.data.in_column" :unCheckedValue="0" :checkedValue="1"/>
             </a-form-item>
-            <a-form-item label="Validate" name="validate">
-                <a-input v-model:value="modal.data.validate" />
-            </a-form-item>
-            <a-form-item label="Remark" name="remark">
+            <a-form-item label="備注" name="remark">
                 <a-textarea v-model:value="modal.data.remark" />
             </a-form-item>
         </a-form>
         <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
+            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">更新</a-button>
+            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">新增</a-button>
         </template>
     </a-modal>    
     <!-- Modal End-->
@@ -72,7 +96,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['organization','form','fields'],
+    props: ['department','form','fields'],
     data() {
         return {
             modal:{
@@ -81,34 +105,43 @@ export default {
                 title:"Modal",
                 mode:""
             },
+            fieldTypes:[
+                {value:"input",label:"單行文字"},
+                {value:"textarea",label:"多行文字"},
+                {value:"largetext",label:"大篇幅文字"},
+                {value:"radio",label:"單選"},
+                {value:"checkbox",label:"多選"},
+                {value:"dropdown",label:"下拉清單"},
+                {value:"true_false",label:"是/否"},
+                {value:"date",label:"日期"},
+                {value:"datetime",label:"日期時間"},
+                {value:"email",label:"電郵"},
+                {value:"number",label:"數值"},
+                {value:"richtext",label:"富文本格式"},
+            ],
             columns:[
                 {
-                    title: 'Field Name',
-                    dataIndex: 'field_name',
-                },{
-                    title: 'Field Label',
+                    title: '標簽',
                     dataIndex: 'field_label',
                 },{
-                    title: 'Type',
+                    title: '類型',
                     dataIndex: 'type',
                 },{
-                    title: 'Required',
+                    title: '必填',
                     dataIndex: 'required',
                 },{
-                    title: 'Rule',
-                    dataIndex: 'required',
+                    title: '在資料欄顯示',
+                    dataIndex: 'in_column',
                 },{
-                    title: 'Validate',
-                    dataIndex: 'validate',
-                },{
-                    title: 'Action',
+                    title: '操作',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
             ],
             rules:{
-                field:{required:true},
-                label:{required:true},
+                field_name:{required:true},
+                field_label:{required:true},
+                type:{required:true},
             },
             validateMessages:{
                 required: '${label} is required!',
@@ -125,6 +158,24 @@ export default {
                 width: '150px',
                 },
             },
+            verticalStyle:{
+                display: 'flex',
+                height: '30px',
+                lineHeight: '30px',
+                width: '100%'
+            },
+            optionTemplates:[
+                {value:'agree',label:'同意程度',template:[
+                    {value:5,label:'非常同意'},
+                    {value:4,label:'同意'},
+                    {value:3,label:'普通'},
+                    {value:2,label:'不同意'},
+                    {value:1,label:'非常不同意'},
+                    {value:0,label:'不適用'}
+                ]},
+                {value:'gender',label:'性別',template:[{value:'M',label:'男'},{value:'F',label:'女'}]},
+                {value:'clear',label:'重設',template:[{value:'option_1',label:'option_1'}]},
+            ]
         }
     },
     created(){
@@ -133,18 +184,23 @@ export default {
         createRecord(){
             this.modal.data={};
             this.modal.data.form_id=this.form.id;
+            this.modal.data.direction='V';
             this.modal.mode="CREATE";
             this.modal.isOpen=true;
         },
         editRecord(record){
             this.modal.data={...record};
+            try{
+                this.modal.data.options=JSON.parse(this.modal.data.options);
+            }catch (e){
+                this.modal.data.options=[{value:'option_1',label:'option_1'}];
+            }
             this.modal.mode="EDIT";
             this.modal.isOpen=true;
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('organization.form.fields.store',{
-                    organization:this.organization.id,
+                this.$inertia.post(route('manage.form.fields.store',{
                     form:this.form.id
                 }), this.modal.data, {
                     onSuccess:(page)=>{
@@ -162,8 +218,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch(route('organization.form.fields.update', {
-                    organization:this.organization.id,
+                this.$inertia.patch(route('manage.form.fields.update', {
                     form:this.form.id,
                     field:this.modal.data
                 }), this.modal.data, {
@@ -182,8 +237,8 @@ export default {
         },
         deleteRecord(record){
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete(route('organization.form.fields.destroy', {
-                organization:this.form.organization_id, form:this.form.id, field:record.id
+            this.$inertia.delete(route('form.fields.destroy', {
+                form:this.form.id, field:record.id
             }),{
                 onSuccess: (page)=>{
                     console.log('the field has been deleted!');
@@ -194,6 +249,46 @@ export default {
 
             });
         },
+        addOptionItem(){
+            console.log(this.modal.data.options.length+1);
+            const newOption='option_'+(this.modal.data.options.length+1);
+            this.modal.data.options.push({value:newOption,label:newOption})
+        },
+        onChangeOptionTemplate(value){
+            this.modal.data.options=this.optionTemplates.find(t=>t.value==value).template
+        },
+        onChangeType(value){
+            if(['textarea','longtext','richtext'].includes(this.modal.data.type)){
+                if(!Number.isInteger(this.modal.data.type)){
+                    this.modal.data.options=5;
+                }
+            }else if(['radio','checkbox'].includes(this.modal.data.type)){
+                if(typeof this.modal.data.options !== 'object'){
+                    this.modal.data.options=[{value:'option_1',label:'option_1'}];
+                }
+            }
+        },
+        onFieldLabelChanged(value){
+            if(!this.modal.data.field_name){
+                this.modal.data.field_name=this.modal.data.field_label;
+            }
+        }
     },
+    watch:{
+        // "modal.data.type": function($value){
+        //     if($value=='agree'){
+        //         // if(this.modal.data.options=='null'){
+        //             this.modal.data.options=[
+        //                 {value:5,label:'非常同意'},
+        //                 {value:4,label:'同意'},
+        //                 {value:3,label:'普通'},
+        //                 {value:2,label:'不同意'},
+        //                 {value:1,label:'非常不同意'},
+        //                 {value:0,label:'不適用'}
+        //             ]
+        //         //}
+        //     }
+        // }
+    }
 }
 </script>

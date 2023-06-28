@@ -15,11 +15,14 @@ return new class extends Migration
     {
         Schema::create('form_fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('form_id')->constrained()->restrictOnDelete();
+            $table->foreignId('form_id')->reference('id')->on('forms')->onDelete('restric');
             $table->string('field_name');
             $table->string('field_label');
             $table->string('type')->default('input');
+            $table->json('options')->nullable();
+            $table->char('direction',1)->nullable();
             $table->boolean('required')->default(false);
+            $table->boolean('in_column')->default(false);
             $table->string('rule')->nullable();
             $table->string('validate')->nullable();
             $table->text('remark')->nullable();

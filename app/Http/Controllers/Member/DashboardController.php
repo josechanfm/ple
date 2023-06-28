@@ -11,17 +11,36 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // if( session('acting_member')!==null ){
-        //     $member=Member::where('id',session('acting_member')->id)->first();
-        // }else{
-        //     $member=Member::where('user_id',auth()->user()->id)->first();
-        //     //$member=auth()->user()->member;
-        // }
-        $member=Member::where('user_id',auth()->user()->id)->with('organizations')->first();
-        // dd(auth()->user());
-        return Inertia::render('Member/Dashboard',[
-            'member'=>$member,
-        ]);
+        $member=Member::where('user_id',auth()->user()->id)->first();
+
+        if(auth()->user()->guardian){
+            session(['guardian'=>auth()->user()->guardian]);
+            return redirect('guardian');
+        }
+
+        // dd(auth()->user()->personalTeam());
+        // if(auth()->user()->isMember()){
+        if($member){
+            $organizations=$member->organizations;
+            $member->portfolios;
+            return Inertia::render('Member/Dashboard',[
+                'member'=>$member,
+            ]);
+        }
+        
+        if (auth()->user()->hasRole(['organizer','admin','master'])) {
+            $organizations=auth()->user()->organizations;
+            if($organizations->count()==0){
+                Auth::guard('web')->logout();
+                return redirect('manage');
+            }else if($organizations->count()==1){
+                session(['organization'=>$organizations[0]]);
+                return redirect('manage/dashboard');
+            }else{
+                return redirect('manage');
+            }
+        }
+                
     }
    
 }
