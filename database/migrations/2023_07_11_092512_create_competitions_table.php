@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('organization_id');
             $table->string('title_en');
-            $table->string('title_fn');
-            $table->date('start');
-            $table->date('end');
-            $table->string('match_date');
+            $table->string('title_fn')->nullable();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('match_date')->nullable();
             $table->text('category_weight');
             $table->text('roles');
             $table->timestamps();

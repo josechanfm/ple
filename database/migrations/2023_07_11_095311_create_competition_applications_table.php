@@ -18,7 +18,6 @@ return new class extends Migration
             $table->bigInteger('competition_id');
             $table->bigInteger('member_id');
             $table->string('roles');
-            $table->
             $table->timestamps();
         });
     }

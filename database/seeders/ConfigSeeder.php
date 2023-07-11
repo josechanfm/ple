@@ -16,47 +16,95 @@ class ConfigSeeder extends Seeder
     public function run()
     {
         DB::table('configs')->insert([
-            'key'=>'weight_categories',
+            'key'=>'category_weightvvvvvvvvvv',
             'value'=>'{
-                "classes": "Junior",
+                "name": "Junior",
                 "description": "Age Group: +10 - 12 Years",
-                "male": {
-                    "30-": [25, 30],
-                    "35-": [30, 35],
-                    "40-": [35, 40],
-                    "45-": [40, 45]
-                },
-                "female": {
-                    "28-": [24, 28],
-                    "32-": [28, 32],
-                    "36-": [32, 36],
-                    "40-": [36, 40]
-                }
+                "male": [{
+                        "code": "30-",
+                        "name": "-30Kg",
+                        "limit": [25, 30]
+                    },
+                    {
+                        "code": "35-",
+                        "name": "-35Kg",
+                        "limit": [30, 35]
+                    }, {
+                        "code": "40-",
+                        "name": "-40Kg",
+                        "limit": [35, 40]
+                    }, {
+                        "code": "45-",
+                        "name": "-45Kg",
+                        "limit": [40, 45]
+                    }
+                ],
+                "female": [{
+                    "code": "28-",
+                    "name": "-28Kg",
+                    "limit": [24, 28]
+                }, {
+                    "code": "32-",
+                    "name": "-32Kg",
+                    "limit": [28, 32]
+                }, {
+                    "code": "36-",
+                    "name": "-36Kg",
+                    "limit": [32, 36]
+                }, {
+                    "code": "40-",
+                    "name": "-40Kg",
+                    "limit": [36, 40]
+                }]
             }',
         ]);
         DB::table('configs')->insert([
-            'key'=>'weight_categories',
+            'key'=>'categories_weights',
             'value'=>'{
-                "classes": "Junior2",
+                "name": "Junior",
                 "description": "Age Group: +12 - 14 Years",
-                "male": {
-                    "35-": [30, 35],
-                    "40-": [35, 40],
-                    "45-": [40, 45],
-                    "50-": [45, 50]
-                },
-                "female": {
-                    "32-": [28, 32],
-                    "36-": [32, 36],
-                    "40-": [36, 40],
-                    "44-": [40, 44]
-                }
+                "male": [{
+                        "code": "35-",
+                        "name": "-35Kg",
+                        "limit": [30, 35]
+                    },
+                    {
+                        "code": "40-",
+                        "name": "-40Kg",
+                        "limit": [35, 40]
+                    }, {
+                        "code": "45-",
+                        "name": "-45Kg",
+                        "limit": [40, 45]
+                    }, {
+                        "code": "50-",
+                        "name": "-50Kg",
+                        "limit": [45, 50]
+                    }
+                ],
+                "female": [{
+                    "code": "32-",
+                    "name": "-32Kg",
+                    "limit": [28, 32]
+                }, {
+                    "code": "36-",
+                    "name": "-36Kg",
+                    "limit": [32, 36]
+                }, {
+                    "code": "40-",
+                    "name": "-40Kg",
+                    "limit": [36, 40]
+                }, {
+                    "code": "44-",
+                    "name": "-44Kg",
+                    "limit": [40, 44]
+                }]
             }',
         ]);
         DB::table('configs')->insert([
-            'key'=>'weight_categories',
+            'key'=>'categories_weights',
             'value'=>'{
-                "classes": "Junior3",
+                "name": "Junior3",
                 "description": "Age Group: +14 - 15 Years",
                 "male": {
                     "50-": [45, 50],
@@ -76,10 +124,44 @@ class ConfigSeeder extends Seeder
         DB::table('configs')->insert([
             'key'=>'competition_roles',
             'value'=>'{
-                "athlete": "運動員",
-                "referee": "裁判",
-                "coach": "教練",
-                "scorer": "計分員"
+                "name": "Junior",
+                "description": "Age Group: +10 - 12 Years",
+                "male": [{
+                        "code": "50-",
+                        "name": "-50Kg",
+                        "limit": [45, 50]
+                    },
+                    {
+                        "code": "55-",
+                        "name": "-55Kg",
+                        "limit": [50, 55]
+                    }, {
+                        "code": "60-",
+                        "name": "-60Kg",
+                        "limit": [55, 60]
+                    }, {
+                        "code": "66-",
+                        "name": "-66Kg",
+                        "limit": [60, 66]
+                    }
+                ],
+                "female": [{
+                    "code": "44-",
+                    "name": "-44Kg",
+                    "limit": [40, 44]
+                }, {
+                    "code": "48-",
+                    "name": "-48Kg",
+                    "limit": [44, 48]
+                }, {
+                    "code": "52-",
+                    "name": "-52Kg",
+                    "limit": [48, 52]
+                }, {
+                    "code": "57-",
+                    "name": "-57Kg",
+                    "limit": [52, 57]
+                }]
             }',
         ]);
 

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\Competition;
+use App\Models\Config;
 
 class CompetitionController extends Controller
 {
@@ -14,7 +17,9 @@ class CompetitionController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Organization/Competitions',[
+            'competitions'=>Competition::paginate()
+        ]);        
     }
 
     /**
@@ -24,7 +29,11 @@ class CompetitionController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Organization/Competition',[
+            'competition'=>new Competition(),
+            'categories_weights'=>Config::categories_weights(),
+            'roles'=>Config::item('competition_roles')
+        ]);
     }
 
     /**
