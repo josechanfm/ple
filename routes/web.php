@@ -70,6 +70,7 @@ Route::middleware([
         Route::resource('messages', App\Http\Controllers\Organization\MessageController::class)->names('manage.messages');
         Route::resource('certificates', App\Http\Controllers\Organization\CertificateController::class)->names('manage.certificates');
         Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
+        Route::resource('competitions', App\Http\Controllers\Organization\CompetitionController::class)->names('manage.competitions');
     });
     Route::prefix('/admin')->group(function () {
         Route::resource('portfolio_categories', App\Http\Controllers\Admin\PortfolioCategoryController::class)->names('admin.portfolioCategories');

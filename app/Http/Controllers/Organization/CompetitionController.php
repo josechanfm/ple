@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Member;
+namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Models\Approbate;
-use App\Models\Portfolio;
 
-class PortfolioController extends Controller
+class CompetitionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +14,7 @@ class PortfolioController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Member/Portfolios',[
-            'portfolios' => auth()->user()->member->portfolios,
-            'approbates'=>session('organization')->approbates,
-            'member'=>auth()->user()->member
-        ]);        
+        //
     }
 
     /**
@@ -42,16 +35,7 @@ class PortfolioController extends Controller
      */
     public function store(Request $request)
     {
-        $portfolio= new Portfolio();
-        $portfolio->member_id=auth()->user()->member->id;
-        $portfolio->approbate_id=$request->approbate_id;
-        $portfolio->abbreviation=$request->abbreviation;
-        $portfolio->title=$request->title;
-        $portfolio->description=$request->description;
-        $portfolio->start_date=$request->start_date;
-        $portfolio->end_date=$request->end_date;
-        $portfolio->save();
-        return redirect()->back();
+        //
     }
 
     /**
@@ -71,11 +55,9 @@ class PortfolioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Portfolio $portfolio)
+    public function edit($id)
     {
-        return Inertia::render('Member/PortfolioEdit',[
-            'portfolio'=>$portfolio
-        ]);
+        //
     }
 
     /**

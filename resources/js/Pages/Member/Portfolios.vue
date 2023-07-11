@@ -45,7 +45,6 @@
             <a-form-item label="Name" name="name">
                 <a-select v-model:value="modal.data.approbate_id" :options="approbates" :fieldNames="{value:'id',label:'name'}"/>
             </a-form-item>
-
             <a-form-item label="Name" name="name">
                 <a-input v-model:value="modal.data.name" />
             </a-form-item>

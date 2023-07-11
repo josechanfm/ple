@@ -62,7 +62,7 @@ defineProps({
                 <div class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 text-white shadow-xl text-sm font-serif w-full">
                   <div class="flex flex-col w-xl">
                     <div class="flex justify-center">
-                      <div class="text-lg font-bold">澳門機電工程師學會</div>
+                      <div class="text-lg font-bold">{{ $page.props.current_organization.full_name }}</div>
                     </div>
                     <div class="flex">
                       <div class="flex flex-col flex-auto gap-1">
@@ -97,7 +97,7 @@ defineProps({
 
               <div class="mt-16">
                 <h1 class="font-bold text-center text-3xl text-gray-900">
-                  澳門柔道總會
+                  {{ $page.props.current_organization.full_name }}
                 </h1>
                 <p class="text-center text-sm text-gray-400 font-medium">
                   {{ member.display_name }}
