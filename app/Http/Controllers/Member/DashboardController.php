@@ -26,7 +26,7 @@ class DashboardController extends Controller
             session(['organization'=>$member->organizations[0]]);
             return Inertia::render('Member/Dashboard',[
                 'member'=>$member,
-                'current_organization'=>session('organization')
+                'current_organization'=>session('organization'),
             ]);
         }
         

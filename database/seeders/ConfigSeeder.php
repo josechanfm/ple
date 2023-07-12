@@ -16,9 +16,10 @@ class ConfigSeeder extends Seeder
     public function run()
     {
         DB::table('configs')->insert([
-            'key'=>'category_weightvvvvvvvvvv',
+            'key'=>'categories_weights',
             'value'=>'{
-                "name": "Junior",
+                "code": "junior1",
+                "name": "Junior1",
                 "description": "Age Group: +10 - 12 Years",
                 "male": [{
                         "code": "30-",
@@ -40,28 +41,30 @@ class ConfigSeeder extends Seeder
                     }
                 ],
                 "female": [{
-                    "code": "28-",
-                    "name": "-28Kg",
-                    "limit": [24, 28]
-                }, {
-                    "code": "32-",
-                    "name": "-32Kg",
-                    "limit": [28, 32]
-                }, {
-                    "code": "36-",
-                    "name": "-36Kg",
-                    "limit": [32, 36]
-                }, {
-                    "code": "40-",
-                    "name": "-40Kg",
-                    "limit": [36, 40]
-                }]
+                        "code": "28-",
+                        "name": "-28Kg",
+                        "limit": [24, 28]
+                    }, {
+                        "code": "32-",
+                        "name": "-32Kg",
+                        "limit": [28, 32]
+                    }, {
+                        "code": "36-",
+                        "name": "-36Kg",
+                        "limit": [32, 36]
+                    }, {
+                        "code": "40-",
+                        "name": "-40Kg",
+                        "limit": [36, 40]
+                    }
+                ]
             }',
         ]);
         DB::table('configs')->insert([
             'key'=>'categories_weights',
             'value'=>'{
-                "name": "Junior",
+                "code":"junior2",
+                "name": "Junior2",
                 "description": "Age Group: +12 - 14 Years",
                 "male": [{
                         "code": "35-",
@@ -83,48 +86,30 @@ class ConfigSeeder extends Seeder
                     }
                 ],
                 "female": [{
-                    "code": "32-",
-                    "name": "-32Kg",
-                    "limit": [28, 32]
-                }, {
-                    "code": "36-",
-                    "name": "-36Kg",
-                    "limit": [32, 36]
-                }, {
-                    "code": "40-",
-                    "name": "-40Kg",
-                    "limit": [36, 40]
-                }, {
-                    "code": "44-",
-                    "name": "-44Kg",
-                    "limit": [40, 44]
-                }]
+                        "code": "32-",
+                        "name": "-32Kg",
+                        "limit": [28, 32]
+                    }, {
+                        "code": "36-",
+                        "name": "-36Kg",
+                        "limit": [32, 36]
+                    }, {
+                        "code": "40-",
+                        "name": "-40Kg",
+                        "limit": [36, 40]
+                    }, {
+                        "code": "44-",
+                        "name": "-44Kg",
+                        "limit": [40, 44]
+                    }
+                ]
             }',
         ]);
         DB::table('configs')->insert([
             'key'=>'categories_weights',
             'value'=>'{
+                "code": "junior3",
                 "name": "Junior3",
-                "description": "Age Group: +14 - 15 Years",
-                "male": {
-                    "50-": [45, 50],
-                    "55-": [50, 55],
-                    "60-": [55, 60],
-                    "66-": [60, 66]
-                },
-                "female": {
-                    "44-": [40, 44],
-                    "48-": [44, 48],
-                    "52-": [48, 52],
-                    "57-": [52, 57]
-                }
-            }',
-        ]);
-
-        DB::table('configs')->insert([
-            'key'=>'competition_roles',
-            'value'=>'{
-                "name": "Junior",
                 "description": "Age Group: +10 - 12 Years",
                 "male": [{
                         "code": "50-",
@@ -146,23 +131,45 @@ class ConfigSeeder extends Seeder
                     }
                 ],
                 "female": [{
-                    "code": "44-",
-                    "name": "-44Kg",
-                    "limit": [40, 44]
-                }, {
-                    "code": "48-",
-                    "name": "-48Kg",
-                    "limit": [44, 48]
-                }, {
-                    "code": "52-",
-                    "name": "-52Kg",
-                    "limit": [48, 52]
-                }, {
-                    "code": "57-",
-                    "name": "-57Kg",
-                    "limit": [52, 57]
-                }]
+                        "code": "44-",
+                        "name": "-44Kg",
+                        "limit": [40, 44]
+                    }, {
+                        "code": "48-",
+                        "name": "-48Kg",
+                        "limit": [44, 48]
+                    }, {
+                        "code": "52-",
+                        "name": "-52Kg",
+                        "limit": [48, 52]
+                    }, {
+                        "code": "57-",
+                        "name": "-57Kg",
+                        "limit": [52, 57]
+                    }
+                ]
             }',
+        ]);
+
+        DB::table('configs')->insert([
+            'key'=>'competition_roles',
+            'value'=>'[{
+                    "value": "athlete",
+                    "label": "運動員"
+                },
+                {
+                    "value": "referee",
+                    "label": "裁判"
+                },
+                {
+                    "value": "coach",
+                    "label": "教練"
+                },
+                {
+                    "value": "scorer",
+                    "label": "計分員"
+                }
+            ]',
         ]);
 
 

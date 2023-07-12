@@ -51,4 +51,16 @@ class Member extends Model
         return $this->belongsToMany(Certificate::class)->withPivot(
             'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');
     }
+
+    public function portfolio(){
+        return $this->hasOne(Portfolio::class);
+    }
+    public function positions(){
+        return $this->belongsToMany(Position::class);
+    }
+    public function athlete(){
+        return $this->hasOne(Athlete::class)->latestOfMany();
+        //return $this->hasOne(Athlete::class)->ofMany('active',true);
+    }
+
 }

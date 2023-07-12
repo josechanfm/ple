@@ -2,66 +2,43 @@
   <OrganizationLayout title="Dashboard">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Edit Member Profile
+        Create competition
       </h2>
     </template>
-    <a-form
-      :model="competition"
-      v-bind="layout"
-      name="nest-messages"
-      :validate-messages="validateMessages"
-      layout="vertical"
-    >
+    <a-form :model="competition" v-bind="layout" name="nest-messages" :validate-messages="validateMessages"
+      layout="vertical" :rules="rules" @finish="onFinish">
       <a-form-item label="Full name (en)" name="title_en">
         <a-input v-model:value="competition.title_en" />
       </a-form-item>
       <a-form-item label="Full name (fn)" name="title_fn">
         <a-input v-model:value="competition.title_fn" />
       </a-form-item>
-      <a-form-item label="Start date" name="start_date">
-        <a-date-picker
-          v-model:value="competition.start"
-          :format="dateFormat"
-          :valueFormat="dateFormat"
-        />
+      <a-form-item label="Competition date period" name="period">
+        <a-range-picker v-model:value="competition.period" :format="dateFormat" @change="onCompetitionPeriodChange" />
       </a-form-item>
-      <a-form-item label="End date" name="end_date">
-        <a-date-picker
-          v-model:value="competition.end"
-          :format="dateFormat"
-          :valueFormat="dateFormat"
-        />
+      <a-form-item label="Match dates" name="match_dates">
+        <a-select v-model:value="competition.match_dates" mode="multiple">
+          <a-select-option v-for="d in dateList" :value="d">{{ d }}</a-select-option>
+        </a-select>
       </a-form-item>
-      <a-form-item label="Match dates" name="match_date">
-        <a-input v-model:value="competition.match_date" />
-      </a-form-item>
-      <a-form-item label="Category/Weight" name="category_weight">
-        <a-input v-model:value="competition.category_weight" />
-      </a-form-item>
-      <a-checkbox-group v-model:value="competition.roles" class="w-full">
+      <a-checkbox-group v-model:value="competition.cwSelected" class="w-full">
         <a-row :span="24">
-            <template v-for="cw in categories_weights">
-            <a-col :span="6" >
-              <a-checkbox :value="cw.name">{{ cw.name }}</a-checkbox>
+          <template v-for="cw in categories_weights">
+            <a-col :span="6">
+              <a-checkbox :value="cw.code">{{ cw.name }}</a-checkbox>
               <ol>
                 <li v-for="male in cw.male">
                   {{ male.name }} : {{ male.limit[0] }} - {{ male.limit[1] }}
                 </li>
               </ol>
             </a-col>
-
-            </template>
+          </template>
         </a-row>
       </a-checkbox-group>
 
       <a-form-item label="Roles" name="roles">
-        <a-checkbox-group v-model:value="competition.roles">
-          <a-checkbox
-            v-for="role in roles"
-            :style="radioVirticalStyle"
-            :value="role.value"
-            >{{ role.label }}</a-checkbox
-          >
+        <a-checkbox-group v-model:value="competition.roleSelected">
+          <a-checkbox v-for="role in roles" :style="virticalStyle" :value="role.value">{{ role.label }}</a-checkbox>
         </a-checkbox-group>
       </a-form-item>
       <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
@@ -73,54 +50,27 @@
 
 <script>
 import OrganizationLayout from "@/Layouts/OrganizationLayout.vue";
-import { defineComponent, reactive } from "vue";
+import { callWithAsyncErrorHandling, defineComponent, reactive } from "vue";
+import dayjs from 'dayjs';
 
 export default {
   components: {
     OrganizationLayout,
+    dayjs
   },
-  props: ["competition", "categories_weights", "roles"],
+  props: ["competitionSource", "categories_weights", "roles"],
   data() {
     return {
+      mode: null,
       dateFormat: "YYYY-MM-DD",
-      modal: {
-        isOpen: false,
-        data: {},
-        title: "Modal",
-        mode: "",
-      },
-      teacherStateLabels: {},
-      columns: [
-        {
-          title: "姓名(中文)",
-          dataIndex: "first_name",
-        },
-        {
-          title: "姓名(外文)",
-          dataIndex: "last_name",
-        },
-        {
-          title: "別名",
-          dataIndex: "gender",
-        },
-        {
-          title: "手機",
-          dataIndex: "dob",
-        },
-        {
-          title: "狀態",
-          dataIndex: "state",
-        },
-        {
-          title: "操作",
-          dataIndex: "operation",
-          key: "operation",
-        },
-      ],
+      dateList: ['2023-01-02'],
+      competition: {},
       rules: {
-        name_zh: { required: true },
-        mobile: { required: true },
-        state: { required: true },
+        title_en: { required: true },
+        period: { required: true },
+        match_date: { required: true },
+        categoreis_weights: { required: true },
+        roles: { required: true },
       },
       validateMessages: {
         required: "${label} is required!",
@@ -140,7 +90,7 @@ export default {
           span: 16,
         },
       },
-      radioVirticalStyle: {
+      virticalStyle: {
         display: "flex",
         height: "30px",
         lineHeight: "30px",
@@ -148,77 +98,62 @@ export default {
       },
     };
   },
-  created() {},
+  mounted() {
+    if (this.competitionSource == null) {
+      this.mode = 'CREATE';
+    } else {
+      this.mode = 'EDIT';
+      this.competition = { ...this.competitionSource };
+      this.competition.period = []
+      this.competition.period[0] = dayjs(this.competitionSource.start_date)
+      this.competition.period[1] = dayjs(this.competitionSource.end_date)
+      this.competition.cwSelected = this.competitionSource.categories_weights.map(cw => cw.code);
+      this.competition.roleSelected = this.competitionSource.roles.map(cw => cw.value);
+      this.getDaysArray(this.competition.period[0], this.competition.period[1])
+      // this.competition.period[1] = this.competitionSource.end_date
+    }
+  },
+  created() {
+
+  },
   methods: {
-    createRecord() {
-      this.modal.data = {};
-      this.modal.mode = "CREATE";
-      this.modal.title = "新增問卷";
-      this.modal.isOpen = true;
+    onCompetitionPeriodChange() {
+      //var days = (this.competition.period[1]-this.competition.period[0])/(1000*60*60*24)+1
+      //var getDaysArray = function(s,e) {for(var a=[],d=new Date(s);d<=new Date(e);d.setDate(d.getDate()+1)){ a.push(new Date(d));}return a;};
+      this.getDaysArray(this.competition.period[0], this.competition.period[1])
     },
-    editRecord(record) {
-      this.modal.data = { ...record };
-      this.modal.mode = "EDIT";
-      this.modal.title = "修改";
-      this.modal.isOpen = true;
+    getDaysArray(start, end) {
+
+      for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
+        //arr.push(new Date(dt));
+        arr.push(dt.getFullYear() + '-' + (dt.getMonth() + 1) + "-" + dt.getDate());
+      }
+      this.dateList = arr;
     },
-    storeRecord() {
-      this.$refs.modalRef
-        .validateFields()
-        .then(() => {
-          this.$inertia.post("/admin/teachers/", this.modal.data, {
-            onSuccess: (page) => {
-              this.modal.data = {};
-              this.modal.isOpen = false;
-            },
-            onError: (err) => {
-              console.log(err);
-            },
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+    onFinish() {
+      this.competition.categories_weights = this.categories_weights.filter(cw => this.competition.cwSelected.includes(cw.code));
+      this.competition.roles = this.roles.filter(r => this.competition.roleSelected.includes(r.value));
+      if (this.mode == "CREATE") {
+        this.$inertia.post(route('manage.competitions.store'), this.competition, {
+          onSuccess: (page) => {
+            console.log(page);
+          },
+          onError: (err) => {
+            console.log(err);
+          }
         });
-    },
-    updateRecord() {
-      console.log(this.modal.data);
-      this.$refs.modalRef
-        .validateFields()
-        .then(() => {
-          this.$inertia.patch(
-            "/admin/teachers/" + this.modal.data.id,
-            this.modal.data,
-            {
-              onSuccess: (page) => {
-                this.modal.data = {};
-                this.modal.isOpen = false;
-                console.log(page);
-              },
-              onError: (error) => {
-                console.log(error);
-              },
-            }
-          );
-        })
-        .catch((err) => {
-          console.log("error", err);
+      } else {
+        this.$inertia.put(route('manage.competitions.update', this.competition.id), this.competition, {
+          onSuccess: (page) => {
+            console.log(page);
+          },
+          onError: (err) => {
+            console.log(err);
+          }
         });
-    },
-    deleteRecord(recordId) {
-      console.log(recordId);
-      if (!confirm("Are you sure want to remove?")) return;
-      this.$inertia.delete("/admin/teachers/" + recordId, {
-        onSuccess: (page) => {
-          console.log(page);
-        },
-        onError: (error) => {
-          console.log(error);
-        },
-      });
-    },
-    createLogin(recordId) {
-      console.log("create login" + recordId);
-    },
+
+      }
+    }
   },
 };
 </script>

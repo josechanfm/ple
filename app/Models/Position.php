@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Competition extends Model
+class Position extends Model
 {
     use HasFactory;
 
-    protected $casts=['match_dates'=>'json','categories_weights'=>'json','roles'=>'json'];
-
+    public function members(){
+        return $this->belongsToMany(Member::class);
+    }
 }

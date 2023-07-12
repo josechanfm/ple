@@ -4,21 +4,30 @@ import Welcome from "@/Components/Welcome.vue";
 
 const data = [
   {
-    title: "Ant Design Title 1",
+    title: "Competions application",
+    url: "/member/applications/1",
+    content: "Competition ABC is now open for registration"
   },
   {
     title: "Ant Design Title 2",
+    url:'',
+    content: "Competition ABC is now open for registration"
   },
   {
     title: "Ant Design Title 3",
+    url:'',
+    content: "Competition ABC is now open for registration"
   },
   {
     title: "Ant Design Title 4",
+    url:'',
+    content: "Competition ABC is now open for registration"
   },
 ];
 
 defineProps({
   member: Object,
+  competitions: Object,
 });
 </script>
 
@@ -37,11 +46,9 @@ defineProps({
               <a-list item-layout="horizontal" :data-source="data">
                 <template #renderItem="{ item }">
                   <a-list-item>
-                    <a-list-item-meta
-                      description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                    >
+                    <a-list-item-meta :description="item.content">
                       <template #title>
-                        <a href="https://www.antdv.com/">{{ item.title }}</a>
+                        <a :href="item.url">{{ item.title }}</a>
                       </template>
                       <template #avatar>
                         <a-avatar src="https://joeschmoe.io/api/v1/random" />

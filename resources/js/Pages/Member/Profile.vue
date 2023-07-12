@@ -5,6 +5,7 @@
                 Dashboard..
             </h2>
         </template>
+        
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
@@ -18,70 +19,69 @@
 
                         <a-collapse v-model:activeKey="activeKey">
 
-                            <a-collapse-panel key="1" header="International name with A-Z characters">
+                            <a-collapse-panel key="1" :header="$t('profile_title')">
                                 <a-row :gutter="24" :span="24">
                                     <a-col :span="12">
-                                        <a-form-item label="Family Name" name="family_name">
+                                        <a-form-item :label="$t('family_name')" name="family_name">
                                             <a-input v-model:value="member.family_name" />
                                         </a-form-item>
-                                        <a-form-item label="Middle Name" name="middle_name">
+                                        <a-form-item :label="$t('middle_name')" name="middle_name">
                                             <a-input v-model:value="member.middle_name" />
                                         </a-form-item>
                                     </a-col>
                                     <a-col :span="12">
-                                        <a-form-item label="Given Name" name="given_name">
+                                        <a-form-item :label="$t('given_name')" name="given_name">
                                             <a-input v-model:value="member.given_name" />
                                         </a-form-item>
-                                        <a-form-item label="Display Name" name="display_name">
+                                        <a-form-item :label="$t('display_name')" name="display_name">
                                             <a-input v-model:value="member.display_name" />
                                         </a-form-item>
                                     </a-col>
                                 </a-row>
-
                             </a-collapse-panel>
-                            <a-collapse-panel key="2" header="Personal Data">
+                            <a-collapse-panel key="2" :header="$t('personal_title')">
                                 <a-row :gutter="24" :span="24">
                                     <a-col :span="12">
-                                        <a-form-item label="Date of birth" name="dob">
+                                        <a-form-item :label="$t('dob')" name="dob">
                                             <a-input v-model:value="member.dob" />
                                         </a-form-item>
-                                        <a-form-item label="Country" name="title">
+                                        <a-form-item :label="$t('country')" name="title">
                                             <a-input v-model:value="member.country" />
                                         </a-form-item>
-                                        <a-form-item label="Stree" name="stree">
-                                            <a-input v-model:value="member.stree" />
+                                        <a-form-item :label="$t('street')" name="street">
+                                            <a-input v-model:value="member.street" />
                                         </a-form-item>
-                                        <a-form-item label="ZIP" name="zip">
+                                        <a-form-item :label="$t('zip')" name="zip">
                                             <a-input v-model:value="member.zip" />
                                         </a-form-item>
-                                        <a-form-item label="E-mail" name="email">
+                                        <a-form-item :label="$t('email')" name="email">
                                             <a-input v-model:value="member.email" />
                                         </a-form-item>
-                                        <a-form-item label="Date of Death" name="dod">
+                                        <a-form-item :label="$t('dod')" name="dod">
                                             <a-input v-model:value="member.dod" />
                                         </a-form-item>
                                     </a-col>
                                     <a-col :span="12">
-                                        <a-form-item label="Gender" name="gender">
+                                        <a-form-item :label="$t('gender')" name="gender">
                                             <a-input v-model:value="member.gender" />
                                         </a-form-item>
-                                        <a-form-item label="Club" name="club">
+                                        <a-form-item :label="$t('club')" name="club">
                                             <a-input v-model:value="member.club" />
                                         </a-form-item>
-                                        <a-form-item label="City" name="city">
+                                        <a-form-item :label="$t('city')" name="city">
                                             <a-input v-model:value="member.city" />
                                         </a-form-item>
-                                        <a-form-item label="VAT ID" name="vat">
+                                        <a-form-item :label="$t('vat')" name="vat">
                                             <a-input v-model:value="member.vat" />
                                         </a-form-item>
-                                        <a-form-item label="Mobile Phone" name="mobile">
+                                        <a-form-item :label="$t('mobile')" name="mobile">
                                             <a-input v-model:value="member.mobile" />
                                         </a-form-item>
                                     </a-col>
                                 </a-row>
                             </a-collapse-panel>
-                            <a-collapse-panel key="3" header="Role">
-                                <a-checkbox-group v-model:value="portfolio.roles">
+                            <a-collapse-panel key="3" :header="$t('position_title')">
+                                <a-checkbox-group v-model:value="member.positions">
                                     <a-checkbox :style="virticalStyle" value="ATH">Compettitor</a-checkbox>
                                     <a-checkbox :style="virticalStyle" value="REF">Referee</a-checkbox>
                                     <a-checkbox :style="virticalStyle" value="COA">Coach</a-checkbox>
@@ -90,56 +90,46 @@
                                             type="secondary"> (VIP, VVIP, Media etc.)</a-typography-text></a-checkbox>
                                 </a-checkbox-group>
                             </a-collapse-panel>
-                            <a-collapse-panel key="4" header="Competitor" v-if="portfolio.roles.includes('ATH')">
+                            <a-collapse-panel key="4" :header="$t('athlete_title')" v-if="member.positions.includes('ATH')">
                                 <a-row :gutter="24" :span="24">
                                     <a-col :span="12">
                                         <a-form-item label="Coach" name="coach">
-                                            <a-input v-model:value="portfolio.athlete.coach" />
+                                            <a-input v-model:value="member.athlete.coach" />
                                         </a-form-item>
                                         <a-form-item label="Favourite technique" name="technique">
-                                            <a-input v-model:value="portfolio.athlete.technique" />
+                                            <a-input v-model:value="member.athlete.technique" />
                                         </a-form-item>
                                         <a-form-item label="Side" name="side">
-                                            <a-input v-model:value="portfolio.athlete.site" />
+                                            <a-input v-model:value="member.athlete.site" />
                                         </a-form-item>
                                     </a-col>
                                     <a-col :span="12">
                                         <a-form-item label="Belt" name="belt">
-                                            <a-input v-model:value="portfolio.athlete.belt" />
+                                            <a-input v-model:value="member.athlete.belt" />
                                         </a-form-item>
                                         <a-form-item label="Height" name="height">
-                                            <a-input v-model:value="portfolio.athlete.height" />
+                                            <a-input v-model:value="member.athlete.height" />
                                         </a-form-item>
                                         <a-form-item label="Weight" name="weight">
-                                            <a-input v-model:value="portfolio.athlete.weight" />
+                                            <a-input v-model:value="member.athlete.weight" />
                                         </a-form-item>
                                     </a-col>
                                 </a-row>
 
                             </a-collapse-panel>
-                            <a-collapse-panel key="5" header="Referee" v-if="portfolio.roles.includes('REF')">
-                                <a-checkbox-group v-model:value="portfolio.roles">
-                                    <a-checkbox :style="virticalStyle" value="INT">International referee</a-checkbox>
-                                    <a-checkbox :style="virticalStyle" value="CON">Continental referee</a-checkbox>
-                                    <a-checkbox :style="virticalStyle" value="NAT">National referee</a-checkbox>
-                                    <a-checkbox :style="virticalStyle" value="KAT">Kata referee</a-checkbox>
-                                    <a-checkbox :style="virticalStyle" value="COM">Commission member</a-checkbox>
-                                    <a-checkbox :style="virticalStyle" value="ASS">Assessor</a-checkbox>
-                                    <a-checkbox :style="virticalStyle" value="SUP">Supervisor</a-checkbox>
-                                    <a-checkbox :style="virticalStyle" value="IBSA">IBSA referee</a-checkbox>
-                                    <a-checkbox :style="virticalStyle" value="HIR">Honorary international
-                                        referee</a-checkbox>
-                                    <a-checkbox :style="virticalStyle" value="HCR">Nonorary continental referee</a-checkbox>
+                            <a-collapse-panel key="5" header="Referee" v-if="member.positions.includes('REF')">
+                                <a-checkbox-group v-model:value="profile.roles">
+                                    <a-checkbox v-for="position in positions.filter(p=>p.scope=='REFEREE')" :style="virticalStyle" :value="position.code">{{ position.title_en }}</a-checkbox>
                                 </a-checkbox-group>
                             </a-collapse-panel>
-                            <a-collapse-panel key="6" header="Coach" v-if="portfolio.roles.includes('COA')">
+                            <a-collapse-panel key="6" header="Coach" v-if="profile.roles.includes('COA')">
                                 Coach
                             </a-collapse-panel>
-                            <a-collapse-panel key="7" header="Official" v-if="portfolio.roles.includes('OFF')">
+                            <a-collapse-panel key="7" header="Official" v-if="profile.roles.includes('OFF')">
                                 <a-row :gutter="24" :span="24">
                                     <a-col :span="12">
                                         <a-form-item label="Federation function" name="federation">
-                                            <a-checkbox-group v-model:value="portfolio.roles">
+                                            <a-checkbox-group v-model:value="profile.roles">
                                                 <a-checkbox :style="virticalStyle" value="INT">President</a-checkbox>
                                                 <a-checkbox :style="virticalStyle" value="">Vice president</a-checkbox>
                                                 <a-checkbox :style="virticalStyle" value="">General secretary</a-checkbox>
@@ -167,7 +157,7 @@
                                     </a-col>
                                     <a-col :span="12">
                                         <a-form-item label="Federation function" name="federation">
-                                            <a-checkbox-group v-model:value="portfolio.roles">
+                                            <a-checkbox-group v-model:value="profile.roles">
                                                 <a-checkbox :style="virticalStyle" value="">President</a-checkbox>
                                                 <a-checkbox :style="virticalStyle" value="">Vice President</a-checkbox>
                                                 <a-checkbox :style="virticalStyle" value="">General secrtetary</a-checkbox>
@@ -195,12 +185,12 @@
                                     </a-col>
                                 </a-row>
                             </a-collapse-panel>
-                            <a-collapse-panel key="8" header="Guest" v-if="portfolio.roles.includes('GUE')">
+                            <a-collapse-panel key="8" header="Guest" v-if="profile.roles.includes('GUE')">
                                 888
                             </a-collapse-panel>
                             <a-collapse-panel key="8" header="Profile Picture"
-                                v-if="!portfolio.roles.includes('OFF') && portfolio.roles.length > 0">
-                                <a-upload v-model:file-list="portfolio.athlete.avator" name="avatar"
+                                v-if="!profile.roles.includes('OFF') && profile.roles.length > 0">
+                                <a-upload v-model:file-list="member.athlete.avator" name="avatar"
                                     list-type="picture-card" class="avatar-uploader" :show-upload-list="false"
                                     action="https://www.mocky.io/v2/5cc8019d300000980a055e76" :before-upload="beforeUpload"
                                     @change="handleChange">
@@ -243,7 +233,7 @@ export default {
         LoadingOutlined,
         quillEditor
     },
-    props: ['member', 'approbates', 'portfolio'],
+    props: ['member', 'approbates', 'profile','positions'],
     data() {
         return {
             activeKey: ['1'],
@@ -286,8 +276,8 @@ export default {
         }
     },
     created() {
-        this.portfolio.roles = []
-        this.portfolio.athlete = []
+        this.profile.roles = []
+        this.member.athlete = []
     },
     methods: {
         createRecord(record) {

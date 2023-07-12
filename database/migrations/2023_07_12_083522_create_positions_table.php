@@ -13,16 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('competitions', function (Blueprint $table) {
+        Schema::create('positions', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('organization_id');
-            $table->string('title_en');
+            $table->string('scope');
+            $table->string('code');
+            $table->string('title_en')->nullable();
+            $table->string('title_zh')->nullable();
             $table->string('title_fn')->nullable();
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->text('match_dates')->nullable();
-            $table->text('categories_weights');
-            $table->text('roles');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('competitions');
+        Schema::dropIfExists('positions');
     }
 };

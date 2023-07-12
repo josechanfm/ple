@@ -29,8 +29,10 @@ class CompetitionController extends Controller
      */
     public function create()
     {
+        //dd(Config::categories_weights());
+        //dd(Config::item('competition_roles'));
         return Inertia::render('Organization/Competition',[
-            'competition'=>new Competition(),
+            //'competitiom'=>array('organization_id'=>session('organization')->id,'title_en'=>'','period'=>null,'match_dates'=>[],'roles'=>[]),
             'categories_weights'=>Config::categories_weights(),
             'roles'=>Config::item('competition_roles')
         ]);
@@ -44,7 +46,19 @@ class CompetitionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $competition=new Competition();
+        $competition->organization_id=session('organization')->id;
+        $competition->title_en=$request->title_en;
+        $competition->title_fn=$request->title_fn??null;
+        $competition->start_date=date('Y-m-d',strtotime($request->period[0]));
+        $competition->end_date=date('Y-m-d',strtotime($request->period[1]));
+        $competition->match_dates=$request->match_dates;
+        $competition->categories_weights=$request->categories_weights;
+        $competition->roles=$request->roles;
+        $competition->save();
+
+        return response($competition);
+        //return response()->json($request->all());
     }
 
     /**
@@ -53,9 +67,14 @@ class CompetitionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Competition $competition)
     {
-        //
+        return Inertia::render('Organization/CompetitionShow',[
+            'competitionSource'=>$competition,
+            'categories_weights'=>Config::categories_weights(),
+            'roles'=>Config::item('competition_roles')
+        ]);
+        
     }
 
     /**
@@ -64,9 +83,13 @@ class CompetitionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Competition $competition)
     {
-        //
+        return Inertia::render('Organization/Competition',[
+            'competitionSource'=>$competition,
+            'categories_weights'=>Config::categories_weights(),
+            'roles'=>Config::item('competition_roles')
+        ]);
     }
 
     /**
@@ -76,9 +99,19 @@ class CompetitionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Competition $competition)
     {
-        //
+        //$competition->organization_id=session('organization')->id;
+        $competition->title_en=$request->title_en;
+        $competition->title_fn=$request->title_fn??null;
+        $competition->start_date=date('Y-m-d',strtotime($request->period[0]));
+        $competition->end_date=date('Y-m-d',strtotime($request->period[1]));
+        $competition->match_dates=$request->match_dates;
+        $competition->categories_weights=$request->categories_weights;
+        $competition->roles=$request->roles;
+        $competition->save();
+
+        return response($request->all());
     }
 
     /**
