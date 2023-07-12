@@ -8,7 +8,7 @@
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="p-5 bg-white overflow-hidden shadow-xl sm:rounded-lg">
-          {{ member }}
+          <div v-html="competition.description"/>
           <p>{{ member.first_name }} {{ member.last_name }}</p>
           {{ member.display_name }}
           <p>{{ competition.title_en }}</p>
@@ -22,10 +22,29 @@
           </ol>
           </p>
 
-          <a-form :model="competition" v-bind="layout" name="nest-messages" :validate-messages="validateMessages"
-            layout="vertical" :rules="rules" @finish="onFinish">
-            <a-form-item label="Full name (en)" name="title_en">
-              <a-input v-model:value="application.title_en" />
+          <a-form 
+            :model="application" 
+            v-bind="layout" 
+            name="nest-messages" 
+            :validate-messages="validateMessages"
+            layout="vertical" 
+            :rules="rules" 
+            @finish="onFinish"
+          >
+            <a-form-item label="Given name" name="given_name">
+              <a-input v-model:value="application.given_name"/>
+            </a-form-item>
+            <a-form-item label="Family name" name="family_name">
+              <a-input v-model:value="application.family_name"/>
+            </a-form-item>
+            <a-form-item label="Middle name" name="middle_name">
+              <a-input v-model:value="application.middle_name"/>
+            </a-form-item>
+            <a-form-item label="Display name (Alphabet)" name="display_name">
+              <a-input v-model:value="application.display_name"/>
+            </a-form-item>
+            <a-form-item label="Date of Birth" name="dob">
+              <a-input v-model:value="application.dob"/>
             </a-form-item>
             <a-form-item label="gender" name="gender">
               <a-radio-group v-model:value="application.gender" @change="onGenderChange">
@@ -33,18 +52,11 @@
                 <a-radio value="F">Female</a-radio>
               </a-radio-group>
             </a-form-item>
-            <a-form-item label="Categories" name="category">
-              <a-radio-group v-model:value="application.category">
-                <a-radio v-for="cat in competition.categories_weights" :style="virticalStyle" :value="cat.code"
-                  @change="onCategoryChange">{{ cat.name }}
-                </a-radio>
-              </a-radio-group>
+            <a-form-item label="Email" name="email">
+              <a-input v-model:value="application.email"/>
             </a-form-item>
-            <a-form-item label="Weight" name="weight">
-              <a-radio-group v-model:value="application.weight">
-                <a-radio v-for="cat in competition.weights" :style="virticalStyle" :value="cat.code">{{ cat.name }}
-                </a-radio>
-              </a-radio-group>
+            <a-form-item label="Mobile" name="mobile">
+              <a-input v-model:value="application.mobile"/>
             </a-form-item>
             <a-form-item label="Role" name="role">
               <a-radio-group v-model:value="application.role">
@@ -52,35 +64,70 @@
                 </a-radio>
               </a-radio-group>
             </a-form-item>
+            <template v-if="application.role=='athlete'">
+              <a-form-item label="Categories" name="category">
+                <a-radio-group v-model:value="application.category">
+                  <a-radio v-for="cat in competition.categories_weights" :style="virticalStyle" :value="cat.code"
+                    @change="onCategoryChange">{{ cat.name }}
+                  </a-radio>
+                </a-radio-group>
+              </a-form-item>
+              <a-form-item label="Weight" name="weight">
+                <a-radio-group v-model:value="application.weight">
+                  <a-radio v-for="cat in competition.weights" :style="virticalStyle" :value="cat.code">{{ cat.name }}
+                  </a-radio>
+                </a-radio-group>
+              </a-form-item>
+
+            </template>
+            <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
+                <a-button type="primary" html-type="submit">Submit</a-button>
+            </a-form-item>
+
           </a-form>
         </div>
       </div>
     </div>
   </MemberLayout>
+    <a-modal v-model:visible="modal.isOpen" :title="modal.title" @ok="handleOk">
+      <p>Duplicate entry,</p>
+      <p>If you are Athlete, you may apply at most 2 categories in the same competition.</p>
+      <p>Or you may apply one role only.</p>
+      <p>{{modal.content}}</p>
+    </a-modal>
 </template>
 
 <script>
-import MemberLayout from '@/Layouts/MemberLayout.vue';
-import dayjs from 'dayjs';
+import MemberLayout from "@/Layouts/MemberLayout.vue";
+import dayjs from "dayjs";
+import { message } from 'ant-design-vue';
 
 export default {
   components: {
     MemberLayout,
-    dayjs
+    dayjs,
+    message
   },
   props: ["member", "competition", "categories_weights", "roles"],
   data() {
     return {
+      modal:{
+        isOpen:false,
+        title:'Application Failed',
+        content:"Error message"
+      },
       mode: null,
       dateFormat: "YYYY-MM-DD",
-      dateList: ['2023-01-02'],
+      dateList: ["2023-01-02"],
       application: {},
       rules: {
-        title_en: { required: true },
-        period: { required: true },
-        match_date: { required: true },
-        categoreis_weights: { required: true },
-        roles: { required: true },
+        given_name: { required: true },
+        family_name: { required: true },
+        display_name: { required: true },
+        gender: { required: true },
+        category: { required: true },
+        weight: { required: true },
+        role: { required: true }
       },
       validateMessages: {
         required: "${label} is required!",
@@ -109,55 +156,59 @@ export default {
     };
   },
   mounted() {
-    if (this.competitionSource == null) {
-      this.mode = 'CREATE';
-    } else {
-      this.mode = 'EDIT';
-      this.competition = { ...this.competitionSource };
-      this.competition.period = []
-      this.competition.period[0] = dayjs(this.competitionSource.start_date)
-      this.competition.period[1] = dayjs(this.competitionSource.end_date)
-      this.competition.cwSelected = this.competitionSource.categories_weights.map(cw => cw.code);
-      this.getDaysArray(this.competition.period[0], this.competition.period[1])
-      // this.competition.period[1] = this.competitionSource.end_date
-    }
+    this.application.competition_id = this.competition.id;
+    this.application.member_id = this.member.id;
+    this.application.given_name = this.member.given_name;
+    this.application.family_name = this.member.family_name;
+    this.application.middle_name = this.member.middle_name;
+    this.application.display_name = this.member.display_name;
+    this.application.gender = this.member.gender;
+    this.application.dob = this.member.dob;
+    this.application.email = this.member.email;
+    this.application.mobile = this.member.mobile;
   },
   created() {
 
   },
   methods: {
-    getDaysArray(start, end) {
-
-      for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
-        //arr.push(new Date(dt));
-        arr.push(dt.getFullYear() + '-' + (dt.getMonth() + 1) + "-" + dt.getDate());
-      }
-      this.dateList = arr;
-    },
     onGenderChange(event) {
       console.log(event);
       if (this.application.category) {
         console.log("ok");
-        this.weightSelection(event.target.value, this.application.category)
+        this.weightSelection(event.target.value, this.application.category);
       }
-
     },
     onCategoryChange(event) {
       console.log(event);
       if (this.application.gender) {
         console.log("ok");
-        this.weightSelection(this.application.gender, event.target.value)
+        this.weightSelection(this.application.gender, event.target.value);
       }
     },
     weightSelection(gender, category) {
-      if (gender == 'M') {
-        this.competition.weights = this.competition.categories_weights.find(cat => cat.code == category).male
+      if (gender == "M") {
+        this.competition.weights = this.competition.categories_weights.find(
+          (cat) => cat.code == category
+        ).male;
       } else {
-        this.competition.weights = this.competition.categories_weights.find(cat => cat.code == category).female
+        this.competition.weights = this.competition.categories_weights.find(
+          (cat) => cat.code == category
+        ).female;
       }
     },
     onFinish() {
-    }
+      console.log(this.application);
+      this.$inertia.post(route('member.applications.store'), this.application, {
+        onSuccess: (page) => {
+            console.log(page);
+        },
+        onError: (error) => {
+          this.modal.content=error.message
+          this.modal.isOpen=true
+        }
+      });
+
+    },
   },
 };
 </script>

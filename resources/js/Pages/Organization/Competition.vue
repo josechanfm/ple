@@ -13,6 +13,9 @@
       <a-form-item label="Full name (fn)" name="title_fn">
         <a-input v-model:value="competition.title_fn" />
       </a-form-item>
+      <a-form-item label="Description" name="description">
+        <quill-editor v-model:value="competition.description" style="min-height: 200px" />
+      </a-form-item>
       <a-form-item label="Competition date period" name="period">
         <a-range-picker v-model:value="competition.period" :format="dateFormat" @change="onCompetitionPeriodChange" />
       </a-form-item>
@@ -36,7 +39,7 @@
         </a-row>
       </a-checkbox-group>
 
-      <a-form-item label="Roles" name="roles">
+      <a-form-item label="Roles" name="roleSelected">
         <a-checkbox-group v-model:value="competition.roleSelected">
           <a-checkbox v-for="role in roles" :style="virticalStyle" :value="role.value">{{ role.label }}</a-checkbox>
         </a-checkbox-group>
@@ -50,13 +53,15 @@
 
 <script>
 import OrganizationLayout from "@/Layouts/OrganizationLayout.vue";
+import { quillEditor } from 'vue3-quill';
 import { callWithAsyncErrorHandling, defineComponent, reactive } from "vue";
 import dayjs from 'dayjs';
 
 export default {
   components: {
     OrganizationLayout,
-    dayjs
+    quillEditor,
+    dayjs,
   },
   props: ["competitionSource", "categories_weights", "roles"],
   data() {
@@ -70,7 +75,7 @@ export default {
         period: { required: true },
         match_date: { required: true },
         categoreis_weights: { required: true },
-        roles: { required: true },
+        roleSelected: { required: true },
       },
       validateMessages: {
         required: "${label} is required!",
