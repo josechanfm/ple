@@ -54,9 +54,9 @@ class Member extends Model
             'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');
     }
 
-    public function portfolio(){
-        return $this->hasOne(Portfolio::class);
-    }
+    // public function portfolio(){
+    //     return $this->hasMany(Portfolio::class);
+    // }
     public function positions(){
         return $this->belongsToMany(Position::class);
     }

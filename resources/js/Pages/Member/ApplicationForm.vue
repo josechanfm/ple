@@ -15,7 +15,10 @@
             <span v-for="date in competition.match_dates">{{ date }} ,</span>
           </a-typography-title>
           -->
-          <div v-html="competition.description"/>
+          <div id="pure-html">
+              <div v-html="competition.description"/>
+          </div>
+          
 
           <a-form 
             :model="application" 
@@ -211,3 +214,12 @@ export default {
 };
 </script>
 
+<style scope>
+#pure-html {
+  all:initial
+}
+#pure-html *{
+  all: revert;
+}
+
+</style>

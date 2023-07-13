@@ -5,7 +5,7 @@
                 Dashboard..
             </h2>
         </template>
-
+{{member.portfolios}}
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <button @click="createRecord()"
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-
+    <!--
         <a-modal v-model:visible="modal.isOpen" :title="modal.mode == 'CREATE' ? '新增' : '修改'" width="60%">
             <a-form ref="modalRef" :model="modal.data" name="From" :layout="" :label-col="{ span: 6 }"
                 :wrapper-col="{ span: 18 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages">
@@ -52,7 +52,7 @@
                 <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary" @click="storeRecord()">新增</a-button>
             </template>
         </a-modal>
-
+    -->
     </MemberLayout>
 </template>
 
@@ -66,7 +66,7 @@ export default {
         MemberLayout,
         quillEditor
     },
-    props: ['member', 'approbates', 'portfolios'],
+    props: ['member'],
     data() {
         return {
             modal: {

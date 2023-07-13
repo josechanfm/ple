@@ -27,6 +27,9 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('nationality')->nullable();
             $table->string('address')->nullable();
+            $table->string('positions')->nullable()->default('[]');
+            $table->string('federation_officials')->nullable()->default('[]');
+            $table->string('organization_officials')->nullable()->default('[]');
             $table->timestamps();
         });
     }

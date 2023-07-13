@@ -8,6 +8,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import { loadLanguageAsync } from 'laravel-vue-i18n';
 
 defineProps({
     title: String,
@@ -31,9 +32,7 @@ const logout = () => {
 <template>
     <div>
         <Head :title="title" />
-
         <Banner />
-
         <div class="min-h-screen bg-gray-100">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
@@ -50,7 +49,7 @@ const logout = () => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('member.dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    {{ $t('dashboard')}}
                                 </NavLink>
                                 <NavLink :href="route('member.professionals.index')" >
                                     Professional
@@ -148,10 +147,10 @@ const logout = () => {
                                     <template #content>
                                         <div class="w-20">
                                             <template v-if="$page.props.jetstream.hasTeamFeatures">
-                                                <DropdownLink :href="route('language', 'zh')">
+                                                <DropdownLink  @click="loadLanguageAsync('zh')">
                                                     Chinese
                                                 </DropdownLink>
-                                                <DropdownLink :href="route('language', 'en')">
+                                                <DropdownLink  @click="loadLanguageAsync('en')">
                                                     English
                                                 </DropdownLink>
                                             </template>
@@ -247,7 +246,7 @@ const logout = () => {
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('member.dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            {{$t('dashboard')}}
                         </ResponsiveNavLink>
                     </div>
 

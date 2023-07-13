@@ -29,7 +29,7 @@ Route::post('locale', [\App\Http\Controllers\LocalController::class, 'change'])-
 Route::get('/language/{language}', function ($language) {
     session(['locale'=>$language]);
     app()->setLocale($language);
-    //return redirect()->back();
+    //return redirect()->refresh();
 })->name('language');
 
 
