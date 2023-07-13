@@ -24,6 +24,13 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::post('locale', [\App\Http\Controllers\LocalController::class, 'change'])->name('locale');
+
+Route::get('/language/{language}', function ($language) {
+    session(['locale'=>$language]);
+    app()->setLocale($language);
+    //return redirect()->back();
+})->name('language');
 
 
 Route::middleware([

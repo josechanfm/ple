@@ -66,14 +66,14 @@ class PositionSeeder extends Seeder
         }
         foreach($officials as $code=>$item){
             DB::table('positions')->insert([
-                'scope' => 'Federation official',
+                'scope' => 'FEDERATION',
                 'code'=>$code,
                 'title_en'=>$item
             ]);
         }
         foreach($officials as $code=>$item){
             DB::table('positions')->insert([
-                'scope' => 'Organization official',
+                'scope' => 'ORGANIZATION',
                 'code'=>$code,
                 'title_en'=>$item
             ]);

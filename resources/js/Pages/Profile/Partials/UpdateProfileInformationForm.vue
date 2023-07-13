@@ -19,6 +19,7 @@ const form = useForm({
     name: props.user.name,
     email: props.user.email,
     photo: null,
+    locale: props.user.locale
 });
 
 const verificationLinkSent = ref(null);
@@ -171,6 +172,19 @@ const clearPhotoFileInput = () => {
                         A new verification link has been sent to your email address.
                     </div>
                 </div>
+            </div>
+
+            <!-- Locle -->
+            <div class="col-span-6 sm:col-span-4">
+
+
+                <InputLabel for="locale" value="Prefer Language" />
+
+                <select v-model="form.locale" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full">
+                    <option value="zh" class="h-2">Chinese</option>
+                    <option value="en">English</option>
+                </select>
+                <InputError :message="form.errors.locale" class="mt-2" />
             </div>
         </template>
 

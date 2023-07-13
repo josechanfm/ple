@@ -5,20 +5,14 @@
                 Dashboard..
             </h2>
         </template>
-        
+
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
-                    <a-form ref="formRef" name="Form" autocomplete="off" 
-                        v-bind="layout"
-                        :model="member"
-                        layout="vertical" 
-                        :rules="rules"
-                        :validate-messages="validateMessages" 
-                        @finish="onFinish">
+                    <a-form ref="formRef" name="Form" autocomplete="off" v-bind="layout" :model="member" layout="vertical"
+                        :rules="rules" :validate-messages="validateMessages" @finish="onFinish">
 
                         <a-collapse v-model:activeKey="activeKey">
-
                             <a-collapse-panel key="1" :header="$t('profile_title')">
                                 <a-row :gutter="24" :span="24">
                                     <a-col :span="12">
@@ -93,105 +87,67 @@
                             <a-collapse-panel key="4" :header="$t('athlete_title')" v-if="member.positions.includes('ATH')">
                                 <a-row :gutter="24" :span="24">
                                     <a-col :span="12">
-                                        <a-form-item label="Coach" name="coach">
-                                            <a-input v-model:value="member.athlete.coach" />
+                                        <a-form-item :label="$t('coach')" name="coach">
+                                            <a-input v-model:value="member.coach" />
                                         </a-form-item>
-                                        <a-form-item label="Favourite technique" name="technique">
-                                            <a-input v-model:value="member.athlete.technique" />
+                                        <a-form-item :label="$t('favorite_technique')" name="technique">
+                                            <a-input v-model:value="member.technique" />
                                         </a-form-item>
-                                        <a-form-item label="Side" name="side">
-                                            <a-input v-model:value="member.athlete.site" />
+                                        <a-form-item :label="$t('side')" name="side">
+                                            <a-input v-model:value="member.side" />
                                         </a-form-item>
                                     </a-col>
                                     <a-col :span="12">
-                                        <a-form-item label="Belt" name="belt">
-                                            <a-input v-model:value="member.athlete.belt" />
+                                        <a-form-item :label="$t('belt')" name="belt">
+                                            <a-input v-model:value="member.belt" />
                                         </a-form-item>
-                                        <a-form-item label="Height" name="height">
-                                            <a-input v-model:value="member.athlete.height" />
+                                        <a-form-item :label="$t('height')" name="height">
+                                            <a-input v-model:value="member.height" />
                                         </a-form-item>
-                                        <a-form-item label="Weight" name="weight">
-                                            <a-input v-model:value="member.athlete.weight" />
+                                        <a-form-item :label="$t('weight')" name="weight">
+                                            <a-input v-model:value="member.weight" />
                                         </a-form-item>
                                     </a-col>
                                 </a-row>
-
                             </a-collapse-panel>
-                            <a-collapse-panel key="5" header="Referee" v-if="member.positions.includes('REF')">
-                                <a-checkbox-group v-model:value="profile.roles">
-                                    <a-checkbox v-for="position in positions.filter(p=>p.scope=='REFEREE')" :style="virticalStyle" :value="position.code">{{ position.title_en }}</a-checkbox>
+                            <a-collapse-panel key="5" :header="$t('referee_title')" v-if="member.positions.includes('REF')">
+                                <a-checkbox-group v-model:value="member.referees">
+                                    <a-checkbox v-for="position in positions.filter(p => p.scope == 'REFEREE')"
+                                        :style="virticalStyle" :value="position.code">{{ position.title_en }}</a-checkbox>
                                 </a-checkbox-group>
                             </a-collapse-panel>
-                            <a-collapse-panel key="6" header="Coach" v-if="profile.roles.includes('COA')">
+                            <a-collapse-panel key="6" :header="$t('coach_title')" v-if="member.positions.includes('COA')">
                                 Coach
                             </a-collapse-panel>
-                            <a-collapse-panel key="7" header="Official" v-if="profile.roles.includes('OFF')">
+                            <a-collapse-panel key="7" :header="$t('official_title')"
+                                v-if="member.positions.includes('OFF')">
                                 <a-row :gutter="24" :span="24">
                                     <a-col :span="12">
-                                        <a-form-item label="Federation function" name="federation">
-                                            <a-checkbox-group v-model:value="profile.roles">
-                                                <a-checkbox :style="virticalStyle" value="INT">President</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Vice president</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">General secretary</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Treasurer</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Contact person for
-                                                    IJF</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Technical director</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Member of NOC</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Referee Commision
-                                                    Director</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Media Director</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">IT Director</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Team Doctor</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Team
-                                                    Physiotherapist</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Youth Commissioner</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Kata Commissioner</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Mass Sports
-                                                    Commissioner</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Veterans contact</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Legal Affairs
-                                                    Commissioner</a-checkbox>
+                                        <a-form-item :label="$t('federation_function')" name="federation_officials">
+                                            <a-checkbox-group v-model:value="member.federation_officials">
+                                                <a-checkbox v-for="position in positions.filter(p => p.scope == 'FEDERATION')"
+                                                    :style="virticalStyle" :value="position.code">{{ position.title_en
+                                                    }}</a-checkbox>
                                             </a-checkbox-group>
                                         </a-form-item>
                                     </a-col>
                                     <a-col :span="12">
-                                        <a-form-item label="Federation function" name="federation">
-                                            <a-checkbox-group v-model:value="profile.roles">
-                                                <a-checkbox :style="virticalStyle" value="">President</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Vice President</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">General secrtetary</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Treasurer</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Contact person for
-                                                    IJF</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Technical director</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Member of NOC</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Referee Commision
-                                                    Director</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Media Director</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">IT Director</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Team Doctor</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Team
-                                                    Physiotherapist</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Youth Commissioner</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Kata Commissioner</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Mass Sports
-                                                    Commissioner</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Veterans contact</a-checkbox>
-                                                <a-checkbox :style="virticalStyle" value="">Legal Affairs
-                                                    Commissioner</a-checkbox>
+                                        <a-form-item :label="$t('organization_function')" name="organization_officials">
+                                            <a-checkbox-group v-model:value="member.organization_officials">
+                                                <a-checkbox v-for="position in positions.filter(p => p.scope == 'ORGANIZATION')"
+                                                    :style="virticalStyle" :value="position.code">{{ position.title_en
+                                                    }}</a-checkbox>
                                             </a-checkbox-group>
                                         </a-form-item>
                                     </a-col>
                                 </a-row>
                             </a-collapse-panel>
-                            <a-collapse-panel key="8" header="Guest" v-if="profile.roles.includes('GUE')">
+                            <a-collapse-panel key="8" :header="$t('guest_title')" v-if="member.positions.includes('GUE')">
                                 888
                             </a-collapse-panel>
-                            <a-collapse-panel key="8" header="Profile Picture"
-                                v-if="!profile.roles.includes('OFF') && profile.roles.length > 0">
-                                <a-upload v-model:file-list="member.athlete.avator" name="avatar"
-                                    list-type="picture-card" class="avatar-uploader" :show-upload-list="false"
+                            <a-collapse-panel key="9" :header="$t('picture_title')" v-if="member.positions.length > 0">
+                                <a-upload v-model:file-list="member.athlete.avator" name="avatar" list-type="picture-card"
+                                    class="avatar-uploader" :show-upload-list="false"
                                     action="https://www.mocky.io/v2/5cc8019d300000980a055e76" :before-upload="beforeUpload"
                                     @change="handleChange">
                                     <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
@@ -223,7 +179,6 @@
 import MemberLayout from '@/Layouts/MemberLayout.vue';
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
-
 import { quillEditor } from 'vue3-quill';
 
 export default {
@@ -231,12 +186,12 @@ export default {
         MemberLayout,
         PlusOutlined,
         LoadingOutlined,
-        quillEditor
+        quillEditor,
     },
-    props: ['member', 'approbates', 'profile','positions'],
+    props: ['member', 'approbates', 'profile', 'positions'],
     data() {
         return {
-            activeKey: ['1'],
+            activeKey: ['1', '3', '4', '5', '6', '7', '8', '9'],
             loading: false,
             imageUrl: '',
             modal: {
@@ -371,6 +326,19 @@ export default {
         },
         onFinish() {
             console.log(this.member);
+            try {
+                this.$inertia.put(route('member.profile.update', this.member.id), this.member, {
+                    onSuccess: (page) => {
+                        console.log(page);
+                        //this.modal.isOpen = false;
+                    },
+                    onError: (err) => {
+                        console.log(err);
+                    }
+                });
+            } catch (err) {
+                console.log(err)
+            }
         }
     },
 }

@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Approbate;
 use App\Models\Portfolio;
 use App\Models\Position;
+use App\Models\Member;
 
 class ProfileController extends Controller
 {
@@ -33,7 +34,6 @@ class ProfileController extends Controller
             'profile'=>$portfolio,
             'positions'=>Position::all()
         ]);
-        
     }
 
     /**
@@ -65,7 +65,7 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -88,7 +88,11 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data=$request->all();
+        $member=Member::find($id);
+        //$data['positions']=$request->positions;
+        $member->update($data);
+        return response($member);
     }
 
     /**

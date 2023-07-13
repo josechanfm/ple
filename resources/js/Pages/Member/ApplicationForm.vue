@@ -8,19 +8,14 @@
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="p-5 bg-white overflow-hidden shadow-xl sm:rounded-lg">
+          <a-typography-title :level="3" class="text-center">{{ competition.title_fn }}</a-typography-title>
+          <a-typography-title :level="4" >Date: {{ competition.start_date }} - {{ competition.end_date }}</a-typography-title>
+          <!--
+          <a-typography-title :level="4" >Match Date: 
+            <span v-for="date in competition.match_dates">{{ date }} ,</span>
+          </a-typography-title>
+          -->
           <div v-html="competition.description"/>
-          <p>{{ member.first_name }} {{ member.last_name }}</p>
-          {{ member.display_name }}
-          <p>{{ competition.title_en }}</p>
-          <p>{{ competition.title_fn }}</p>
-          <p>{{ competition.start_date }}</p>
-          <p>{{ competition.end_date }}</p>
-
-          <p>Dates:
-          <ol>
-            <li v-for="date in competition.match_dates">{{ date }}</li>
-          </ol>
-          </p>
 
           <a-form 
             :model="application" 
@@ -31,48 +26,48 @@
             :rules="rules" 
             @finish="onFinish"
           >
-            <a-form-item label="Given name" name="given_name">
+            <a-form-item :label="$t('given_name')" name="given_name">
               <a-input v-model:value="application.given_name"/>
             </a-form-item>
-            <a-form-item label="Family name" name="family_name">
+            <a-form-item :label="$t('family_name')" name="family_name">
               <a-input v-model:value="application.family_name"/>
             </a-form-item>
-            <a-form-item label="Middle name" name="middle_name">
+            <a-form-item :label="$t('middle_name')" name="middle_name">
               <a-input v-model:value="application.middle_name"/>
             </a-form-item>
-            <a-form-item label="Display name (Alphabet)" name="display_name">
+            <a-form-item :label="$t('display_name')" name="display_name">
               <a-input v-model:value="application.display_name"/>
             </a-form-item>
-            <a-form-item label="Date of Birth" name="dob">
-              <a-input v-model:value="application.dob"/>
+            <a-form-item :label="$t('dob')" name="dob" >
+              <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat"/>
             </a-form-item>
-            <a-form-item label="gender" name="gender">
+            <a-form-item :label="$t('gender')" name="gender">
               <a-radio-group v-model:value="application.gender" @change="onGenderChange">
-                <a-radio value="M">Male</a-radio>
-                <a-radio value="F">Female</a-radio>
+                <a-radio value="M">{{ $t('male') }}</a-radio>
+                <a-radio value="F">{{ $t('female')  }}</a-radio>
               </a-radio-group>
             </a-form-item>
-            <a-form-item label="Email" name="email">
+            <a-form-item :label="$t('email')" name="email">
               <a-input v-model:value="application.email"/>
             </a-form-item>
-            <a-form-item label="Mobile" name="mobile">
+            <a-form-item :label="$t('mobile')" name="mobile">
               <a-input v-model:value="application.mobile"/>
             </a-form-item>
-            <a-form-item label="Role" name="role">
+            <a-form-item :label="$t('role')" name="role">
               <a-radio-group v-model:value="application.role">
                 <a-radio v-for="role in competition.roles" :style="virticalStyle" :value="role.value">{{ role.label }}
                 </a-radio>
               </a-radio-group>
             </a-form-item>
             <template v-if="application.role=='athlete'">
-              <a-form-item label="Categories" name="category">
+              <a-form-item :label="$t('category')" name="category">
                 <a-radio-group v-model:value="application.category">
                   <a-radio v-for="cat in competition.categories_weights" :style="virticalStyle" :value="cat.code"
                     @change="onCategoryChange">{{ cat.name }}
                   </a-radio>
                 </a-radio-group>
               </a-form-item>
-              <a-form-item label="Weight" name="weight">
+              <a-form-item :label="$t('weight')" name="weight">
                 <a-radio-group v-model:value="application.weight">
                   <a-radio v-for="cat in competition.weights" :style="virticalStyle" :value="cat.code">{{ cat.name }}
                   </a-radio>
@@ -81,7 +76,7 @@
 
             </template>
             <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
-                <a-button type="primary" html-type="submit">Submit</a-button>
+                <a-button type="primary" html-type="submit">{{$t('submit')}}</a-button>
             </a-form-item>
 
           </a-form>
@@ -89,7 +84,7 @@
       </div>
     </div>
   </MemberLayout>
-    <a-modal v-model:visible="modal.isOpen" :title="modal.title" @ok="handleOk">
+    <a-modal v-model:visible="modal.isOpen" :title="modal.title" :cancelButtonProps="{style:'display:none'}" okText="$t{'understand'}">
       <p>Duplicate entry,</p>
       <p>If you are Athlete, you may apply at most 2 categories in the same competition.</p>
       <p>Or you may apply one role only.</p>
@@ -101,12 +96,14 @@
 import MemberLayout from "@/Layouts/MemberLayout.vue";
 import dayjs from "dayjs";
 import { message } from 'ant-design-vue';
+import { Modal } from 'ant-design-vue';
 
 export default {
   components: {
     MemberLayout,
     dayjs,
-    message
+    message,
+    Modal
   },
   props: ["member", "competition", "categories_weights", "roles"],
   data() {
@@ -124,6 +121,7 @@ export default {
         given_name: { required: true },
         family_name: { required: true },
         display_name: { required: true },
+        dob: { required: true },
         gender: { required: true },
         category: { required: true },
         weight: { required: true },

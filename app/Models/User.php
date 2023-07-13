@@ -33,7 +33,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','locale'
     ];
 
     /**
@@ -66,6 +66,9 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function getLocaleAttribute($value){
+        return $value?:app()->getLocale();
+    }
     public function sendPasswordResetNotification($token)
     {
         if ($this->password === 'need-to-set') {

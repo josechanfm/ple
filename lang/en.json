@@ -9,7 +9,7 @@
     "profile_title":"International name with A-Z characters",
     "personal_title":"Personal Data",
     "position_title":"Roles",
-    "athlete_title":"Athlete",
+    
     "family_name":"Family Name",
     "given_name":"Given Name",
     "middle_name":"Middle Name",
@@ -24,6 +24,26 @@
     "zip":"zip",
     "email":"Email",
     "mobile":"Mobile",
-    "dod":"Date of Death"
+    "dod":"Date of Death",
+
+    "role":"Role",
+    "athlete_title":"Athlete",
+    "coach":"Coach",
+    "favorite_technique":"Favorite Technique",
+    "side":"Side",
+    "belt":"Belt",
+    "height":"Height",
+    "weight":"Weight",
+    "category":"Category",
+    "referee_title":"Referee",
+    "official_title":"Official",
+    "federation_function":"Federation Function",
+    "organization_function":"Organization Function",
+    "guest_title":"Official",
+    "picture_title":"Profile Picture",
+
+    "understand":"Understood",
+    "male":"Male",
+    "female":"Female"
 }
 

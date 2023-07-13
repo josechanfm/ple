@@ -1,20 +1,49 @@
 {
-    "Application Name":"澳門柔道館",
-    "Organization": "社團",
-    "Affiliate": "屬會",
+    "Organization": "組織",
+    "Affiliate": "分支機構",
     "Member": "會員",
     "Course": {
-        "Label": "课程",
-        "List": "课程列表"
+    "Label": "課程",
+    "List": "課程列表"
     },
-    "Create Form":"創建表格",
-    "Name": "名稱",
-    "Title": "標題",
-    "Description": "簡要描述",
-    "Require Login":"需要登錄",
-    "For Members":"對於會員",
-    "Email":"電郵",
-    "Password":"密碼",
-    "Remember me":"記住賬號",
-    "Forgot your password?":"忘記密碼了嗎？"
-}
+    "profile_title":"國際名稱，包括 A-Z 字母",
+    "personal_title":"個人資料",
+    "position_title":"角色",
+    "family_name":"姓氏",
+    "given_name":"名字",
+    "middle_name":"中間名稱",
+    "display_name":"顯示名稱",
+    "dob":"出生日期",
+    "club":"俱樂部",
+    "gender":"性別",
+    "country":"國家",
+    "city":"城市",
+    "street":"街道",
+    "vat":"增值稅號碼",
+    "zip":"郵遞區號",
+    "email":"電子郵件",
+    "mobile":"手機",
+    "dod":"死亡日期",
+    
+    "role":"角色",
+    "athlete_title":"運動員",
+    "coach":"教練",
+    "favorite_technique":"最喜愛的技巧",
+    "side":"方向",
+    "belt":"腰帶",
+    "height":"身高",
+    "weight":"體重",
+    "category":"組別",
+    "referee_title":"裁判",
+    "official_title":"官員",
+    "federation_function":"聯合會職能",
+    "organization_function":"組織職能",
+    "guest_title":"官方訪客",
+    "picture_title":"個人照片",
+
+    "understand":"明白了",
+    "male":"男",
+    "female":"女"
+
+    }
+    

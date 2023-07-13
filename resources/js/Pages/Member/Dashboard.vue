@@ -4,7 +4,7 @@ import Welcome from "@/Components/Welcome.vue";
 
 const data = [
   {
-    title: "Competions application",
+    title: "2023全澳柔道計分賽",
     url: "/member/applications/1",
     content: "Competition ABC is now open for registration"
   },

@@ -104,6 +104,7 @@ class CompetitionController extends Controller
         //$competition->organization_id=session('organization')->id;
         $competition->title_en=$request->title_en;
         $competition->title_fn=$request->title_fn??null;
+        $competition->description=$request->description;
         $competition->start_date=date('Y-m-d',strtotime($request->period[0]));
         $competition->end_date=date('Y-m-d',strtotime($request->period[1]));
         $competition->match_dates=$request->match_dates;
