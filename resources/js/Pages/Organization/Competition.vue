@@ -5,49 +5,55 @@
         Create competition
       </h2>
     </template>
-    <a-form :model="competition" v-bind="layout" name="nest-messages" :validate-messages="validateMessages"
-      layout="vertical" :rules="rules" @finish="onFinish">
-      <a-form-item label="Full name (en)" name="title_en">
-        <a-input v-model:value="competition.title_en" />
-      </a-form-item>
-      <a-form-item label="Full name (fn)" name="title_fn">
-        <a-input v-model:value="competition.title_fn" />
-      </a-form-item>
-      <a-form-item label="Description" name="description">
-        <quill-editor v-model:value="competition.description" style="min-height: 200px" />
-      </a-form-item>
-      <a-form-item label="Competition date period" name="period">
-        <a-range-picker v-model:value="competition.period" :format="dateFormat" @change="onCompetitionPeriodChange" />
-      </a-form-item>
-      <a-form-item label="Match dates" name="match_dates">
-        <a-select v-model:value="competition.match_dates" mode="multiple">
-          <a-select-option v-for="d in dateList" :value="d">{{ d }}</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-checkbox-group v-model:value="competition.cwSelected" class="w-full">
-        <a-row :span="24">
-          <template v-for="cw in categories_weights">
-            <a-col :span="6">
-              <a-checkbox :value="cw.code">{{ cw.name }}</a-checkbox>
-              <ol>
-                <li v-for="male in cw.male">
-                  {{ male.name }} : {{ male.limit[0] }} - {{ male.limit[1] }}
-                </li>
-              </ol>
-            </a-col>
-          </template>
-        </a-row>
-      </a-checkbox-group>
 
-      <a-form-item label="Roles" name="roleSelected">
-        <a-checkbox-group v-model:value="competition.roleSelected">
-          <a-checkbox v-for="role in roles" :style="virticalStyle" :value="role.value">{{ role.label }}</a-checkbox>
-        </a-checkbox-group>
-      </a-form-item>
-      <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
-        <a-button type="primary" html-type="submit">Submit</a-button>
-      </a-form-item>
-    </a-form>
+    <div class="container mx-auto">
+      <div class="bg-white relative shadow rounded-lg p-5">
+        <a-form :model="competition" name="nest-messages" :validate-messages="validateMessages"
+          layout="vertical" :rules="rules" @finish="onFinish">
+          <a-form-item label="Full name (en)" name="title_en">
+            <a-input v-model:value="competition.title_en" />
+          </a-form-item>
+          <a-form-item label="Full name (fn)" name="title_fn">
+            <a-input v-model:value="competition.title_fn" />
+          </a-form-item>
+          <a-form-item label="Description" name="description">
+            <quill-editor v-model:value="competition.description" style="min-height: 200px" />
+          </a-form-item>
+          <a-form-item label="Competition date period" name="period">
+            <a-range-picker v-model:value="competition.period" :format="dateFormat" @change="onCompetitionPeriodChange" />
+          </a-form-item>
+          <a-form-item label="Match dates" name="match_dates">
+            <a-select v-model:value="competition.match_dates" mode="multiple">
+              <a-select-option v-for="d in dateList" :value="d">{{ d }}</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-checkbox-group v-model:value="competition.cwSelected" class="w-full">
+            <a-row :span="24">
+              <template v-for="cw in categories_weights">
+                <a-col :span="6">
+                  <a-checkbox :value="cw.code">{{ cw.name }}</a-checkbox>
+                  <ol>
+                    <li v-for="male in cw.male">
+                      {{ male.name }} : {{ male.limit[0] }} - {{ male.limit[1] }}
+                    </li>
+                  </ol>
+                </a-col>
+              </template>
+            </a-row>
+          </a-checkbox-group>
+          <a-form-item label="Roles" name="roleSelected">
+            <a-checkbox-group v-model:value="competition.roleSelected">
+              <a-checkbox v-for="role in roles" :style="virticalStyle" :value="role.value">{{ role.label }}</a-checkbox>
+            </a-checkbox-group>
+          </a-form-item>
+          <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
+            <a-button type="primary" html-type="submit">Submit</a-button>
+          </a-form-item>
+        </a-form>
+      </div>
+    </div>
+
+
   </OrganizationLayout>
 </template>
 

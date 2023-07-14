@@ -45,6 +45,14 @@
           <inertia-link :href="route('manage.forms.index')"> Forms </inertia-link>
         </span>
       </a-menu-item>
+      <a-menu-item key="3">
+        <template #icon>
+          <InboxOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('manage.competitions.index')"> Competitions </inertia-link>
+        </span>
+      </a-menu-item>
 
       <a-sub-menu key="sub1">
         <template #icon>

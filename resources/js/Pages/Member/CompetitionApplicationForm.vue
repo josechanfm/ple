@@ -199,7 +199,7 @@ export default {
     },
     onFinish() {
       console.log(this.application);
-      this.$inertia.post(route('member.applications.store'), this.application, {
+      this.$inertia.post(route('member.competition.applications.store',this.competition.id), this.application, {
         onSuccess: (page) => {
             console.log(page);
         },

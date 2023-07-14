@@ -5,17 +5,12 @@
                 賽事管理
             </h2>
         </template>
-        <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Competition</button>
             <inertia-link :href="route('manage.competitions.create')" class="ant-btn ant-btn-primary">Create Competiton</inertia-link>
-            <a-table :dataSource="competitions" :columns="columns">
+            <a-table :dataSource="competitions.data" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('manage.members.show',record.id)" class="ant-btn">View</inertia-link>
-                        <inertia-link :href="route('manage.members.edit',record.id)" class="ant-btn">Edit(new page)</inertia-link>
-                        <a-button @click="editRecord(record)">Edit(Popup)</a-button>
-                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
-                        <a-button @click="createLogin(record.id)">Create login</a-button>
+                        <inertia-link :href="route('manage.competitions.show',record.id)" class="ant-btn">View</inertia-link>
+                        <inertia-link :href="route('manage.competitions.edit',record.id)" class="ant-btn">Edit</inertia-link>
                     </template>
                     <template v-else-if="column.dataIndex=='state'">
                         {{teacherStateLabels[text]}}
@@ -26,38 +21,6 @@
                 </template>
             </a-table>
 
-        <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
-        <a-form
-            ref="modalRef"
-            :model="modal.data"
-            name="Teacher"
-            :label-col="{ span: 8 }"
-            :wrapper-col="{ span: 16 }"
-            autocomplete="off"
-            :rules="rules"
-            :validate-messages="validateMessages"
-        >
-            <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="姓名(中文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh" />
-            </a-form-item>
-            <a-form-item label="姓名(外文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_fn" />
-            </a-form-item>
-            <a-form-item label="別名" name="nickname">
-                <a-input v-model:value="modal.data.nickname" />
-            </a-form-item>
-            <a-form-item label="手機" name="mobile">
-                <a-input v-model:value="modal.data.mobile" />
-            </a-form-item>
-        </a-form>
-        <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
-        </template>
-    </a-modal>    
-    <!-- Modal End-->
     </OrganizationLayout>
 
 </template>
@@ -70,7 +33,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['competitons'],
+    props: ['competitions'],
     data() {
         return {
             modal:{
@@ -83,19 +46,13 @@ export default {
             columns:[
                 {
                     title: '姓名(中文)',
-                    dataIndex: 'first_name',
+                    dataIndex: 'title_en',
                 },{
                     title: '姓名(外文)',
-                    dataIndex: 'last_name',
+                    dataIndex: 'start_date',
                 },{
                     title: '別名',
-                    dataIndex: 'gender',
-                },{
-                    title: '手機',
-                    dataIndex: 'dob',
-                },{
-                    title: '狀態',
-                    dataIndex: 'state',
+                    dataIndex: 'end_date',
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -127,66 +84,6 @@ export default {
     created(){
     },
     methods: {
-        createRecord(){
-            this.modal.data={};
-            this.modal.mode="CREATE";
-            this.modal.title="新增問卷";
-            this.modal.isOpen=true;
-        },
-        editRecord(record){
-            this.modal.data={...record};
-            this.modal.mode="EDIT";
-            this.modal.title="修改";
-            this.modal.isOpen=true;
-        },
-        storeRecord(){
-            this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/admin/teachers/', this.modal.data,{
-                    onSuccess:(page)=>{
-                        this.modal.data={};
-                        this.modal.isOpen=false;
-                    },
-                    onError:(err)=>{
-                        console.log(err);
-                    }
-                });
-            }).catch(err => {
-                console.log(err);
-            });
-        },
-        updateRecord(){
-            console.log(this.modal.data);
-            this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/admin/teachers/' + this.modal.data.id, this.modal.data,{
-                    onSuccess:(page)=>{
-                        this.modal.data={};
-                        this.modal.isOpen=false;
-                        console.log(page);
-                    },
-                    onError:(error)=>{
-                        console.log(error);
-                    }
-                });
-            }).catch(err => {
-                console.log("error", err);
-            });
-           
-        },
-        deleteRecord(recordId){
-            console.log(recordId);
-            if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/admin/teachers/' + recordId,{
-                onSuccess: (page)=>{
-                    console.log(page);
-                },
-                onError: (error)=>{
-                    console.log(error);
-                }
-            });
-        },
-        createLogin(recordId){
-            console.log('create login'+recordId);
-        }
     },
 }
 </script>

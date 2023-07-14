@@ -15,9 +15,19 @@ return new class extends Migration
     {
         Schema::create('competition_applications', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('member_id')->nullable();
+            $table->string('given_name')->nullable();
+            $table->string('family_name')->nullable();
+            $table->string('middle_name')->nullable();
+            $table->string('display_name')->nullable();
+            $table->char('gender',1);
+            $table->date('dob');
+            $table->string('email')->nullable();
+            $table->string('mobile')->nullable();
             $table->bigInteger('competition_id');
-            $table->bigInteger('member_id');
-            $table->string('roles');
+            $table->string('category')->nullable();
+            $table->string('weight')->nullable();
+            $table->string('role');
             $table->timestamps();
         });
     }

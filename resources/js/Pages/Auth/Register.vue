@@ -28,7 +28,7 @@ const submit = () => {
 
     <AuthenticationCard>
         <template #logo>
-            <AuthenticationCardLogo />
+            <img src="/images/site_logo.png" width="150"/>
         </template>
 
         <form @submit.prevent="submit">
@@ -76,13 +76,26 @@ const submit = () => {
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
-                    type="password"
+                    type="text"
                     class="mt-1 block w-full"
                     required
                     autocomplete="new-password"
                 />
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
+                <InputError class="mt-2" :message="form.errors.organization_id" />
             </div>
+
+            <!-- <div class="mt-4">
+                <InputLabel for="organization" value="Organization" />
+                <TextInput
+                    id="organization"
+                    v-model="form.organization_id"
+                    type="password"
+                    class="mt-1 block w-full"
+                    required
+                    autocomplete="organization"
+                />
+                <InputError class="mt-2" :message="form.errors.password_confirmation" />
+            </div> -->
 
             <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
                 <InputLabel for="terms">
@@ -101,7 +114,6 @@ const submit = () => {
                 <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
                     Already registered?
                 </Link>
-
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Register
                 </PrimaryButton>
