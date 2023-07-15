@@ -11,20 +11,18 @@
                 <button @click="createRecord()"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增表格</button>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
-                    <a-list item-layout="horizontal" :data-source="portfolios">
-                        <template #renderItem="{ item }">
-                            <a-list-item>
-                                <a-list-item-meta :description="item.description">
-                                    <template #title>
-                                        <a href="https://www.antdv.com/">{{ item.title }}</a>
-                                    </template>
-                                </a-list-item-meta>
-                                <template #actions>
-                                    <a key="list-loadmore-edit" @click="editRecord(item)">Edit</a>
-                                </template>
-                            </a-list-item>
+                    <a-table :dataSource="member.portfolios" :columns="columns">
+                        <template #bodyCell="{column, text, record, index}">
+                            <template v-if="column.dataIndex=='operation'">
+                                <a-button @click="editRecord(record)">Edit</a-button>
+                                <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                            </template>
+                            <template v-else>
+                                {{record[column.dataIndex]}}
+                            </template>
                         </template>
-                    </a-list>
+                    </a-table>
+
                 </div>
             </div>
         </div>
@@ -75,6 +73,28 @@ export default {
                 title: "Modal",
                 mode: ""
             },
+            columns:[
+                {
+                    title: 'Abbreviation',
+                    dataIndex: 'abbreviation',
+                },{
+                    title: 'Title',
+                    dataIndex: 'title',
+                },{
+                    title: 'validated at',
+                    dataIndex: 'validated_at',
+                },{
+                    title: 'Expired at',
+                    dataIndex: 'expired_at',
+                },{
+                    title: 'Accredited',
+                    dataIndex: 'accredited',
+                },{
+                    title: '操作',
+                    dataIndex: 'operation',
+                    key: 'operation',
+                },
+            ],
             rules: {
                 field: { required: true },
                 label: { required: true },

@@ -41,7 +41,10 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data=$request->all();
+        $data['organization_id']=session('organization')->id;
+        Article::create($data);
+        return redirect()->back();
     }
 
     /**
@@ -73,9 +76,10 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Article $article)
     {
-        //
+        $article->update($request->all());
+        return redirect()->back();
     }
 
     /**

@@ -10,11 +10,8 @@
             <a-table :dataSource="articles" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('manage.members.show',record.id)" class="ant-btn">View</inertia-link>
-                        <inertia-link :href="route('manage.articles.edit',record.id)" class="ant-btn">Edit</inertia-link>
-                    </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
+                        <a-button @click="editRecord(record)">Edit</a-button>
+                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -23,33 +20,31 @@
             </a-table>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
+        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
         <a-form
             ref="modalRef"
             :model="modal.data"
             name="Teacher"
-            :label-col="{ span: 8 }"
-            :wrapper-col="{ span: 16 }"
+            layout="vertical"
             autocomplete="off"
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="姓名(中文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh" />
+            <a-form-item label="Category" name="classify_id">
+                <a-select v-model:value="modal.data.classify_id" :options="classifies" :fieldNames="{value:'id',label:'title'}"/>
             </a-form-item>
-            <a-form-item label="姓名(外文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_fn" />
+            <a-form-item label="Title (English)" name="title_en">
+                <a-input v-model:value="modal.data.title_en" />
             </a-form-item>
-            <a-form-item label="別名" name="nickname">
-                <a-input v-model:value="modal.data.nickname" />
+            <a-form-item label="Title (Foreign Language)" name="title_fn">
+                <a-input v-model:value="modal.data.title_fn" />
             </a-form-item>
-            <a-form-item label="手機" name="mobile">
-                <a-input v-model:value="modal.data.mobile" />
+            <a-form-item label="Description" name="content">
+                <quill-editor v-model:value="modal.data.content" style="min-height:200px;" />
             </a-form-item>
         </a-form>
         <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
+            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
             <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
         </template>
     </a-modal>    
@@ -60,15 +55,18 @@
 
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
+import { quillEditor } from 'vue3-quill';
 import { defineComponent, reactive } from 'vue';
 
 export default {
     components: {
         OrganizationLayout,
+        quillEditor
     },
     props: ['classifies','articles'],
     data() {
         return {
+            dateFormat:"YYYY-MM-DD",
             modal:{
                 isOpen:false,
                 data:{},
@@ -78,20 +76,11 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: '姓名(中文)',
-                    dataIndex: 'first_name',
+                    title: 'Title',
+                    dataIndex: 'title_en',
                 },{
-                    title: '姓名(外文)',
-                    dataIndex: 'last_name',
-                },{
-                    title: '別名',
-                    dataIndex: 'gender',
-                },{
-                    title: '手機',
-                    dataIndex: 'dob',
-                },{
-                    title: '狀態',
-                    dataIndex: 'state',
+                    title: 'Published',
+                    dataIndex: 'published',
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -99,9 +88,8 @@ export default {
                 },
             ],
             rules:{
-                name_zh:{required:true},
-                mobile:{required:true},
-                state:{required:true},
+                classify_id:{required:true},
+                title_en:{required:true},
             },
             validateMessages:{
                 required: '${label} is required!',
@@ -137,7 +125,7 @@ export default {
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/admin/teachers/', this.modal.data,{
+                this.$inertia.post(route('manage.articles.store'), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -153,7 +141,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/admin/teachers/' + this.modal.data.id, this.modal.data,{
+                this.$inertia.put(route('manage.articles.update', this.modal.data.id), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -169,9 +157,8 @@ export default {
            
         },
         deleteRecord(recordId){
-            console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/admin/teachers/' + recordId,{
+            this.$inertia.delete(route('manage.articles.destroy',recordId),{
                 onSuccess: (page)=>{
                     console.log(page);
                 },
@@ -182,7 +169,8 @@ export default {
         },
         createLogin(recordId){
             console.log('create login'+recordId);
-        }
+        },
+
     },
 }
 </script>

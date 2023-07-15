@@ -18,8 +18,10 @@ return new class extends Migration
             $table->bigInteger('organization_id');
             $table->bigInteger('classify_id');
             $table->string('title_en');
-            $table->string('title_fn');
-            $table->text('content');
+            $table->string('title_fn')->nullable();
+            $table->text('description')->nullable();
+            $table->date('validated_at')->nullable();
+            $table->date('expired_at')->nullable();
             $table->timestamps();
         });
     }
