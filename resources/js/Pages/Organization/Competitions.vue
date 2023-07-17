@@ -2,11 +2,16 @@
     <OrganizationLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                賽事管理
+                Competitions
             </h2>
         </template>
-            <inertia-link :href="route('manage.competitions.create')" class="ant-btn ant-btn-primary">Create Competiton</inertia-link>
+            <div class="flex-auto pb-3 text-right">
+                <inertia-link :href="route('manage.competitions.create')" class="ant-btn ant-btn-primary">Create Competiton</inertia-link>
+            </div>
             <a-table :dataSource="competitions.data" :columns="columns">
+                <template #headerCell="{column}">
+                    {{ column.i18n?$t(column.i18n):column.title}}
+                </template>
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <inertia-link :href="route('manage.competitions.show',record.id)" class="ant-btn">View</inertia-link>
@@ -45,16 +50,16 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: '姓名(中文)',
+                    title: 'Comptition title',
                     dataIndex: 'title_en',
                 },{
-                    title: '姓名(外文)',
+                    title: 'Start date',
                     dataIndex: 'start_date',
                 },{
-                    title: '別名',
+                    title: 'End date',
                     dataIndex: 'end_date',
                 },{
-                    title: '操作',
+                    title: 'Operation',
                     dataIndex: 'operation',
                     key: 'operation',
                 },

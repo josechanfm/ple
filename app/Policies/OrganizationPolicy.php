@@ -36,8 +36,8 @@ class OrganizationPolicy
         }
         // dd($user);
         // dd($organization);
-        return auth()->user()->hasRole(['organizer','admin']) && $organization->hasUser($user);
-        return $organization->hasUser($user);
+        //return auth()->user()->hasRole(['organizer','admin']) && $organization->hasUser($user);
+        return $organization->ownedBy($user);
     }
 
     /**

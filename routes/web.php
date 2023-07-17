@@ -80,7 +80,9 @@ Route::middleware([
         Route::resource('articles',App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
     });
     Route::prefix('/admin')->group(function () {
-        Route::resource('portfolio_categories', App\Http\Controllers\Admin\PortfolioCategoryController::class)->names('admin.portfolioCategories');
+        Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::resource('organizations', App\Http\Controllers\Admin\OrganizationController::class)->names('admin.organizations');
+        Route::get('organization/{organization}/members', [App\Http\Controllers\Admin\OrganizationController::class,'members'])->name('admin.organization.members');
         Route::resource('members', App\Http\Controllers\Admin\MemberController::class)->names('admin.members');
     });
 });

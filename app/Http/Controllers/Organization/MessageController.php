@@ -24,7 +24,7 @@ class MessageController extends Controller
             $per_page = $request->per_page;
         }
         $messages = Message::with('received_member')->paginate($per_page);
-        return Inertia::render('Admin/Message', [
+        return Inertia::render('Organization/Messages', [
             'messages' => $messages,
             'messageCategories' => Config::item('message_categories'),
             'members' => Member::all()

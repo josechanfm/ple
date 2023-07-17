@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Classify;
 use App\Models\Article;
+use App\Models\Organization;
 
 class ArticleController extends Controller
 {
@@ -18,7 +19,7 @@ class ArticleController extends Controller
     public function index()
     {
         return Inertia::render('Organization/Articles',[
-            'classifies'=>Classify::all(),
+            'classifies'=>Classify::whereBelongsTo(session('organization'))->get(),
             'articles'=>Article::all()
         ]);
     }

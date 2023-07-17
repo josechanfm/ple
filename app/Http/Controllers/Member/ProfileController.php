@@ -19,19 +19,19 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $portfolio=auth()->user()->member->portfolio;
-        if(empty($portfolio)){
-            $portfolio=new Portfolio;
-            $portfolio->member_id=auth()->user()->member->id;
-            $portfolio->approbate_id=1;
-            $portfolio->save();
-        }
+        // $portfolio=auth()->user()->member->portfolio;
+        // if(empty($portfolio)){
+        //     $portfolio=new Portfolio;
+        //     $portfolio->member_id=auth()->user()->member->id;
+        //     $portfolio->approbate_id=1;
+        //     $portfolio->save();
+        // }
         $member=auth()->user()->member;
         $member->positions;
         $member->athlete;
         return Inertia::render('Member/Profile',[
             'member'=>$member,
-            'profile'=>$portfolio,
+            // 'profile'=>$portfolio,
             'positions'=>Position::all()
         ]);
     }

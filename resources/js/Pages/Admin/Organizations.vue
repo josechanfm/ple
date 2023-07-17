@@ -10,6 +10,7 @@
             <a-table :dataSource="organizations" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
+                        <inertia-link :href="route('admin.organization.members',record.id)" class="ant-btn">Members</inertia-link>
                         <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     </template>

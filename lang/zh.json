@@ -1,12 +1,12 @@
 {
     "dashboard":"主頁",
     "Organization": "組織",
-    "Affiliate": "分支機構",
-    "Member": "會員",
-    "Course": {
-    "Label": "課程",
-    "List": "課程列表"
-    },
+    "affiliate": "屬會",
+    "member": "會員",
+    "certificates": "證書",
+    "bulletin":"公告",
+    "message":"通告",
+
     "profile_title":"國際名稱，包括 A-Z 字母",
     "personal_title":"個人資料",
     "position_title":"角色",
@@ -26,6 +26,29 @@
     "mobile":"手機",
     "dod":"死亡日期",
     
+    "forms":"表格列表",
+    "form_name":"表格名稱",
+    "title":"標題",
+    "title_en":"標題(英文)",
+    "title_fn":"標題(外文)",
+    "description":"簡介",
+    "require_login":"需要登入",
+    "published":"發佈",
+    "banner_image":"橫幅圖片",
+    "for_member":"會員登入",
+    "require_login_note":"公開並需要登入",
+    "for_member_note":"供會員使用",
+    "published_note":"發佈",
+
+    "competitions":"賽事列表",
+    "competition_title_en":"賽事名稱(英文)",
+    "competition_title_fn":"賽事名稱(外文)",
+    "competition_period":"時間段",
+    "competition_dates":"比賽日",
+    "classification":"分類",
+    "content":"內容",
+    "articles":"文章列表",
+
     "role":"角色",
     "athlete_title":"運動員",
     "coach":"教練",
@@ -42,9 +65,21 @@
     "guest_title":"官方訪客",
     "picture_title":"個人照片",
 
+    "certificate_title":"證書名稱",
+    "cert_body":"認證機構",
+    "number_format":"編號格式",
+    "cert_template":"證書樣式",
+    "cert_logo":"證書圖標",
+
+    "date":"日期",
+    "image":"圖片",
+    "sender":"發送者",
     "understand":"明白了",
     "male":"男",
-    "female":"女"
+    "female":"女",
+    "operation":"操作",
+    "state":"狀態"
 
-    }
+
+}
     

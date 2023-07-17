@@ -23,7 +23,7 @@ class CertificateController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Organization/Certificate',[
+        return Inertia::render('Organization/Certificates',[
             'certificates'=>session('organization')->fresh()->certificates,
         ]);
 

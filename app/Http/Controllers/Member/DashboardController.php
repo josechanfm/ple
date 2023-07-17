@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Classify;
+use App\Models\Article;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Member;
@@ -13,13 +15,13 @@ class DashboardController extends Controller
     {
         $member=Member::where('user_id',auth()->user()->id)->with('guardian')->first();
 
+        //login user has guardian role
         if(auth()->user()->guardian){
             session(['guardian'=>auth()->user()->guardian]);
             return redirect()->route('member.guardian');
         }
 
-        // dd(auth()->user()->personalTeam());
-        // if(auth()->user()->isMember()){
+        //login user is member
         if($member){
             $organizations=$member->organizations;
             $member->portfolios;
@@ -27,20 +29,13 @@ class DashboardController extends Controller
             return Inertia::render('Member/Dashboard',[
                 'member'=>$member,
                 'current_organization'=>session('organization'),
+                //'articles'=>Classify::whereBelongsTo(session('organization'))->first()->articles
             ]);
         }
-        
-        if (auth()->user()->hasRole(['organizer','admin','master'])) {
-            $organizations=auth()->user()->organizations;
-            if($organizations->count()==0){
-                Auth::guard('web')->logout();
-                return redirect('manage');
-            }else if($organizations->count()==1){
-                session(['organization'=>$organizations[0]]);
-                return redirect('manage/dashboard');
-            }else{
-                return redirect('manage');
-            }
+
+        //login user not a member but with specific roles
+        if (auth()->user()->hasRole(['admin','master'])) {
+            return redirect('admin');
         }
                 
     }

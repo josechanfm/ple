@@ -5,7 +5,7 @@ import Welcome from "@/Components/Welcome.vue";
 const data = [
   {
     title: "2023全澳柔道計分賽",
-    url: "/member/applications/1",
+    url: "/member/competition/1/applications",
     content: "Competition ABC is now open for registration"
   },
   {
@@ -27,7 +27,8 @@ const data = [
 
 defineProps({
   member: Object,
-  competitions: Object,
+  articles: Object,
+
 });
 </script>
 
@@ -38,6 +39,7 @@ defineProps({
         Membership
       </h2>
     </template>
+    {{articles}}
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">

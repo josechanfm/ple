@@ -1,16 +1,15 @@
 {
     "dashboard":"Dashboard",
     "Organization": "Organization",
-    "Affiliate": "Affiliate",
-    "Member": "Member",
-    "Course": {
-        "Label": "Course",
-        "List": "Course List"
-    },
+    "affiliate": "Affiliate",
+    "member": "Member",
+    "certificates":"Certificates",
+    "bulletin":"Bulletin",
+    "message":"Message",
+
     "profile_title":"International name with A-Z characters",
     "personal_title":"Personal Data",
     "position_title":"Roles",
-    
     "family_name":"Family Name",
     "given_name":"Given Name",
     "middle_name":"Middle Name",
@@ -26,6 +25,29 @@
     "email":"Email",
     "mobile":"Mobile",
     "dod":"Date of Death",
+
+    "forms":"Forms",
+    "form_name":"Form name",
+    "title":"Title",
+    "title_en":"Title (English)",
+    "title_fn":"Title (Foreign)",
+    "description":"Description",
+    "require_login":"Require login",
+    "published":"Published",
+    "banner_image":"Banner image",
+    "for_member":"For member",
+    "require_login_note":"For public and required login",
+    "for_member_note":"For member only",
+    "published_note":"Form visible for targeted user",
+
+    "competitions":"Competitions",
+    "competition_title_en":"Competition Title (English)",
+    "competition_title_fn":"Competition Title (Foreign)",
+    "competition_period":"Period",
+    "competition_dates":"Match dates",
+    "classification":"Categories",
+    "content":"Content",
+    "articles":"Articles",
 
     "role":"Role",
     "athlete_title":"Athlete",
@@ -43,8 +65,19 @@
     "guest_title":"Official",
     "picture_title":"Profile Picture",
 
+    "certificate_name":"Name",
+    "certificate_title":"Title",
+    "cert_body":"Cert. Body",
+    "number_format":"Number format",
+    "cert_template":"Cert. Template",
+    "cert_logo":"Cert. Logo",
+
+    "date":"Date",
+    "image":"Image",
+    "sender":"Sender",
     "understand":"Understood",
     "male":"Male",
-    "female":"Female"
+    "female":"Female",
+    "operation":"Operation",
+    "state":"State"
 }
-

@@ -159,13 +159,10 @@
                                 </a-upload>
                             </a-collapse-panel>
                         </a-collapse>
-
                         <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
                             <a-button type="primary" html-type="submit">Submit</a-button>
                         </a-form-item>
-
                     </a-form>
-
                 </div>
             </div>
         </div>
@@ -188,7 +185,7 @@ export default {
         LoadingOutlined,
         quillEditor,
     },
-    props: ['member', 'approbates', 'profile', 'positions'],
+    props: ['member', 'positions'],
     data() {
         return {
             activeKey: ['1', '3', '4', '5', '6', '7', '8', '9'],
@@ -231,71 +228,9 @@ export default {
         }
     },
     created() {
-        this.profile.roles = []
         this.member.athlete = []
     },
     methods: {
-        createRecord(record) {
-            this.modal.data = {};
-            // this.modal.data.organization_id=this.organization.id;
-            // this.modal.data.require_login=false;
-            // this.modal.data.for_member=false;
-            // this.modal.data.published=false;
-            // this.modal.data.media=[];
-            this.modal.mode = "CREATE";
-            this.modal.isOpen = true;
-        },
-        editRecord(record) {
-            console.log(record);
-            this.modal.data = { ...record };
-            this.modal.mode = "EDIT";
-            this.modal.isOpen = true;
-        },
-        storeRecord() {
-            console.log(this.modal.data);
-            this.$refs.modalRef.validateFields().then(() => {
-                this.$inertia.post(route('member.portfolios.store'), this.modal.data, {
-                    onSuccess: (page) => {
-                        this.modal.isOpen = false;
-                    },
-                    onError: (err) => {
-                        console.log(err);
-                    }
-                });
-            }).catch(err => {
-                console.log(err);
-            });
-        },
-        updateRecord() {
-            console.log(this.modal.data);
-            this.$refs.modalRef.validateFields().then(() => {
-                this.modal.data._method = 'PATCH';
-                this.$inertia.post(route('member.porfolios.update', this.modal.data.id), this.modal.data, {
-                    onSuccess: (page) => {
-                        this.modal.isOpen = false;
-                        console.log(page);
-                    },
-                    onError: (error) => {
-                        console.log(error);
-                    }
-                });
-            }).catch(err => {
-                console.log("error", err);
-            });
-        },
-
-        deleteRecord(record) {
-            if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete(route('member.porfolios.destroy', { form: record.id }), {
-                onSuccess: (page) => {
-                    console.log(page);
-                },
-                onError: (error) => {
-                    alert(error.message);
-                }
-
-            });
-        },
         handleChange(info) {
             if (info.file.status === 'uploading') {
                 this.loading = true;

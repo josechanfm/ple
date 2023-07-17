@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Organization;
+use App\Models\Member;
 use Illuminate\Support\Facades\Password;
 
 class OrganizationController extends Controller
@@ -18,7 +19,7 @@ class OrganizationController extends Controller
     public function index()
     {
         $organizations=Organization::all();
-        return Inertia::render('Admin/Organization',[
+        return Inertia::render('Admin/Organizations',[
             'organizations'=>$organizations,
         ]);
     }
@@ -87,6 +88,14 @@ class OrganizationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function members(Organization $organization){
+        //$members=Member::whereBelongsTo($)->get();
+        return Inertia::render('Admin/OrganizationMembers',[
+            'members'=>$organization->members,
+        ]);
+
     }
     public function createLogin(Member $member){
 

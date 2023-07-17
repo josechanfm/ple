@@ -1,54 +1,63 @@
 <template>
-  <div style="width: 256px">
-    <a-button type="primary" style="margin-bottom: 16px" @click="toggleCollapsed">
-      <MenuUnfoldOutlined v-if="collapsed" />
-      <MenuFoldOutlined v-else />
-    </a-button>
+  <div>
     <a-menu
       v-model:openKeys="openKeys"
       v-model:selectedKeys="selectedKeys"
       mode="inline"
-      theme="dark"
+      theme="light"
       :inline-collapsed="collapsed"
     >
       <a-menu-item key="1">
         <template #icon>
           <PieChartOutlined />
         </template>
-        <span>Option 1</span>
+        <span>
+          <inertia-link :href="route('admin.dashboard')">
+            Dashboard
+          </inertia-link>
+        </span>
       </a-menu-item>
       <a-menu-item key="2">
         <template #icon>
-          <DesktopOutlined />
+          <PieChartOutlined />
         </template>
-        <span>Option 2</span>
+        <span>
+          <inertia-link :href="route('admin.organizations.index')">
+            Organizations
+          </inertia-link>
+        </span>
       </a-menu-item>
       <a-menu-item key="3">
         <template #icon>
-          <InboxOutlined />
+          <PieChartOutlined />
         </template>
-        <span>Option 3</span>
+        <span>
+          <inertia-link :href="route('admin.members.index')">
+            Members
+          </inertia-link>
+        </span>
       </a-menu-item>
+
       <a-sub-menu key="sub1">
         <template #icon>
           <MailOutlined />
         </template>
         <template #title>Navigation One</template>
-        <a-menu-item key="5">Option 5</a-menu-item>
-        <a-menu-item key="6">Option 6</a-menu-item>
-        <a-menu-item key="7">Option 7</a-menu-item>
-        <a-menu-item key="8">Option 8</a-menu-item>
+        <a-menu-item key="101">Option 5</a-menu-item>
+        <a-menu-item key="122">Option 6</a-menu-item>
+        <a-menu-item key="103">Option 7</a-menu-item>
+        <a-menu-item key="104">Option 8</a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub2">
         <template #icon>
           <AppstoreOutlined />
         </template>
         <template #title>Navigation Two</template>
-        <a-menu-item key="9">Option 9</a-menu-item>
-        <a-menu-item key="10">Option 10</a-menu-item>
+        <a-menu-item key="111">Option 9</a-menu-item>
+        <a-menu-item key="112">Option 10</a-menu-item>
         <a-sub-menu key="sub3" title="Submenu">
-          <a-menu-item key="11">Option 11</a-menu-item>
-          <a-menu-item key="12">Option 12</a-menu-item>
+          <a-menu-item key="1121">Option 11</a-menu-item>
+          <a-menu-item key="1122">Option 12</a-menu-item>
         </a-sub-menu>
       </a-sub-menu>
     </a-menu>
@@ -65,6 +74,7 @@ import {
   InboxOutlined,
   AppstoreOutlined,
 } from "@ant-design/icons-vue";
+
 export default defineComponent({
   components: {
     MenuFoldOutlined,
@@ -75,6 +85,7 @@ export default defineComponent({
     InboxOutlined,
     AppstoreOutlined,
   },
+  props: ["organization"],
   setup() {
     const state = reactive({
       collapsed: false,
@@ -91,6 +102,7 @@ export default defineComponent({
     const toggleCollapsed = () => {
       state.collapsed = !state.collapsed;
       state.openKeys = state.collapsed ? [] : state.preOpenKeys;
+      console.log(state.collapsed.value);
     };
     return {
       ...toRefs(state),
