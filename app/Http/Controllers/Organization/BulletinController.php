@@ -33,7 +33,7 @@ class BulletinController extends Controller
         // dd(Config::item('bulletin_categories'));
         // dd($bulletins);
 
-        return Inertia::render('Admin/Bulletin', [
+        return Inertia::render('Organization/Bulletins', [
             'bulletins' => $bulletins,
             'bulletinCategories' => Config::item('bulletin_categories'),
         ]);

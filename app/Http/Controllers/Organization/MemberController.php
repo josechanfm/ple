@@ -74,10 +74,10 @@ class MemberController extends Controller
      */
     public function edit(Organization $organization, Member $member)
     {
-        return Inertia::render('Organization/MemberEdit',[
-            //'member'=>$member->belongsToOrganization($organization)->first(),
-            'member'=>$member,
-        ]);
+        // return Inertia::render('Organization/MemberEdit',[
+        //     //'member'=>$member->belongsToOrganization($organization)->first(),
+        //     'member'=>$member,
+        // ]);
     }
 
     /**
@@ -87,9 +87,10 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Member $member)
     {
-        //
+        $member->update($request->all());
+        return redirect()->back();
     }
 
     /**

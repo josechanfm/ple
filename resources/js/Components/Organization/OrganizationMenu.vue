@@ -13,7 +13,7 @@
         </template>
         <span>
           <inertia-link :href="route('manage.dashboard')">
-            {{ $t("Affiliate") }}
+            {{ $t("affiliate") }}
           </inertia-link>
         </span>
       </a-menu-item>
@@ -23,7 +23,7 @@
         </template>
         <span>
           <inertia-link :href="route('manage.members.index')">
-            {{ $t("Member") }}
+            {{ $t("member") }}
           </inertia-link>
         </span>
       </a-menu-item>
@@ -33,16 +33,52 @@
         </template>
         <span>
           <inertia-link :href="route('manage.certificates.index')">
-            Certificates
+            {{$t('certificates') }}
           </inertia-link>
         </span>
       </a-menu-item>
-      <a-menu-item key="3">
+      <a-menu-item key="4">
         <template #icon>
           <InboxOutlined />
         </template>
         <span>
-          <inertia-link :href="route('manage.forms.index')"> Forms </inertia-link>
+          <inertia-link :href="route('manage.forms.index')"> {{$t('forms')}} </inertia-link>
+        </span>
+      </a-menu-item>
+      <a-menu-item key="5">
+        <template #icon>
+          <InboxOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('manage.competitions.index')"> {{$t('competitions')}} </inertia-link>
+        </span>
+      </a-menu-item>
+      <a-menu-item key="6">
+        <template #icon>
+          <InboxOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('manage.articles.index')"> {{$t('articles')}} </inertia-link>
+        </span>
+      </a-menu-item>
+      <a-menu-item key="9">
+        <template #icon>
+          <DesktopOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('manage.bulletins.index')">
+            {{ $t("bulletin") }}
+          </inertia-link>
+        </span>
+      </a-menu-item>
+      <a-menu-item key="10">
+        <template #icon>
+          <DesktopOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('manage.messages.index')">
+            {{ $t("message") }}
+          </inertia-link>
         </span>
       </a-menu-item>
 
@@ -51,43 +87,23 @@
           <MailOutlined />
         </template>
         <template #title>Navigation One</template>
-        <a-menu-item key="5">Option 5</a-menu-item>
-        <a-menu-item key="6">Option 6</a-menu-item>
-        <a-menu-item key="7">Option 7</a-menu-item>
-        <a-menu-item key="8">Option 8</a-menu-item>
+        <a-menu-item key="101">Option 5</a-menu-item>
+        <a-menu-item key="122">Option 6</a-menu-item>
+        <a-menu-item key="103">Option 7</a-menu-item>
+        <a-menu-item key="104">Option 8</a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub2">
         <template #icon>
           <AppstoreOutlined />
         </template>
         <template #title>Navigation Two</template>
-        <a-menu-item key="9">Option 9</a-menu-item>
-        <a-menu-item key="10">Option 10</a-menu-item>
+        <a-menu-item key="111">Option 9</a-menu-item>
+        <a-menu-item key="112">Option 10</a-menu-item>
         <a-sub-menu key="sub3" title="Submenu">
-          <a-menu-item key="11">Option 11</a-menu-item>
-          <a-menu-item key="12">Option 12</a-menu-item>
+          <a-menu-item key="1121">Option 11</a-menu-item>
+          <a-menu-item key="1122">Option 12</a-menu-item>
         </a-sub-menu>
       </a-sub-menu>
-      <a-menu-item key="4">
-        <template #icon>
-          <DesktopOutlined />
-        </template>
-        <span>
-          <inertia-link :href="route('manage.bulletins.index')">
-            {{ $t("Bulletin") }}
-          </inertia-link>
-        </span>
-      </a-menu-item>
-      <a-menu-item key="5">
-        <template #icon>
-          <DesktopOutlined />
-        </template>
-        <span>
-          <inertia-link :href="route('manage.messages.index')">
-            {{ $t("Message") }}
-          </inertia-link>
-        </span>
-      </a-menu-item>
     </a-menu>
   </div>
 </template>

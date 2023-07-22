@@ -2,10 +2,18 @@
     <OrganizationLayout title="Dashboard" :organization="organization">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                課程規劃
+                Certificates
             </h2>
         </template>
+            <div class="flex-auto pb-3 text-right">
+                <a-button type="primary" class="!rounded" @click="createRecord()"
+                >Create Certificate</a-button>
+            </div>
+
             <a-table :dataSource="certificates" :columns="columns">
+                <template #headerCell="{column}">
+                    {{ column.i18n?$t(column.i18n):column.title}}
+                </template>
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <a-button @click="editRecord(record)">Edit</a-button>
@@ -75,27 +83,30 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: 'Cert. Name',
-                    dataIndex: 'name',
-                },{
                     title: 'Cert Title',
                     dataIndex: 'cert_title',
+                    i18n:'certificate_title'
                 },{
                     title: 'Cert Body',
                     dataIndex: 'cert_body',
+                    i18n:'cert_body'
                 },{
                     title: 'Number Format',
                     dataIndex: 'number_format',
+                    i18n:'number_format'
                 },{
                     title: 'Cert. Logo',
                     dataIndex: 'cert_logo',
+                    i18n:'cert_logo'
                 },{
                     title: 'Cert. template',
                     dataIndex: 'cert_template',
+                    i18n:'cert_template'
                 },{
                     title: '操作',
                     dataIndex: 'operation',
                     key: 'operation',
+                    i18n:'operation'
                 },
             ],
             rules:{

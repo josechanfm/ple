@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\PortfolioCategory;
+use App\Models\Approbate;
+use App\Models\Portfolio;
+use App\Models\Position;
+use App\Models\Member;
 
-class PortfolioCategoryController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +19,20 @@ class PortfolioCategoryController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/PortfolioCategories',[
-            'portfolio_categories' => PortfolioCategory::all()
+        // $portfolio=auth()->user()->member->portfolio;
+        // if(empty($portfolio)){
+        //     $portfolio=new Portfolio;
+        //     $portfolio->member_id=auth()->user()->member->id;
+        //     $portfolio->approbate_id=1;
+        //     $portfolio->save();
+        // }
+        $member=auth()->user()->member;
+        $member->positions;
+        $member->athlete;
+        return Inertia::render('Member/Profile',[
+            'member'=>$member,
+            // 'profile'=>$portfolio,
+            'positions'=>Position::all()
         ]);
     }
 
@@ -50,7 +65,7 @@ class PortfolioCategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -73,7 +88,11 @@ class PortfolioCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data=$request->all();
+        $member=Member::find($id);
+        //$data['positions']=$request->positions;
+        $member->update($data);
+        return response($member);
     }
 
     /**

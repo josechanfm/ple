@@ -2,28 +2,33 @@
     <OrganizationLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                課程規劃
+                Members
             </h2>
         </template>
-        <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
-            <a-table :dataSource="members" :columns="columns">
-                <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('manage.members.show',record.id)" class="ant-btn">View</inertia-link>
-                        <inertia-link :href="route('manage.members.edit',record.id)" class="ant-btn">Edit(new page)</inertia-link>
-                        <a-button @click="editRecord(record)">Edit(Popup)</a-button>
-                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
-                        <a-button @click="createLogin(record.id)">Create login</a-button>
-                    </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
+    
+        <div class="flex-auto pb-3 text-right">
+            <a-button type="primary" class="!rounded" @click="createRecord()"
+            >Create Member</a-button>
+        </div>
+        <a-table :dataSource="members" :columns="columns">
+            <template #headerCell="{column}">
+                {{ column.i18n?$t(column.i18n):column.title}}
+            </template>
+            <template #bodyCell="{column, text, record, index}">
+                <template v-if="column.dataIndex=='operation'">
+                    <inertia-link :href="route('manage.members.show',record.id)" class="ant-btn">View</inertia-link>
+                    <a-button @click="editRecord(record)">Edit(Popup)</a-button>
+                    <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                    <a-button @click="createLogin(record.id)">Create login</a-button>
                 </template>
-            </a-table>
+                <template v-else-if="column.dataIndex=='state'">
+                    {{teacherStateLabels[text]}}
+                </template>
+                <template v-else>
+                    {{record[column.dataIndex]}}
+                </template>
+            </template>
+        </a-table>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
@@ -38,16 +43,28 @@
             :validate-messages="validateMessages"
         >
             <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="姓名(中文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh" />
+            <a-form-item :label="$t('given_name')" name="given_name">
+                <a-input v-model:value="modal.data.given_name" />
             </a-form-item>
-            <a-form-item label="姓名(外文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_fn" />
+            <a-form-item :label="$t('middle_name')" name="middle_name">
+                <a-input v-model:value="modal.data.middle_name" />
             </a-form-item>
-            <a-form-item label="別名" name="nickname">
-                <a-input v-model:value="modal.data.nickname" />
+            <a-form-item :label="$t('family_name')" name="family_name">
+                <a-input v-model:value="modal.data.family_name" />
             </a-form-item>
-            <a-form-item label="手機" name="mobile">
+            <a-form-item :label="$t('display_name')" name="display_name">
+                <a-input v-model:value="modal.data.display_name" />
+            </a-form-item>
+            <a-form-item :label="$t('gender')" name="gender">
+                <a-input v-model:value="modal.data.gender" />
+            </a-form-item>
+            <a-form-item :label="$t('dob')" name="dob">
+                <a-input v-model:value="modal.data.dob" />
+            </a-form-item>
+            <a-form-item :label="$t('email')" name="email">
+                <a-input v-model:value="modal.data.email" />
+            </a-form-item>
+            <a-form-item :label="$t('mobile')" name="mobile">
                 <a-input v-model:value="modal.data.mobile" />
             </a-form-item>
         </a-form>
@@ -81,24 +98,30 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: '姓名(中文)',
-                    dataIndex: 'first_name',
+                    title: 'Given name',
+                    dataIndex: 'given_name',
+                    i18n:'given_name'
                 },{
-                    title: '姓名(外文)',
-                    dataIndex: 'last_name',
+                    title: 'Family name',
+                    dataIndex: 'family_name',
+                    i18n:'family_name'
                 },{
-                    title: '別名',
+                    title: 'Gender',
                     dataIndex: 'gender',
+                    i18n:'gender'
                 },{
-                    title: '手機',
+                    title: 'Date of birth',
                     dataIndex: 'dob',
+                    i18n:'dob'
                 },{
-                    title: '狀態',
+                    title: 'State',
                     dataIndex: 'state',
+                    i18n:'state'
                 },{
-                    title: '操作',
+                    title: 'Operation',
                     dataIndex: 'operation',
                     key: 'operation',
+                    i18n:'operation'
                 },
             ],
             rules:{
@@ -129,13 +152,13 @@ export default {
         createRecord(){
             this.modal.data={};
             this.modal.mode="CREATE";
-            this.modal.title="新增問卷";
+            this.modal.title="Create new member";
             this.modal.isOpen=true;
         },
         editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
-            this.modal.title="修改";
+            this.modal.title="Edit member record";
             this.modal.isOpen=true;
         },
         storeRecord(){
@@ -154,9 +177,8 @@ export default {
             });
         },
         updateRecord(){
-            console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/admin/teachers/' + this.modal.data.id, this.modal.data,{
+                this.$inertia.patch(route('manage.members.update', this.modal.data.id), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -184,7 +206,7 @@ export default {
             });
         },
         createLogin(recordId){
-            console.log('create login'+recordId);
+            alert('create login'+recordId);
         }
     },
 }

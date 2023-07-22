@@ -33,14 +33,7 @@ class MemberPolicy
         if($user->hasRole('admin')){
             return true;
         }
-        return auth()->user()->hasRole(['organizer','admin']);
-        // $organizations=$member->organizations;
-        // foreach($organizations as $organization){
-        //     if(in_array($organization->id, $user->organizations->pluck('id')->toArray())){
-        //         return true;
-        //     }
-        // }
-        // return false;
+        return $member->ownedBy(session('organization'));
     }
 
     /**
@@ -66,13 +59,7 @@ class MemberPolicy
         if($user->hasRole('admin')){
             return true;
         }
-        $organizations=$member->organizations;
-        foreach($organizations as $organization){
-            if(in_array($organization->id, $user->organizations->pluck('id')->toArray())){
-                return true;
-            }
-        }
-        return false;
+        return $member->ownedBy(session('organization'));
     }
 
     /**

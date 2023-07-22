@@ -24,8 +24,14 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
+Route::post('registration', [\App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');
 
-Route::get('logout2', [AuthenticatedSessionController::class, 'destroy']);
+Route::get('/language/{language}', function ($language) {
+    session(['locale'=>$language]);
+    app()->setLocale($language);
+    //return redirect()->refresh();
+})->name('language');
 
 
 Route::middleware([
@@ -34,16 +40,16 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::prefix('member')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member');
         Route::get('dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member.dashboard');
-
         Route::get('guardian', [\App\Http\Controllers\Member\GuardianController::class, 'index'])->name('member.guardian');
         Route::get('guardian/act_as/{member}', [\App\Http\Controllers\Member\GuardianController::class, 'actAs'])->name('member.guardian.actAs');
         Route::get('guardian/back', [\App\Http\Controllers\Member\GuardianController::class, 'back'])->name('member.guardian.back');
         Route::resource('portfolios', App\Http\Controllers\Member\PortfolioController::class)->names('member.portfolios');
-
-
+        Route::resource('profile', App\Http\Controllers\Member\ProfileController::class)->names('member.profile');
         Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class)->names('member.professionals');
         Route::get('membership', [App\Http\Controllers\Member\MembershipController::class, 'index'])->name('member.membership');
+        Route::resource('competition/{competition}/applications',App\Http\Controllers\Member\CompetitionApplicationController::class)->names('member.competition.applications');
     });
 });
 
@@ -70,9 +76,13 @@ Route::middleware([
         Route::resource('messages', App\Http\Controllers\Organization\MessageController::class)->names('manage.messages');
         Route::resource('certificates', App\Http\Controllers\Organization\CertificateController::class)->names('manage.certificates');
         Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
+        Route::resource('competitions', App\Http\Controllers\Organization\CompetitionController::class)->names('manage.competitions');
+        Route::resource('articles',App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
     });
     Route::prefix('/admin')->group(function () {
-        Route::resource('portfolio_categories', App\Http\Controllers\Admin\PortfolioCategoryController::class)->names('admin.portfolioCategories');
+        Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::resource('organizations', App\Http\Controllers\Admin\OrganizationController::class)->names('admin.organizations');
+        Route::get('organization/{organization}/members', [App\Http\Controllers\Admin\OrganizationController::class,'members'])->name('admin.organization.members');
         Route::resource('members', App\Http\Controllers\Admin\MemberController::class)->names('admin.members');
     });
 });

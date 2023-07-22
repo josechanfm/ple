@@ -1,4 +1,5 @@
 <script setup>
+import { Inertia } from '@inertiajs/inertia';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 
 defineProps({
@@ -7,6 +8,12 @@ defineProps({
     laravelVersion: String,
     phpVersion: String,
 });
+const logout = () => {
+    console.log('logout');
+    Inertia.post(route('logout'));
+    
+};
+
 </script>
 
 <template>
@@ -18,10 +25,11 @@ defineProps({
 
             <div class="flex justify-between items-center py-6 px-10 container mx-auto">
 
-                <div>
-                    <h1 class="text-2xl font-bold bg-gradient-to-tr from-indigo-600 to-green-600 bg-clip-text text-transparent hover:cursor-pointer">
+                <div class="flex">
+                    <div class="shrink-0 flex items-center"><a href="http://localhost:8000/member/dashboard"><img src="/images/site_logo.png" class="block h-14 w-auto"></a></div>
+                    <h1 class="pt-4 text-2xl font-bold bg-gradient-to-tr from-indigo-600 to-green-600 bg-clip-text text-transparent hover:cursor-pointer">
                         <a href="/">
-                            WIRE
+                            Judo Union of Asia
                         </a>
                     </h1>
                 </div>
@@ -37,17 +45,25 @@ defineProps({
                     </div>
                     <div class="flex items-center">
                         <ul class="sm:flex space-x-4 hidden items-center">
-                            <li><a href="https://www.mpu.edu.mo" class="text-gray-700 hover:text-indigo-600 text-md ">MPU</a></li>
-                            <li><a href="https://www.mpu.edu.mo/en/services.php" target="_blank" class="text-gray-700 hover:text-indigo-600 text-md ">Services</a></li>
+                            <li><a href="https://onlinejua.org" target="_blank" class="text-gray-700 hover:text-indigo-600 text-md ">JUA</a></li>
+                            <li><a href="https://ijf.org" target="_blank" class="text-gray-700 hover:text-indigo-600 text-md ">IJF</a></li>
+                            <template v-if="$page.props.user.id">
+                                <li><a href="member" target="_blank" class="text-gray-700 hover:text-indigo-600 text-md ">Dashboard</a></li>
+                                <li><a @click="logout">Log Out</a></li>
+
+                            </template>
+                            <template v-else>
+                                <li><inertia-link :href="route('login')">Login</inertia-link></li>
+                            </template>
                         </ul>
-                        <div class="md:flex items-center hidden space-x-4 ml-8 lg:ml-12">
+                        <!-- <div class="md:flex items-center hidden space-x-4 ml-8 lg:ml-12">
                             <h1 class="text-text-gray-600  py-2 hover:cursor-pointer hover:text-indigo-600"><inertia-link
                                     :href="route('login')">登入</inertia-link></h1>
-                            <!-- <h1
+                            <h1
                                 class="text-text-gray-600  py-2 hover:cursor-pointer px-4 rounded text-white bg-gradient-to-tr from-indigo-600 to-green-600 hover:shadow-lg">
                                 <inertia-link :href="route('login')">後台</inertia-link>
-                            </h1> -->
-                        </div>
+                            </h1>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -63,15 +79,12 @@ defineProps({
     <main>
         <!-- section hero -->
         <section>
-            <div
-                class="bg-gray-100 sm:grid grid-cols-5 grid-rows-2 px-4 py-6 min-h-full lg:min-h-screen space-y-6 sm:space-y-0 sm:gap-4">
-
+            <div class="bg-gray-100 sm:grid grid-cols-5 grid-rows-2 px-4 py-6 min-h-full lg:min-h-screen space-y-6 sm:space-y-0 sm:gap-4">
                 <div class="col-span-4">
                     <!-- Page Content -->
                     <main>
                         <slot />
                     </main>
-
                 </div>
                 <div class="h-96 col-span-1 ">
                     <div class="bg-white py-3 px-4 rounded-lg flex justify-around items-center ">
@@ -91,9 +104,9 @@ defineProps({
                         <div class="bg-white rounded-md list-none  text-center ">
                             <!-- <li class="py-3 border-b-2"><inertia-link :href="route('enquiry.index')">Enquiry</inertia-link></li>
                             <li class="py-3 border-b-2"><inertia-link :href="route('forms.index')">Forms</inertia-link></li> -->
-                            <li class="py-3 border-b-2"><a href="http://www.mpu.edu.mo" target="_blank" class="list-none  hover:text-indigo-600">Feature</a>
+                            <li class="py-3 border-b-2"><a href="http://www.judo.org.mo" target="_blank" class="list-none  hover:text-indigo-600">澳門柔道協會</a>
                             </li>
-                            <li class="py-3 border-b-2"><a href="#" class="list-none  hover:text-indigo-600">Feature</a></li>
+                            <li class="py-3 border-b-2"><a href="https://www.sport.gov.mo/pt" class="list-none  hover:text-indigo-600" target="_blank">澳門體育局</a></li>
                             <li class="py-3 "><a href="#" class="list-none border-b-2 hover:text-indigo-600">Feature</a>
                             </li>
                         </div>

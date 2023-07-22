@@ -26,7 +26,8 @@ class OrganizationFactory extends Factory
             'href'=>'https://www.thewsu.org',
             'title'=>$this->faker->sentence(4),
             'description'=>$this->faker->text,
-            'content'=>$this->faker->text
+            'content'=>$this->faker->text,
+            'registration_code'=>$this->faker->randomNumber(4)
         ];
     }
 }

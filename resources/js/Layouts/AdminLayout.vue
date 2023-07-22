@@ -3,13 +3,13 @@
 
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible theme="light" width="250px" class="shadow-md " >
             <div class="m-4 text-center text-lg" v-if="collapsed">
-                <inertia-link href='/'>{{ $page.props.organization.abbr }}</inertia-link>
+                <inertia-link href='/'>JUA</inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                <inertia-link :href="route('manage.list')"></inertia-link>
+                <inertia-link href="/">JUA Master</inertia-link>
             </div>
 
-            <OrganizationMenu :menuKeys='menuKeys'/>
+            <AdminMenu :menuKeys='menuKeys'/>
         </a-layout-sider>
         
         <a-layout>
@@ -75,7 +75,7 @@ import {
     MenuFoldOutlined,
 } from '@ant-design/icons-vue';
 
-import OrganizationMenu from '@/Components/Organization/OrganizationMenu.vue';
+import AdminMenu from '@/Components/Admin/AdminMenu.vue';
 
 defineProps({
     title: String,

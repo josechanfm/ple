@@ -4,21 +4,31 @@ import Welcome from "@/Components/Welcome.vue";
 
 const data = [
   {
-    title: "Ant Design Title 1",
+    title: "2023全澳柔道計分賽",
+    url: "/member/competition/1/applications",
+    content: "Competition ABC is now open for registration"
   },
   {
     title: "Ant Design Title 2",
+    url:'',
+    content: "Competition ABC is now open for registration"
   },
   {
     title: "Ant Design Title 3",
+    url:'',
+    content: "Competition ABC is now open for registration"
   },
   {
     title: "Ant Design Title 4",
+    url:'',
+    content: "Competition ABC is now open for registration"
   },
 ];
 
 defineProps({
   member: Object,
+  articles: Object,
+
 });
 </script>
 
@@ -26,9 +36,10 @@ defineProps({
   <MemberLayout title="Dashboard">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Dashboard..
+        Membership
       </h2>
     </template>
+    {{articles}}
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
@@ -37,11 +48,9 @@ defineProps({
               <a-list item-layout="horizontal" :data-source="data">
                 <template #renderItem="{ item }">
                   <a-list-item>
-                    <a-list-item-meta
-                      description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                    >
+                    <a-list-item-meta :description="item.content">
                       <template #title>
-                        <a href="https://www.antdv.com/">{{ item.title }}</a>
+                        <a :href="item.url">{{ item.title }}</a>
                       </template>
                       <template #avatar>
                         <a-avatar src="https://joeschmoe.io/api/v1/random" />
@@ -62,7 +71,7 @@ defineProps({
                 <div class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 text-white shadow-xl text-sm font-serif w-full">
                   <div class="flex flex-col w-xl">
                     <div class="flex justify-center">
-                      <div class="text-lg font-bold">澳門機電工程師學會</div>
+                      <div class="text-lg font-bold">{{ $page.props.current_organization.full_name }}</div>
                     </div>
                     <div class="flex">
                       <div class="flex flex-col flex-auto gap-1">
@@ -97,7 +106,7 @@ defineProps({
 
               <div class="mt-16">
                 <h1 class="font-bold text-center text-3xl text-gray-900">
-                  澳門柔道總會
+                  {{ $page.props.current_organization.full_name }}
                 </h1>
                 <p class="text-center text-sm text-gray-400 font-medium">
                   {{ member.display_name }}
