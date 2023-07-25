@@ -1,35 +1,67 @@
-<script setup>
+<script>
 import MemberLayout from "@/Layouts/MemberLayout.vue";
-import Welcome from "@/Components/Welcome.vue";
+import axios from "axios";
+import QRCodeVue3 from "qrcode-vue3";
+import { onMounted } from "vue";
 
-const data = [
-  {
-    title: "2023全澳柔道計分賽",
-    url: "/member/competition/1/applications",
-    content: "Competition ABC is now open for registration"
-  },
-  {
-    title: "Ant Design Title 2",
-    url:'',
-    content: "Competition ABC is now open for registration"
-  },
-  {
-    title: "Ant Design Title 3",
-    url:'',
-    content: "Competition ABC is now open for registration"
-  },
-  {
-    title: "Ant Design Title 4",
-    url:'',
-    content: "Competition ABC is now open for registration"
-  },
-];
+export default {
+    components: {
+      MemberLayout,
+      QRCodeVue3
+    },
+    props:['member','articles','qrcode'],
+    data() {
+        return{
+          data: [
+              {
+                title: "2023全澳柔道計分賽",
+                url: "/member/competition/1/applications",
+                content: "Competition ABC is now open for registration"
+              },
+              {
+                title: "Ant Design Title 2",
+                url:'',
+                content: "Competition ABC is now open for registration"
+              },
+              {
+                title: "Ant Design Title 3",
+                url:'',
+                content: "Competition ABC is now open for registration"
+              },
+              {
+                title: "Ant Design Title 4",
+                url:'',
+                content: "Competition ABC is now open for registration"
+              },
+            ],
+          showQrcode:false,
+        }
+    },
+    created() {
+    },
+    mounted() {
+    },
+    methods:{
+      onShowQrcode(){
+        this.showQrcode=!this.showQrcode;
+        // this.loadData();
+        // setInterval(function(){
+        //   this.loadData();
+        // }.bind(this),5000);
+      },
+      // loadData(){
+      //   axios.get('/member/qrcode').then(response=>{
+      //       this.qrcode=response.data;
+      //       this.qrcode='aaaaaaaaaaaaaa'
+      //       console.log(response.data);
+      //     }
+      //   );
+      // }
+    }
 
-defineProps({
-  member: Object,
-  articles: Object,
+}
 
-});
+
 </script>
 
 <template>
@@ -39,7 +71,6 @@ defineProps({
         Membership
       </h2>
     </template>
-    {{articles}}
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
@@ -62,13 +93,37 @@ defineProps({
             </div>
           </div>
         </div>
+
         <div class="flex-none w-[400px]">
           <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg">
-
+              <!-- QRcode -->
+              <div class="flex flex-col justify-center items-center" v-if="showQrcode">
+                <div><QRCodeVue3 v-bind:value="qrcode" image="/images/site_logo.png" 
+                  :dotsOptions="{
+                  type: 'dots',
+                  color: '#26249a',
+                  gradient: {
+                    type: 'linear',
+                    rotation: 0,
+                    colorStops: [
+                      { offset: 0, color: '#26249a' },
+                      { offset: 1, color: '#26249a' },
+                    ],
+                  },
+                }"
+                :cornersSquareOptions="{
+                  type: 'square',
+                  color: '#e00404'
+                }"
+                :cornersDotOptions ="{
+                  color: '#e00404'
+                }"
+                /></div>
+              </div>
               <!-- card start -->
               <div class="mx-auto relative py-4 w-96 hover:scale-105 transform transition-transform mb-4">
-                <div class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 text-white shadow-xl text-sm font-serif w-full">
+                <div class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 text-white shadow-xl text-sm font-serif w-full" @click="onShowQrcode">
                   <div class="flex flex-col w-xl">
                     <div class="flex justify-center">
                       <div class="text-lg font-bold">{{ $page.props.current_organization.full_name }}</div>
@@ -174,6 +229,7 @@ defineProps({
                   </div>
                 </div>
               </div>
+              
             </div>
           </div>
         </div>

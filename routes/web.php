@@ -42,6 +42,7 @@ Route::middleware([
     Route::prefix('member')->group(function () {
         Route::get('/', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member');
         Route::get('dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member.dashboard');
+        Route::get('qrcode', [\App\Http\Controllers\Member\DashboardController::class, 'qrcode'])->name('member.qrcode');
         Route::get('guardian', [\App\Http\Controllers\Member\GuardianController::class, 'index'])->name('member.guardian');
         Route::get('guardian/act_as/{member}', [\App\Http\Controllers\Member\GuardianController::class, 'actAs'])->name('member.guardian.actAs');
         Route::get('guardian/back', [\App\Http\Controllers\Member\GuardianController::class, 'back'])->name('member.guardian.back');
@@ -78,6 +79,9 @@ Route::middleware([
         Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
         Route::resource('competitions', App\Http\Controllers\Organization\CompetitionController::class)->names('manage.competitions');
         Route::resource('articles',App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
+        Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
+        Route::resource('configs', App\Http\Controllers\Organization\ConfigController::class)->names('manage.configs');
+        Route::get('qrcode',[App\Http\Controllers\Organization\QrcodeController::class,'scan'])->name('manage.qrcode');
     });
     Route::prefix('/admin')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');

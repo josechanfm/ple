@@ -59,7 +59,6 @@
                     <a-switch v-model:checked="modal.data.published" :unCheckedValue="0" :checkedValue="1"/>
                     <span class="pl-3">{{$t('published_note')}}</span>
                 </a-form-item>
-
                 <a-form-item :label="$t('banner_image')" name="cert_logo">
                     <div v-if="modal.data.media.length" >
                         <inertia-link :href="route('manage.form.deleteMedia',modal.data.media[0].id)" class="float-right text-red-500">

@@ -3,7 +3,7 @@
 
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible theme="light" width="250px" class="shadow-md " >
             <div class="m-4 text-center text-lg" v-if="collapsed">
-                <inertia-link href='/'>{{ $page.props.organization.abbr }}</inertia-link>
+                <inertia-link href='/'>{{ $page.props.current_organization.abbr }}</inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
                 <inertia-link :href="route('manage.list')">{{ $page.props.current_organization.full_name }}</inertia-link>

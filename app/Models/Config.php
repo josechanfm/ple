@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Session;
 
 class Config extends Model
 {
@@ -12,7 +13,12 @@ class Config extends Model
 
     static function item($key)
     {
-        $item = Config::where('key', $key)->first();
+        if(Session::has('organization')){
+            $item = Config::where('organization_id',session('organization')->id)->where('key', $key)->first();
+            if(empty($item)){
+                $item = Config::where('organization_id',0)->where('key', $key)->first();
+            }
+        }
         if ($item) {
             return json_decode($item->value);
         } else {
@@ -20,19 +26,25 @@ class Config extends Model
         }
     }
 
-    static function items($key)
-    {
-        $items = Config::where('key', $key)->get();
-        $collections=[];
-        foreach($items as $item){
-            $collections[]=json_decode($item->value,true);
-        }
-        return $collections;
-    }
+    // static function items($key,$organizationId=0)
+    // {
+    //     $items = Config::where('organization_id',$organizationId)->where('key', $key)->get();
+    //     $collections=[];
+    //     foreach($items as $item){
+    //         $collections[]=json_decode($item->value,true);
+    //     }
+    //     return $collections;
+    // }
 
     static function categories_weights()
     {
-        $items = Config::where('key', 'categories_weights')->get();
+        if(Session::has('organization')){
+            $items = Config::where('organization_id',session('organization')->id)->where('key', 'categories_weights')->get();
+            if($items->count()==0){
+                $items = Config::where('organization_id',0)->where('key', 'categories_weights')->get();                
+            }
+        }
+        //  $items = Config::where('organization_id',$organizationId)->where('key', 'categories_weights')->get();
         $collections=[];
         foreach($items as $item){
             $collections[]=json_decode($item->value,true);
