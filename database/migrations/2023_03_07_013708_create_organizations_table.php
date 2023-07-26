@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->text('description')->nullable();
             $table->text('content')->nullable();
-            $talbe->string('registration_code')->nullable();
+            $table->string('registration_code')->nullable();
             $table->timestamps();
       
         });

@@ -80,8 +80,8 @@ Route::middleware([
         Route::resource('competitions', App\Http\Controllers\Organization\CompetitionController::class)->names('manage.competitions');
         Route::resource('articles',App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
         Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
+        Route::get('event/qrcode',[App\Http\Controllers\Organization\QrcodeController::class,'scan'])->name('manage.event.qrcode');
         Route::resource('configs', App\Http\Controllers\Organization\ConfigController::class)->names('manage.configs');
-        Route::get('qrcode',[App\Http\Controllers\Organization\QrcodeController::class,'scan'])->name('manage.qrcode');
     });
     Route::prefix('/admin')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');

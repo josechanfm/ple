@@ -17,9 +17,6 @@
                         <inertia-link :href="route('manage.events.show',record.id)" class="ant-btn">View</inertia-link>
                         <inertia-link :href="route('manage.events.edit',record.id)" class="ant-btn">Edit</inertia-link>
                     </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
-                    </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
                     </template>
@@ -38,16 +35,9 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['events'],
+    props: ['events','categories'],
     data() {
         return {
-            modal:{
-                isOpen:false,
-                data:{},
-                title:"Modal",
-                mode:""
-            },
-            teacherStateLabels:{},
             columns:[
                 {
                     title: 'Comptition title',

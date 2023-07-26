@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Event;
 use App\Models\Config;
+use App\Models\Member;
+use App\Models\Organization;
 
 class EventController extends Controller
 {
@@ -57,9 +59,12 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Event $event)
     {
-        //
+        return Inertia::render('Organization/EventCheckin',[
+            'event'=>$event,
+            'members'=>Organization::find(session('organization')->id)->members
+        ]);
     }
 
     /**
