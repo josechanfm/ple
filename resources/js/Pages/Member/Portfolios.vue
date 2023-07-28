@@ -5,11 +5,10 @@
                 Dashboard..
             </h2>
         </template>
-{{member.portfolios}}
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <button @click="createRecord()"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增表格</button>
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create new record</button>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                     <a-table :dataSource="member.portfolios" :columns="columns">
                         <template #bodyCell="{column, text, record, index}">

@@ -17,6 +17,18 @@
           </inertia-link>
         </span>
       </a-menu-item>
+      <!--
+      <a-menu-item key="2" v-if="$page.props.organizations.length>0">
+        <template #icon>
+          <PieChartOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('manage.dashboard')">
+            Management
+          </inertia-link>
+        </span>
+      </a-menu-item>
+      -->
       <a-menu-item key="2">
         <template #icon>
           <PieChartOutlined />

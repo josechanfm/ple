@@ -6,7 +6,7 @@
                 <inertia-link href='/'>JUA</inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                <inertia-link href="/">JUA Master</inertia-link>
+                <inertia-link href="/">JUA Admin</inertia-link>
             </div>
 
             <AdminMenu :menuKeys='menuKeys'/>
@@ -22,7 +22,6 @@
                 <a-dropdown placement="bottomRight">
                     <a class="trigger" @click.prevent>
                         <!-- {{ $page.props.currentUser.roles }} -->
-                        {{ $page.props.user.name }}
                     </a>
                     <template #overlay>
                         <a-menu>
