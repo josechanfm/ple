@@ -35,6 +35,11 @@ class DashboardController extends Controller
             ]);
         }
 
+        //login user is organizer
+        if (auth()->user()->hasRole(['organizer'])) {
+            return redirect('manage');
+        }
+
         //login user not a member but with specific roles
         if (auth()->user()->hasRole(['admin','master'])) {
             return redirect('admin');

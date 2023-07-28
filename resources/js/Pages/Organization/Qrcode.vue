@@ -17,7 +17,7 @@
 
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'qrcode-reader-vue3'
+import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'qrcode-reader-vue3';
 
 export default {
     components: {
@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         onDecode (result) {
-        this.result = result
+            this.result = result
         },
 
         async onInit (promise) {
