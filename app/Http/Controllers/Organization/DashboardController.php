@@ -41,6 +41,7 @@ class DashboardController extends Controller
         $this->authorize('view',session('organization'));
         if(session('organization')){
             return Inertia::render('Organization/Dashboard',[
+                'organizations' => auth()->user()->organizations
             ]);
         };
         return redirect()->route('manage.list');

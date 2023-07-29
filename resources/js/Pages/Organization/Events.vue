@@ -5,6 +5,7 @@
                 Events
             </h2>
         </template>
+                <inertia-link :href="route('manage.event.qrcode')" class="ant-btn ant-btn-primary">QR Scanner</inertia-link>
             <div class="flex-auto pb-3 text-right">
                 <inertia-link :href="route('manage.events.create')" class="ant-btn ant-btn-primary">Create Event</inertia-link>
             </div>
