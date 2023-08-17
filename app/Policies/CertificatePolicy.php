@@ -43,9 +43,12 @@ class CertificatePolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user, Certificate $certificate)
     {
-        //
+        if($user->hasRole(['admin','organizer'])){
+            return true;
+        }
+        return $certificate->organization->hasUser($user);
     }
 
     /**
@@ -57,7 +60,10 @@ class CertificatePolicy
      */
     public function update(User $user, Certificate $certificate)
     {
-        //
+        if($user->hasRole(['admin','organizer'])){
+            return true;
+        }
+        return $certificate->organization->hasUser($user);
     }
 
     /**

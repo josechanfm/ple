@@ -56,10 +56,13 @@
                 <a-input v-model:value="modal.data.display_name" />
             </a-form-item>
             <a-form-item :label="$t('gender')" name="gender">
-                <a-input v-model:value="modal.data.gender" />
+                <a-radio-group v-model:value="modal.data.gender" button-style="solid">
+                    <a-radio-button value="M">Male</a-radio-button>
+                    <a-radio-button value="F">Female</a-radio-button>
+                </a-radio-group>
             </a-form-item>
             <a-form-item :label="$t('dob')" name="dob">
-                <a-input v-model:value="modal.data.dob" />
+                <a-date-picker v-model:value="modal.data.dob" :format="dateFormat" :valueFormat="dateFormat"/>
             </a-form-item>
             <a-form-item :label="$t('email')" name="email">
                 <a-input v-model:value="modal.data.email" />
@@ -89,6 +92,7 @@ export default {
     props: ['members'],
     data() {
         return {
+            dateFormat:'YYYY-MM-DD',
             modal:{
                 isOpen:false,
                 data:{},
@@ -125,8 +129,11 @@ export default {
                 },
             ],
             rules:{
-                name_zh:{required:true},
-                mobile:{required:true},
+                given_name:{required:true},
+                family_name:{required:true},
+                gender:{required:true},
+                dob:{required:true},
+                email:{required:true, type: 'email'},
                 state:{required:true},
             },
             validateMessages:{
@@ -163,7 +170,7 @@ export default {
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/admin/teachers/', this.modal.data,{
+                this.$inertia.post(route('manage.members.store'), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -191,22 +198,24 @@ export default {
             }).catch(err => {
                 console.log("error", err);
             });
-           
         },
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/admin/teachers/' + recordId,{
-                onSuccess: (page)=>{
-                    console.log(page);
-                },
-                onError: (error)=>{
-                    console.log(error);
-                }
-            });
+            this.$inertia.delete(route('manage.members.destroy',{member:recordId}));
         },
         createLogin(recordId){
-            alert('create login'+recordId);
+            console.log(recordId);
+            this.$inertia.post(route('manage.member.createLogin',recordId),{
+                onSuccess:(page)=>{
+                    this.modal.data={};
+                    this.modal.isOpen=false;
+                    console.log(page);
+                },
+                onError:(error)=>{
+                    console.log(error);
+                }
+            })
         }
     },
 }

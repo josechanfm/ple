@@ -9,6 +9,7 @@ use App\Models\Organization;
 use App\Models\Member;
 use App\Exports\MemberExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Password;
 
 class MemberController extends Controller
 {
@@ -25,6 +26,9 @@ class MemberController extends Controller
      */
     public function index()
     {
+        // $org=Organization::find(session('organization')->id)->members;
+        // dd($org);
+        // dd(session('organization')->members);
         session('organization')->refresh();
         return Inertia::render('Organization/Members',[
             'members'=>session('organization')->members,
@@ -50,7 +54,9 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $member= Member::create($request->all());
+        $member->organizations()->attach(session('organization')->id);
+        
     }
 
     /**
@@ -99,14 +105,17 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Member $member)
     {
-        //
+        if($member->ownedBy(session('organization'))){
+            $member->delete();
+        }
+        return redirect()->back();
     }
 
-    public function createLogin(Organization $organization, Member $member){
+    public function createLogin(Member $member){
         $this->authorize('update',$member);
-        if (!$member->hasUser()) {
+        if (empty($member->user)) {
             $user = $member->createUser();
         } else {
             $user = $member->user;

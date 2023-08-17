@@ -44,7 +44,10 @@ class MemberPolicy
      */
     public function create(User $user)
     {
-        //
+        if($user->hasRole(['admin','organizer'])){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -56,7 +59,7 @@ class MemberPolicy
      */
     public function update(User $user, Member $member)
     {
-        if($user->hasRole('admin')){
+        if($user->hasRole('admin','organizer')){
             return true;
         }
         return $member->ownedBy(session('organization'));
@@ -71,7 +74,10 @@ class MemberPolicy
      */
     public function delete(User $user, Member $member)
     {
-        //
+        if($user->hasRole(['admin','organizer'])){
+            return true;
+        }
+        return false;
     }
 
     /**

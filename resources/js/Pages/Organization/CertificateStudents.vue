@@ -5,6 +5,7 @@
                 Certificates
             </h2>
         </template>
+        {{ certificate }}
             <div class="flex-auto pb-3 text-right">
                 <a-button type="primary" class="!rounded" @click="createRecord()"
                 >Create Certificate</a-button>
@@ -83,7 +84,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['organization','certificates'],
+    props: ['organization','certificate'],
     data() {
         return {
             modal:{

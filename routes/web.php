@@ -66,6 +66,7 @@ Route::middleware([
         Route::get('/select/{organization}', [App\Http\Controllers\Organization\DashboardController::class, 'select'])->name('manage.select');
         Route::get('/dashboard', [App\Http\Controllers\Organization\DashboardController::class, 'index'])->name('manage.dashboard');
         Route::resource('members', App\Http\Controllers\Organization\MemberController::class)->names('manage.members');
+        Route::post('member/create/login/{member}', [App\Http\Controllers\Organization\MemberController::class,'createLogin'])->name('manage.member.createLogin');
         Route::resource('forms', App\Http\Controllers\Organization\FormController::class)->names('manage.forms');
         Route::get('form/delete_media/{media}', [App\Http\Controllers\Organization\FormController::class, 'deleteMedia'])->name('manage.form.deleteMedia');
         Route::resource('form/{form}/fields', App\Http\Controllers\Organization\FormFieldController::class)->names('manage.form.fields');
@@ -76,6 +77,7 @@ Route::middleware([
         Route::resource('bulletins', App\Http\Controllers\Organization\BulletinController::class)->names('manage.bulletins');
         Route::resource('messages', App\Http\Controllers\Organization\MessageController::class)->names('manage.messages');
         Route::resource('certificates', App\Http\Controllers\Organization\CertificateController::class)->names('manage.certificates');
+        Route::resource('certificate/{certificate}/members',App\Http\Controllers\Organization\CertificateMemberController::class)->names('manage.certificate.members');
         Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
         Route::resource('competitions', App\Http\Controllers\Organization\CompetitionController::class)->names('manage.competitions');
         Route::resource('articles',App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');

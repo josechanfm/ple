@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Certificate extends Model
 {
     use HasFactory;
+    protected $fillable=['organization_id','name','cert_title','cert_body','cert_logo','cert_template','number_format','rank_catption','descreption'];
     protected $appends=['cid','cert_number'];
 
     public function getCidAttribute(){

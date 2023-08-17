@@ -5,28 +5,21 @@ namespace App\Http\Controllers\Organization;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Organization;
 use App\Models\Certificate;
 use App\Models\Member;
-
-class CertificateController extends Controller
+class CertificateMemberController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Certificate::class);
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Certificate $certificate)
     {
-        return Inertia::render('Organization/Certificates',[
-            'certificates'=>session('organization')->fresh()->certificates,
+        $certificate->members;
+        return Inertia::render('Organization/CertificateStudents',[
+            'certificate'=>$certificate
         ]);
-
     }
 
     /**
@@ -47,10 +40,7 @@ class CertificateController extends Controller
      */
     public function store(Request $request)
     {
-        $data=$request->all();
-        $data['organization_id']=session('organization')->id;
-        Certificate::create($data);
-        return redirect()->back();
+        //
     }
 
     /**
@@ -59,9 +49,9 @@ class CertificateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization, Certificate $certificate)
+    public function show($id)
     {
-        return redirect(route('organization.certificate.memebers',[$organization->id,$certificate->id]));
+        //
     }
 
     /**
@@ -82,10 +72,9 @@ class CertificateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Certificate $certificate)
+    public function update(Request $request, $id)
     {
-        $certificate->update($request->all());
-        return redirect()->back();
+        //
     }
 
     /**
@@ -97,16 +86,5 @@ class CertificateController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function members(Organization $organization, Certificate $certificate){
-        $this->authorize('view',$organization);
-        $this->authorize('view',$certificate);
-        return Inertia::render('Organization/CertificateMember',[
-            'organization'=>$organization,
-            'certificate'=>$certificate,
-            'members'=>$certificate->members
-        ]);
-        
     }
 }

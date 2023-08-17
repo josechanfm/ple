@@ -29,7 +29,7 @@ class PortfolioController extends Controller
         $member->portfolios;
         return Inertia::render('Member/Portfolios',[
             'member'=>$member,
-            // 'portfolios'=>$portfolios
+            //'portfolios'=>$portfolios
         ]);
 
         // return Inertia::render('Member/Portfolios',[

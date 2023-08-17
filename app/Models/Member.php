@@ -17,13 +17,12 @@ class Member extends Model
     public function createUser(): User
     {
         $user = new User();
-
         $user->email = $this->email;
-        $user->name = $this->first_name;
+        $user->name = $this->given_name;
         $user->password = 'need-to-set';
-
         $user->save();
-
+        $this->user_id=$user->id;
+        $this->save();
         return $user;
     }
 
