@@ -5,20 +5,21 @@
                 Certificates
             </h2>
         </template>
-        {{ certificate }}
             <div class="flex-auto pb-3 text-right">
                 <a-button type="primary" class="!rounded" @click="createRecord()"
                 >Create Certificate</a-button>
             </div>
 
-            <a-table :dataSource="certificates" :columns="columns">
+            <a-table :dataSource="certificate.members" :columns="columns">
                 <template #headerCell="{column}">
                     {{ column.i18n?$t(column.i18n):column.title}}
                 </template>
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <a-button @click="editRecord(record)">Edit</a-button>
-                        <inertia-link :href="route('manage.certificate.members.index',record.id)">Members</inertia-link>
+                    </template>
+                    <template v-if="column.dataIndex=='display_name'">
+                        {{record.pivot.display_name}}
                     </template>
                     <template v-else-if="column.dataIndex=='state'">
                         {{teacherStateLabels[text]}}
@@ -31,6 +32,7 @@
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
+            {{modal.data}}
         <a-form
             ref="modalRef"
             :model="modal.data"
@@ -44,26 +46,33 @@
             <!-- <a-form-item label="Certificate name" name="name">
                 <a-input v-model:value="modal.data.name" />
             </a-form-item> -->
-            <a-form-item label="Certificate Title" name="cert_title">
-                <a-input v-model:value="modal.data.cert_title" />
+            <a-form-item label="Member" name="member_id">
+                <a-select v-model:value="modal.data.member_id" :options="members" :fieldNames="{value:'id',label:'given_name'}" />
             </a-form-item>
-            <a-form-item label="Certificate Body" name="cert_body">
-                <a-input v-model:value="modal.data.cert_body" />
+            
+            <a-form-item label="Display Name" name="display_name">
+                <a-input v-model:value="modal.data.display_name" />
             </a-form-item>
-            <a-form-item label="Certificate Logo" name="cert_logo">
-                <a-input v-model:value="modal.data.logo" />
+            <a-form-item label="Number" name="number">
+                <a-input v-model:value="modal.data.number" />
             </a-form-item>
-            <a-form-item label="Certificate template" name="cert_template">
-                <a-input v-model:value="modal.data.cert_template" />
+            <a-form-item label="Number Display" name="number_display">
+                <a-input v-model:value="modal.data.number_display" />
             </a-form-item>
-            <a-form-item label="Number format" name="number_format">
-                <a-input v-model:value="modal.data.number_format" />
+            <a-form-item label="Issue Date" name="issue_date">
+                <a-input v-model:value="modal.data.issue_date" />
             </a-form-item>
-            <a-form-item label="Rank caption" name="rank_caption">
-                <a-input v-model:value="modal.data.rank_catption" />
+            <a-form-item label="Valid From" name="valid_from">
+                <a-input v-model:value="modal.data.valid_from" />
             </a-form-item>
-            <a-form-item label="Description" name="description">
-                <a-input v-model:value="modal.data.description" />
+            <a-form-item label="Valid Until" name="valid_until">
+                <a-input v-model:value="modal.data.valid_until" />
+            </a-form-item>
+            <a-form-item label="Auterized by" name="autherized_by">
+                <a-input v-model:value="modal.data.autherized_by" />
+            </a-form-item>
+            <a-form-item label="Avata" name="avata">
+                <a-input v-model:value="modal.data.avata" />
             </a-form-item>
         </a-form>
         <template #footer>
@@ -84,7 +93,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['organization','certificate'],
+    props: ['organization','certificate','members'],
     data() {
         return {
             modal:{
@@ -96,34 +105,34 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: 'Cert Title',
-                    dataIndex: 'cert_title',
-                    i18n:'certificate_title'
+                    title: 'Given name',
+                    dataIndex: 'given_name',
+                    i18n:'given_name'
                 },{
-                    title: 'Cert Body',
-                    dataIndex: 'cert_body',
-                    i18n:'cert_body'
+                    title: 'Family Name',
+                    dataIndex: 'family_name',
+                    i18n:'family_name'
                 },{
-                    title: 'Number Format',
-                    dataIndex: 'number_format',
-                    i18n:'number_format'
+                    title: 'Display Name',
+                    dataIndex: 'display_name',
+                    i18n:'display_name'
                 },{
-                    title: 'Cert. Logo',
-                    dataIndex: 'cert_logo',
-                    i18n:'cert_logo'
+                    title: 'Gender',
+                    dataIndex: 'gender',
+                    i18n:'gender'
                 },{
-                    title: 'Cert. template',
-                    dataIndex: 'cert_template',
-                    i18n:'cert_template'
+                    title: 'Email',
+                    dataIndex: 'email',
+                    i18n:'email'
                 },{
-                    title: '操作',
+                    title: 'Operation',
                     dataIndex: 'operation',
                     key: 'operation',
                     i18n:'operation'
                 },
             ],
             rules:{
-                cert_title:{required:true},
+                display_name:{required:true},
             },
             validateMessages:{
                 required: '${label} is required!',
@@ -146,13 +155,15 @@ export default {
     },
     methods: {
         createRecord(){
-            this.modal.data={};
+            this.modal.data={
+                
+            };
             this.modal.mode="CREATE";
             this.modal.title="Create new Certificate";
             this.modal.isOpen=true;
         },
         editRecord(record){
-            this.modal.data={...record};
+            this.modal.data={...record.pivot};
             this.modal.mode="EDIT";
             this.modal.title="修改";
             this.modal.isOpen=true;
@@ -173,9 +184,9 @@ export default {
             });
         },
         updateRecord(){
-            console.log(this.modal.data);
+            console.log(this.modal.data.pivot);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.put(route('manage.certificates.update',this.modal.data.id), this.modal.data,{
+                this.$inertia.put(route('manage.certificate.members.update',{certificate:this.modal.data.certificate_id,member:this.modal.data.member_id}), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;

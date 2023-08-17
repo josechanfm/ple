@@ -17,7 +17,7 @@
             <template #bodyCell="{column, text, record, index}">
                 <template v-if="column.dataIndex=='operation'">
                     <inertia-link :href="route('manage.members.show',record.id)" class="ant-btn">View</inertia-link>
-                    <a-button @click="editRecord(record)">Edit(Popup)</a-button>
+                    <a-button @click="editRecord(record)">Edit</a-button>
                     <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     <a-button @click="createLogin(record.id)">Create login</a-button>
                 </template>

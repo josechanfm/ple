@@ -43,7 +43,7 @@ class CertificatePolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user, Certificate $certificate)
+    public function create(User $user)
     {
         if($user->hasRole(['admin','organizer'])){
             return true;

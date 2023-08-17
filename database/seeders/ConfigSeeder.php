@@ -16,6 +16,7 @@ class ConfigSeeder extends Seeder
     public function run()
     {
         DB::table('configs')->insert([
+            'organization_id'=>0,
             'key'=>'categories_weights',
             'value'=>'{
                 "code": "junior1",
@@ -61,6 +62,7 @@ class ConfigSeeder extends Seeder
             }',
         ]);
         DB::table('configs')->insert([
+            'organization_id'=>0,
             'key'=>'categories_weights',
             'value'=>'{
                 "code":"junior2",
@@ -106,6 +108,7 @@ class ConfigSeeder extends Seeder
             }',
         ]);
         DB::table('configs')->insert([
+            'organization_id'=>0,
             'key'=>'categories_weights',
             'value'=>'{
                 "code": "junior3",
@@ -152,6 +155,7 @@ class ConfigSeeder extends Seeder
         ]);
 
         DB::table('configs')->insert([
+            'organization_id'=>0,
             'key'=>'competition_roles',
             'value'=>'[{
                     "value": "athlete",

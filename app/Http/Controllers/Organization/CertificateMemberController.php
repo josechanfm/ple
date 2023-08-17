@@ -18,7 +18,8 @@ class CertificateMemberController extends Controller
     {
         $certificate->members;
         return Inertia::render('Organization/CertificateStudents',[
-            'certificate'=>$certificate
+            'certificate'=>$certificate,
+            'members'=>session('organization')->members
         ]);
     }
 
@@ -74,7 +75,7 @@ class CertificateMemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return response()->json($request->all());
     }
 
     /**

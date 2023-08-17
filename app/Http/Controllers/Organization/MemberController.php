@@ -56,7 +56,7 @@ class MemberController extends Controller
     {
         $member= Member::create($request->all());
         $member->organizations()->attach(session('organization')->id);
-        
+        return redirect()->back();
     }
 
     /**
