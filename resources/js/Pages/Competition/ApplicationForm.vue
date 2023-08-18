@@ -1,17 +1,28 @@
 <template>
-  <OrganizationLayout title="Dashboard">
+  <WebLayout title="Dashboard">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Create competition
+        表格例表
       </h2>
     </template>
-    <div class="container mx-auto">
-      <div class="bg-white relative shadow rounded-lg p-5">
-        <div id="pure-html">
+    <div class="py-12">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="p-5 bg-white overflow-hidden shadow-xl sm:rounded-lg">
+          <a-typography-title :level="3" class="text-center">{{ competition.title_fn }}</a-typography-title>
+          <a-typography-title :level="4" >Date: {{ competition.start_date }} - {{ competition.end_date }}</a-typography-title>
+          <!--
+          <a-typography-title :level="4" >Match Date: 
+            <span v-for="date in competition.match_dates">{{ date }} ,</span>
+          </a-typography-title>
+          -->
+          <div id="pure-html">
               <div v-html="competition.description"/>
           </div>
+          
+
           <a-form 
             :model="application" 
+            v-bind="layout" 
             name="nest-messages" 
             :validate-messages="validateMessages"
             layout="vertical" 
@@ -72,25 +83,43 @@
             </a-form-item>
 
           </a-form>
+        </div>
       </div>
     </div>
-  </OrganizationLayout>
+  </WebLayout>
+    <a-modal v-model:visible="modal.isOpen" :title="modal.title" :cancelButtonProps="{style:'display:none'}" okText="$t{'understand'}">
+      <p>Duplicate entry,</p>
+      <p>If you are Athlete, you may apply at most 2 categories in the same competition.</p>
+      <p>Or you may apply one role only.</p>
+      <p>{{modal.content}}</p>
+    </a-modal>
 </template>
 
 <script>
-import OrganizationLayout from "@/Layouts/OrganizationLayout.vue";
-import dayjs from 'dayjs';
+import WebLayout from "@/Layouts/WebLayout.vue";
+import dayjs from "dayjs";
+import { message } from 'ant-design-vue';
+import { Modal } from 'ant-design-vue';
 
 export default {
   components: {
-    OrganizationLayout,
-    dayjs
+    WebLayout,
+    dayjs,
+    message,
+    Modal
   },
-  props: ["competition", "categories_weights", "roles"],
+  props: ["member", "competition"],
   data() {
     return {
+      modal:{
+        isOpen:false,
+        title:'Application Failed',
+        content:"Error message"
+      },
+      mode: null,
       dateFormat: "YYYY-MM-DD",
-      application:{},
+      dateList: ["2023-01-02"],
+      application: {},
       rules: {
         given_name: { required: true },
         family_name: { required: true },
@@ -128,24 +157,24 @@ export default {
     };
   },
   mounted() {
-      //this.competition = { ...this.competitionSource };
-      this.competition.period = []
-      this.competition.period[0] = dayjs(this.competition.start_date)
-      this.competition.period[1] = dayjs(this.competition.end_date)
-      this.competition.cwSelected = this.competition.categories_weights.map(cw => cw.code);
-      this.getDaysArray(this.competition.period[0], this.competition.period[1])
+    this.application.competition_id = this.competition.id;
+    if(this.member){
+        this.application.member_id = this.member.id;
+        this.application.given_name = this.member.given_name;
+        this.application.family_name = this.member.family_name;
+        this.application.middle_name = this.member.middle_name;
+        this.application.display_name = this.member.display_name;
+        this.application.gender = this.member.gender;
+        this.application.dob = this.member.dob;
+        this.application.email = this.member.email;
+        this.application.mobile = this.member.mobile;
+
+    }
   },
   created() {
 
   },
   methods: {
-    getDaysArray(start, end) {
-      for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
-        //arr.push(new Date(dt));
-        arr.push(dt.getFullYear() + '-' + (dt.getMonth() + 1) + "-" + dt.getDate());
-      }
-      this.dateList = arr;
-    },
     onGenderChange(event) {
       console.log(event);
       if (this.application.category) {
@@ -172,7 +201,16 @@ export default {
       }
     },
     onFinish() {
-      Alert('done')
+      console.log(this.application);
+      this.$inertia.post(route('competitions.store',this.competition.id), this.application, {
+        onSuccess: (page) => {
+            console.log(page);
+        },
+        onError: (error) => {
+          this.modal.content=error.message
+          this.modal.isOpen=true
+        }
+      });
 
     },
   },
@@ -186,5 +224,4 @@ export default {
 #pure-html *{
   all: revert;
 }
-
 </style>

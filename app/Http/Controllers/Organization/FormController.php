@@ -57,7 +57,6 @@ class FormController extends Controller
         ]);
         $organization = Organization::find($request->organization_id);
 
-        if($organization->hasUser(Auth()->user())){
             $form=new Form();
             $form->organization_id=$request->organization_id;
             $form->name=$request->name;
@@ -68,7 +67,6 @@ class FormController extends Controller
             $form->published=$request->published;
             $form->save();
             return redirect()->back();
-        }
     }
 
     /**

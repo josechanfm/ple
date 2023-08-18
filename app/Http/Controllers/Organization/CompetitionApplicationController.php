@@ -5,22 +5,21 @@ namespace App\Http\Controllers\Organization;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Certificate;
-use App\Models\CertificateMember;
-use App\Models\Member;
-class CertificateMemberController extends Controller
+use App\Models\Competition;
+use App\Models\CompetitionApplication;
+
+class CompetitionApplicationController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Certificate $certificate)
+    public function index(Competition $competition)
     {
-        $certificate->members;
-        return Inertia::render('Organization/CertificateStudents',[
-            'certificate'=>$certificate,
-            'members'=>session('organization')->members
+        $competition->applications;
+        return Inertia::render('Organization/CompetitionApplications',[
+            'competition'=>$competition
         ]);
     }
 
@@ -40,10 +39,9 @@ class CertificateMemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Certificate $certificate, Request $request)
+    public function store(Request $request)
     {
-        CertificateMember::create($request->all());
-        return redirect()->back();
+        //
     }
 
     /**
@@ -75,12 +73,13 @@ class CertificateMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Certificate $certificate)
-    {   
-        $certificateMember=CertificateMember::find($request->id);
-        $certificateMember->update($request->all());
+    public function update(Request $request, Competition $competition, $id)
+    {
+        $competitionApplication=CompetitionApplication::find($id);
+        // return response()->json($competitionApplication);
+        // return response()->json($request->all());
+        $competitionApplication->update($request->all());
         return redirect()->back();
-        //return response()->json($request->all());
     }
 
     /**

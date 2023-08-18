@@ -11,9 +11,14 @@ class Config extends Model
     use HasFactory;
     //protected $casts=['value'=>'json'];
 
-    static function item($key)
+    static function item($key,$organization=null)
     {
-        if(Session::has('organization')){
+        if($organization){
+            $item = Config::where('organization_id',$organization->id)->where('key', $key)->first();
+            if(empty($item)){
+                $item = Config::where('organization_id',0)->where('key', $key)->first();
+            }
+        }elseif(Session::has('organization')){
             $item = Config::where('organization_id',session('organization')->id)->where('key', $key)->first();
             if(empty($item)){
                 $item = Config::where('organization_id',0)->where('key', $key)->first();
@@ -36,18 +41,27 @@ class Config extends Model
     //     return $collections;
     // }
 
-    static function categories_weights()
+    static function categories_weights($organization=null)
     {
-        if(Session::has('organization')){
+        if($organization){
+            $items = Config::where('organization_id',$organization->id)->where('key', 'categories_weights')->get();
+            if($items->count()==0){
+                $items = Config::where('organization_id',0)->where('key', 'categories_weights')->get();                
+            }
+        }elseif(Session::has('organization')){
             $items = Config::where('organization_id',session('organization')->id)->where('key', 'categories_weights')->get();
             if($items->count()==0){
                 $items = Config::where('organization_id',0)->where('key', 'categories_weights')->get();                
             }
+        }else{
+            $items = Config::where('organization_id',0)->where('key', 'categories_weights')->get();
         }
-        //  $items = Config::where('organization_id',$organizationId)->where('key', 'categories_weights')->get();
+        
         $collections=[];
-        foreach($items as $item){
-            $collections[]=json_decode($item->value,true);
+        if(!empty($item)){
+            foreach($items as $item){
+                $collections[]=json_decode($item->value,true);
+            }
         }
         return $collections;
     }

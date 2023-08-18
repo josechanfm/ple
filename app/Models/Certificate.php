@@ -23,7 +23,7 @@ class Certificate extends Model
 
     public function members(){
         return $this->belongsToMany(Member::class)->withPivot(
-            'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');
+            'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorized_by','rank','avata','remark');
     }
 
     public function organization(){

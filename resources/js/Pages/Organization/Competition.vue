@@ -16,6 +16,9 @@
           <a-form-item :label="$t('competition_title_fn')" name="title_fn">
             <a-input v-model:value="competitionData.title_fn" />
           </a-form-item>
+          <a-form-item :label="$t('brief')" name="brief">
+            <a-textarea v-model:value="competitionData.brief" style="min-height: 100px" />
+          </a-form-item>
           <a-form-item :label="$t('description')" name="description">
             <quill-editor v-model:value="competitionData.description" style="min-height: 200px" />
           </a-form-item>
@@ -142,8 +145,11 @@ export default {
       this.dateList = arr;
     },
     onFinish() {
-      this.competitionData.categories_weights = this.categories_weights.filter(cw => this.competitionData.cwSelected.includes(cw.code));
-      this.competitionData.roles = this.roles.filter(r => this.competitionData.roleSelected.includes(r.value));
+      this.competitionData.categories_weights = this.categories_weights.filter(cw => this.competitionData.cwSelected.includes(cw.code))
+      this.competitionData.roles = this.roles.filter(r => this.competitionData.roleSelected.includes(r.value))
+      this.competitionData.start_date = this.competitionData.period[0].format('YYYY-MM-DD')
+      this.competitionData.end_date = this.competitionData.period[1].format('YYYY-MM-DD')
+
       if (this.mode == "CREATE") {
         this.$inertia.post(route('manage.competitions.store'), this.competitionData, {
           onSuccess: (page) => {

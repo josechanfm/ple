@@ -3,12 +3,12 @@
     <WebLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Application Froms
+                Competitions
             </h2>
         </template>
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
-                <a-table :dataSource="forms" :columns="columns">
+                <a-table :dataSource="competitions" :columns="columns">
                     <template #bodyCell="{column, text, record, index}">
                         <template v-if="column.dataIndex=='operation'">
                             <a @click="toApply(record)">Apply</a>
@@ -32,7 +32,7 @@ export default {
     components: {
         WebLayout,
     },
-    props: ['forms'],
+    props: ['competitions'],
     data() {
         return {
             columns:[
@@ -41,10 +41,10 @@ export default {
                     dataIndex: 'name',
                 },{
                     title: 'Title',
-                    dataIndex: 'title',
+                    dataIndex: 'title_en',
                 },{
                     title: 'Login',
-                    dataIndex: 'require_login',
+                    dataIndex: 'description',
                 },{
                     title: 'For member',
                     dataIndex: 'for_member',
@@ -83,7 +83,7 @@ export default {
     methods: {
         toApply(record){
             if(record.require_login==0 || this.$page.props.user){
-                Inertia.get(route('forms.show',record.id));
+                Inertia.get(route('competitions.show',record.id));
             }else{
                 alert("login requierd");
             }

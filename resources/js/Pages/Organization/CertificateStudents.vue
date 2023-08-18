@@ -5,84 +5,106 @@
                 Certificates
             </h2>
         </template>
-            <div class="flex-auto pb-3 text-right">
-                <a-button type="primary" class="!rounded" @click="createRecord()"
-                >Create Certificate</a-button>
-            </div>
+        <div class="flex-auto pb-3 text-right">
+            <a-button type="primary" class="!rounded" @click="createRecord()">Create Certificate</a-button>
+        </div>
 
-            <a-table :dataSource="certificate.members" :columns="columns">
-                <template #headerCell="{column}">
-                    {{ column.i18n?$t(column.i18n):column.title}}
+        <a-table :dataSource="certificate.members" :columns="columns">
+            <template #headerCell="{ column }">
+                {{ column.i18n ? $t(column.i18n) : column.title }}
+            </template>
+            <template #bodyCell="{ column, text, record, index }">
+                <template v-if="column.dataIndex == 'operation'">
+                    <a-button @click="editRecord(record)">Edit</a-button>
                 </template>
-                <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                    </template>
-                    <template v-if="column.dataIndex=='display_name'">
-                        {{record.pivot.display_name}}
-                    </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
+                <template v-else-if="column.dataIndex == 'display_name'">
+                    {{ record.pivot.display_name }}
                 </template>
-            </a-table>
+                <template v-else-if="column.dataIndex == 'issue_date'">
+                    {{ record.pivot.issue_date }}
+                </template>
+                <template v-else-if="column.dataIndex == 'valid_from'">
+                    {{ record.pivot.valid_from }}
+                </template>
+                <template v-else-if="column.dataIndex == 'valid_until'">
+                    {{ record.pivot.valid_until }}
+                </template>
+                <template v-else>
+                    {{ record[column.dataIndex] }}
+                </template>
+            </template>
+            <template #expandedRowRender="{ record }">
+                <p>Given Name: {{ record.given_name }}</p>
+                <p>Middle Name: {{ record.middle_name }}</p>
+                <p>Family Name: {{ record.family_name }}</p>
+                <p>Display Name: {{ record.display_name }}</p>
+                <p>Gender: {{ record.gender }}</p>
+                <p>Date of Birth: {{ record.dob }}</p>
+                <p>Email: {{ record.email }}</p>
+                <p>Number: {{ record.pivot.number }}</p>
+                <!-- <p>Number Display: {{ record.pivot.number_display }}</p> -->
+                <p>Issue Date: {{ record.pivot.issue_date }}</p>
+                <p>Valid Until: {{ record.pivot.valid_until }}</p>
+                <p>Autherized by: {{ record.pivot.autherized_by }}</p>
+                <!-- <p>Rank: {{ record.pivot.rank }}</p>
+                <p>Rank Caption: {{ record.pivot.rank_caption }}</p> -->
+                <p>Remark: {{ record.pivot.remark }}</p>
+                <!-- <p>Avata: {{ record.pivot.avata }}</p> -->
+            </template>
+            <template #expandColumnTitle>
+                Details
+            </template>
+        </a-table>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
-            {{modal.data}}
-        <a-form
-            ref="modalRef"
-            :model="modal.data"
-            name="Teacher"
-            :label-col="{ span: 8 }"
-            :wrapper-col="{ span: 16 }"
-            autocomplete="off"
-            :rules="rules"
-            :validate-messages="validateMessages"
-        >
-            <!-- <a-form-item label="Certificate name" name="name">
+        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+            <a-form ref="modalRef" :model="modal.data" name="Teacher" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
+                autocomplete="off" :rules="rules" :validate-messages="validateMessages">
+                <!-- <a-form-item label="Certificate name" name="name">
                 <a-input v-model:value="modal.data.name" />
             </a-form-item> -->
-            <a-form-item label="Member" name="member_id">
-                <a-select v-model:value="modal.data.member_id" :options="members" :fieldNames="{value:'id',label:'given_name'}" />
-            </a-form-item>
-            
-            <a-form-item label="Display Name" name="display_name">
-                <a-input v-model:value="modal.data.display_name" />
-            </a-form-item>
-            <a-form-item label="Number" name="number">
-                <a-input v-model:value="modal.data.number" />
-            </a-form-item>
-            <a-form-item label="Number Display" name="number_display">
-                <a-input v-model:value="modal.data.number_display" />
-            </a-form-item>
-            <a-form-item label="Issue Date" name="issue_date">
-                <a-input v-model:value="modal.data.issue_date" />
-            </a-form-item>
-            <a-form-item label="Valid From" name="valid_from">
-                <a-input v-model:value="modal.data.valid_from" />
-            </a-form-item>
-            <a-form-item label="Valid Until" name="valid_until">
-                <a-input v-model:value="modal.data.valid_until" />
-            </a-form-item>
-            <a-form-item label="Auterized by" name="autherized_by">
-                <a-input v-model:value="modal.data.autherized_by" />
-            </a-form-item>
-            <a-form-item label="Avata" name="avata">
-                <a-input v-model:value="modal.data.avata" />
-            </a-form-item>
-        </a-form>
-        <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
-        </template>
-    </a-modal>    
-    <!-- Modal End-->
+                <a-form-item label="Member" name="member_id">
+                    <a-select v-model:value="modal.data.member_id" :options="members"
+                        :fieldNames="{ value: 'id', label: 'given_name' }"  @change="onChangeMember" />
+                </a-form-item>
+                <a-form-item label="Full name" name="full_name">
+                    {{ modal.member.given_name }} {{ modal.member.middle_name }} {{ modal.member.family_name }}
+                </a-form-item>
+                <a-form-item label="Display Name" name="display_name">
+                    <a-input v-model:value="modal.data.display_name" />
+                </a-form-item>
+                <a-form-item label="Number" name="number">
+                    <a-input v-model:value="modal.data.number" />
+                </a-form-item>
+                <!-- <a-form-item label="Number Display" name="number_display">
+                    <a-input v-model:value="modal.data.number_display" />
+                </a-form-item> -->
+                <a-form-item label="Issue Date" name="issue_date">
+                    <a-date-picker v-model:value="modal.data.issue_date" :format="dateFormat" :valueFormat="dateFormat"/>
+                </a-form-item>
+                <a-form-item label="Valid From" name="valid_from">
+                    <a-date-picker v-model:value="modal.data.valid_from" :format="dateFormat" :valueFormat="dateFormat"/>
+                </a-form-item>
+                <a-form-item label="Valid Until" name="valid_until">
+                    <a-date-picker v-model:value="modal.data.valid_until" :format="dateFormat" :valueFormat="dateFormat"/>
+                </a-form-item>
+                <a-form-item label="Authorized by" name="authorized_by">
+                    <a-input v-model:value="modal.data.authorized_by" />
+                </a-form-item>
+                <a-form-item label="Remark" name="remark">
+                    <a-textarea v-model:value="modal.data.remark" />
+                </a-form-item>
+                <!-- <a-form-item label="Avata" name="avata">
+                    <a-input v-model:value="modal.data.avata" />
+                </a-form-item> -->
+            </a-form>
+            <template #footer>
+                <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
+                <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary" @click="storeRecord()">Add</a-button>
+            </template>
+        </a-modal>
+        <!-- Modal End-->
     </OrganizationLayout>
-
 </template>
 
 <script>
@@ -93,48 +115,49 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['organization','certificate','members'],
+    props: ['organization', 'certificate', 'members'],
     data() {
         return {
-            modal:{
-                isOpen:false,
-                data:{},
-                title:"Modal",
-                mode:""
+            dateFormat:'YYYY-MM-DD',
+            modal: {
+                isOpen: false,
+                data: {},
+                title: "Modal",
+                mode: ""
             },
-            teacherStateLabels:{},
-            columns:[
+            teacherStateLabels: {},
+            columns: [
                 {
-                    title: 'Given name',
-                    dataIndex: 'given_name',
-                    i18n:'given_name'
-                },{
-                    title: 'Family Name',
-                    dataIndex: 'family_name',
-                    i18n:'family_name'
-                },{
                     title: 'Display Name',
                     dataIndex: 'display_name',
-                    i18n:'display_name'
-                },{
+                    i18n: 'display_name'
+                }, {
                     title: 'Gender',
                     dataIndex: 'gender',
-                    i18n:'gender'
-                },{
-                    title: 'Email',
-                    dataIndex: 'email',
-                    i18n:'email'
-                },{
+                    i18n: 'gender'
+                }, {
+                    title: 'Issue Date',
+                    dataIndex: 'issue_date',
+                    i18n: 'issue_date'
+                }, {
+                    title: 'Valid From',
+                    dataIndex: 'valid_from',
+                    i18n: 'valid_from'
+                }, {
+                    title: 'Valid Until',
+                    dataIndex: 'valid_until',
+                    i18n: 'valid_until'
+                }, {
                     title: 'Operation',
                     dataIndex: 'operation',
                     key: 'operation',
-                    i18n:'operation'
+                    i18n: 'operation'
                 },
             ],
-            rules:{
-                display_name:{required:true},
+            rules: {
+                display_name: { required: true },
             },
-            validateMessages:{
+            validateMessages: {
                 required: '${label} is required!',
                 types: {
                     email: '${label} is not a valid email!',
@@ -146,36 +169,40 @@ export default {
             },
             labelCol: {
                 style: {
-                width: '150px',
+                    width: '150px',
                 },
             },
         }
     },
-    created(){
+    created() {
     },
     methods: {
-        createRecord(){
-            this.modal.data={
-                
+        createRecord() {
+            this.modal.data = {
+                certificate_id: this.certificate.id,
             };
-            this.modal.mode="CREATE";
-            this.modal.title="Create new Certificate";
-            this.modal.isOpen=true;
+            this.modal.member={}
+            this.modal.mode = "CREATE";
+            this.modal.title = "Create new Certificate";
+            this.modal.isOpen = true;
         },
-        editRecord(record){
-            this.modal.data={...record.pivot};
-            this.modal.mode="EDIT";
-            this.modal.title="修改";
-            this.modal.isOpen=true;
+        editRecord(record) {
+            this.modal.data = { ...record.pivot }
+            this.modal.member=record
+            this.modal.mode = "EDIT";
+            this.modal.title = "Edit";
+            this.modal.isOpen = true;
         },
-        storeRecord(){
-            this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('manage.certificates.store'), this.modal.data,{
-                    onSuccess:(page)=>{
-                        this.modal.data={};
-                        this.modal.isOpen=false;
+        storeRecord() {
+            this.$refs.modalRef.validateFields().then(() => {
+                console.log(this.modal.data);
+                this.$inertia.post(route('manage.certificate.members.store', { certificate: this.modal.data.certificate_id }), this.modal.data, {
+                    onSuccess: (page) => {
+                        console.log(page)
+                        this.modal.data = {};
+                        this.modal.isOpen = false;
                     },
-                    onError:(err)=>{
+                    onError: (err) => {
                         console.log(err);
                     }
                 });
@@ -183,23 +210,27 @@ export default {
                 console.log(err);
             });
         },
-        updateRecord(){
+        updateRecord() {
             console.log(this.modal.data.pivot);
-            this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.put(route('manage.certificate.members.update',{certificate:this.modal.data.certificate_id,member:this.modal.data.member_id}), this.modal.data,{
-                    onSuccess:(page)=>{
-                        this.modal.data={};
-                        this.modal.isOpen=false;
+            this.$refs.modalRef.validateFields().then(() => {
+                this.$inertia.put(route('manage.certificate.members.update', { certificate: this.modal.data.certificate_id, member: this.modal.data.member_id }), this.modal.data, {
+                    onSuccess: (page) => {
+                        this.modal.data = {};
+                        this.modal.isOpen = false;
                         console.log(page);
                     },
-                    onError:(error)=>{
+                    onError: (error) => {
                         console.log(error);
                     }
                 });
             }).catch(err => {
                 console.log("error", err);
             });
-           
+        },
+        onChangeMember(memberId) {
+            const member=this.members.find(m=>m.id==memberId)
+            this.modal.member=member
+            this.modal.data.display_name = member.given_name + " " + member.family_name
         },
     },
 }

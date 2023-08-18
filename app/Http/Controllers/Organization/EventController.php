@@ -21,7 +21,7 @@ class EventController extends Controller
     {
         return Inertia::render('Organization/Events',[
             'events'=>Event::paginate(),
-            'categories'=>Config::item('event_categories',session('organization')->id)
+            'categories'=>Config::item('event_categories',session('organization'))
         ]);
     }
 
@@ -34,7 +34,7 @@ class EventController extends Controller
     {
         return Inertia::render('Organization/Event',[
             'event'=>new Event,
-            'categories'=>Config::item('event_categories',session('organization')->id)
+            'categories'=>Config::item('event_categories',session('organization'))
         ]);
     }
 
@@ -77,7 +77,7 @@ class EventController extends Controller
     {
         return Inertia::render('Organization/Event',[
             'event'=>$event,
-            'categories'=>Config::item('event_categories',session('organization')->id)
+            'categories'=>Config::item('event_categories',session('organization'))
         ]);
     }
 

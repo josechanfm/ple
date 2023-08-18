@@ -7,6 +7,7 @@ use App\Models\Classify;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Form;
 use App\Models\Member;
 use App\Models\Organization;
 
@@ -14,8 +15,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        
         $member=Member::where('user_id',auth()->user()->id)->with('guardian')->first();
-
         //login user has guardian role
         if(auth()->user()->guardian){
             session(['guardian'=>auth()->user()->guardian]);
@@ -27,9 +28,10 @@ class DashboardController extends Controller
             $organizations=$member->organizations;
             $member->portfolios;
             session(['organization'=>$member->organizations[0]]);
+            $forms=session('organization')->forms;
             return Inertia::render('Member/Dashboard',[
                 'member'=>$member,
-                'current_organization'=>session('organization'),
+                //'current_organization'=>session('organization'),
                 'qrcode'=>$this->qrcode()
                 //'articles'=>Classify::whereBelongsTo(session('organization'))->first()->articles
             ]);

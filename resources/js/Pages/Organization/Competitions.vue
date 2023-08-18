@@ -16,6 +16,7 @@
                     <template v-if="column.dataIndex=='operation'">
                         <inertia-link :href="route('manage.competitions.show',record.id)" class="ant-btn">View</inertia-link>
                         <inertia-link :href="route('manage.competitions.edit',record.id)" class="ant-btn">Edit</inertia-link>
+                        <inertia-link :href="route('manage.competition.applications.index',record.id)" class="ant-btn">Applications</inertia-link>
                     </template>
                     <template v-else-if="column.dataIndex=='state'">
                         {{teacherStateLabels[text]}}

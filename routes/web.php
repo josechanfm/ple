@@ -55,6 +55,7 @@ Route::middleware([
 });
 
 Route::resource('forms', App\Http\Controllers\FormController::class)->names('forms');
+Route::resource('competitions', App\Http\Controllers\CompetitionController::class)->names('competitions');
 
 Route::middleware([
     'auth:sanctum',
@@ -80,6 +81,7 @@ Route::middleware([
         Route::resource('certificate/{certificate}/members',App\Http\Controllers\Organization\CertificateMemberController::class)->names('manage.certificate.members');
         Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
         Route::resource('competitions', App\Http\Controllers\Organization\CompetitionController::class)->names('manage.competitions');
+        Route::resource('competition/{competition}/applications', App\Http\Controllers\Organization\CompetitionApplicationController::class)->names('manage.competition.applications');
         Route::resource('articles',App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
         Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
         Route::get('event/qrcode',[App\Http\Controllers\Organization\QrcodeController::class,'scan'])->name('manage.event.qrcode');

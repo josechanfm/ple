@@ -15,7 +15,7 @@ class Form extends Model implements HasMedia
     use InteractsWithMedia;
 
     public function organization(){
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Organization::class);
     }
 
     public function fields(){

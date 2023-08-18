@@ -5,59 +5,59 @@ import QRCodeVue3 from "qrcode-vue3";
 import { onMounted } from "vue";
 
 export default {
-    components: {
-      MemberLayout,
-      QRCodeVue3
-    },
-    props:['member','articles','qrcode'],
-    data() {
-        return{
-          data: [
-              {
-                title: "2023全澳柔道計分賽",
-                url: "/member/competition/1/applications",
-                content: "Competition ABC is now open for registration"
-              },
-              {
-                title: "Ant Design Title 2",
-                url:'',
-                content: "Competition ABC is now open for registration"
-              },
-              {
-                title: "Ant Design Title 3",
-                url:'',
-                content: "Competition ABC is now open for registration"
-              },
-              {
-                title: "Ant Design Title 4",
-                url:'',
-                content: "Competition ABC is now open for registration"
-              },
-            ],
-          showQrcode:false,
-        }
-    },
-    created() {
-    },
-    mounted() {
-    },
-    methods:{
-      onShowQrcode(){
-        this.showQrcode=!this.showQrcode;
-        // this.loadData();
-        // setInterval(function(){
-        //   this.loadData();
-        // }.bind(this),5000);
-      },
-      // loadData(){
-      //   axios.get('/member/qrcode').then(response=>{
-      //       this.qrcode=response.data;
-      //       this.qrcode='aaaaaaaaaaaaaa'
-      //       console.log(response.data);
-      //     }
-      //   );
-      // }
+  components: {
+    MemberLayout,
+    QRCodeVue3
+  },
+  props: ['member', 'articles', 'qrcode'],
+  data() {
+    return {
+      data: [
+        {
+          title: "2023全澳柔道計分賽",
+          url: "/member/competition/1/applications",
+          content: "Competition ABC is now open for registration"
+        },
+        {
+          title: "Ant Design Title 2",
+          url: '',
+          content: "Competition ABC is now open for registration"
+        },
+        {
+          title: "Ant Design Title 3",
+          url: '',
+          content: "Competition ABC is now open for registration"
+        },
+        {
+          title: "Ant Design Title 4",
+          url: '',
+          content: "Competition ABC is now open for registration"
+        },
+      ],
+      showQrcode: false,
     }
+  },
+  created() {
+  },
+  mounted() {
+  },
+  methods: {
+    onShowQrcode() {
+      this.showQrcode = !this.showQrcode;
+      // this.loadData();
+      // setInterval(function(){
+      //   this.loadData();
+      // }.bind(this),5000);
+    },
+    // loadData(){
+    //   axios.get('/member/qrcode').then(response=>{
+    //       this.qrcode=response.data;
+    //       this.qrcode='aaaaaaaaaaaaaa'
+    //       console.log(response.data);
+    //     }
+    //   );
+    // }
+  }
 
 }
 
@@ -74,9 +74,13 @@ export default {
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
+          <!-- News Section-->
           <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg pl-5">
               <a-list item-layout="horizontal" :data-source="data">
+                <template #header>
+                  <div>News</div>
+                </template>
                 <template #renderItem="{ item }">
                   <a-list-item>
                     <a-list-item-meta :description="item.content">
@@ -92,38 +96,69 @@ export default {
               </a-list>
             </div>
           </div>
-        </div>
+          <!-- News Section end-->
+          <!--Forms Section-->
+          <div class="container mx-auto pt-5" v-if="$page.props.current_organization.forms.length>0">
+            <div class="bg-white relative shadow rounded-lg pl-5">
+              <div class="ant-list ant-list-split"><!---->
+                <div class="ant-list-header">
+                  <div>Forms</div>
+                </div>
+                <div class="ant-spin-nested-loading"><!---->
+                  <div class="ant-spin-container">
+                    <ul class="ant-list-items">
+                      <li class="ant-list-item" v-for="form in $page.props.current_organization.forms">
+                        <div class="ant-list-item-meta">
+                          <div class="ant-list-item-meta-avatar"><span class="ant-avatar ant-avatar-circle"><span
+                                class="ant-avatar-string"
+                                style="transform: scale(1) translateX(-50%);"><!----></span></span></div>
+                          <div class="ant-list-item-meta-content">
+                            <h4 class="ant-list-item-meta-title">
+                              <a :href="route('forms.show',form.id)">{{ form.title }}</a>
+                            </h4>
+                            <div class="ant-list-item-meta-description" v-html="form.description"/>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Form section end-->
 
+        </div>
         <div class="flex-none w-[400px]">
           <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg">
               <!-- QRcode -->
               <div class="flex flex-col justify-center items-center" v-if="showQrcode">
-                <div><QRCodeVue3 v-bind:value="qrcode" image="/images/site_logo.png" 
-                  :dotsOptions="{
-                  type: 'dots',
-                  color: '#26249a',
-                  gradient: {
-                    type: 'linear',
-                    rotation: 0,
-                    colorStops: [
-                      { offset: 0, color: '#26249a' },
-                      { offset: 1, color: '#26249a' },
-                    ],
-                  },
-                }"
-                :cornersSquareOptions="{
-                  type: 'square',
-                  color: '#e00404'
-                }"
-                :cornersDotOptions ="{
-                  color: '#e00404'
-                }"
-                /></div>
+                <div>
+                  <QRCodeVue3 v-bind:value="qrcode" image="/images/site_logo.png" :dotsOptions="{
+                    type: 'dots',
+                    color: '#26249a',
+                    gradient: {
+                      type: 'linear',
+                      rotation: 0,
+                      colorStops: [
+                        { offset: 0, color: '#26249a' },
+                        { offset: 1, color: '#26249a' },
+                      ],
+                    },
+                  }" :cornersSquareOptions="{
+  type: 'square',
+  color: '#e00404'
+}" :cornersDotOptions="{
+  color: '#e00404'
+}" />
+                </div>
               </div>
               <!-- card start -->
               <div class="mx-auto relative py-4 w-96 hover:scale-105 transform transition-transform mb-4">
-                <div class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 text-white shadow-xl text-sm font-serif w-full" @click="onShowQrcode">
+                <div
+                  class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 text-white shadow-xl text-sm font-serif w-full"
+                  @click="onShowQrcode">
                   <div class="flex flex-col w-xl">
                     <div class="flex justify-center">
                       <div class="text-lg font-bold">{{ $page.props.current_organization.full_name }}</div>
@@ -151,11 +186,7 @@ export default {
                     </div>
                   </div>
                 </div>
-                <img
-                  class="relative object-cover w-96 h-52 rounded-lg z-0"
-                  src="/images/card_blue.png"
-                  width="10px"
-                />
+                <img class="relative object-cover w-96 h-52 rounded-lg z-0" src="/images/card_blue.png" width="10px" />
               </div>
               <!-- card end -->
 
@@ -170,70 +201,57 @@ export default {
                   <span> </span>
                 </p>
                 <div class="my-5 px-6">
-                  <a
-                    href="#"
-                    class="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white"
-                    >Connect with <span class="font-bold">@pantazisoft</span></a
-                  >
+                  <a href="#"
+                    class="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white">Connect
+                    with <span class="font-bold">@pantazisoft</span></a>
                 </div>
                 <div class="flex justify-between items-center my-5 px-6">
-                  <a
-                    href=""
-                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3"
-                    >Facebook</a
-                  >
-                  <a
-                    href=""
-                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3"
-                    >Twitter</a
-                  >
-                  <a
-                    href=""
-                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3"
-                    >Instagram</a
-                  >
-                  <a
-                    href=""
-                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3"
-                    >Email</a
-                  >
+                  <a href=""
+                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Facebook</a>
+                  <a href=""
+                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Twitter</a>
+                  <a href=""
+                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Instagram</a>
+                  <a href=""
+                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Email</a>
                 </div>
                 <div class="w-full">
                   <h3 class="font-medium text-gray-900 text-left px-6">近況</h3>
-                  <div
-                    class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm"
-                  >
-                  <template v-for="organization in member.organizations">
-                    <a href="#" class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                        alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2"
-                      />
+                  <div class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">
+                    <template v-for="organization in member.organizations">
+                      <a href="#"
+                        class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
+                        <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt=""
+                          class="rounded-full h-6 shadow-md inline-block mr-2" />
                       {{organization.abbr}} - {{organization.full_name}}
                       <span class="text-gray-500 text-xs">24 min ago</span>
                     </a>
-                    </template>
+                  </template>
 
-                    <template v-for="portfolio in member.portfolios">
-                    <a href="#" class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                        alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2"
-                      />
+                  <template v-for="portfolio in member.portfolios">
+                    <a href="#"
+                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
+                      <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt=""
+                        class="rounded-full h-6 shadow-md inline-block mr-2" />
                       {{portfolio.title}} - {{portfolio.description}}
                       <span class="text-gray-500 text-xs">{{ portfolio.start_date }}</span>
                     </a>
-                    </template>
-                  </div>
+                  </template>
                 </div>
               </div>
-              
             </div>
+
           </div>
         </div>
       </div>
     </div>
-  </MemberLayout>
-</template>
+  </div>
+</MemberLayout></template>
+
+<style scope>#pure-html {
+  all: initial
+}
+
+#pure-html * {
+  all: revert;
+}</style>
