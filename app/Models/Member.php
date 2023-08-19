@@ -11,7 +11,36 @@ use App\Models\Organization;
 class Member extends Model
 {
     use HasFactory;
-    protected $fillable=['user_id','given_name','family_name','middle_name','display_name','gender','dob','email','mobile','country','city','street','zip','vat','address','positions','federation_officials','organization_officials','belt','coach','technique','side','height','weight'];
+    protected $fillable=[
+        'user_id',
+        'given_name',
+        'family_name',
+        'middle_name',
+        'display_name',
+        'gender',
+        'dob',
+        'email',
+        'mobile',
+        'country',
+        'nationality',
+        'city',
+        'street',
+        'zip',
+        'vat',
+        'address',
+        'club',
+        'positions',
+        'role_referees',
+        'role_coaches',
+        'athlete_belt',
+        'athlete_coach',
+        'athlete_technique',
+        'athlete_side',
+        'athlete_height',
+        'athlete_weight',
+        'federation_officials',
+        'organization_officials',
+    ];
     protected $casts=['positions'=>'json','federation_officials'=>'json','organization_officials'=>'json'];
 
     public function createUser(): User

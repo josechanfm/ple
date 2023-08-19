@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Organization;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Config;
 use App\Models\Classify;
 use App\Models\Article;
 use App\Models\Organization;
@@ -20,6 +21,7 @@ class ArticleController extends Controller
     {
         return Inertia::render('Organization/Articles',[
             'classifies'=>Classify::whereBelongsTo(session('organization'))->get(),
+            'articleCategories'=>Config::item('article_categories'),
             'articles'=>Article::all()
         ]);
     }

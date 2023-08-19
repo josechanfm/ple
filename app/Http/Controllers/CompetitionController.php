@@ -18,7 +18,7 @@ class CompetitionController extends Controller
     public function index()
     {
         return Inertia::render('Competition/Competitions',[
-            'competitions'=>Competition::all()
+            'competitions'=>Competition::where('scope','<>','ORG')->get()
         ]);
     }
 

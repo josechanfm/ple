@@ -49,9 +49,20 @@
               <a-checkbox v-for="role in roles" :style="virticalStyle" :value="role.value">{{ role.label }}</a-checkbox>
             </a-checkbox-group>
           </a-form-item>
+          <a-form-item :label="$t('published')" name="published">
+            <a-switch v-model:checked="competitionData.published" :checkedValue="1" :unCheckedValue="0"/>
+          </a-form-item>
+          <a-form-item :label="$t('scope')" name="scope">
+            <a-radio-group v-model:value="competitionData.scope" button-style="solid">
+              <a-radio-button value="PUB">Public</a-radio-button>
+              <a-radio-button value="JUA">JUA Members</a-radio-button>
+              <a-radio-button value="ORG">Organization member only</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
           <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
             <a-button type="primary" html-type="submit">Submit</a-button>
           </a-form-item>
+
         </a-form>
       </div>
     </div>

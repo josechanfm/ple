@@ -5,11 +5,11 @@
         <div
           class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
         >
-          公告管理
+          Bulletins
         </div>
         <div class="flex-auto w-1/2 text-right">
           <a-button type="primary" class="!rounded" @click="createRecord()"
-            >新增公告</a-button>
+            >Create Buletin</a-button>
         </div>
       </div>
       <div class="card drop-shadow-md pt-4">
@@ -27,18 +27,18 @@
           </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.key == 'published'">{{
-              record.published == 1 ? "發佈" : "非發佈"
+              record.published == 1 ? "Yes" : "No"
             }}</template>
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
-                <a-button @click="editRecord(record)">修改</a-button>
+                <a-button @click="editRecord(record)">Edit</a-button>
                 <a-popconfirm
-                  title="是否確定刪除這個公告"
-                  ok-text="是"
-                  cancel-text="否"
+                  title="Are you sure to delete the record?"
+                  ok-text="Yes"
+                  cancel-text="No"
                   @confirm="deleteRecord(record.id)"
                 >
-                  <a-button>刪除</a-button>
+                  <a-button>Delete</a-button>
                 </a-popconfirm>
               </div></template
             >
@@ -51,7 +51,7 @@
       <!-- Modal Start-->
       <a-modal
         v-model:visible="modal.isOpen"
-        :title="modal.mode == 'CREATE' ? '新增' : '修改'"
+        :title="modal.mode == 'CREATE' ? 'Create' : 'Edit'"
         width="60%"
       >
         <a-form
@@ -163,24 +163,24 @@ export default {
       filter: {},
       columns: [
         {
-          title: "標題",
+          title: "Title",
           dataIndex: "title",
         },
         {
-          title: "日期",
+          title: "Date",
           dataIndex: "date",
         },
         {
-          title: "分類",
+          title: "Category",
           dataIndex: "category",
         },
         {
-          title: "發佈",
+          title: "Published",
           dataIndex: "published",
           key: "published",
         },
         {
-          title: "操作",
+          title: "Operation",
           dataIndex: "operation",
           key: "operation",
         },

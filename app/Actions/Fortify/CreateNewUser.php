@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\Member;
+use App\Models\Organization;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -23,6 +24,11 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
+        $organization=Organization::where('registration_code')->first();
+        //dd($organization);
+        if(!$organization){
+            return redirect()->route('/');
+        }
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -30,14 +36,14 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
-        return DB::transaction(function () use ($input) {
+        return DB::transaction(function () use ($input, $organization) {
             return tap(User::create([
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
-            ]), function (User $user) {
+            ]), function (User $user) use($organization) {
                 $this->createTeam($user);
-                $this->createMember($user);
+                $this->createMember($user,$organization);
             });
         });
     }
@@ -57,11 +63,14 @@ class CreateNewUser implements CreatesNewUsers
         ]));
     }
 
-    protected function createMember(User $user){
-        Member::forceCreate([
+    protected function createMember(User $user,$organization){
+        $member=Member::forceCreate([
             'user_id' => $user->id,
-            'display_name' => $user->name
+            'display_name' => $user->name,
+            'email'=>$user->email
         ]);
+        $member->organizations()->attach($organization->id);
+
     }
 
 }

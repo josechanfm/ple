@@ -47,7 +47,9 @@ class CompetitionController extends Controller
      */
     public function store(Request $request)
     {
-        Competition::create($request->all());
+        $data=$request->all();
+        $data['organization_id']=session('organization')->id;
+        Competition::create($data);
         // $competition=new Competition();
         // $competition->organization_id=session('organization')->id;
         // $competition->title_en=$request->title_en;

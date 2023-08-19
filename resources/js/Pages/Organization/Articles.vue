@@ -18,8 +18,8 @@
                         <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     </template>
-                    <template v-if="column.dataIndex=='classify_id'">
-                        {{classifies.find(c=>c.id=text).title}}
+                    <template v-else-if="column.dataIndex=='published'">
+                        {{record.published?'Yes':'No'}}
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -38,8 +38,8 @@
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-form-item :label="$t('classification')" name="classify_id">
-                <a-select v-model:value="modal.data.classify_id" :options="classifies" :fieldNames="{value:'id',label:'title'}"/>
+            <a-form-item :label="$t('article_category')" name="category_code">
+                <a-select v-model:value="modal.data.category_code" :options="articleCategories" />
             </a-form-item>
             <a-form-item :label="$t('title_en')" name="title_en">
                 <a-input v-model:value="modal.data.title_en" />
@@ -47,9 +47,22 @@
             <a-form-item :label="$t('title_fn')" name="title_fn">
                 <a-input v-model:value="modal.data.title_fn" />
             </a-form-item>
-            <a-form-item :label="$t('content')" name="content">
-                <quill-editor v-model:value="modal.data.content" style="min-height:200px;" />
+            <a-form-item :label="$t('content')" name="content_en">
+                <quill-editor v-model:value="modal.data.content_en" style="min-height:200px;" />
             </a-form-item>
+            <a-form-item :label="$t('valid_at')" name="valid_at">
+                <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat"/>
+            </a-form-item>
+            <a-form-item :label="$t('expired_at')" name="expired_at">
+                <a-date-picker v-model:value="modal.data.expired_at" :valueFormat="dateFormat"/>
+            </a-form-item>
+            <a-form-item :label="$t('url')" name="url">
+                <a-input v-model:value="modal.data.url" />
+            </a-form-item>
+            <a-form-item :label="$t('published')" name="published">
+                <a-switch v-model:checked="modal.data.published" :checkedValue="1" :unCheckedValue="0"/>
+            </a-form-item>
+
         </a-form>
         <template #footer>
             <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
@@ -71,7 +84,7 @@ export default {
         OrganizationLayout,
         quillEditor
     },
-    props: ['classifies','articles'],
+    props: ['classifies','articleCategories','articles'],
     data() {
         return {
             dateFormat:"YYYY-MM-DD",
@@ -84,9 +97,6 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: 'Classification',
-                    dataIndex: 'classify_id',
-                },{
                     title: 'Title',
                     dataIndex: 'title_en',
                 },{
@@ -131,13 +141,13 @@ export default {
         createRecord(){
             this.modal.data={};
             this.modal.mode="CREATE";
-            this.modal.title="新增問卷";
+            this.modal.title="Create";
             this.modal.isOpen=true;
         },
         editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
-            this.modal.title="修改";
+            this.modal.title="Edit";
             this.modal.isOpen=true;
         },
         storeRecord(){

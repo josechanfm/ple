@@ -36,29 +36,50 @@
             :validate-messages="validateMessages"
         >
             <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="Region" name="region">
+            <a-form-item label="Region" name="region" :rules="[{required:true}]">
                 <a-select v-model:value="modal.data.region" :options="zones"/>
             </a-form-item>
-            <a-form-item label="Territory" name="territory">
-                <a-input v-model:value="modal.data.territory" />
-            </a-form-item>
-            <a-form-item label="Abbreviation" name="abbr">
+            <a-form-item label="Abbreviation" name="abbr" :rules="[{required:true}]">
                 <a-input v-model:value="modal.data.abbr" />
             </a-form-item>
-            <a-form-item label="Full name" name="full_name">
+            <a-form-item label="Territory" name="territory" :rules="[{required:true}]">
+                <a-input v-model:value="modal.data.territory" />
+            </a-form-item>
+            <a-form-item label="Country" name="country">
+                <a-input v-model:value="modal.data.country" />
+            </a-form-item>
+            <a-form-item label="Full name" name="full_name" :rules="[{required:true}]">
                 <a-input v-model:value="modal.data.full_name" />
             </a-form-item>
             <a-form-item label="Email" name="email">
                 <a-input v-model:value="modal.data.email" />
             </a-form-item>
-            <a-form-item label="phone" name="phone">
+            <a-form-item label="Phone" name="phone">
                 <a-input v-model:value="modal.data.phone" />
+            </a-form-item>
+            <a-form-item label="Address" name="address">
+                <a-input v-model:value="modal.data.address" />
             </a-form-item>
             <a-form-item label="Website" name="href">
                 <a-input v-model:value="modal.data.href" />
             </a-form-item>
-            <a-form-item label="Status" name="status">
-                <a-select v-model:value="modal.data.state" :options="organizationStates"/>
+            <a-form-item label="Registration Code" name="registration_code">
+                <a-input v-model:value="modal.data.registration_code" />
+            </a-form-item>
+            <a-form-item label="Title" name="title">
+                <a-input v-model:value="modal.data.title" />
+            </a-form-item>
+            <a-form-item label="Avatar" name="avatar">
+                <a-input v-model:value="modal.data.avatar" />
+            </a-form-item>
+            <a-form-item label="Content" name="content">
+                <a-input v-model:value="modal.data.content" />
+            </a-form-item>
+            <a-form-item label="President" name="president">
+                <a-input v-model:value="modal.data.president" />
+            </a-form-item>
+            <a-form-item label="Status" name="status" :rules="[{required:true}]">
+                <a-select v-model:value="modal.data.status" :options="organizationStates"/>
             </a-form-item>
         </a-form>
         <template #footer>
@@ -176,7 +197,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/organization/teachers/' + this.modal.data.id, this.modal.data,{
+                this.$inertia.patch(route('admin.organizations.update',this.modal.data.id), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;

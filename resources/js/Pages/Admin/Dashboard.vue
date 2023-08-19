@@ -7,7 +7,7 @@
         </template>
         <p>Admin Dashboard</p>
         <template v-if="organizations.length>0">
-            <a :href="route('manage')">Organization Management</a>
+            <a :href="route('manage.list')">Organization Management</a>
         </template>
     </AdminLayout>
 

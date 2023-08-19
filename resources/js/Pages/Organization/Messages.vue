@@ -2,15 +2,11 @@
   <OrganizationLayout title="Dashboard">
     <div class="p-8 pt-8">
       <div class="flex pb-2">
-        <div
-          class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
-        >
-          通信管理
+        <div class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap">
+          Messenger
         </div>
         <div class="flex-auto w-1/2 text-right">
-          <a-button type="primary" class="!rounded" @click="createRecord()"
-            >新增通信</a-button
-          >
+          <a-button type="primary" class="!rounded" @click="createRecord()">Create Message</a-button>
         </div>
       </div>
       <div class="card drop-shadow-md pt-4">
@@ -24,25 +20,24 @@
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
-                <a-button @click="editRecord(record)">修改</a-button>
+                <a-button @click="editRecord(record)">Edit</a-button>
                 <a-popconfirm
-                  title="是否確定刪除這個通信"
-                  ok-text="是"
-                  cancel-text="否"
+                  title="Are you sure to DELETE?"
+                  ok-text="Yes"
+                  cancel-text="No"
                   @confirm="deleteRecord(record.id)"
                 >
-                  <a-button>刪除</a-button>
+                  <a-button>Delete</a-button>
                 </a-popconfirm>
               </div>
             </template>
-            <template v-else-if="column.dataIndex == 'category'">
-              {{ messageCategories.find((x) => x.value == record.category)["label"] }}
+            <template v-else-if="column.dataIndex == 'category_code'">
+              {{ messageCategories.find((x) => x.value == record.category_code)["label"] }}
             </template>
             <template v-else-if="column.dataIndex == 'receiver'">
-              <div v-if="record.category == 'personal' || record.category == 'public'">
-                {{ messageCategories.find((x) => x.value == record.category)["label"] }}
-              </div>
-              <div v-else>{{ record.receiver ?? "--" }}</div>
+                <ol>
+                  <li v-for="member in record.received_members">{{member.given_name}}</li>
+                </ol>
             </template>
           </template>
         </a-table>
@@ -59,15 +54,16 @@
           :rules="rules"
           :validate-messages="validateMessages"
         >
-          <a-form-item :label="$t('classification')" name="category">
-            <a-select v-model:value="modal.data.category" :options="messageCategories" />
+          <a-form-item :label="$t('classification')" name="category_code">
+            <a-select v-model:value="modal.data.category_code" :options="messageCategories" />
           </a-form-item>
           <a-form-item
-            label="收件人"
+            label="Receiver"
             name="receiver"
-            v-if="modal.data.category == 'personal'"
+            v-if="modal.data.category_code == 'IND'"
           >
             <a-select
+              mode="multiple"
               v-model:value="modal.data.receiver"
               :options="members"
               :field-names="{ label: 'display_name', value: 'id' }"
@@ -136,26 +132,26 @@ export default {
       filter: {},
       columns: [
         {
-          title: "分類",
-          dataIndex: "category",
+          title: "Category",
+          dataIndex: "category_code",
           width: 80,
         },
         {
-          title: "標題",
+          title: "Title",
           dataIndex: "title",
         },
         {
-          title: "發件人",
+          title: "Sender",
           dataIndex: "sender",
           width: 120,
         },
         {
-          title: "收件人",
+          title: "Receiver",
           dataIndex: "receiver",
           width: 120,
         },
         {
-          title: "操作",
+          title: "Operation",
           dataIndex: "operation",
           key: "operation",
           width: 200,
@@ -165,15 +161,15 @@ export default {
         field: { required: true },
         label: { required: true },
       },
-      validateMessages: {
-        required: "請输入${label}",
-        types: {
-          email: "${label} 不是正確的郵箱格式",
-          number: "${label} 不是正確的數字格式",
-        },
-        number: {
-          range: "${label} 必須在${min}和${max}之間",
-        },
+      validateMessages:{
+          required: '${label} is required!',
+          types: {
+              email: '${label} is not a valid email!',
+              number: '${label} is not a valid number!',
+          },
+          number: {
+              range: '${label} must be between ${min} and ${max}',
+          },
       },
       labelCol: {
         style: {
@@ -198,11 +194,11 @@ export default {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.post(route("admin.messages.store"), this.modal.data, {
+          this.$inertia.post(route("manage.messages.store"), this.modal.data, {
             preserveState: false,
             onSuccess: (page) => {
               this.modal.isOpen = false;
-              message.success("新增成功");
+              message.success("Create Successful.");
             },
             onError: (err) => {
               console.log(err);
@@ -219,13 +215,13 @@ export default {
         .then(() => {
           this.modal.data._method = "PATCH";
           this.$inertia.post(
-            route("admin.messages.update", this.modal.data.id),
+            route("manage.messages.update", this.modal.data.id),
             this.modal.data,
             {
               preserveState: false,
               onSuccess: (page) => {
                 this.modal.isOpen = false;
-                message.success("修改成功");
+                message.success("Update Successful.");
               },
               onError: (error) => {
                 console.log(error);
@@ -239,10 +235,10 @@ export default {
     },
 
     deleteRecord(recordId) {
-      this.$inertia.delete("/admin/messages/" + recordId, {
+      this.$inertia.delete(route('manage.messages.destroy',recordId), {
         preserveState: false,
         onSuccess: (page) => {
-          message.success("刪除成功");
+          message.success("Delete Successful.");
           console.log(page);
         },
         onError: (error) => {
@@ -252,7 +248,7 @@ export default {
     },
     onPaginationChange(page, filters, sorter) {
       this.$inertia.get(
-        route("admin.messages.index"),
+        route("manage.messages.index"),
         {
           page: page.current,
           per_page: page.pageSize,

@@ -39,7 +39,7 @@
                                         <a-form-item :label="$t('dob')" name="dob">
                                             <a-input v-model:value="member.dob" />
                                         </a-form-item>
-                                        <a-form-item :label="$t('country')" name="title">
+                                        <a-form-item :label="$t('country')" name="country">
                                             <a-input v-model:value="member.country" />
                                         </a-form-item>
                                         <a-form-item :label="$t('street')" name="street">
@@ -51,8 +51,8 @@
                                         <a-form-item :label="$t('email')" name="email">
                                             <a-input v-model:value="member.email" />
                                         </a-form-item>
-                                        <a-form-item :label="$t('dod')" name="dod">
-                                            <a-input v-model:value="member.dod" />
+                                        <a-form-item :label="$t('nationality')" name="nationality">
+                                            <a-input v-model:value="member.nationality" />
                                         </a-form-item>
                                     </a-col>
                                     <a-col :span="12">
@@ -88,37 +88,37 @@
                                 <a-row :gutter="24" :span="24">
                                     <a-col :span="12">
                                         <a-form-item :label="$t('coach')" name="coach">
-                                            <a-input v-model:value="member.coach" />
+                                            <a-input v-model:value="member.athlete_coach" />
                                         </a-form-item>
                                         <a-form-item :label="$t('favorite_technique')" name="technique">
-                                            <a-input v-model:value="member.technique" />
+                                            <a-input v-model:value="member.athlete_technique" />
                                         </a-form-item>
                                         <a-form-item :label="$t('side')" name="side">
-                                            <a-input v-model:value="member.side" />
+                                            <a-input v-model:value="member.athlete_side" />
                                         </a-form-item>
                                     </a-col>
                                     <a-col :span="12">
                                         <a-form-item :label="$t('belt')" name="belt">
-                                            <a-input v-model:value="member.belt" />
+                                            <a-input v-model:value="member.athlete_belt" />
                                         </a-form-item>
                                         <a-form-item :label="$t('height')" name="height">
-                                            <a-input v-model:value="member.height" />
+                                            <a-input v-model:value="member.athlete_height" />
                                         </a-form-item>
                                         <a-form-item :label="$t('weight')" name="weight">
-                                            <a-input v-model:value="member.weight" />
+                                            <a-input v-model:value="member.athlete_weight" />
                                         </a-form-item>
                                     </a-col>
                                 </a-row>
                             </a-collapse-panel>
                             <a-collapse-panel key="5" :header="$t('referee_title')" v-if="member.positions.includes('REF')">
-                                <a-checkbox-group v-model:value="member.referees">
+                                <a-checkbox-group v-model:checked="member.role_referees">
                                     <a-checkbox v-for="position in positions.filter(p => p.scope == 'REFEREE')"
                                         :style="virticalStyle" :value="position.code">{{ position.title_en }}</a-checkbox>
                                 </a-checkbox-group>
                             </a-collapse-panel>
-                            <a-collapse-panel key="6" :header="$t('coach_title')" v-if="member.positions.includes('COA')">
+                            <!-- <a-collapse-panel key="6" :header="$t('coach_title')" v-if="member.positions.includes('COA')">
                                 Coach
-                            </a-collapse-panel>
+                            </a-collapse-panel> -->
                             <a-collapse-panel key="7" :header="$t('official_title')"
                                 v-if="member.positions.includes('OFF')">
                                 <a-row :gutter="24" :span="24">
@@ -142,11 +142,11 @@
                                     </a-col>
                                 </a-row>
                             </a-collapse-panel>
-                            <a-collapse-panel key="8" :header="$t('guest_title')" v-if="member.positions.includes('GUE')">
+                            <!-- <a-collapse-panel key="8" :header="$t('guest_title')" v-if="member.positions.includes('GUE')">
                                 888
-                            </a-collapse-panel>
+                            </a-collapse-panel> -->
                             <a-collapse-panel key="9" :header="$t('picture_title')" v-if="member.positions.length > 0">
-                                <a-upload v-model:file-list="member.athlete.avator" name="avatar" list-type="picture-card"
+                                <a-upload v-model:file-list="member.athlete.avatar" name="avatar" list-type="picture-card"
                                     class="avatar-uploader" :show-upload-list="false"
                                     action="https://www.mocky.io/v2/5cc8019d300000980a055e76" :before-upload="beforeUpload"
                                     @change="handleChange">

@@ -9,6 +9,7 @@ use App\Models\AdminUser;
 class Organization extends Model
 {
     use HasFactory;
+    protected $fillable=['region','territory','abbr','full_name','email','phone','address','country','href','title','avatar','description','content','president','registration_code','status'];
 
     public function ownedBy($user=null){
         return in_array($user->id,$this->users()->get()->pluck('id')->toArray());

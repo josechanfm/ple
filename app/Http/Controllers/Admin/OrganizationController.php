@@ -42,7 +42,8 @@ class OrganizationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Organization::create($request->all());
+        return redirect()->back();
     }
 
     /**
@@ -74,11 +75,11 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Organization $organization)
     {
-        //
+        $organization->update($request->all());
+        return redirect()->back();
     }
-
     /**
      * Remove the specified resource from storage.
      *

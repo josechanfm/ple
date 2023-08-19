@@ -175,8 +175,33 @@ class ConfigSeeder extends Seeder
                 }
             ]',
         ]);
-
-
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'article_categories',
+            'value'=>'[{"value":"BLOG","label":"Blog"},{"value":"NEWS","label":"News"}]',
+        ]);
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'bulletin_categories',
+            'value'=>'[{"value": "CMTE","label": "Committee"}, {"value": "GEN","label": "General"}]',
+        ]);
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'message_categories',
+            'value'=>'[{
+                "value": "ALL",
+                "label": "Everyone"
+            }, {
+                "value": "ORG",
+                "label": "Organization"
+            }, {
+                "value": "MEM",
+                "label": "Member Only"
+            }, {
+                "value": "IND",
+                "label": "Individual"
+            }]',
+        ]);
         
     }
 }
