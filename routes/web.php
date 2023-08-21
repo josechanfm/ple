@@ -51,6 +51,8 @@ Route::middleware([
         Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class)->names('member.professionals');
         Route::get('membership', [App\Http\Controllers\Member\MembershipController::class, 'index'])->name('member.membership');
         Route::resource('competition/{competition}/applications',App\Http\Controllers\Member\CompetitionApplicationController::class)->names('member.competition.applications');
+        Route::resource('event/{event}/attendances',App\Http\Controllers\Member\AttendanceController::class)->names('member.event.attendances');
+        Route::get('event/{event}/attendances_modify',[App\Http\Controllers\Member\AttendanceController::class,'modify'])->name('member.event.attendancesModify');
     });
 });
 
@@ -85,6 +87,7 @@ Route::middleware([
         Route::resource('articles',App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
         Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
         Route::get('event/qrcode',[App\Http\Controllers\Organization\QrcodeController::class,'scan'])->name('manage.event.qrcode');
+        Route::resource('event/{event}/attendances',App\Http\Controllers\Organization\AttendanceController::class)->names('manage.event.attendances');
         Route::resource('configs', App\Http\Controllers\Organization\ConfigController::class)->names('manage.configs');
     });
     Route::prefix('/admin')->group(function () {

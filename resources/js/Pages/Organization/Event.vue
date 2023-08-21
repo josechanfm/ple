@@ -10,10 +10,10 @@
       <div class="bg-white relative shadow rounded-lg p-5">
         <a-form :model="event" name="nest-messages" :validate-messages="validateMessages"
           layout="vertical" :rules="rules" @finish="onFinish">
-          <a-form-item :label="$t('competition_title_en')" name="title_en">
+          <a-form-item :label="$t('event_title_en')" name="title_en">
             <a-input v-model:value="event.title_en" />
           </a-form-item>
-          <a-form-item :label="$t('competition_title_fn')" name="title_fn">
+          <a-form-item :label="$t('event_title_fn')" name="title_fn">
             <a-input v-model:value="event.title_fn" />
           </a-form-item>
           <a-form-item :label="$t('category')" name="category">

@@ -15,4 +15,11 @@ class Event extends Model
         'credit'=>'',
         'start_date'=>'',
     ];
+
+    public function attendances(){
+        return $this->hasMany(Attendance::class)->with('member');
+    }
+    public function managers(){
+        return $this->belongsToMany(Member::class,'event_manager','event_id','member_id');
+    }
 }

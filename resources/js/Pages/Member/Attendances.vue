@@ -1,48 +1,52 @@
 <template>
-    <OrganizationLayout title="Dashboard">
+    <MemberLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Events
             </h2>
         </template>
-                <inertia-link :href="route('manage.event.qrcode')" class="ant-btn ant-btn-primary">QR Scanner</inertia-link>
-            <div class="flex-auto pb-3 text-right">
-                <inertia-link :href="route('manage.events.create')" class="ant-btn ant-btn-primary">Create Event</inertia-link>
-            </div>
-            <a-table :dataSource="events.data" :columns="columns">
-                <template #headerCell="{column}">
-                    {{ column.i18n?$t(column.i18n):column.title}}
-                </template>
-                <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('manage.events.show',record.id)" class="ant-btn">View</inertia-link>
-                        <inertia-link :href="route('manage.events.edit',record.id)" class="ant-btn">Edit</inertia-link>
-                        <inertia-link :href="route('manage.event.attendances.index',record.id)" class="ant-btn">Attendances</inertia-link>
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
-                </template>
-            </a-table>
 
-    </OrganizationLayout>
+        <a-transfer
+            v-model:target-keys="targetKeys"
+            :data-source="members"
+            show-search
+            :list-style="{
+            width: '250px',
+            height: '300px',
+            }"
+            :operations="['', '']"
+            :render="item => `${item.id}-${item.given_name}`"
+            @change="handleChange"
+        >
+
+            <template #notFoundContent>
+            <span>没数据</span>
+            </template>
+        </a-transfer>
+
+        <a-button>Scan</a-button>        
+        <inertia-link :href="route('member.event.attendancesModify',event.id)" class="ant-btn">Modify</inertia-link>
+        <a-button @click="onCheck">Check</a-button>
+
+    </MemberLayout>
 
 </template>
 
 <script>
-import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
+import MemberLayout from '@/Layouts/MemberLayout.vue';
 import { defineComponent, reactive } from 'vue';
 
 export default {
     components: {
-        OrganizationLayout,
+        MemberLayout,
     },
-    props: ['events','categories'],
+    props: ['event','members'],
     data() {
         return {
+            targetKeys:[],
             columns:[
                 {
-                    title: 'Comptition title',
+                    title: 'Event title',
                     dataIndex: 'title_en',
                 },{
                     title: 'Start date',
@@ -79,8 +83,20 @@ export default {
         }
     },
     created(){
+        Object.entries(this.event.attendances).forEach(([key,attendance])=>{
+            this.targetKeys.push(attendance.member.id.toString())
+        })
+        Object.entries(this.members).forEach(([key,member])=>{
+            this.members[key]['key']=member.id.toString()
+        })
     },
     methods: {
+        handleChange(keys,direction,moveKeys){
+            console.log(keys,direction,moveKeys);
+        },
+        onCheck(){
+            console.log(this.targetKeys);
+        }
     },
 }
 </script>

@@ -9,7 +9,7 @@
             <div class="flex-auto pb-3 text-right">
                 <inertia-link :href="route('manage.events.create')" class="ant-btn ant-btn-primary">Create Event</inertia-link>
             </div>
-            <a-table :dataSource="events.data" :columns="columns">
+            <a-table :dataSource="attendances" :columns="columns">
                 <template #headerCell="{column}">
                     {{ column.i18n?$t(column.i18n):column.title}}
                 </template>
@@ -17,7 +17,6 @@
                     <template v-if="column.dataIndex=='operation'">
                         <inertia-link :href="route('manage.events.show',record.id)" class="ant-btn">View</inertia-link>
                         <inertia-link :href="route('manage.events.edit',record.id)" class="ant-btn">Edit</inertia-link>
-                        <inertia-link :href="route('manage.event.attendances.index',record.id)" class="ant-btn">Attendances</inertia-link>
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -37,7 +36,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['events','categories'],
+    props: ['attendances'],
     data() {
         return {
             columns:[

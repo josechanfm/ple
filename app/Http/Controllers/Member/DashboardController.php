@@ -15,7 +15,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        
         $member=Member::where('user_id',auth()->user()->id)->with('guardian')->first();
         //login user has guardian role
         if(auth()->user()->guardian){
@@ -27,6 +26,7 @@ class DashboardController extends Controller
         if($member){
             $organizations=$member->organizations;
             $member->portfolios;
+            $member->events;
             session(['organization'=>$member->organizations[0]]);
             $forms=session('organization')->forms;
             return Inertia::render('Member/Dashboard',[

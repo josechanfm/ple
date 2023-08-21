@@ -93,4 +93,12 @@ class Member extends Model
         return $this->belongsToMany(Position::class);
     }
 
+    public function events(){
+        return $this->belongsToMany(Event::class,'event_manager','member_id','event_id');
+    }
+
+    public function attendances(){
+        return $this->belongsToMany(Attendance::class);
+    }
+
 }

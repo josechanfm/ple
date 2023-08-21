@@ -71,6 +71,7 @@ export default {
         Membership
       </h2>
     </template>
+    {{ member }}
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
@@ -97,6 +98,7 @@ export default {
             </div>
           </div>
           <!-- News Section end-->
+
           <!--Forms Section-->
           <div class="container mx-auto pt-5" v-if="$page.props.current_organization.forms.length>0">
             <div class="bg-white relative shadow rounded-lg pl-5">
@@ -128,6 +130,39 @@ export default {
           </div>
           <!-- Form section end-->
 
+
+          <!--Events Section-->
+          <div class="container mx-auto pt-5" v-if="$page.props.current_organization.forms.length>0">
+            <div class="bg-white relative shadow rounded-lg pl-5">
+              <div class="ant-list ant-list-split"><!---->
+                <div class="ant-list-header">
+                  <div>Forms</div>
+                </div>
+                <div class="ant-spin-nested-loading"><!---->
+                  <div class="ant-spin-container">
+                    <ul class="ant-list-items">
+                      <li class="ant-list-item" v-for="event in member.events">
+                        <div class="ant-list-item-meta">
+                          <div class="ant-list-item-meta-avatar"><span class="ant-avatar ant-avatar-circle"><span
+                                class="ant-avatar-string"
+                                style="transform: scale(1) translateX(-50%);"><!----></span></span></div>
+                          <div class="ant-list-item-meta-content">
+                            <h4 class="ant-list-item-meta-title">
+                              <a :href="route('member.event.attendances.index',event.id)">{{ event.title_en }}</a>
+                            </h4>
+                            <div class="ant-list-item-meta-description" v-html="event.description"/>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Events section end-->
+
+
         </div>
         <div class="flex-none w-[400px]">
           <div class="container mx-auto pt-5">
@@ -147,11 +182,11 @@ export default {
                       ],
                     },
                   }" :cornersSquareOptions="{
-  type: 'square',
-  color: '#e00404'
-}" :cornersDotOptions="{
-  color: '#e00404'
-}" />
+                    type: 'square',
+                    color: '#e00404'
+                  }" :cornersDotOptions="{
+                    color: '#e00404'
+                  }" />
                 </div>
               </div>
               <!-- card start -->
