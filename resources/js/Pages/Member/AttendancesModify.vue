@@ -5,6 +5,8 @@
                 Events
             </h2>
         </template>
+        <a-select v-model:value="selected" :options="members" :fieldNames="{value:'id',label:'given_name'}" style="width:100px"/>
+        <a-button>Scan</a-button>
 
         <a-table :dataSource="event.attendances" :columns="columns">
                 <template #headerCell="{column}">
@@ -30,7 +32,6 @@
                 </template>
             </a-table>
 
-        
 
 
     </MemberLayout>
@@ -48,6 +49,7 @@ export default {
     props: ['event','members'],
     data() {
         return {
+            selected:null,
             targetKeys:[],
             columns:[
                 {

@@ -71,7 +71,7 @@ export default {
         Membership
       </h2>
     </template>
-    {{ member }}
+    <a-button @click="qrcode='2,10,1234564,abcdefg'">Change</a-button>
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
@@ -170,7 +170,7 @@ export default {
               <!-- QRcode -->
               <div class="flex flex-col justify-center items-center" v-if="showQrcode">
                 <div>
-                  <QRCodeVue3 v-bind:value="qrcode" image="/images/site_logo.png" :dotsOptions="{
+                  <QRCodeVue3 :key="qrcode" v-bind:value="qrcode" image="/images/site_logo.png" :dotsOptions="{
                     type: 'dots',
                     color: '#26249a',
                     gradient: {

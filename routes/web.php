@@ -52,7 +52,8 @@ Route::middleware([
         Route::get('membership', [App\Http\Controllers\Member\MembershipController::class, 'index'])->name('member.membership');
         Route::resource('competition/{competition}/applications',App\Http\Controllers\Member\CompetitionApplicationController::class)->names('member.competition.applications');
         Route::resource('event/{event}/attendances',App\Http\Controllers\Member\AttendanceController::class)->names('member.event.attendances');
-        Route::get('event/{event}/attendances_modify',[App\Http\Controllers\Member\AttendanceController::class,'modify'])->name('member.event.attendancesModify');
+        Route::get('event/{event}/attendances_modify',[App\Http\Controllers\Member\AttendanceController::class,'modify'])->name('member.event.attendances.modify');
+        Route::put('event/{event}/attendances_sync',[App\Http\Controllers\Member\AttendanceController::class,'sync'])->name('member.event.attendances.sync');
     });
 });
 

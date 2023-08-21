@@ -88,6 +88,19 @@ class AttendanceController extends Controller
         $attendance->save();
         return redirect()->back();
     }
+    public function sync(Request $request, Event $event){
+        //return response()->json($request->all());
+        $data=[];
+        foreach($request->all() as $memberId){
+            $data[]=['event_id'=>$event->id,'member_id'=>$memberId,'status'=>'ATT','user_id'=>auth()->user()->id];
+        };
+        Attendance::upsert(
+            $data,
+            ['event_id','member_id','status','user_id'],
+            ['status','user_id']
+        );
+        return response()->json($data);
+    }
 
     /**
      * Remove the specified resource from storage.

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('organization_id');
             $table->string('category');
-            $table->tinyInteger('credit');
+            $table->tinyInteger('credit')->nullable();
             $table->string('title_en');
-            $table->string('title_fn');
+            $table->string('title_fn')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->text('description')->nullable();

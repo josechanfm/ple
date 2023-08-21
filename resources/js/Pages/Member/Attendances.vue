@@ -25,8 +25,8 @@
         </a-transfer>
 
         <a-button>Scan</a-button>        
-        <inertia-link :href="route('member.event.attendancesModify',event.id)" class="ant-btn">Modify</inertia-link>
-        <a-button @click="onCheck">Check</a-button>
+        <inertia-link :href="route('member.event.attendances.modify',event.id)" class="ant-btn">Modify</inertia-link>
+        <a-button @click="onSave">Save</a-button>
 
     </MemberLayout>
 
@@ -94,8 +94,18 @@ export default {
         handleChange(keys,direction,moveKeys){
             console.log(keys,direction,moveKeys);
         },
-        onCheck(){
+        onSave(){
             console.log(this.targetKeys);
+            this.$inertia.put(route('member.event.attendances.sync', this.event.id), this.targetKeys, {
+                onSuccess: (page) => {
+                    console.log(page);
+                },
+                onError: (error) => {
+                    alert(error.message);
+                }
+
+            });
+
         }
     },
 }

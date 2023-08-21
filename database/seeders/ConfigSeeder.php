@@ -202,6 +202,17 @@ class ConfigSeeder extends Seeder
                 "label": "Individual"
             }]',
         ]);
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'message_categories',
+            'value'=>'[{
+                "value": "TRANING",
+                "label": "Traning"
+            }, {
+                "value": "COURSE",
+                "label": "Course"
+            }]',
+        ]);
         
     }
 }
