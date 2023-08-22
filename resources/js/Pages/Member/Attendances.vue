@@ -5,28 +5,50 @@
                 Events
             </h2>
         </template>
-
-        <a-transfer
-            v-model:target-keys="targetKeys"
-            :data-source="members"
+        <a-select
+            v-model:value="selected"
             show-search
-            :list-style="{
-            width: '250px',
-            height: '300px',
-            }"
-            :operations="['', '']"
-            :render="item => `${item.id}-${item.given_name}`"
+            placeholder="input search text"
+            style="width: 200px"
+            :default-active-first-option="false"
+            :show-arrow="false"
+            :filter-option="false"
+            :not-found-content="null"
+            :options="searchResult"
+            :fieldNames="{value:'id',label:'given_name'}"
+            @search="handleSearch"
             @change="handleChange"
-        >
+        ></a-select>
+        <a-button @click="addAttendance">Add</a-button>
+        
+        <inertia-link :href="route('member.event.attendance.scan',event.id)" class="ant-btn">Scan</inertia-link>
 
-            <template #notFoundContent>
-            <span>没数据</span>
-            </template>
-        </a-transfer>
+        <a-table :dataSource="event.attendances" :columns="columns">
+                <template #headerCell="{column}">
+                    {{ column.i18n?$t(column.i18n):column.title}}
+                </template>
+                <template #bodyCell="{column, text, record, index}">
+                    <template v-if="column.dataIndex=='operation'">
+                        <inertia-link :href="route('member.event.attendances.destroy',{event:event.id,attendance:record.id})" class="ant-btn">Delete</inertia-link>
+                        <a-button @click="destroy(record)">Delete</a-button>
+                    </template>
+                    <template v-else-if="column.dataIndex=='member'">
+                        {{ record.member.given_name }}
+                    </template>
+                    <template v-else-if="column.dataIndex=='status'">
+                        <a-radio-group v-model:value="record.status" button-style="solid" @change="onChangeStatus(record)">
+                            <a-radio-button value="ATT">Attend</a-radio-button>
+                            <a-radio-button value="lATE">Be Late</a-radio-button>
+                            <a-radio-button value="EARLY">Leave Early</a-radio-button>
+                        </a-radio-group>
+                    </template>
+                    <template v-else>
+                        {{record[column.dataIndex]}}
+                    </template>
+                </template>
+            </a-table>
 
-        <a-button>Scan</a-button>        
-        <inertia-link :href="route('member.event.attendances.modify',event.id)" class="ant-btn">Modify</inertia-link>
-        <a-button @click="onSave">Save</a-button>
+
 
     </MemberLayout>
 
@@ -43,17 +65,19 @@ export default {
     props: ['event','members'],
     data() {
         return {
+            searchResult:[],
+            selected:null,
             targetKeys:[],
             columns:[
                 {
                     title: 'Event title',
-                    dataIndex: 'title_en',
+                    dataIndex: 'member',
                 },{
                     title: 'Start date',
-                    dataIndex: 'start_date',
+                    dataIndex: 'status',
                 },{
                     title: 'End date',
-                    dataIndex: 'end_date',
+                    dataIndex: 'use_id',
                 },{
                     title: 'Operation',
                     dataIndex: 'operation',
@@ -83,20 +107,60 @@ export default {
         }
     },
     created(){
-        Object.entries(this.event.attendances).forEach(([key,attendance])=>{
-            this.targetKeys.push(attendance.member.id.toString())
-        })
-        Object.entries(this.members).forEach(([key,member])=>{
-            this.members[key]['key']=member.id.toString()
-        })
+        //this.members.unshift({id:0,given_name:'Show all'})
+        this.searchResult=this.members
     },
     methods: {
+        destroy(record){
+            if(confirm('Are you sure to delete the attendance record?'))
+            this.$inertia.delete(route('member.event.attendances.destroy', { event:this.event.id,attendance:record.id }), {
+                onSuccess: (page) => {
+                    console.log(page);
+                },
+                onError: (error) => {
+                    alert(error.message);
+                }
+
+            });
+
+        },
         handleChange(keys,direction,moveKeys){
             console.log(keys,direction,moveKeys);
         },
-        onSave(){
+        onCheck(){
             console.log(this.targetKeys);
-            this.$inertia.put(route('member.event.attendances.sync', this.event.id), this.targetKeys, {
+        },
+        onChangeStatus(record){
+            this.$inertia.put(route('member.event.attendances.update', { event:this.event.id,attendance:record.id }), record, {
+                onSuccess: (page) => {
+                    console.log(page);
+                },
+                onError: (error) => {
+                    alert(error.message);
+                }
+
+            });
+
+            console.log(record)
+        },
+        handleChange(val) {
+            console.log(val);
+            this.selected=val
+        },
+        handleSearch(val){
+            //this.members.
+            console.log(val)
+            if(val==''){
+                this.searchResult=this.members;
+            }else{
+                this.searchResult=this.members.filter(m=>m.given_name.includes(val));
+            }
+            
+
+        },
+        addAttendance(){
+            const data={member_id:this.selected,status:'ATT'}
+            this.$inertia.post(route('member.event.attendances.store', this.event.id), data, {
                 onSuccess: (page) => {
                     console.log(page);
                 },

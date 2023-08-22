@@ -32,7 +32,6 @@ class DashboardController extends Controller
             return Inertia::render('Member/Dashboard',[
                 'member'=>$member,
                 //'current_organization'=>session('organization'),
-                'qrcode'=>$this->qrcode()
                 //'articles'=>Classify::whereBelongsTo(session('organization'))->first()->articles
             ]);
         }
@@ -48,7 +47,7 @@ class DashboardController extends Controller
         }
                 
     }
-    public function qrcode()
+    public function getQrcode()
     {
         $userId=auth()->user()->id;
         $organizationId= session('organization')->id;
@@ -72,7 +71,6 @@ class DashboardController extends Controller
         //         $security_key, $options, $security_iv);
         // echo '<br>';
         // echo "Decrypted String: " . $decryption;
-
 
     }
    

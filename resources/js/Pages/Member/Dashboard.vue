@@ -9,9 +9,11 @@ export default {
     MemberLayout,
     QRCodeVue3
   },
-  props: ['member', 'articles', 'qrcode'],
+  props: ['member', 'articles'],
   data() {
     return {
+      qrcode:'',
+      interval:0,
       data: [
         {
           title: "2023全澳柔道計分賽",
@@ -40,23 +42,26 @@ export default {
   created() {
   },
   mounted() {
+
   },
   methods: {
+    getQrcode(){
+      axios.get(route('member.getQrcode')).then(response=>{
+          this.qrcode=response.data
+          console.log(this.qrcode);
+        })
+    },
     onShowQrcode() {
       this.showQrcode = !this.showQrcode;
-      // this.loadData();
-      // setInterval(function(){
-      //   this.loadData();
-      // }.bind(this),5000);
+      if(this.showQrcode){
+          this.getQrcode();
+          this.interval=setInterval(()=>{
+            this.getQrcode()
+          },3000)
+      }else{
+        clearInterval(this.interval);
+      }
     },
-    // loadData(){
-    //   axios.get('/member/qrcode').then(response=>{
-    //       this.qrcode=response.data;
-    //       this.qrcode='aaaaaaaaaaaaaa'
-    //       console.log(response.data);
-    //     }
-    //   );
-    // }
   }
 
 }

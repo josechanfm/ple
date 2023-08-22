@@ -32,6 +32,7 @@
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
+            {{ modal.data }}
         <a-form
             ref="modalRef"
             :model="modal.data"

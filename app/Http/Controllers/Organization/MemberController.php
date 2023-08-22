@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Organization;
 use App\Models\Member;
+use App\Models\User;
 use App\Exports\MemberExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Password;
@@ -28,10 +29,9 @@ class MemberController extends Controller
     {
         // $org=Organization::find(session('organization')->id)->members;
         // dd($org);
-        // dd(session('organization')->members);
-        session('organization')->refresh();
+        //dd(session('organization')->members);
         return Inertia::render('Organization/Members',[
-            'members'=>session('organization')->members,
+            'members'=>session('organization')->members
         ]);
 
     }

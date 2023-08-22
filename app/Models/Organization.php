@@ -19,7 +19,7 @@ class Organization extends Model
     }
 
     public function members(){
-        return $this->belongsToMany(Member::class);
+        return $this->belongsToMany(Member::class)->with('user');
     }
 
     // public function hasUser($user){

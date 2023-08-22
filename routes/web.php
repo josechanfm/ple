@@ -42,7 +42,7 @@ Route::middleware([
     Route::prefix('member')->group(function () {
         Route::get('/', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member');
         Route::get('dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member.dashboard');
-        Route::get('qrcode', [\App\Http\Controllers\Member\DashboardController::class, 'qrcode'])->name('member.qrcode');
+        Route::get('get_qrcode', [\App\Http\Controllers\Member\DashboardController::class, 'getQrcode'])->name('member.getQrcode');
         Route::get('guardian', [\App\Http\Controllers\Member\GuardianController::class, 'index'])->name('member.guardian');
         Route::get('guardian/act_as/{member}', [\App\Http\Controllers\Member\GuardianController::class, 'actAs'])->name('member.guardian.actAs');
         Route::get('guardian/back', [\App\Http\Controllers\Member\GuardianController::class, 'back'])->name('member.guardian.back');
@@ -51,9 +51,12 @@ Route::middleware([
         Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class)->names('member.professionals');
         Route::get('membership', [App\Http\Controllers\Member\MembershipController::class, 'index'])->name('member.membership');
         Route::resource('competition/{competition}/applications',App\Http\Controllers\Member\CompetitionApplicationController::class)->names('member.competition.applications');
+        Route::resource('events',App\Http\Controllers\Member\EventController::class)->names('member.events');
         Route::resource('event/{event}/attendances',App\Http\Controllers\Member\AttendanceController::class)->names('member.event.attendances');
+        Route::get('event/{event}/attendance/scan',[App\Http\Controllers\Member\AttendanceController::class,'scan'])->name('member.event.attendance.scan');
         Route::get('event/{event}/attendances_modify',[App\Http\Controllers\Member\AttendanceController::class,'modify'])->name('member.event.attendances.modify');
         Route::put('event/{event}/attendances_sync',[App\Http\Controllers\Member\AttendanceController::class,'sync'])->name('member.event.attendances.sync');
+        Route::get('attendance/get_member',[App\Http\Controllers\Member\AttendanceController::class,'getMember'])->name('member.attendance.getMember');
     });
 });
 

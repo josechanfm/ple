@@ -54,7 +54,8 @@ const logout = () => {
                                 <NavLink :href="route('member.professionals.index')" >
                                     Professional
                                 </NavLink>
-                                <NavLink :href="route('member.portfolios.index')" >
+                                <!-- <NavLink :href="route('member.portfolios.index')" > -->
+                                <NavLink class="text-blue-100 hover:text-blue-100">
                                     Portfolios
                                 </NavLink>
                                 <NavLink :href="route('member.profile.index')" >

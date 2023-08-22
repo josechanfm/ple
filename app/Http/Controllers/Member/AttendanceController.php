@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Member;
 use App\Models\Event;
 use App\Models\Attendance;
 use Attribute;
@@ -48,9 +49,14 @@ class AttendanceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,Event $event)
     {
-        //
+        $data=$request->all();
+        $data['event_id']=$event->id;
+        $data['user_id']=auth()->user()->id;
+
+        Attendance::updateOrCreate(['event_id'=>$event->id,'member_id'=>$request->member_id],['status','user_id']);
+        return redirect()->back();
     }
 
     /**
@@ -61,7 +67,7 @@ class AttendanceController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -110,6 +116,39 @@ class AttendanceController extends Controller
      */
     public function destroy(Event $event, Attendance $attendance)
     {
-        return resonpose()->json($attendance);
+        $attendance->delete();
+        return redirect()->back();
+    }
+
+    public function scan(Event $event){
+        // $member=Member::find(2);
+        // dd(session('organization'));
+        // dd($member->ownedBy(session('organization')));
+        return Inertia::render('Member/AttendanceScan',[
+            'event'=>$event
+        ]);
+    }
+    public function getMember(Request $request){
+        $event=Event::find($request->event_id);
+        $member=Member::find($request->scan[0]);
+        if(!$member->ownedBy(session('organization'))){
+            return response()->json(['result'=>false,'member'=>$member,'message'=>'Not belongs to this organization.']);
+        }
+        //return response()->json($member->ownedBy(session('organization')));
+        $data['event_id']=$event->id;
+        $data['member_id']=$member->id;
+        $data['status']='ATT';
+        $data['user_id']=auth()->user()->id;
+        //$attendance=Attendance::updateOrCreate(['event_id'=>$event->id,'member_id'=>$member->id],['status','user_id']);
+        //$attendance=Attendance::upsert([$data],['event_id','member_id'],['status','user_id']);
+        $attendance=Attendance::where('event_id',$data['event_id'])->where('member_id',$data['member_id'])->first();
+        if($attendance){
+            return response()->json(['result'=>false,'member'=>$member,'message'=>'Already existed.']);
+        }else{
+            Attendance::create($data);
+            return response()->json(['result'=>true,'member'=>$member,'message'=>'Successfully checked.']);
+        }
+        
+        //return response()->json($member);
     }
 }
