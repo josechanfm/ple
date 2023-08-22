@@ -145,7 +145,7 @@
                             <!-- <a-collapse-panel key="8" :header="$t('guest_title')" v-if="member.positions.includes('GUE')">
                                 888
                             </a-collapse-panel> -->
-                            <a-collapse-panel key="9" :header="$t('picture_title')" v-if="member.positions.length > 0">
+                            <a-collapse-panel key="9" :header="$t('picture_title')">
                                 <a-upload v-model:file-list="member.athlete.avatar" name="avatar" list-type="picture-card"
                                     class="avatar-uploader" :show-upload-list="false"
                                     action="https://www.mocky.io/v2/5cc8019d300000980a055e76" :before-upload="beforeUpload"

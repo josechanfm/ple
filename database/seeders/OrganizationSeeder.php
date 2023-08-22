@@ -79,6 +79,14 @@ class OrganizationSeeder extends Seeder
                 'president'=>$org['president']
             ]);
         }
+        DB::table('organizations')->where('id',22)->update([
+            'registration_code'=>'112233',
+        ]);
+        DB::table('organization_user')->insert([
+            'user_id'=>'3',
+            'organization_id'=>'22',
+        ]);
+        /*
         DB::table('organization_user')->insert([
             'user_id'=>'1',
             'organization_id'=>'1',
@@ -88,15 +96,11 @@ class OrganizationSeeder extends Seeder
             'organization_id'=>'3',
         ]);
         DB::table('organization_user')->insert([
-            'user_id'=>'3',
-            'organization_id'=>'3',
-        ]);
-        DB::table('organization_user')->insert([
             'user_id'=>'4',
             'organization_id'=>'4',
         ]);
-
-
+        */
+        /*
         DB::table('member_organization')->insert([
             'member_id'=>'1',
             'organization_id'=>'1',
@@ -109,8 +113,6 @@ class OrganizationSeeder extends Seeder
             'member_id'=>'3',
             'organization_id'=>'1',
         ]);
-
-
         DB::table('member_organization')->insert([
             'member_id'=>'4',
             'organization_id'=>'2',
@@ -123,7 +125,7 @@ class OrganizationSeeder extends Seeder
             'member_id'=>'6',
             'organization_id'=>'2',
         ]);
-
+        */
 
 
 

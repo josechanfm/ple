@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('positions')->nullable()->default('[]');
             $table->string('federation_officials')->nullable()->default('[]');
             $table->string('organization_officials')->nullable()->default('[]');
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

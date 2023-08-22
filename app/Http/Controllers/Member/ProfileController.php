@@ -93,12 +93,14 @@ class ProfileController extends Controller
         $member = Member::find($id);
         //$data['positions']=$request->positions;
         $member->update($data);
+        if($request->file('avatar')){
+            $file = $request->file('avatar')[0]['originFileObj'];
 
-        $file = $request->file('avatar')[0]['originFileObj'];
-
-        $path = Storage::putFile('public/images/avatar', $file);
-        $member->avatar = $path;
-        $member->save();
+            $path = Storage::putFile('public/images/avatar', $file);
+            $member->avatar = $path;
+            $member->save();
+    
+        }
 
         return response($member);
     }

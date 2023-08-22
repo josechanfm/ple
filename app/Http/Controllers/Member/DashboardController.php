@@ -24,11 +24,13 @@ class DashboardController extends Controller
 
         //login user is member
         if($member){
-            $organizations=$member->organizations;
+            // $organizations=$member->organizations;
+            //$member->organization;
             $member->portfolios;
             $member->events;
             session(['organization'=>$member->organizations[0]]);
-            $forms=session('organization')->forms;
+            session('organization')->forms;
+            session('organization')->refresh;
             return Inertia::render('Member/Dashboard',[
                 'member'=>$member,
                 //'current_organization'=>session('organization'),

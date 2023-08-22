@@ -41,9 +41,9 @@ class CreateNewUser implements CreatesNewUsers
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
-            ]), function (User $user) use($organization) {
+            ]), function (User $user) use($organization, $input) {
                 $this->createTeam($user);
-                $this->createMember($user,$organization);
+                $this->createMember($user,$organization,$input);
             });
         });
     }
@@ -63,9 +63,11 @@ class CreateNewUser implements CreatesNewUsers
         ]));
     }
 
-    protected function createMember(User $user,$organization){
+    protected function createMember(User $user,$organization, $input){
         $member=Member::forceCreate([
             'user_id' => $user->id,
+            'given_name'=>$input['given_name'],
+            'family_name'=>$input['family_name'],
             'display_name' => $user->name,
             'email'=>$user->email
         ]);
