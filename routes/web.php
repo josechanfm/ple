@@ -48,6 +48,7 @@ Route::middleware([
         Route::get('guardian/back', [\App\Http\Controllers\Member\GuardianController::class, 'back'])->name('member.guardian.back');
         Route::resource('portfolios', App\Http\Controllers\Member\PortfolioController::class)->names('member.portfolios');
         Route::resource('profile', App\Http\Controllers\Member\ProfileController::class)->names('member.profile');
+        Route::post('profile2/upload', [App\Http\Controllers\Member\ProfileController::class,'upload'])->name('member.profile2.upload');
         Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class)->names('member.professionals');
         Route::get('membership', [App\Http\Controllers\Member\MembershipController::class, 'index'])->name('member.membership');
         Route::resource('competition/{competition}/applications',App\Http\Controllers\Member\CompetitionApplicationController::class)->names('member.competition.applications');

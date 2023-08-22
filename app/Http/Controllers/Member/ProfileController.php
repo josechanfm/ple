@@ -89,19 +89,23 @@ class ProfileController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-      
         $member = Member::find($id);
         //$data['positions']=$request->positions;
         $member->update($data);
+
         if($request->file('avatar')){
             $file = $request->file('avatar')[0]['originFileObj'];
-
             $path = Storage::putFile('public/images/avatar', $file);
             $member->avatar = $path;
             $member->save();
-    
         }
 
+        // if($request->file('fileList')){
+        //     foreach($request->file('fileList') as $file){
+        //         $enquiry_question->addMedia($file['originFileObj'])
+        //             ->toMediaCollection('enquiryQuestionAttachments');
+        //     }
+        // }
         return response($member);
     }
 
@@ -114,5 +118,10 @@ class ProfileController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function upload( Request $request){
+        dd($request->file('avatar'));
+        dd($_FILES);
     }
 }

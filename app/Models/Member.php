@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Organization;
 
 class Member extends Model
@@ -43,6 +44,11 @@ class Member extends Model
     ];
     protected $casts=['positions'=>'json','federation_officials'=>'json','organization_officials'=>'json'];
 
+    protected $appends=['url'];
+
+    public function getUrlAttribute(){
+        return $this->avatar?Storage::url($this->avatar):'';
+    }
     public function createUser(): User
     {
         $user = new User();
