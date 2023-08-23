@@ -209,30 +209,26 @@
                                 888
                             </a-collapse-panel> -->
               <a-collapse-panel key="9" :header="$t('picture_title')">
-
-                {{ member }}
-
-                <a-button @click="showModal=true">Upload Profile Image</a-button>
+                <a-button @click="showModal = true"
+                  >Upload Profile Image</a-button
+                >
                 <CropperModal
-                    v-if="showModal"
-                    :minAspectRatioProp="{width: 8, height: 8}"
-                    :maxAspectRatioProp="{width: 8, height: 8}"
-                    @croppedImageData="setCroppedImageData"
-                    @showModal="showModal = false"
+                  v-if="showModal"
+                  :minAspectRatioProp="{ width: 8, height: 8 }"
+                  :maxAspectRatioProp="{ width: 8, height: 8 }"
+                  @croppedImageData="setCroppedImageData"
+                  @showModal="showModal = false"
                 />
-                
                 <div class="flex flex-wrap mt-4 mb-6">
                   <div class="w-full md:w-1/2 px-3">
-                      <CroppedImage
-                          label="Cropped Image"
-                          :image="member.avatar"
-                      />
+                    <div v-if="avatarPreview !== null">
+                      <img :src="avatarPreview" />
+                    </div>
+                    <div v-else>
+                      <img :src="member.url" />
+                    </div>
                   </div>
-              </div>
-
-
-
-
+                </div>
               </a-collapse-panel>
             </a-collapse>
             <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
@@ -254,8 +250,6 @@ import { message } from "ant-design-vue";
 import { quillEditor } from "vue3-quill";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import CropperModal from "@/Components/Member/CropperModal.vue";
-import CroppedImage from "@/Components/Member/CroppedImage.vue";
-
 
 export default {
   components: {
@@ -265,16 +259,15 @@ export default {
     quillEditor,
     UploadOutlined,
     CropperModal,
-    CroppedImage,
   },
   props: ["member", "positions"],
   data() {
     return {
-      showModal:false,
-      avatar:{},
-      imageData:null,
-      image:null,
-
+      showModal: false,
+      avatar: {},
+      imageData: null,
+      image: null,
+      avatarPreview: null,
       activeKey: ["1", "3", "4", "5", "6", "7", "8", "9"],
       loading: false,
       imageUrl: "",
@@ -318,31 +311,33 @@ export default {
     this.member.athlete = [];
   },
   methods: {
-    setCroppedImageData(data){
-        //this.imageData = data
-        //this.image = data.imageUrl
-        this.member.avatar=data.imageUrl
+    setCroppedImageData(data) {
+      //this.imageData = data
+      //this.image = data.imageUrl
+      console.log(data.file);
+      this.avatarPreview = data.imageUrl;
+      this.member.avatar = data.file;
     },
 
     handleUploaded({ form, request, response }) {
-        // update user avatar attribute
-      },
-    onSubmit() {
-        this.member._method="PATCH"
-        this.$inertia.post(route('member.profile.update',this.member.id),this.member,{
-            onSuccess:(page)=>{
-                console.log(page)
-            },
-            onError:(err)=>{
-                console.log(err)
-            }
-
-        })
-        console.log(this.member)
+      // update user avatar attribute
     },
-  
-
-
+    onSubmit() {
+      this.member._method = "PATCH";
+      this.$inertia.post(
+        route("member.profile.update", this.member.id),
+        this.member,
+        {
+          onSuccess: (page) => {
+            console.log(page);
+          },
+          onError: (err) => {
+            console.log(err);
+          },
+        }
+      );
+      console.log(this.member);
+    },
   },
 };
 </script>

@@ -89,27 +89,28 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //dd($request->file('avatar'));
         $data = $request->all();
         $member = Member::find($id);
         //$data['positions']=$request->positions;
         $member->update($data);
-            //$file = $request->file('avatar')[0]['originFileObj'];
-            //$path = Storage::putFile('public/images/avatar', $file);
+
+            $file = $request->file('avatar');
+            $path = Storage::putFile('public/images/avatar', $file);
 
 
 
-            $image = $request->avatar;  // your base64 encoded
-            $decoded_file = base64_decode($image); // decode the file
-            $mime_type = finfo_buffer(finfo_open(), $decoded_file, FILEINFO_MIME_TYPE); // extract mime type
-            $extension = $this->mime2ext($mime_type); // extract extension from mime type
-            $image = str_replace('data:image/'.$extension.';base64,', '', $image);
-            $image = str_replace(' ', '+', $image);
-            $filename = str::random(10).'.'.$extension;
-            $filePath = 'avatars/'.$filename;
-
-            $disk = Storage::put($filePath, base64_decode($image)); 
-            $path=Storage::url($filePath);
+            // $image = $request->avatar;  // your base64 encoded
+            // $decoded_file = base64_decode($image); // decode the file
+            // $mime_type = finfo_buffer(finfo_open(), $decoded_file, FILEINFO_MIME_TYPE); // extract mime type
+            // $extension = 'png';//$this->mime2ext($mime_type); // extract extension from mime type
+            // $image = str_replace('data:image/'.$extension.';base64,', '', $image);
+            // $image = str_replace(' ', '+', $image);
+            // $filename = str::random(10).'.'.$extension;
+            // $filePath = 'public/avatars/'.$filename;
+            // $disk = Storage::put($filePath, base64_decode($image)); 
+            // $path=Storage::url($filePath);
+            
             // $base64_image = $request->avatar; // your base64 encoded 
             // // @list($type, $file_data) = explode(';', $base64_image);
             // // @list(, $file_data) = explode(',', $file_data); 
