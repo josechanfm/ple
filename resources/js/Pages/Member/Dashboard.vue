@@ -76,7 +76,6 @@ export default {
         Membership
       </h2>
     </template>
-    <a-button @click="qrcode='2,10,1234564,abcdefg'">Change</a-button>
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
@@ -105,7 +104,7 @@ export default {
           <!-- News Section end-->
 
           <!--Forms Section-->
-          <div class="container mx-auto pt-5" v-if="$page.props.current_organization.forms.length>0">
+          <div class="container mx-auto pt-5" v-if="$page.props.current_organization.forms!=null">
             <div class="bg-white relative shadow rounded-lg pl-5">
               <div class="ant-list ant-list-split"><!---->
                 <div class="ant-list-header">
@@ -137,7 +136,7 @@ export default {
 
 
           <!--Events Section-->
-          <div class="container mx-auto pt-5" v-if="$page.props.current_organization.forms.length>0">
+          <div class="container mx-auto pt-5" v-if="$page.props.current_organization.events!=null">
             <div class="bg-white relative shadow rounded-lg pl-5">
               <div class="ant-list ant-list-split"><!---->
                 <div class="ant-list-header">

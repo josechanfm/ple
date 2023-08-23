@@ -26,6 +26,7 @@
         "laravel-vue-i18n": "^2.5.1",
         "qrcode-reader-vue3": "^3.1.2",
         "qrcode-vue3": "^1.6.8",
+        "vue-advanced-cropper": "^2.8.8",
         "vue3-quill": "^0.3.0"
     }
 }

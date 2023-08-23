@@ -21,19 +21,24 @@ class DashboardController extends Controller
             session(['guardian'=>auth()->user()->guardian]);
             return redirect()->route('member.guardian');
         }
-
         //login user is member
         if($member){
             // $organizations=$member->organizations;
             //$member->organization;
             $member->portfolios;
             $member->events;
+
+            if(count($member->organizations)<=0){
+                return redirect()->route('/');
+            }
+            $member->organizations[0]->forms;
             session(['organization'=>$member->organizations[0]]);
-            session('organization')->forms;
-            session('organization')->refresh;
+            //session('organization')->forms;
+                
+            //session('organization')->fresh();
             return Inertia::render('Member/Dashboard',[
                 'member'=>$member,
-                //'current_organization'=>session('organization'),
+                'current_organization'=>session('organization'),
                 //'articles'=>Classify::whereBelongsTo(session('organization'))->first()->articles
             ]);
         }

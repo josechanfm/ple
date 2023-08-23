@@ -5,6 +5,7 @@
         Dashboard..
       </h2>
     </template>
+
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
@@ -209,15 +210,28 @@
                             </a-collapse-panel> -->
               <a-collapse-panel key="9" :header="$t('picture_title')">
 
-                <a-form-item name="avatar" v-if="member.avatar==null">
-                    <a-upload v-model:file-list="member.avatar" :multiple="false">
-                        <a-button>
-                            <upload-outlined accept="image/png, image/jpeg"></upload-outlined>
-                            Upload
-                        </a-button>
-                    </a-upload>
-                </a-form-item>
-                <img :src="member.url"/>
+                {{ member }}
+
+                <a-button @click="showModal=true">Upload Profile Image</a-button>
+                <CropperModal
+                    v-if="showModal"
+                    :minAspectRatioProp="{width: 8, height: 8}"
+                    :maxAspectRatioProp="{width: 8, height: 8}"
+                    @croppedImageData="setCroppedImageData"
+                    @showModal="showModal = false"
+                />
+                
+                <div class="flex flex-wrap mt-4 mb-6">
+                  <div class="w-full md:w-1/2 px-3">
+                      <CroppedImage
+                          label="Cropped Image"
+                          :image="member.avatar"
+                      />
+                  </div>
+              </div>
+
+
+
 
               </a-collapse-panel>
             </a-collapse>
@@ -239,6 +253,9 @@ import { PlusOutlined, LoadingOutlined } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 import { quillEditor } from "vue3-quill";
 import { UploadOutlined } from "@ant-design/icons-vue";
+import CropperModal from "@/Components/Member/CropperModal.vue";
+import CroppedImage from "@/Components/Member/CroppedImage.vue";
+
 
 export default {
   components: {
@@ -247,10 +264,17 @@ export default {
     LoadingOutlined,
     quillEditor,
     UploadOutlined,
+    CropperModal,
+    CroppedImage,
   },
   props: ["member", "positions"],
   data() {
     return {
+      showModal:false,
+      avatar:{},
+      imageData:null,
+      image:null,
+
       activeKey: ["1", "3", "4", "5", "6", "7", "8", "9"],
       loading: false,
       imageUrl: "",
@@ -294,6 +318,15 @@ export default {
     this.member.athlete = [];
   },
   methods: {
+    setCroppedImageData(data){
+        //this.imageData = data
+        //this.image = data.imageUrl
+        this.member.avatar=data.imageUrl
+    },
+
+    handleUploaded({ form, request, response }) {
+        // update user avatar attribute
+      },
     onSubmit() {
         this.member._method="PATCH"
         this.$inertia.post(route('member.profile.update',this.member.id),this.member,{
@@ -307,22 +340,9 @@ export default {
         })
         console.log(this.member)
     },
+  
+
+
   },
 };
 </script>
-
-<style scoped>
-.avatar-uploader > .ant-upload {
-  width: 128px;
-  height: 128px;
-}
-.ant-upload-select-picture-card i {
-  font-size: 32px;
-  color: #999;
-}
-
-.ant-upload-select-picture-card .ant-upload-text {
-  margin-top: 8px;
-  color: #666;
-}
-</style>
