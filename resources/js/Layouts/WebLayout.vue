@@ -117,6 +117,11 @@ const showingNavigationDropdown = ref(false);
                                     Log in
                                 </ResponsiveNavLink>
                             </a>
+                            <a :href="route('register')">
+                                <ResponsiveNavLink as="button">
+                                    Register
+                                </ResponsiveNavLink>
+                            </a>
                         </template>
 
                     </div>
