@@ -44,10 +44,13 @@ class Member extends Model
     ];
     protected $casts=['positions'=>'json','federation_officials'=>'json','organization_officials'=>'json'];
 
-    protected $appends=['url'];
+    protected $appends=['url','member_number'];
 
     public function getUrlAttribute(){
         return $this->avatar?Storage::url($this->avatar):'';
+    }
+    public function getMemberNumberAttribute(){
+        return substr('000000'.$this->id,-6);
     }
     public function createUser(): User
     {

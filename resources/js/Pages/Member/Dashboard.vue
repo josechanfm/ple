@@ -76,7 +76,6 @@ export default {
         Membership
       </h2>
     </template>
-
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
@@ -187,11 +186,11 @@ export default {
                       ],
                     },
                   }" :cornersSquareOptions="{
-  type: 'square',
-  color: '#e00404'
-}" :cornersDotOptions="{
-  color: '#e00404'
-}" />
+                    type: 'square',
+                    color: '#e00404'
+                  }" :cornersDotOptions="{
+                    color: '#e00404'
+                  }" />
                 </div>
               </div>
               <!-- card start -->
@@ -205,10 +204,10 @@ export default {
                     </div>
                     <div class="flex">
                       <div class="flex flex-col flex-auto gap-1">
-                        <div class="">姓名</div>
-                        <div class="mb-2">陳大文</div>
-                        <div class="">學會編號</div>
-                        <div class="font-sans mb-2">00001</div>
+                        <div class="">Name: </div>
+                        <div class="mb-2">{{ member.display_name }}</div>
+                        <div class="">Number: </div>
+                        <div class="font-sans mb-2">{{ member.member_number }}</div>
                       </div>
                       <div class="flex text-right">
                         <img class="w-20 h-20" src="/images/judo_logo.png" />
@@ -217,12 +216,12 @@ export default {
                   </div>
                   <div class="flex text-xs">
                     <div class="flex flex-col gap-1 flex-auto">
-                      <div class="">有效期</div>
-                      <div class="font-sans text-base">2023-03-31</div>
+                      <div class="">Valid at:</div>
+                      <div class="font-sans text-base">{{ member.valid_at }}</div>
                     </div>
                     <div class="flex flex-col gap-1 flex-auto">
-                      <div class="">失效期</div>
-                      <div class="font-sans text-base">2025-03-31</div>
+                      <div class="">Expired at:</div>
+                      <div class="font-sans text-base">{{ member.expired_at }}</div>
                     </div>
                   </div>
                 </div>
@@ -244,7 +243,7 @@ export default {
                 <div class="my-5 px-6">
                   <a href="#"
                     class="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white">Connect
-                    with <span class="font-bold">@pantazisoft</span></a>
+                    with <span class="font-bold">{{ member.email }}</span></a>
                 </div>
                 <div class="flex justify-between items-center my-5 px-6">
                   <a href=""

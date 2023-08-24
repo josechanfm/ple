@@ -110,7 +110,6 @@ const logout = () => {
                                         <span v-else class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
                                                 {{ $page.props.user.name }}
-
                                                 <svg
                                                     class="ml-2 -mr-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -205,8 +204,12 @@ const logout = () => {
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
+                            <ResponsiveNavLink :href="route('member.profile.index')" :active="route().current('member.profile.index')">
                                 Profile
+                            </ResponsiveNavLink>
+
+                            <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
+                                Account
                             </ResponsiveNavLink>
 
                             <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">
@@ -221,6 +224,7 @@ const logout = () => {
                             </form>
 
                             <!-- Team Management -->
+                            <div style="display:none">
                             <template v-if="$page.props.jetstream.hasTeamFeatures">
                                 <div class="border-t border-gray-200" />
 
@@ -264,6 +268,7 @@ const logout = () => {
                                     </form>
                                 </template>
                             </template>
+                            </div>
                         </div>
                     </div>
                 </div>
