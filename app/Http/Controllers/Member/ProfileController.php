@@ -95,10 +95,13 @@ class ProfileController extends Controller
         //$data['positions']=$request->positions;
         $member->update($data);
 
+        if($request->file('avatar')){
             $file = $request->file('avatar');
             $path = Storage::putFile('public/images/avatar', $file);
             $member->avatar = $path;
             $member->save();
+
+        }
 
         // if($request->file('fileList')){
         //     foreach($request->file('fileList') as $file){
@@ -106,7 +109,7 @@ class ProfileController extends Controller
         //             ->toMediaCollection('enquiryQuestionAttachments');
         //     }
         // }
-        return response($member);
+        return redirect()->back();
     }
 
     /**

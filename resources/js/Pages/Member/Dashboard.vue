@@ -48,7 +48,6 @@ export default {
     getQrcode() {
       axios.get(route('member.getQrcode')).then(response => {
         this.qrcode = response.data
-        console.log(this.qrcode);
       })
     },
     onShowQrcode() {
@@ -57,7 +56,7 @@ export default {
         this.getQrcode();
         this.interval = setInterval(() => {
           this.getQrcode()
-        }, 3000)
+        }, 10000)
       } else {
         clearInterval(this.interval);
       }
@@ -231,7 +230,7 @@ export default {
 
               <div class="mt-16">
                 <h1 class="font-bold text-center text-3xl text-gray-900">
-                  {{ member.display_name }}
+                  {{ member.given_name }} {{ member.middle_name }} {{ member.family_name }}
                 </h1>
                 <p class="text-center text-sm text-gray-400 font-medium">
 
