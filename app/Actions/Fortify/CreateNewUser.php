@@ -24,17 +24,21 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        $organization=Organization::where('registration_code')->first();
-        //dd($organization);
-        if(!$organization){
-            return redirect()->route('/');
-        }
+        $organization=Organization::where('registration_code',$input['registration_code'])->first();
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
+            'registration_code'=>['required',
+                function($attribute, $value, $fail) use ($organization){
+                    if($organization==null){
+                        $fail('Registration Code Incorrect!');
+                    }
+                }
+            ]
         ])->validate();
+
 
         return DB::transaction(function () use ($input, $organization) {
             return tap(User::create([

@@ -124,10 +124,10 @@ const submit = () => {
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
-                    type="text"
+                    type="password"
                     class="mt-1 block w-full"
                     required
-                    autocomplete="new-password"
+                    autocomplete="confirm-password"
                 />
                 <InputError class="mt-2" :message="form.errors.organization_id" />
             </div>

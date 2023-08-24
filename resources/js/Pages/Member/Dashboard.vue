@@ -12,12 +12,12 @@ export default {
   props: ['member', 'articles'],
   data() {
     return {
-      qrcode:'',
-      interval:0,
+      qrcode: '',
+      interval: 0,
       data: [
         {
-          title: "2023全澳柔道計分賽",
-          url: "/member/competition/1/applications",
+          title: "News",
+          url: "./",
           content: "Competition ABC is now open for registration"
         },
         {
@@ -45,20 +45,20 @@ export default {
 
   },
   methods: {
-    getQrcode(){
-      axios.get(route('member.getQrcode')).then(response=>{
-          this.qrcode=response.data
-          console.log(this.qrcode);
-        })
+    getQrcode() {
+      axios.get(route('member.getQrcode')).then(response => {
+        this.qrcode = response.data
+        console.log(this.qrcode);
+      })
     },
     onShowQrcode() {
       this.showQrcode = !this.showQrcode;
-      if(this.showQrcode){
-          this.getQrcode();
-          this.interval=setInterval(()=>{
-            this.getQrcode()
-          },3000)
-      }else{
+      if (this.showQrcode) {
+        this.getQrcode();
+        this.interval = setInterval(() => {
+          this.getQrcode()
+        }, 3000)
+      } else {
         clearInterval(this.interval);
       }
     },
@@ -76,9 +76,76 @@ export default {
         Membership
       </h2>
     </template>
+
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
+
+          <!-- Feature Section -->
+          <div class="container mx-auto pt-5">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+              <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+                <a-col class="gutter-row" :span="8">
+                  <div class="max-w-lg rounded overflow-hidden shadow-lg">
+                    <img class="w-full" alt="Use any sample image here..." src="https://dummyimage.com/300x5:3">
+                    <div class="px-6 py-4">
+                      <div class="font-bold text-xl mb-2">Forms</div>
+                      <p class="text-gray-700 text-base pl-3">
+                      <ol class="list-disc">
+                        <li v-for="form in $page.props.current_organization.forms">
+                          <inertia-link :href="route('forms.show', form.id)">{{ form.title }}</inertia-link>
+                        </li>
+                      </ol>
+                      </p>
+                    </div>
+                    <div class="px-6 py-4">
+                      <span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#hashtag</span>
+                    </div>
+                  </div>
+                </a-col>
+                <a-col class="gutter-row" :span="8">
+                  <div class="max-w-lg rounded overflow-hidden shadow-lg">
+                    <img class="w-full" alt="Use any sample image here..." src="https://dummyimage.com/300x5:3">
+                    <div class="px-6 py-4">
+                      <div class="font-bold text-xl mb-2">Competitions</div>
+                      <p class="text-gray-700 text-base">
+                        Lorem ipsum dolor sit amet consectetur adipisicing
+                        elit. Sed recusandae libero possimus culpa quod </p>
+                    </div>
+                    <div class="px-6 py-4"><span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#hashtag</span>
+                    </div>
+                  </div>
+                </a-col>
+                <a-col class="gutter-row" :span="8">
+                  <div class="max-w-lg rounded overflow-hidden shadow-lg">
+                    <img class="w-full" alt="Use any sample image here..." src="https://dummyimage.com/300x5:3">
+                    <div class="px-6 py-4">
+                      <div class="font-bold text-xl mb-2">Events</div>
+                      <p class="text-gray-700 text-base">
+                        {{ member.events }}
+                        Lorem ipsum dolor sit amet consectetur adipisicing
+                        elit. Sed recusandae libero possimus culpa quod.
+                      </p>
+                    </div>
+                    <div class="px-6 py-4"><span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
+                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#hashtag</span>
+                    </div>
+                  </div>
+                </a-col>
+              </a-row>
+            </div>
+          </div>
+
+          <!-- Feature Section end-->
+
           <!-- News Section-->
           <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg pl-5">
@@ -103,68 +170,6 @@ export default {
           </div>
           <!-- News Section end-->
 
-          <!--Forms Section-->
-          <div class="container mx-auto pt-5" v-if="$page.props.current_organization.forms!=null">
-            <div class="bg-white relative shadow rounded-lg pl-5">
-              <div class="ant-list ant-list-split"><!---->
-                <div class="ant-list-header">
-                  <div>Forms</div>
-                </div>
-                <div class="ant-spin-nested-loading"><!---->
-                  <div class="ant-spin-container">
-                    <ul class="ant-list-items">
-                      <li class="ant-list-item" v-for="form in $page.props.current_organization.forms">
-                        <div class="ant-list-item-meta">
-                          <div class="ant-list-item-meta-avatar"><span class="ant-avatar ant-avatar-circle"><span
-                                class="ant-avatar-string"
-                                style="transform: scale(1) translateX(-50%);"><!----></span></span></div>
-                          <div class="ant-list-item-meta-content">
-                            <h4 class="ant-list-item-meta-title">
-                              <a :href="route('forms.show',form.id)">{{ form.title }}</a>
-                            </h4>
-                            <div class="ant-list-item-meta-description" v-html="form.description"/>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Form section end-->
-
-
-          <!--Events Section-->
-          <div class="container mx-auto pt-5" v-if="$page.props.current_organization.events!=null">
-            <div class="bg-white relative shadow rounded-lg pl-5">
-              <div class="ant-list ant-list-split"><!---->
-                <div class="ant-list-header">
-                  <div>Forms</div>
-                </div>
-                <div class="ant-spin-nested-loading"><!---->
-                  <div class="ant-spin-container">
-                    <ul class="ant-list-items">
-                      <li class="ant-list-item" v-for="event in member.events">
-                        <div class="ant-list-item-meta">
-                          <div class="ant-list-item-meta-avatar"><span class="ant-avatar ant-avatar-circle"><span
-                                class="ant-avatar-string"
-                                style="transform: scale(1) translateX(-50%);"><!----></span></span></div>
-                          <div class="ant-list-item-meta-content">
-                            <h4 class="ant-list-item-meta-title">
-                              <a :href="route('member.event.attendances.index',event.id)">{{ event.title_en }}</a>
-                            </h4>
-                            <div class="ant-list-item-meta-description" v-html="event.description"/>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Events section end-->
 
 
         </div>
@@ -209,8 +214,8 @@ export default {
                         <div class="">學會編號</div>
                         <div class="font-sans mb-2">00001</div>
                       </div>
-                      <div class="flex-auto text-right">
-                        <img class="w-14 h-14" src="/images/judo_logo.png" />
+                      <div class="flex text-right">
+                        <img class="w-20 h-20" src="/images/judo_logo.png" />
                       </div>
                     </div>
                   </div>
@@ -231,10 +236,11 @@ export default {
 
               <div class="mt-16">
                 <h1 class="font-bold text-center text-3xl text-gray-900">
-                  {{ $page.props.current_organization.full_name }}
+                  {{ member.display_name }}
                 </h1>
                 <p class="text-center text-sm text-gray-400 font-medium">
-                  {{ member.display_name }}
+                  
+                  {{ $page.props.current_organization.full_name }}
                 </p>
                 <p>
                   <span> </span>
@@ -262,32 +268,34 @@ export default {
                         class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
                         <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt=""
                           class="rounded-full h-6 shadow-md inline-block mr-2" />
-                      {{organization.abbr}} - {{organization.full_name}}
-                      <span class="text-gray-500 text-xs">24 min ago</span>
-                    </a>
-                  </template>
+                        {{ organization.abbr }} - {{ organization.full_name }}
+                        <span class="text-gray-500 text-xs">24 min ago</span>
+                      </a>
+                    </template>
 
-                  <template v-for="portfolio in member.portfolios">
-                    <a href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                      <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2" />
-                      {{portfolio.title}} - {{portfolio.description}}
-                      <span class="text-gray-500 text-xs">{{ portfolio.start_date }}</span>
-                    </a>
-                  </template>
+                    <template v-for="portfolio in member.portfolios">
+                      <a href="#"
+                        class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
+                        <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt=""
+                          class="rounded-full h-6 shadow-md inline-block mr-2" />
+                        {{ portfolio.title }} - {{ portfolio.description }}
+                        <span class="text-gray-500 text-xs">{{ portfolio.start_date }}</span>
+                      </a>
+                    </template>
+                  </div>
                 </div>
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</MemberLayout></template>
+  </MemberLayout>
+</template>
 
-<style scope>#pure-html {
+<style scope>
+#pure-html {
   all: initial
 }
 
