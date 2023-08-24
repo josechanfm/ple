@@ -36,7 +36,7 @@
                 <a-row :gutter="24" :span="24">
                   <a-col :span="12">
                     <a-form-item :label="$t('dob')" name="dob">
-                      <a-input v-model:value="member.dob" />
+                      <a-date-picker v-model:value="member.dob" :format="dateFormat" :valueFormat="dateFormat"/>
                     </a-form-item>
                     <a-form-item :label="$t('country')" name="country">
                       <a-input v-model:value="member.country" />
@@ -56,7 +56,10 @@
                   </a-col>
                   <a-col :span="12">
                     <a-form-item :label="$t('gender')" name="gender">
-                      <a-input v-model:value="member.gender" />
+                      <a-radio-group v-model:value="member.gender" button-style="solid">
+                        <a-radio-button value="M">Male</a-radio-button>
+                        <a-radio-button value="F">Female</a-radio-button>
+                      </a-radio-group>
                     </a-form-item>
                     <a-form-item :label="$t('club')" name="club">
                       <a-input v-model:value="member.club" />
@@ -198,6 +201,7 @@ export default {
   props: ["member", "positions"],
   data() {
     return {
+      dateFormat:'YYYY-MM-DD',
       showModal: false,
       avatar: {},
       imageData: null,
@@ -213,6 +217,10 @@ export default {
         mode: "",
       },
       rules: {
+        given_name:{ required: true },
+        family_name:{ required: true },
+        display_name:{ required: true },
+        email:{ required: true,type:'email' },
         field: { required: true },
         label: { required: true },
       },
