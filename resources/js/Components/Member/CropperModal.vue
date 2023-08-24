@@ -23,7 +23,7 @@
                     "
                 >
                     <div class="bg-white px-4 pt-5 pb-4 p-6">
-                        <div class="flex items-center">
+                        <div class="items-center">
                             <div class="mt-3 text-left">
                                 <h3 class="text-2xl font-medium leading-6 text-gray-900">Crop Image</h3>
 
@@ -81,7 +81,7 @@
                                         :src="uploadedImage"
                                         :stencil-props="{
                                             minAspectRatio: minAspectRatioProp.width/minAspectRatioProp.height,
-                                            maxAspectRatio: maxAspectRatioProp.width/maxAspectRatioProp.height
+                                            maxAspectRatio: maxAspectRatioProp.width/maxAspectRatioProp.height,
                                         }"
                                         @change="change"
                                     />
