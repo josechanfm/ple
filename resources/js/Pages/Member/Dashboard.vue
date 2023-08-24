@@ -80,7 +80,6 @@ export default {
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
-
           <!-- Feature Section -->
           <div class="container mx-auto pt-5">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -143,7 +142,6 @@ export default {
               </a-row>
             </div>
           </div>
-
           <!-- Feature Section end-->
 
           <!-- News Section-->
@@ -169,10 +167,8 @@ export default {
             </div>
           </div>
           <!-- News Section end-->
-
-
-
         </div>
+
         <div class="flex-none w-[400px]">
           <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg">
@@ -191,11 +187,11 @@ export default {
                       ],
                     },
                   }" :cornersSquareOptions="{
-                    type: 'square',
-                    color: '#e00404'
-                  }" :cornersDotOptions="{
-                    color: '#e00404'
-                  }" />
+  type: 'square',
+  color: '#e00404'
+}" :cornersDotOptions="{
+  color: '#e00404'
+}" />
                 </div>
               </div>
               <!-- card start -->
@@ -239,7 +235,7 @@ export default {
                   {{ member.display_name }}
                 </h1>
                 <p class="text-center text-sm text-gray-400 font-medium">
-                  
+
                   {{ $page.props.current_organization.full_name }}
                 </p>
                 <p>
@@ -301,4 +297,5 @@ export default {
 
 #pure-html * {
   all: revert;
-}</style>
+}
+</style>

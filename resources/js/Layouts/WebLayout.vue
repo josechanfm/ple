@@ -72,7 +72,10 @@ const showingNavigationDropdown = ref(false);
                             </template>
                             <template v-else>
                                 <li><inertia-link :href="route('login')">Login</inertia-link></li>
+                                <li><inertia-link :href="route('register')">Register</inertia-link></li>
                             </template>
+                            
+                            
                         </ul>
                         <!-- <div class="md:flex items-center hidden space-x-4 ml-8 lg:ml-12">
                             <h1 class="text-text-gray-600  py-2 hover:cursor-pointer hover:text-indigo-600"><inertia-link
