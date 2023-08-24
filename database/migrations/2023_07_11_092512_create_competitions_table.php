@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('match_dates')->nullable();
             $table->text('categories_weights');
             $table->text('roles');
+            $table->text('scope')->nullable();
             $table->timestamps();
         });
     }

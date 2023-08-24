@@ -18,12 +18,17 @@ class FormController extends Controller
      */
     public function index()
     {
-        // if(Auth()->user()){
-        //     $forms=Form::where('published',1)->get();
-        // }else{
-        //     $forms=Form::where('published',1)->where('for_staff',0)->get();
-        // }
-        $forms=Form::where('published',1)->where('for_member',0)->get();
+        if(auth()->user()){
+            if(auth()->user()->member){
+                $orgIds=auth()->user()->member->organizations->pluck('id')->toArray();
+                $forms=Form::where('published',1)->where('for_member',1)->whereIn('organization_id',$orgIds)->get();
+            }else{
+
+                $forms=Form::where('published',1)->where('required_login',1)->get();
+            }
+        }else{
+            $forms=Form::where('published',1)->get();
+        }
         return Inertia::render('Form/Form',[
             'forms'=>$forms
         ]);
@@ -47,35 +52,25 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        //date('Y-m-d',strtotime($request->date))
-            // $this->validate($request,[
-            //     'form_id'=>'required',
-            // ]);
-
-                $entry=new Entry();
-                $entry->form_id=$request->form['id'];
-                //$entry->member_id=auth()->user()->id;
-                $entry->save();
-                foreach($request->fields as $key=>$value){
-                    $record=new EntryRecord();
-                    $record->entry_id=$entry->id;
-                    $record->form_field_id=$key;
-                    if(is_array($value)){
-                        $record->field_value=json_encode($value);
-                    }else{
-                        $record->field_value=$value;
-                    }
-                    $record->save();
-                }
-                $form=Form::find($entry->form_id);
-                return Inertia::render('Form/Thanks',[
-                    'form'=>$form,
-                    'filled'=>$entry,
-                ]);
-        
-                //return redirect()->route('form.thanks',$entry);
-                //return to_route('form.thanks', ['form'=>$request->form['id']]);
-                //return to_route('form.thanks',$request->form['id']);
+        $entry=new Entry();
+        $entry->form_id=$request->form['id'];
+        $entry->save();
+        foreach($request->fields as $key=>$value){
+            $record=new EntryRecord();
+            $record->entry_id=$entry->id;
+            $record->form_field_id=$key;
+            if(is_array($value)){
+                $record->field_value=json_encode($value);
+            }else{
+                $record->field_value=$value;
+            }
+            $record->save();
+        }
+        $form=Form::find($entry->form_id);
+        return Inertia::render('Form/Thanks',[
+            'form'=>$form,
+            'filled'=>$entry,
+        ]);
     }
 
     /**
@@ -86,6 +81,20 @@ class FormController extends Controller
      */
     public function show(Form $form)
     {
+        if(!$form->published){
+            return redirect()->back();
+        }elseif($form->require_login && auth()->user()==null){
+            return redirect()->back();
+        }elseif($form->for_member){
+            if(auth()->user()->member==null){
+                return redirect()->back();
+            }
+            $orgIds=auth()->user()->member->organizations->pluck('id')->toArray();
+            if(!in_array($form->organization_id, $orgIds)){
+                return redirect()->back();
+            }
+        };
+        
         //$form=Form::with('fields')->find($id);
         $form->fields;
         if($form->require_login==1 && !Auth()->user()){

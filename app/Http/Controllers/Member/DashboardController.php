@@ -22,6 +22,7 @@ class DashboardController extends Controller
             return redirect()->route('member.guardian');
         }
         //login user is member
+
         if($member){
             // $organizations=$member->organizations;
             //$member->organization;

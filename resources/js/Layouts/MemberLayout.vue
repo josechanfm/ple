@@ -51,11 +51,12 @@ const logout = () => {
                                 <NavLink :href="route('member.dashboard')" :active="route().current('dashboard')">
                                     {{ $t('dashboard')}}
                                 </NavLink>
-                                <NavLink :href="route('member.professionals.index')" >
+                                <!-- <NavLink :href="route('member.professionals.index')" > -->
+                                <NavLink class="text-blue-100 hover:text-blue-100">
                                     Professional
                                 </NavLink>
-                                <NavLink :href="route('member.portfolios.index')" >
-                                <!-- <NavLink class="text-blue-100 hover:text-blue-100"> -->
+                                <!-- <NavLink :href="route('member.portfolios.index')" > -->
+                                <NavLink class="text-blue-100 hover:text-blue-100">
                                     Portfolios
                                 </NavLink>
                                 <NavLink :href="route('member.profile.index')" >
@@ -65,7 +66,7 @@ const logout = () => {
                                     Guardian
                                 </NavLink>
                                 <NavLink :href="route('manage.list')" v-if="$page.props.user.roles.includes('organizer')">
-                                    Admin
+                                    Manager
                                 </NavLink>
                             </div>
                         </div>

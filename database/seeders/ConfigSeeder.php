@@ -204,13 +204,30 @@ class ConfigSeeder extends Seeder
         ]);
         DB::table('configs')->insert([
             'organization_id'=>0,
-            'key'=>'message_categories',
+            'key'=>'event_categories',
             'value'=>'[{
                 "value": "TRANING",
                 "label": "Traning"
             }, {
                 "value": "COURSE",
                 "label": "Course"
+            }]',
+        ]);
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'certificate_categories',
+            'value'=>'[{
+                "value": "BELT",
+                "label": "Belt"
+            }, {
+                "value": "REFEREE",
+                "label": "Referee"
+            }, {
+                "value": "COACH",
+                "label": "Coach"
+            }, {
+                "value": "OTHER",
+                "label": "Other"
             }]',
         ]);
         

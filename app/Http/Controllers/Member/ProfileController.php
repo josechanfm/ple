@@ -29,6 +29,7 @@ class ProfileController extends Controller
         //     $portfolio->save();
         // }
         $member = auth()->user()->member;
+        if($member==null){ return redirect()->back();};
         $member->positions;
         $member->athlete;
         return Inertia::render('Member/Profile', [

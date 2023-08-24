@@ -115,19 +115,17 @@ class FormController extends Controller
         ]);
         $organization = Organization::find($request->organization_id);
 
-        if($organization->hasUser(Auth()->user())){
-            $form->name=$request->name;
-            $form->title=$request->title;
-            $form->description=$request->description;
-            $form->require_login=$request->require_login;
-            $form->for_member=$request->for_member;
-            $form->published=$request->published;
-            $form->save();
-            if($request->file('image')){
-                $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
-            }
-            return redirect()->back();
+        $form->name=$request->name;
+        $form->title=$request->title;
+        $form->description=$request->description;
+        $form->require_login=$request->require_login;
+        $form->for_member=$request->for_member;
+        $form->published=$request->published;
+        $form->save();
+        if($request->file('image')){
+            $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
         }
+        return redirect()->back();
     }
 
     /**

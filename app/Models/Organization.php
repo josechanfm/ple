@@ -37,7 +37,7 @@ class Organization extends Model
         return $this->hasMany(Event::class);
     }
     public function forms(){
-        return $this->hasMany(Form::class)->with('media');
+        return $this->hasMany(Form::class)->where('published',true)->with('media');
     }
 
 }

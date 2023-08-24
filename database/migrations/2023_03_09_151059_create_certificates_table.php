@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('organization_id');
+            $table->string('category_code',12);
             $table->string('name')->nullable();
             $table->string('cert_title');
             $table->string('cert_body')->nullable();

@@ -9,7 +9,7 @@
                 <a-button type="primary" class="!rounded" @click="createRecord()"
                 >Create Certificate</a-button>
             </div>
-
+            {{certificate_categories}}
             <a-table :dataSource="certificates" :columns="columns">
                 <template #headerCell="{column}">
                     {{ column.i18n?$t(column.i18n):column.title}}
@@ -40,9 +40,9 @@
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <!-- <a-form-item label="Certificate name" name="name">
-                <a-input v-model:value="modal.data.name" />
-            </a-form-item> -->
+            <a-form-item label="Type of Certificate" name="category_code">
+                <a-select v-model:value="modal.data.category_code" :options="certificate_categories" />
+            </a-form-item>
             <a-form-item label="Certificate Title" name="cert_title">
                 <a-input v-model:value="modal.data.cert_title" />
             </a-form-item>
@@ -83,7 +83,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['organization','certificates'],
+    props: ['certificates','certificate_categories'],
     data() {
         return {
             modal:{

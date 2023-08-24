@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Organization;
 use App\Models\Certificate;
-use App\Models\Member;
+use App\Models\Config;
 
 class CertificateController extends Controller
 {
@@ -25,6 +25,7 @@ class CertificateController extends Controller
     {
         return Inertia::render('Organization/Certificates',[
             'certificates'=>session('organization')->fresh()->certificates,
+            'certificate_categories'=>Config::item('certificate_categories')
         ]);
 
     }

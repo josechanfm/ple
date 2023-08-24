@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Certificate extends Model
 {
     use HasFactory;
-    protected $fillable=['organization_id','name','cert_title','cert_body','cert_logo','cert_template','number_format','rank_catption','descreption'];
+    protected $fillable=['organization_id','category_code','name','cert_title','cert_body','cert_logo','cert_template','number_format','rank_catption','descreption'];
     protected $appends=['cid','cert_number'];
 
     public function getCidAttribute(){
@@ -23,7 +23,7 @@ class Certificate extends Model
 
     public function members(){
         return $this->belongsToMany(Member::class)->withPivot(
-            'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorized_by','rank','avata','remark');
+            'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorized_by','rank','avatar','remark');
     }
 
     public function organization(){

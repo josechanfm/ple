@@ -1,12 +1,8 @@
 <template>
     <div class="relative z-10">
-
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-
         <div class="fixed inset-0 z-10 overflow-y-auto mt-6">
-
             <div class="flex min-h-full items-end justify-center p-4 items-center py-2">
-
                 <div 
                     class="
                         relative
@@ -26,7 +22,6 @@
                         <div class="items-center">
                             <div class="mt-3 text-left">
                                 <h3 class="text-2xl font-medium leading-6 text-gray-900">Crop Image</h3>
-
                                 <div class="flex flex-wrap my-4">
                                     <label
                                         class="
@@ -41,7 +36,6 @@
                                     >
                                         Select Image
                                     </label>
-
                                     <div class="mb-3 w-full">
                                         <input
                                             class="
@@ -171,7 +165,6 @@
         minAspectRatioProp: Object,
         maxAspectRatioProp: Object
     })
-    console.log(props);
     const { minAspectRatioProp, maxAspectRatioProp } = toRefs(props)
 
     let fileInput = ref(null)
@@ -199,7 +192,6 @@
         croppedImageData.width = coordinates.width
         croppedImageData.left = coordinates.left
         croppedImageData.top = coordinates.top
-        console.log(croppedImageData);
         emit('croppedImageData', croppedImageData)
         emit('showModal', false)
     }
