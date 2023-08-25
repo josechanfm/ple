@@ -177,15 +177,21 @@
         width: null,
         left: null,
         top: null,
+        blob:null,
     }
 
     const getUploadedImage = (e) => {
         const file = e.target.files[0]
-        uploadedImage.value = URL.createObjectURL(file)
+        uploadedImage.value = URL.createObjectURL(file) 
     }
 
     const crop = () => {
-        const { coordinates, canvas } = cropper.value.getResult()
+
+        const { coordinates, image, visibledArea, canvas } = cropper.value.getResult()
+
+        canvas.toBlob(blob => {
+            croppedImageData.blob = blob
+        },'image/jpg');
         croppedImageData.file = fileInput.value.files[0]
         croppedImageData.imageUrl = canvas.toDataURL()
         croppedImageData.height = coordinates.height

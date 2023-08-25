@@ -97,6 +97,11 @@ class ProfileController extends Controller
         $member->update($data);
 
         if($request->file('avatar')){
+            if($member->avatar!=null){
+                if(Storage::exists($member->avatar)){
+                    Storage::delete($member->avatar);
+                }
+            }
             $file = $request->file('avatar');
             $path = Storage::putFile('public/images/avatar', $file);
             $member->avatar = $path;
@@ -104,12 +109,6 @@ class ProfileController extends Controller
 
         }
 
-        // if($request->file('fileList')){
-        //     foreach($request->file('fileList') as $file){
-        //         $enquiry_question->addMedia($file['originFileObj'])
-        //             ->toMediaCollection('enquiryQuestionAttachments');
-        //     }
-        // }
         return redirect()->back();
     }
 

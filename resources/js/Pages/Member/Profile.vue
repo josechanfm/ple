@@ -203,9 +203,6 @@ export default {
     return {
       dateFormat:'YYYY-MM-DD',
       showModal: false,
-      avatar: {},
-      imageData: null,
-      image: null,
       avatarPreview: null,
       activeKey: ["1", "3", "4", "5", "6", "7", "8", "9"],
       loading: false,
@@ -255,22 +252,17 @@ export default {
   },
   methods: {
     setCroppedImageData(data) {
-      //this.imageData = data
-      //this.image = data.imageUrl
-      console.log(data.file);
-      this.avatarPreview = data.imageUrl;
-      this.member.avatar = data.file;
+      this.avatarPreview = data.imageUrl
+      this.member.avatarData=data
     },
 
     handleUploaded({ form, request, response }) {
       // update user avatar attribute
     },
     onSubmit() {
-      this.member._method = "PATCH";
-      this.$inertia.post(
-        route("member.profile.update", this.member.id),
-        this.member,
-        {
+      this.member.avatar=this.member.avatarData.blob
+      this.member._method = "PATCH"
+      this.$inertia.post(route("member.profile.update", this.member.id),this.member,{
           onSuccess: (page) => {
             console.log(page);
           },
@@ -279,7 +271,6 @@ export default {
           },
         }
       );
-      console.log(this.member);
     },
   },
 };
