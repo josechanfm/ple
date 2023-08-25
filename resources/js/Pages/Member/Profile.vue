@@ -204,6 +204,7 @@ export default {
       dateFormat:'YYYY-MM-DD',
       showModal: false,
       avatarPreview: null,
+      avatarData:null,
       activeKey: ["1", "3", "4", "5", "6", "7", "8", "9"],
       loading: false,
       imageUrl: "",
@@ -253,14 +254,14 @@ export default {
   methods: {
     setCroppedImageData(data) {
       this.avatarPreview = data.imageUrl
-      this.member.avatarData=data
+      this.avatarData=data
     },
 
     handleUploaded({ form, request, response }) {
       // update user avatar attribute
     },
     onSubmit() {
-      this.member.avatar=this.member.avatarData.blob
+      this.member.avatar=this.memb.avatarData.blob
       this.member._method = "PATCH"
       this.$inertia.post(route("member.profile.update", this.member.id),this.member,{
           onSuccess: (page) => {
