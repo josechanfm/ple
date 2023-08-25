@@ -19,7 +19,7 @@
                     "
                 >
                     <div class="bg-white px-4 pt-5 pb-4 p-6">
-                        <div class="items-center">
+                        <div class="flex items-center">
                             <div class="mt-3 text-left">
                                 <h3 class="text-2xl font-medium leading-6 text-gray-900">Crop Image</h3>
                                 <div class="flex flex-wrap my-4">
@@ -181,14 +181,45 @@
     }
 
     const getUploadedImage = (e) => {
-        const file = e.target.files[0]
-        uploadedImage.value = URL.createObjectURL(file) 
+        //const file = e.target.files[0]
+        //uploadedImage.value = URL.createObjectURL(file) 
+
+        var item = e.target.files[0]
+        var resize_width = 600;//var reader=new FileReader()
+        var reader = new FileReader();
+        //image turned to base64-encoded Data URI.
+        reader.readAsDataURL(item);
+        reader.name = item.name;//get the image's name
+        reader.size = item.size; //get the image's size
+        reader.onload = function(event) {
+            var img = new Image();//create a image
+            img.src = event.target.result;//result is base64-encoded Data URI
+            img.name = event.target.name;//set name (optional)
+            img.size = event.target.size;//set size (optional)
+            img.onload = function(el) {
+                var elem = document.createElement('canvas');//create a canvas
+                //scale the image to 600 (width) and keep aspect ratio
+                var scaleFactor = resize_width / el.target.width;
+                elem.width = resize_width;
+                elem.height = el.target.height * scaleFactor;
+                //draw in canvas
+                var ctx = elem.getContext('2d');
+                ctx.drawImage(el.target, 0, 0, elem.width, elem.height);
+                //get the base64-encoded Data URI from the resize image
+                var srcEncoded = ctx.canvas.toDataURL('image/png', 1);
+                uploadedImage.value = srcEncoded; 
+                //assign it to thumb src
+                document.querySelector('#image').src = srcEncoded;
+                /*Now you can send "srcEncoded" to the server and
+                convert it to a png o jpg. Also can send
+                "el.target.name" that is the file's name.*/
+            }
+        }
+        
     }
 
     const crop = () => {
-
         const { coordinates, image, visibledArea, canvas } = cropper.value.getResult()
-
         canvas.toBlob(blob => {
             croppedImageData.blob = blob
         },'image/jpg');
