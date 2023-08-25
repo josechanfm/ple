@@ -261,7 +261,7 @@ export default {
       // update user avatar attribute
     },
     onSubmit() {
-      this.member.avatar=this.memb.avatarData.blob
+      this.member.avatar=this.avatarData.blob
       this.member._method = "PATCH"
       this.$inertia.post(route("member.profile.update", this.member.id),this.member,{
           onSuccess: (page) => {
