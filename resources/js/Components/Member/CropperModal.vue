@@ -185,7 +185,7 @@
         //uploadedImage.value = URL.createObjectURL(file) 
 
         var item = e.target.files[0]
-        var resize_width = 600;//var reader=new FileReader()
+        var resize_width = 800;//var reader=new FileReader()
         var reader = new FileReader();
         //image turned to base64-encoded Data URI.
         reader.readAsDataURL(item);

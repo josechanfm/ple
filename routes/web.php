@@ -92,6 +92,7 @@ Route::middleware([
         Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
         Route::get('event/qrcode',[App\Http\Controllers\Organization\QrcodeController::class,'scan'])->name('manage.event.qrcode');
         Route::resource('event/{event}/attendances',App\Http\Controllers\Organization\AttendanceController::class)->names('manage.event.attendances');
+        Route::resource('attendees/{type}/{id}',App\Http\Controllers\Organization\AttendeeController::class)->names('manage.event.attendees');
         Route::resource('configs', App\Http\Controllers\Organization\ConfigController::class)->names('manage.configs');
     });
     Route::prefix('/admin')->group(function () {
