@@ -16,6 +16,7 @@ class ConfigSeeder extends Seeder
     public function run()
     {
         DB::table('configs')->insert([
+            'organization_id'=>0,
             'key'=>'categories_weights',
             'value'=>'{
                 "code": "junior1",
@@ -61,6 +62,7 @@ class ConfigSeeder extends Seeder
             }',
         ]);
         DB::table('configs')->insert([
+            'organization_id'=>0,
             'key'=>'categories_weights',
             'value'=>'{
                 "code":"junior2",
@@ -106,6 +108,7 @@ class ConfigSeeder extends Seeder
             }',
         ]);
         DB::table('configs')->insert([
+            'organization_id'=>0,
             'key'=>'categories_weights',
             'value'=>'{
                 "code": "junior3",
@@ -152,6 +155,7 @@ class ConfigSeeder extends Seeder
         ]);
 
         DB::table('configs')->insert([
+            'organization_id'=>0,
             'key'=>'competition_roles',
             'value'=>'[{
                     "value": "athlete",
@@ -171,8 +175,61 @@ class ConfigSeeder extends Seeder
                 }
             ]',
         ]);
-
-
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'article_categories',
+            'value'=>'[{"value":"BLOG","label":"Blog"},{"value":"NEWS","label":"News"}]',
+        ]);
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'bulletin_categories',
+            'value'=>'[{"value": "CMTE","label": "Committee"}, {"value": "GEN","label": "General"}]',
+        ]);
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'message_categories',
+            'value'=>'[{
+                "value": "ALL",
+                "label": "Everyone"
+            }, {
+                "value": "ORG",
+                "label": "Organization"
+            }, {
+                "value": "MEM",
+                "label": "Member Only"
+            }, {
+                "value": "IND",
+                "label": "Individual"
+            }]',
+        ]);
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'event_categories',
+            'value'=>'[{
+                "value": "TRANING",
+                "label": "Traning"
+            }, {
+                "value": "COURSE",
+                "label": "Course"
+            }]',
+        ]);
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'certificate_categories',
+            'value'=>'[{
+                "value": "BELT",
+                "label": "Belt"
+            }, {
+                "value": "REFEREE",
+                "label": "Referee"
+            }, {
+                "value": "COACH",
+                "label": "Coach"
+            }, {
+                "value": "OTHER",
+                "label": "Other"
+            }]',
+        ]);
         
     }
 }

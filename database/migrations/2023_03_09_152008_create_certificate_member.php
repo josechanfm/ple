@@ -17,14 +17,14 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('certificate_id');
             $table->bigInteger('member_id');
-            $table->integer('number');
-            $table->integer('number_display');
+            $table->integer('number')->nullable();
+            $table->integer('number_display')->nullable();
             $table->string('display_name');
-            $table->date('avata')->nullable();
+            $table->string('avatar')->nullable();
             $table->date('issue_date')->nullable();
             $table->date('valid_from')->nullable();
             $table->date('valid_until')->nullable();
-            $table->string('authorize_by')->nullable();
+            $table->string('authorized_by')->nullable();
             $table->string('rank')->nullable();
             $table->text('extra')->nullable();
             $table->text('remark')->nullable();

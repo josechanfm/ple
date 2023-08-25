@@ -6,9 +6,13 @@
             </h2>
         </template>
         <p>Club Management</p>
-        {{ organization }}
-        {{ $t('Organization') }}
-
+        <ol v-if="organizations.length>1">
+            <li v-for="organization in organizations">
+                <a :href="route('manage.select',organization.id)">
+                {{organization.abbr}} - {{organization.full_name}}
+                </a>
+            </li>
+        </ol>
     </OrganizationLayout>
 </template>
 
@@ -21,7 +25,7 @@ export default {
         OrganizationLayout,
         OrganizationList,
     },
-    props: ['organization'],
+    props: ['organizations'],
     data() {
         return {
 

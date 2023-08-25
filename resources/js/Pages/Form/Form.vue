@@ -3,7 +3,7 @@
     <WebLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                表格例表
+                Application Froms
             </h2>
         </template>
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">

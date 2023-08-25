@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Organization;
 use App\Models\Certificate;
-use App\Models\Member;
+use App\Models\Config;
 
 class CertificateController extends Controller
 {
@@ -25,6 +25,7 @@ class CertificateController extends Controller
     {
         return Inertia::render('Organization/Certificates',[
             'certificates'=>session('organization')->fresh()->certificates,
+            'certificate_categories'=>Config::item('certificate_categories')
         ]);
 
     }
@@ -47,7 +48,14 @@ class CertificateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data=$request->all();
+        // $data['organization_id']=session('organization')->id;
+        // Certificate::create($data);
+
+        $certificate= new Certificate($data);
+        $certificate->organization()->associate(session('organization'));
+        $certificate->save();
+        return redirect()->back();
     }
 
     /**
@@ -56,7 +64,7 @@ class CertificateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization, Certificate $certificate)
+    public function show(Certificate $certificate)
     {
         return redirect(route('organization.certificate.memebers',[$organization->id,$certificate->id]));
     }
@@ -79,9 +87,10 @@ class CertificateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Certificate $certificate)
     {
-        //
+        $certificate->update($request->all());
+        return redirect()->back();
     }
 
     /**

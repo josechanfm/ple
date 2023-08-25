@@ -30,6 +30,7 @@
             autocomplete="off"
             :rules="rules"
             :validate-messages="validateMessages"
+            
         >
             <a-form-item label="Name" name="name">
                 <a-input v-model:value="modal.data.name" />

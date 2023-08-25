@@ -53,6 +53,14 @@
           <inertia-link :href="route('manage.competitions.index')"> {{$t('competitions')}} </inertia-link>
         </span>
       </a-menu-item>
+      <a-menu-item key="5">
+        <template #icon>
+          <InboxOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('manage.events.index')"> {{$t('events')}} </inertia-link>
+        </span>
+      </a-menu-item>
       <a-menu-item key="6">
         <template #icon>
           <InboxOutlined />

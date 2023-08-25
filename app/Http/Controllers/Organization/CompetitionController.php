@@ -18,7 +18,7 @@ class CompetitionController extends Controller
     public function index()
     {
         return Inertia::render('Organization/Competitions',[
-            'competitions'=>Competition::paginate()
+            'competitions'=>Competition::where('organization_id',session('organization')->id)->paginate()
         ]);        
     }
 
@@ -33,6 +33,7 @@ class CompetitionController extends Controller
         //dd(Config::item('competition_roles'));
         return Inertia::render('Organization/Competition',[
             //'competitiom'=>array('organization_id'=>session('organization')->id,'title_en'=>'','period'=>null,'match_dates'=>[],'roles'=>[]),
+            //'competition'=>new Competition,
             'categories_weights'=>Config::categories_weights(),
             'roles'=>Config::item('competition_roles')
         ]);
@@ -46,18 +47,24 @@ class CompetitionController extends Controller
      */
     public function store(Request $request)
     {
-        $competition=new Competition();
-        $competition->organization_id=session('organization')->id;
-        $competition->title_en=$request->title_en;
-        $competition->title_fn=$request->title_fn??null;
-        $competition->start_date=date('Y-m-d',strtotime($request->period[0]));
-        $competition->end_date=date('Y-m-d',strtotime($request->period[1]));
-        $competition->match_dates=$request->match_dates;
-        $competition->categories_weights=$request->categories_weights;
-        $competition->roles=$request->roles;
-        $competition->save();
+        $data=$request->all();
+        $data['organization_id']=session('organization')->id;
+        Competition::create($data);
+        // $competition=new Competition();
+        // $competition->organization_id=session('organization')->id;
+        // $competition->title_en=$request->title_en;
+        // $competition->title_fn=$request->title_fn??null;
+        // $competition->brief=$request->brief;
+        // $competition->description=$request->description;
+        // $competition->start_date=date('Y-m-d',strtotime($request->period[0]));
+        // $competition->end_date=date('Y-m-d',strtotime($request->period[1]));
+        // $competition->match_dates=$request->match_dates;
+        // $competition->categories_weights=$request->categories_weights;
+        // $competition->roles=$request->roles;
+        // $competition->save();
 
-        return response($competition);
+        return redirect()->route('manage.competitions.index');
+        // return response($competition);
         //return response()->json($request->all());
     }
 
@@ -69,8 +76,11 @@ class CompetitionController extends Controller
      */
     public function show(Competition $competition)
     {
+        if($competition->organization_id<>session('organization')->id){
+            return redirect()->route('manage.competitions.index');
+        }
         return Inertia::render('Organization/CompetitionShow',[
-            'competitionSource'=>$competition,
+            'competition'=>$competition,
             'categories_weights'=>Config::categories_weights(),
             'roles'=>Config::item('competition_roles')
         ]);
@@ -85,8 +95,11 @@ class CompetitionController extends Controller
      */
     public function edit(Competition $competition)
     {
+        if($competition->organization_id<>session('organization')->id){
+            return redirect()->route('manage.competitions.index');
+        }
         return Inertia::render('Organization/Competition',[
-            'competitionSource'=>$competition,
+            'competition'=>$competition,
             'categories_weights'=>Config::categories_weights(),
             'roles'=>Config::item('competition_roles')
         ]);
@@ -102,17 +115,20 @@ class CompetitionController extends Controller
     public function update(Request $request, Competition $competition)
     {
         //$competition->organization_id=session('organization')->id;
-        $competition->title_en=$request->title_en;
-        $competition->title_fn=$request->title_fn??null;
-        $competition->description=$request->description;
-        $competition->start_date=date('Y-m-d',strtotime($request->period[0]));
-        $competition->end_date=date('Y-m-d',strtotime($request->period[1]));
-        $competition->match_dates=$request->match_dates;
-        $competition->categories_weights=$request->categories_weights;
-        $competition->roles=$request->roles;
-        $competition->save();
+        $competition->update($request->all());
+        // $competition->title_en=$request->title_en;
+        // $competition->title_fn=$request->title_fn??null;
+        // $competition->brief=$request->brief;
+        // $competition->description=$request->description;
+        // $competition->start_date=date('Y-m-d',strtotime($request->period[0]));
+        // $competition->end_date=date('Y-m-d',strtotime($request->period[1]));
+        // $competition->match_dates=$request->match_dates;
+        // $competition->categories_weights=$request->categories_weights;
+        // $competition->roles=$request->roles;
+        // $competition->save();
 
-        return response($request->all());
+        return redirect()->route('manage.competitions.index');
+        //return response($request->all());
     }
 
     /**

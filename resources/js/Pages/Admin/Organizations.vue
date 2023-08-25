@@ -2,11 +2,11 @@
     <AdminLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                課程規劃
+                Organizations
             </h2>
         </template>
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Organization</button>
             <a-table :dataSource="organizations" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
@@ -14,8 +14,8 @@
                         <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
+                    <template v-if="column.dataIndex=='region'">
+                        {{ zones.find(z=>z.value==record[column.dataIndex]).label }}
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -28,7 +28,7 @@
         <a-form
             ref="modalRef"
             :model="modal.data"
-            name="Teacher"
+            name="Organization"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
             autocomplete="off"
@@ -36,20 +36,50 @@
             :validate-messages="validateMessages"
         >
             <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="姓名(中文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh" />
+            <a-form-item label="Region" name="region" :rules="[{required:true}]">
+                <a-select v-model:value="modal.data.region" :options="zones"/>
             </a-form-item>
-            <a-form-item label="姓名(外文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_fn" />
+            <a-form-item label="Abbreviation" name="abbr" :rules="[{required:true}]">
+                <a-input v-model:value="modal.data.abbr" />
             </a-form-item>
-            <a-form-item label="別名" name="nickname">
-                <a-input v-model:value="modal.data.nickname" />
+            <a-form-item label="Territory" name="territory" :rules="[{required:true}]">
+                <a-input v-model:value="modal.data.territory" />
             </a-form-item>
-            <a-form-item label="手機" name="mobile">
-                <a-input v-model:value="modal.data.mobile" />
+            <a-form-item label="Country" name="country">
+                <a-input v-model:value="modal.data.country" />
             </a-form-item>
-            <a-form-item label="狀態" name="status">
-                <a-select v-model:value="modal.data.state" :options="employmentStates"/>
+            <a-form-item label="Full name" name="full_name" :rules="[{required:true}]">
+                <a-input v-model:value="modal.data.full_name" />
+            </a-form-item>
+            <a-form-item label="Email" name="email">
+                <a-input v-model:value="modal.data.email" />
+            </a-form-item>
+            <a-form-item label="Phone" name="phone">
+                <a-input v-model:value="modal.data.phone" />
+            </a-form-item>
+            <a-form-item label="Address" name="address">
+                <a-input v-model:value="modal.data.address" />
+            </a-form-item>
+            <a-form-item label="Website" name="href">
+                <a-input v-model:value="modal.data.href" />
+            </a-form-item>
+            <a-form-item label="Registration Code" name="registration_code">
+                <a-input v-model:value="modal.data.registration_code" />
+            </a-form-item>
+            <a-form-item label="Title" name="title">
+                <a-input v-model:value="modal.data.title" />
+            </a-form-item>
+            <a-form-item label="Avatar" name="avatar">
+                <a-input v-model:value="modal.data.avatar" />
+            </a-form-item>
+            <a-form-item label="Content" name="content">
+                <a-input v-model:value="modal.data.content" />
+            </a-form-item>
+            <a-form-item label="President" name="president">
+                <a-input v-model:value="modal.data.president" />
+            </a-form-item>
+            <a-form-item label="Status" name="status" :rules="[{required:true}]">
+                <a-select v-model:value="modal.data.status" :options="organizationStates"/>
             </a-form-item>
         </a-form>
         <template #footer>
@@ -79,22 +109,35 @@ export default {
                 title:"Modal",
                 mode:""
             },
-            teacherStateLabels:{},
+            zones:[
+                {value:'C',label:"Central Zone"},
+                {value:'SE',label:"South East Zone"},
+                {value:'E',label:"East Zone"},
+                {value:'W',label:"West Zone"},
+                {value:'S',label:"South Zone"},
+            ],
+            organizationStates:[
+                {value:'ACTIVE',label:"Active"},
+                {value:'SUSPENDED',label:"Suspended"}
+            ],
             columns:[
                 {
-                    title: '姓名(中文)',
+                    title: 'Region',
+                    dataIndex: 'region',
+                },{
+                    title: 'Territory',
+                    dataIndex: 'territory',
+                },{
+                    title: 'Abbreviation',
                     dataIndex: 'abbr',
                 },{
-                    title: '姓名(外文)',
+                    title: 'Full name',
                     dataIndex: 'full_name',
                 },{
-                    title: '別名',
-                    dataIndex: 'phone',
+                    title: 'email',
+                    dataIndex: 'email',
                 },{
-                    title: '手機',
-                    dataIndex: 'country',
-                },{
-                    title: '操作',
+                    title: 'Operation',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
@@ -127,13 +170,13 @@ export default {
         createRecord(){
             this.modal.data={};
             this.modal.mode="CREATE";
-            this.modal.title="新增問卷";
+            this.modal.title="Create Record";
             this.modal.isOpen=true;
         },
         editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
-            this.modal.title="修改";
+            this.modal.title="Edit Record";
             this.modal.isOpen=true;
         },
         storeRecord(){
@@ -154,7 +197,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/organization/teachers/' + this.modal.data.id, this.modal.data,{
+                this.$inertia.patch(route('admin.organizations.update',this.modal.data.id), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;

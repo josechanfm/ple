@@ -7,9 +7,17 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import Icon, { QuestionCircleOutlined } from '@ant-design/icons-vue';
+
+defineProps({
+    organizations: Object,
+});
 
 const form = useForm({
     name: '',
+    given_name: '',
+    family_name: '',
+    registration_code:'',
     email: '',
     password: '',
     password_confirmation: '',
@@ -28,7 +36,7 @@ const submit = () => {
 
     <AuthenticationCard>
         <template #logo>
-            <img src="/images/site_logo.png" width="150"/>
+            <AuthenticationCardLogo />
         </template>
 
         <form @submit.prevent="submit">
@@ -45,7 +53,54 @@ const submit = () => {
                 />
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
+            <div class="mt-4">
+                <InputLabel for="given_name" value="Given name" />
+                <TextInput
+                    id="given_name"
+                    v-model="form.given_name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autofocus
+                    autocomplete="given_name"
+                />
+                <InputError class="mt-2" :message="form.errors.given_name" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="given_name" value="Family name" />
+                <TextInput
+                    id="family_name"
+                    v-model="form.family_name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autofocus
+                    autocomplete="family_name"
+                />
+                <InputError class="mt-2" :message="form.errors.family_name" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="registration_code">
+                    Registration Code
+                    <a-tooltip placement="topRight">
+                        <template #title>
+                            <span>Acquired from your organization admin.</span>
+                        </template>
+                        <QuestionCircleOutlined />
+                    </a-tooltip>
+                </InputLabel>
 
+                <TextInput
+                    id="registration_code"
+                    v-model="form.registration_code"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autofocus
+                    autocomplete="registration_code"
+                />
+                <InputError class="mt-2" :message="form.errors.registration_code" />
+            </div>
             <div class="mt-4">
                 <InputLabel for="email" value="Email" />
                 <TextInput
@@ -76,10 +131,10 @@ const submit = () => {
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
-                    type="text"
+                    type="password"
                     class="mt-1 block w-full"
                     required
-                    autocomplete="new-password"
+                    autocomplete="confirm-password"
                 />
                 <InputError class="mt-2" :message="form.errors.organization_id" />
             </div>

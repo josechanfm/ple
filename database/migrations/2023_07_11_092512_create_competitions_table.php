@@ -18,12 +18,14 @@ return new class extends Migration
             $table->bigInteger('organization_id');
             $table->string('title_en');
             $table->string('title_fn')->nullable();
+            $table->text('brief')->nullable();
             $table->text('description')->nullable();
             $table->date('start_date');
             $table->date('end_date');
             $table->text('match_dates')->nullable();
             $table->text('categories_weights');
             $table->text('roles');
+            $table->text('scope')->nullable();
             $table->timestamps();
         });
     }

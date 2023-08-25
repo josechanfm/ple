@@ -9,6 +9,8 @@ use App\Models\Approbate;
 use App\Models\Portfolio;
 use App\Models\Position;
 use App\Models\Member;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -26,13 +28,14 @@ class ProfileController extends Controller
         //     $portfolio->approbate_id=1;
         //     $portfolio->save();
         // }
-        $member=auth()->user()->member;
+        $member = auth()->user()->member;
+        if($member==null){ return redirect()->back();};
         $member->positions;
         $member->athlete;
-        return Inertia::render('Member/Profile',[
-            'member'=>$member,
+        return Inertia::render('Member/Profile', [
+            'member' => $member,
             // 'profile'=>$portfolio,
-            'positions'=>Position::all()
+            'positions' => Position::all()
         ]);
     }
 
@@ -65,7 +68,6 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        
     }
 
     /**
@@ -88,11 +90,26 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data=$request->all();
-        $member=Member::find($id);
+        //dd($request->file('avatar'));
+        $data = $request->all();
+        $member = Member::find($id);
         //$data['positions']=$request->positions;
         $member->update($data);
-        return response($member);
+
+        if($request->file('avatar')){
+            if($member->avatar!=null){
+                if(Storage::exists($member->avatar)){
+                    Storage::delete($member->avatar);
+                }
+            }
+            $file = $request->file('avatar');
+            $path = Storage::putFile('public/images/avatar', $file);
+            $member->avatar = $path;
+            $member->save();
+
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -105,4 +122,6 @@ class ProfileController extends Controller
     {
         //
     }
+
+
 }

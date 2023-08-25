@@ -95,27 +95,27 @@ export default {
       teacherStateLabels: {},
       columns: [
         {
-          title: "姓名(中文)",
-          dataIndex: "first_name",
+          title: "Given Name",
+          dataIndex: "given_name",
         },
         {
-          title: "姓名(外文)",
-          dataIndex: "last_name",
+          title: "Family Name",
+          dataIndex: "family_name",
         },
         {
-          title: "別名",
+          title: "Gender",
           dataIndex: "gender",
         },
         {
-          title: "手機",
+          title: "DOB",
           dataIndex: "dob",
         },
         {
-          title: "狀態",
+          title: "State",
           dataIndex: "state",
         },
         {
-          title: "操作",
+          title: "Operation",
           dataIndex: "operation",
           key: "operation",
         },

@@ -45,7 +45,10 @@ class CertificatePolicy
      */
     public function create(User $user)
     {
-        //
+        if($user->hasRole(['admin','organizer'])){
+            return true;
+        }
+        return $certificate->organization->hasUser($user);
     }
 
     /**
@@ -57,7 +60,10 @@ class CertificatePolicy
      */
     public function update(User $user, Certificate $certificate)
     {
-        //
+        if($user->hasRole(['admin','organizer'])){
+            return true;
+        }
+        return $certificate->organization->hasUser($user);
     }
 
     /**

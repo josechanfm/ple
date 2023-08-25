@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('configs', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('organization_id');
             $table->string('key');
             $table->text('value');
             $table->text('remark')->nullable();

@@ -86,12 +86,11 @@ export default {
     OrganizationLayout,
     dayjs
   },
-  props: ["competitionSource", "categories_weights", "roles"],
+  props: ["competition", "categories_weights", "roles"],
   data() {
     return {
       dateFormat: "YYYY-MM-DD",
       application:{},
-      competition: {},
       rules: {
         given_name: { required: true },
         family_name: { required: true },
@@ -129,11 +128,11 @@ export default {
     };
   },
   mounted() {
-      this.competition = { ...this.competitionSource };
+      //this.competition = { ...this.competitionSource };
       this.competition.period = []
-      this.competition.period[0] = dayjs(this.competitionSource.start_date)
-      this.competition.period[1] = dayjs(this.competitionSource.end_date)
-      this.competition.cwSelected = this.competitionSource.categories_weights.map(cw => cw.code);
+      this.competition.period[0] = dayjs(this.competition.start_date)
+      this.competition.period[1] = dayjs(this.competition.end_date)
+      this.competition.cwSelected = this.competition.categories_weights.map(cw => cw.code);
       this.getDaysArray(this.competition.period[0], this.competition.period[1])
   },
   created() {

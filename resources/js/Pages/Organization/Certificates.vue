@@ -9,7 +9,7 @@
                 <a-button type="primary" class="!rounded" @click="createRecord()"
                 >Create Certificate</a-button>
             </div>
-
+            {{certificate_categories}}
             <a-table :dataSource="certificates" :columns="columns">
                 <template #headerCell="{column}">
                     {{ column.i18n?$t(column.i18n):column.title}}
@@ -17,6 +17,7 @@
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <a-button @click="editRecord(record)">Edit</a-button>
+                        <inertia-link :href="route('manage.certificate.members.index',record.id)">Members</inertia-link>
                     </template>
                     <template v-else-if="column.dataIndex=='state'">
                         {{teacherStateLabels[text]}}
@@ -39,18 +40,29 @@
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="姓名(中文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh" />
+            <a-form-item label="Type of Certificate" name="category_code">
+                <a-select v-model:value="modal.data.category_code" :options="certificate_categories" />
             </a-form-item>
-            <a-form-item label="姓名(外文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_fn" />
+            <a-form-item label="Certificate Title" name="cert_title">
+                <a-input v-model:value="modal.data.cert_title" />
             </a-form-item>
-            <a-form-item label="別名" name="nickname">
-                <a-input v-model:value="modal.data.nickname" />
+            <a-form-item label="Certificate Body" name="cert_body">
+                <a-input v-model:value="modal.data.cert_body" />
             </a-form-item>
-            <a-form-item label="手機" name="mobile">
-                <a-input v-model:value="modal.data.mobile" />
+            <a-form-item label="Certificate Logo" name="cert_logo">
+                <a-input v-model:value="modal.data.logo" />
+            </a-form-item>
+            <a-form-item label="Certificate template" name="cert_template">
+                <a-input v-model:value="modal.data.cert_template" />
+            </a-form-item>
+            <a-form-item label="Number format" name="number_format">
+                <a-input v-model:value="modal.data.number_format" />
+            </a-form-item>
+            <a-form-item label="Rank caption" name="rank_caption">
+                <a-input v-model:value="modal.data.rank_catption" />
+            </a-form-item>
+            <a-form-item label="Description" name="description">
+                <a-input v-model:value="modal.data.description" />
             </a-form-item>
         </a-form>
         <template #footer>
@@ -71,7 +83,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['organization','certificates'],
+    props: ['certificates','certificate_categories'],
     data() {
         return {
             modal:{
@@ -110,9 +122,7 @@ export default {
                 },
             ],
             rules:{
-                name_zh:{required:true},
-                mobile:{required:true},
-                state:{required:true},
+                cert_title:{required:true},
             },
             validateMessages:{
                 required: '${label} is required!',
@@ -134,6 +144,12 @@ export default {
     created(){
     },
     methods: {
+        createRecord(){
+            this.modal.data={};
+            this.modal.mode="CREATE";
+            this.modal.title="Create new Certificate";
+            this.modal.isOpen=true;
+        },
         editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
@@ -142,7 +158,7 @@ export default {
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/admin/teachers/', this.modal.data,{
+                this.$inertia.post(route('manage.certificates.store'), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -158,7 +174,7 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/admin/teachers/' + this.modal.data.id, this.modal.data,{
+                this.$inertia.put(route('manage.certificates.update',this.modal.data.id), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;

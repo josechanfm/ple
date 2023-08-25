@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('organization_id');
-            $table->bigInteger('classify_id');
+            $table->string('category_code',5);
             $table->string('title_en');
             $table->string('title_fn')->nullable();
             $table->text('intro_en')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('content_en')->nullable();
             $table->text('content_fn')->nullable();
             $table->boolean('published');
-            $table->date('validated_at')->nullable();
+            $table->date('valid_at')->nullable();
             $table->date('expired_at')->nullable();
             $table->text('url')->nullable();
             $table->string('reference')->nullable();

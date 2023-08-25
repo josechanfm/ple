@@ -3,7 +3,7 @@
 
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible theme="light" width="250px" class="shadow-md " >
             <div class="m-4 text-center text-lg" v-if="collapsed">
-                <inertia-link href='/'>{{ $page.props.organization.abbr }}</inertia-link>
+                <inertia-link href='/'>{{ $page.props.current_organization.abbr }}</inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
                 <inertia-link :href="route('manage.list')">{{ $page.props.current_organization.full_name }}</inertia-link>
@@ -27,17 +27,14 @@
                     <template #overlay>
                         <a-menu>
                             <a-menu-item>
-                                <a href="javascript:;">我的資料</a>
+                                <inertia-link :href="route('profile.show')" :active="route().current('dashboard')">Account</inertia-link>
                             </a-menu-item>
                             <a-menu-divider />
                             <a-menu-item>
-                                <a href="javascript:;">教師平臺</a>
-                            </a-menu-item>
-                            <a-menu-item>
-                                <a href="javascript:;">行政管理後臺</a>
+                                <inertia-link :href="route('member.profile.index')">Profile</inertia-link>
                             </a-menu-item>
                             <a-menu-item @click="logout">
-                                <a>登出</a>
+                                <a>logout</a>
                             </a-menu-item>
                         </a-menu>
                     </template>

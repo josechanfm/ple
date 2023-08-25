@@ -8,26 +8,29 @@
 
     <div class="container mx-auto">
       <div class="bg-white relative shadow rounded-lg p-5">
-        <a-form :model="competition" name="nest-messages" :validate-messages="validateMessages"
+        <a-form :model="competitionData" name="nest-messages" :validate-messages="validateMessages"
           layout="vertical" :rules="rules" @finish="onFinish">
           <a-form-item :label="$t('competition_title_en')" name="title_en">
-            <a-input v-model:value="competition.title_en" />
+            <a-input v-model:value="competitionData.title_en" />
           </a-form-item>
           <a-form-item :label="$t('competition_title_fn')" name="title_fn">
-            <a-input v-model:value="competition.title_fn" />
+            <a-input v-model:value="competitionData.title_fn" />
+          </a-form-item>
+          <a-form-item :label="$t('brief')" name="brief">
+            <a-textarea v-model:value="competitionData.brief" style="min-height: 100px" />
           </a-form-item>
           <a-form-item :label="$t('description')" name="description">
-            <quill-editor v-model:value="competition.description" style="min-height: 200px" />
+            <quill-editor v-model:value="competitionData.description" style="min-height: 200px" />
           </a-form-item>
           <a-form-item :label="$t('competition_period')" name="period">
-            <a-range-picker v-model:value="competition.period" :format="dateFormat" @change="onCompetitionPeriodChange" />
+            <a-range-picker v-model:value="competitionData.period" :format="dateFormat" @change="onCompetitionPeriodChange" />
           </a-form-item>
           <a-form-item :label="$t('competition_dates')" name="match_dates">
-            <a-select v-model:value="competition.match_dates" mode="multiple">
+            <a-select v-model:value="competitionData.match_dates" mode="multiple">
               <a-select-option v-for="d in dateList" :value="d">{{ d }}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-checkbox-group v-model:value="competition.cwSelected" class="w-full">
+          <a-checkbox-group v-model:value="competitionData.cwSelected" class="w-full">
             <a-row :span="24">
               <template v-for="cw in categories_weights">
                 <a-col :span="6">
@@ -42,13 +45,24 @@
             </a-row>
           </a-checkbox-group>
           <a-form-item :label="$t('role')" name="roleSelected">
-            <a-checkbox-group v-model:value="competition.roleSelected">
+            <a-checkbox-group v-model:value="competitionData.roleSelected">
               <a-checkbox v-for="role in roles" :style="virticalStyle" :value="role.value">{{ role.label }}</a-checkbox>
             </a-checkbox-group>
+          </a-form-item>
+          <a-form-item :label="$t('published')" name="published">
+            <a-switch v-model:checked="competitionData.published" :checkedValue="1" :unCheckedValue="0"/>
+          </a-form-item>
+          <a-form-item :label="$t('scope')" name="scope">
+            <a-radio-group v-model:value="competitionData.scope" button-style="solid">
+              <a-radio-button value="PUB">Public</a-radio-button>
+              <a-radio-button value="JUA">JUA Members</a-radio-button>
+              <a-radio-button value="ORG">Organization member only</a-radio-button>
+            </a-radio-group>
           </a-form-item>
           <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
             <a-button type="primary" html-type="submit">Submit</a-button>
           </a-form-item>
+
         </a-form>
       </div>
     </div>
@@ -69,13 +83,13 @@ export default {
     quillEditor,
     dayjs,
   },
-  props: ["competitionSource", "categories_weights", "roles"],
+  props: ["competition", "categories_weights", "roles"],
   data() {
     return {
       mode: null,
       dateFormat: "YYYY-MM-DD",
       dateList: ['2023-01-02'],
-      competition: {},
+      competitionData: {},
       rules: {
         title_en: { required: true },
         period: { required: true },
@@ -110,17 +124,17 @@ export default {
     };
   },
   mounted() {
-    if (this.competitionSource == null) {
+    if (this.competition == null) {
       this.mode = 'CREATE';
     } else {
       this.mode = 'EDIT';
-      this.competition = { ...this.competitionSource };
-      this.competition.period = []
-      this.competition.period[0] = dayjs(this.competitionSource.start_date)
-      this.competition.period[1] = dayjs(this.competitionSource.end_date)
-      this.competition.cwSelected = this.competitionSource.categories_weights.map(cw => cw.code);
-      this.competition.roleSelected = this.competitionSource.roles.map(cw => cw.value);
-      this.getDaysArray(this.competition.period[0], this.competition.period[1])
+      this.competitionData = { ...this.competition };
+      this.competitionData.period = []
+      this.competitionData.period[0] = dayjs(this.competition.start_date)
+      this.competitionData.period[1] = dayjs(this.competition.end_date)
+      this.competitionData.cwSelected = this.competition.categories_weights.map(cw => cw.code);
+      this.competitionData.roleSelected = this.competition.roles.map(cw => cw.value);
+      this.getDaysArray(this.competitionData.period[0], this.competitionData.period[1])
       // this.competition.period[1] = this.competitionSource.end_date
     }
   },
@@ -131,7 +145,7 @@ export default {
     onCompetitionPeriodChange() {
       //var days = (this.competition.period[1]-this.competition.period[0])/(1000*60*60*24)+1
       //var getDaysArray = function(s,e) {for(var a=[],d=new Date(s);d<=new Date(e);d.setDate(d.getDate()+1)){ a.push(new Date(d));}return a;};
-      this.getDaysArray(this.competition.period[0], this.competition.period[1])
+      this.getDaysArray(this.competitionData.period[0], this.competitionData.period[1])
     },
     getDaysArray(start, end) {
 
@@ -142,10 +156,13 @@ export default {
       this.dateList = arr;
     },
     onFinish() {
-      this.competition.categories_weights = this.categories_weights.filter(cw => this.competition.cwSelected.includes(cw.code));
-      this.competition.roles = this.roles.filter(r => this.competition.roleSelected.includes(r.value));
+      this.competitionData.categories_weights = this.categories_weights.filter(cw => this.competitionData.cwSelected.includes(cw.code))
+      this.competitionData.roles = this.roles.filter(r => this.competitionData.roleSelected.includes(r.value))
+      this.competitionData.start_date = this.competitionData.period[0].format('YYYY-MM-DD')
+      this.competitionData.end_date = this.competitionData.period[1].format('YYYY-MM-DD')
+
       if (this.mode == "CREATE") {
-        this.$inertia.post(route('manage.competitions.store'), this.competition, {
+        this.$inertia.post(route('manage.competitions.store'), this.competitionData, {
           onSuccess: (page) => {
             console.log(page);
           },
@@ -154,7 +171,7 @@ export default {
           }
         });
       } else {
-        this.$inertia.put(route('manage.competitions.update', this.competition.id), this.competition, {
+        this.$inertia.put(route('manage.competitions.update', this.competitionData.id), this.competitionData, {
           onSuccess: (page) => {
             console.log(page);
           },
@@ -168,4 +185,3 @@ export default {
   },
 };
 </script>
-

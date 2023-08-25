@@ -23,7 +23,8 @@ class MessageController extends Controller
         } else {
             $per_page = $request->per_page;
         }
-        $messages = Message::with('received_member')->paginate($per_page);
+        //$messages = Message::with('received_member')->paginate($per_page);
+        $messages = Message::paginate($per_page);
         return Inertia::render('Organization/Messages', [
             'messages' => $messages,
             'messageCategories' => Config::item('message_categories'),
@@ -49,14 +50,17 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        $message = new Message;
+        $data=$request->all();
+        $data['organization_id']=Session('organization')->id;
+        Message::create($data);
+        // $message = new Message;
 
-        $message->category = $request->category;
-        $message->sender = $request->sender;
-        $message->title = $request->title;
-        $message->content = $request->content;
+        // $message->category = $request->category;
+        // $message->sender = $request->sender;
+        // $message->title = $request->title;
+        // $message->content = $request->content;
 
-        $message->save();
+        // $message->save();
 
         return redirect()->back();
     }
@@ -90,17 +94,18 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Message $message)
     {
-        $message = Message::find($id);
-        $message->category = $request->category;
-        $message->title = $request->title;
-        $message->content = $request->content;
-        $message->sender = $request->sender;
-        $message->receiver = $request->receiver;
-        $message->created_by = Auth()->user()->id;
-        $message->updated_by = 0;
-        $message->save();
+        $message->update($request->all());
+        // $message = Message::find($id);
+        // $message->category = $request->category;
+        // $message->title = $request->title;
+        // $message->content = $request->content;
+        // $message->sender = $request->sender;
+        // $message->receiver = $request->receiver;
+        // $message->created_by = Auth()->user()->id;
+        // $message->updated_by = 0;
+        // $message->save();
         return redirect()->back();
     }
 
@@ -110,8 +115,9 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Message $message)
     {
-        //
+        $message->delete();
+        return redirect()->back();
     }
 }

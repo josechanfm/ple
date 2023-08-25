@@ -26,10 +26,12 @@ class PortfolioController extends Controller
         //     $portfolios=auth()->user()->member->portfolio;
         // }
         $member=auth()->user()->member;
+        if($member==null){ return redirect()->back();};
         $member->portfolios;
+        
         return Inertia::render('Member/Portfolios',[
             'member'=>$member,
-            // 'portfolios'=>$portfolios
+            //'portfolios'=>$portfolios
         ]);
 
         // return Inertia::render('Member/Portfolios',[

@@ -2,16 +2,16 @@
     <OrganizationLayout title="Dashboard" :department="department">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                資料欄位管理
+                From Fields
             </h2>
         </template>
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增資料欄位</button>
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create field</button>
             <a-table :dataSource="fields" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">修改</a-button>
-                        <a-button @click="deleteRecord(record)">刪除</a-button>
+                        <a-button @click="editRecord(record)">Edit</a-button>
+                        <a-button @click="deleteRecord(record)">Delete</a-button>
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -31,13 +31,13 @@
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-form-item label="名稱" name="field_name">
+            <!-- <a-form-item label="Field name" name="field_name">
                 <a-input v-model:value="modal.data.field_name" />
-            </a-form-item>
-            <a-form-item label="標簽" name="field_label">
+            </a-form-item> -->
+            <a-form-item label="Field Label" name="field_label">
                 <a-input v-model:value="modal.data.field_label" @blur="onFieldLabelChanged"/>
             </a-form-item>
-            <a-form-item label="類型" name="type">
+            <a-form-item label="Field Type" name="type">
                 <a-select v-model:value="modal.data.type" placeholder="欄位類型" :options="fieldTypes" @change="onChangeType"/>
             </a-form-item>
             <a-form-item label="Rows" name="rows" v-if="['textarea','longtext','richtext'].includes(modal.data.type)">
@@ -65,16 +65,16 @@
                     </a-radio-group>
                 </a-form-item>
             </template>
-            <a-form-item label="必填" name="required">
+            <a-form-item label="Compulsory" name="required">
                 <a-switch v-model:checked="modal.data.required" :unCheckedValue="0" :checkedValue="1"/>
             </a-form-item>
             <!-- <a-form-item label="規則" name="rule">
                 <a-input v-model:value="modal.data.rule" />
             </a-form-item> -->
-            <a-form-item label="在資料欄" name="in_column" v-if="modal.data.required">
+            <a-form-item label="Column data" name="in_column" v-if="modal.data.required">
                 <a-switch v-model:checked="modal.data.in_column" :unCheckedValue="0" :checkedValue="1"/>
             </a-form-item>
-            <a-form-item label="備注" name="remark">
+            <a-form-item label="Remark" name="remark">
                 <a-textarea v-model:value="modal.data.remark" />
             </a-form-item>
         </a-form>
@@ -106,40 +106,39 @@ export default {
                 mode:""
             },
             fieldTypes:[
-                {value:"input",label:"單行文字"},
-                {value:"textarea",label:"多行文字"},
-                {value:"largetext",label:"大篇幅文字"},
-                {value:"radio",label:"單選"},
-                {value:"checkbox",label:"多選"},
-                {value:"dropdown",label:"下拉清單"},
-                {value:"true_false",label:"是/否"},
-                {value:"date",label:"日期"},
-                {value:"datetime",label:"日期時間"},
-                {value:"email",label:"電郵"},
-                {value:"number",label:"數值"},
-                {value:"richtext",label:"富文本格式"},
+                {value:"input",label:"Short text"},
+                {value:"textarea",label:"Long text"},
+                {value:"largetext",label:"Huge text"},
+                {value:"richtext",label:"Text with format"},
+                {value:"radio",label:"Single selection"},
+                {value:"checkbox",label:"Multiple selection"},
+                {value:"dropdown",label:"Pull down menu"},
+                {value:"true_false",label:"True/False"},
+                {value:"date",label:"Date"},
+                {value:"datetime",label:"Date Time"},
+                {value:"email",label:"Email"},
+                {value:"number",label:"Number"},
             ],
             columns:[
                 {
-                    title: '標簽',
+                    title: 'Field Label',
                     dataIndex: 'field_label',
                 },{
-                    title: '類型',
+                    title: 'Field Type',
                     dataIndex: 'type',
                 },{
-                    title: '必填',
+                    title: 'Compulsory',
                     dataIndex: 'required',
                 },{
-                    title: '在資料欄顯示',
+                    title: 'Column Data',
                     dataIndex: 'in_column',
                 },{
-                    title: '操作',
+                    title: 'Operation',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
             ],
             rules:{
-                field_name:{required:true},
                 field_label:{required:true},
                 type:{required:true},
             },

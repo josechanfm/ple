@@ -2,14 +2,21 @@
     <MemberLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard..
+                Personal Profile
             </h2>
         </template>
-{{member.portfolios}}
         <div class="py-12">
+                            
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5 h-64">
+                    <p>Comming Soon...</p>
+                    <p>Records of your personal experience and documents.</p>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 invisible">
                 <button @click="createRecord()"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增表格</button>
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create new record</button>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                     <a-table :dataSource="member.portfolios" :columns="columns">
                         <template #bodyCell="{column, text, record, index}">
@@ -27,9 +34,9 @@
             </div>
         </div>
 
-    <!--
+    
         <a-modal v-model:visible="modal.isOpen" :title="modal.mode == 'CREATE' ? '新增' : '修改'" width="60%">
-            <a-form ref="modalRef" :model="modal.data" name="From" :layout="" :label-col="{ span: 6 }"
+            <a-form ref="modalRef" :model="modal.data" name="From"  :label-col="{ span: 6 }"
                 :wrapper-col="{ span: 18 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages">
                 <a-form-item label="Name" name="name">
                     <a-select v-model:value="modal.data.approbate_id" :options="approbates"
@@ -50,7 +57,7 @@
                 <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary" @click="storeRecord()">新增</a-button>
             </template>
         </a-modal>
-    -->
+   
     </MemberLayout>
 </template>
 

@@ -45,10 +45,10 @@ class FormPolicy
      */
     public function create(User $user)
     {
-        if($user->hasRole(['admin','organization'])){
+        if($user->hasRole(['admin','organizer'])){
             return true;
         }
-        return $form->organization_id==session('organization')->id;
+        return false;
     }
 
     /**
