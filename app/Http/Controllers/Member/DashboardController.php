@@ -58,9 +58,10 @@ class DashboardController extends Controller
     public function getQrcode()
     {
         $userId=auth()->user()->id;
+        $memberId=auth()->user()->id;
         $organizationId= session('organization')->id;
         $time=time();
-        $text=$organizationId.','.$userId.','.$time;
+        $text=$organizationId.','.$memberId.','.$time;
         return $text.','.hash('crc32',$text);
 
         // $options = 0;

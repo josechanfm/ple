@@ -13,6 +13,7 @@ class Config extends Model
 
     static function item($key,$organization=null)
     {
+        $item=null;
         if($organization){
             $item = Config::where('organization_id',$organization->id)->where('key', $key)->first();
             if(empty($item)){

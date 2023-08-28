@@ -8,43 +8,30 @@
         <div class="container mx-auto pt-5">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                 <a-collapse v-model:activeKey="activeKey">
-                    <a-collapse-panel key="1" header="This is panel header 1">
+                    <a-collapse-panel key="1" header="Organization Members">
                         <ol>
                             <li v-for="member in members">
                                 <a-checkbox v-model:checked="member.attend" @click="onCheckMember(member)" />
-                                {{ member.given_name }} {{ member.attend }}
+                                {{ member.member_number }} - {{ member.display_name }} {{ member.attend }}
                             </li>
                         </ol>
                     </a-collapse-panel>
                 </a-collapse>
                 <div>
+                    <a-typography-title :level="5">Attended mebmers:</a-typography-title>
                     <template v-for="member in attendees">
                         <a-checkbox v-model:checked="member.attend" @click="onCheckAttendee(member)" />
-                        {{ member.given_name }} {{ member.attend }}<br>
+                        {{ member.member_number }}-{{ member.given_name }} {{ member.attend }}<br>
                     </template>
                 </div>
-                <a-button @click="onClickConfirm">Confirm</a-button>
+                
+                <div class="flex-auto pb-3">
+                    <inertia-link class="ant-btn">Scan</inertia-link>
+                    <a-button @click="onClickConfirm" class="float-right">Confirm</a-button>
+                </div>
+
             </div>
         </div>
-
-
-        <inertia-link :href="route('manage.event.qrcode')" class="ant-btn ant-btn-primary">QR Scanner</inertia-link>
-        <div class="flex-auto pb-3 text-right">
-            <inertia-link :href="route('manage.events.create')" class="ant-btn ant-btn-primary">Create Event</inertia-link>
-        </div>
-        <a-table :dataSource="attendees" :columns="columns">
-            <template #headerCell="{ column }">
-                {{ column.i18n ? $t(column.i18n) : column.title }}
-            </template>
-            <template #bodyCell="{ column, text, record, index }">
-                <template v-if="column.dataIndex == 'operation'">
-                    Operation
-                </template>
-                <template v-else>
-                    {{ record[column.dataIndex] }}
-                </template>
-            </template>
-        </a-table>
 
     </MemberLayout>
 </template>

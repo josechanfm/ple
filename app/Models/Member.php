@@ -50,7 +50,7 @@ class Member extends Model
         return $this->avatar?Storage::url($this->avatar):'';
     }
     public function getMemberNumberAttribute(){
-        return substr('000000'.$this->id,-6);
+        return substr('000000'.$this->id,-5);
     }
     public function createUser(): User
     {
