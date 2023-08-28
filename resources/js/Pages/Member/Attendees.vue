@@ -21,7 +21,7 @@
                     <a-typography-title :level="5">Attended mebmers:</a-typography-title>
                     <template v-for="member in attendees">
                         <a-checkbox v-model:checked="member.attend" @click="onCheckAttendee(member)" />
-                        {{ member.member_number }}-{{ member.given_name }} {{ member.attend }}<br>
+                        {{ member.member_number }}-{{ member.display_name }} {{ member.attend }}<br>
                     </template>
                 </div>
                 
@@ -116,7 +116,7 @@ export default {
             }
         },
         onClickConfirm(){
-            var data=[]
+            var data={}
             var selected=Object.values(this.attendees).filter((a) => a.attend)
             Object.values(this.attendees).forEach((attendee)=>{
                 if(attendee.attend==true){
