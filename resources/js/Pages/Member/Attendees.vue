@@ -39,6 +39,7 @@
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
 import { ConsoleSqlOutlined } from '@ant-design/icons-vue';
+import axios from 'axios';
 import { defineComponent, reactive } from 'vue';
 
 export default {
@@ -119,10 +120,16 @@ export default {
             var selected=Object.values(this.attendees).filter((a) => a.attend)
             Object.values(this.attendees).forEach((attendee)=>{
                 if(attendee.attend==true){
-                    data[attendee.id]={'attend':true}
+                    data[attendee.id]={'status':true}
                 }
             })
             console.log(data)
+            var type='event'
+            var id=1
+
+                axios.post(route('member.attendees.storeBatch',{type:type,id:id}),{attendees:data}).then(resp=>{
+                    console.log(resp);
+                })
         }
     },
 }

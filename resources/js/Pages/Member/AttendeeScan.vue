@@ -86,7 +86,7 @@ export default {
                 scan:search.split(',')
             }
             //console.log(data);
-            axios.patch(route('member.attendees.update',{type:this.type,id:this.attendance.id}),data).then(resp=>{
+            axios.patch(route('member.attendees.store',{type:this.type,id:this.attendance.id}),data).then(resp=>{
                 console.log(resp)
             })
 

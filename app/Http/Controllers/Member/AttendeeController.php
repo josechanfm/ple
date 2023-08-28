@@ -54,7 +54,7 @@ class AttendeeController extends Controller
             'attendance'=>$instance
         ]);
     }
-    public function update(Request $request, $type, $id){
+    public function store(Request $request, $type, $id){
         $scanedData=$request->scan;
         $organizationId=$scanedData[0];
         $memberId=$scanedData[1];
@@ -87,5 +87,22 @@ class AttendeeController extends Controller
         }
         $instance->members()->attach($memberId,['status'=>$status]);
         return response()->json(['h'=>$tmpHash,'o'=>$instance->organization_id,'m'=>$memberId,'t'=>$time]);
+    }
+    public function storeBatch(Request $request, $type,$id){
+
+        switch($type){
+            case 'event':
+                $instance=Event::find($id);
+                break;
+            case 'form':
+                $instance=Form::find($id);
+                break;
+            case 'attendance':
+                $instance=Attendance::find($id);
+                break;
+        };
+        if(!$instance) return redirect()->route('/'); 
+        $instance->members()->sync($request->attendees);
+        return response()->json($request->all());
     }
 }

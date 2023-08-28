@@ -54,7 +54,8 @@ Route::middleware([
         Route::resource('events',App\Http\Controllers\Member\EventController::class)->names('member.events');
         Route::get('attendees/{type}/{id}',[App\Http\Controllers\Member\AttendeeController::class,'index'])->name('member.attendees.index');
         Route::get('attendees/{type}/{id}/scan',[App\Http\Controllers\Member\AttendeeController::class,'scan'])->name('member.attendees.scan');
-        Route::patch('attendees/{type}/{id}/update',[App\Http\Controllers\Member\AttendeeController::class,'update'])->name('member.attendees.update');
+        Route::patch('attendees/{type}/{id}/store',[App\Http\Controllers\Member\AttendeeController::class,'store'])->name('member.attendees.store');
+        Route::post('attendees/{type}/{id}/storeBatch',[App\Http\Controllers\Member\AttendeeController::class,'storeBatch'])->name('member.attendees.storeBatch');
 
         Route::resource('event/{event}/attendances',App\Http\Controllers\Member\AttendanceController::class)->names('member.event.attendances');
         Route::get('event/{event}/attendance/scan',[App\Http\Controllers\Member\AttendanceController::class,'scan'])->name('member.event.attendance.scan');

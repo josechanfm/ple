@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('member_id');
             $table->bigInteger('attendee_id');
             $table->string('attendee_type');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
