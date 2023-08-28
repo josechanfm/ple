@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class Event extends Model
 {
     use HasFactory;
-    protected $fillable=['organization_id','title_en','title_fn','category','credit','start_date','end_date','description','remark'];
+    protected $fillable=['organization_id','title_en','title_fn','category','credit','start_date','end_date','description','remark','with_attendance'];
     protected $attributes=[
         'title_en'=>'',
         'category'=>'',

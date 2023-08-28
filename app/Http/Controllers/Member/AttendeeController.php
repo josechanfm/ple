@@ -31,7 +31,9 @@ class AttendeeController extends Controller
         //$instance->members()->sync([1,2,3,4]);
         return Inertia::render('Member/Attendees',[
             'attendees'=>$instance->members,
-            'members'=>session('organization')->members
+            'members'=>session('organization')->members,
+            'instance'=>(Object)array('type'=>$type,'id'=>$id)
+
         ]);
     }
     public function scan($type,$id){

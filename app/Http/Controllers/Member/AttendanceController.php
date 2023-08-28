@@ -17,11 +17,12 @@ class AttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Event $event)
+    public function index()
     {
-        $event->attendances;
+        $attendances=Attendance::getAttendances();
+        
         return Inertia::render('Member/Attendances',[
-            'event'=>$event,
+            'attendances'=>$attendances,
             'members'=>session('organization')->members
         ]);
     }

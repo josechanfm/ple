@@ -5,50 +5,19 @@
                 Events
             </h2>
         </template>
-        <a-select
-            v-model:value="selected"
-            show-search
-            placeholder="input search text"
-            style="width: 200px"
-            :default-active-first-option="false"
-            :show-arrow="false"
-            :filter-option="false"
-            :not-found-content="null"
-            :options="searchResult"
-            :fieldNames="{value:'id',label:'given_name'}"
-            @search="handleSearch"
-            @change="handleChange"
-        ></a-select>
-        <a-button @click="addAttendance">Add</a-button>
-        
-        <inertia-link :href="route('member.event.attendance.scan',event.id)" class="ant-btn">Scan</inertia-link>
-
-        <a-table :dataSource="event.attendances" :columns="columns">
-                <template #headerCell="{column}">
-                    {{ column.i18n?$t(column.i18n):column.title}}
-                </template>
-                <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('member.event.attendances.destroy',{event:event.id,attendance:record.id})" class="ant-btn">Delete</inertia-link>
-                        <a-button @click="destroy(record)">Delete</a-button>
-                    </template>
-                    <template v-else-if="column.dataIndex=='member'">
-                        {{ record.member.given_name }}
-                    </template>
-                    <template v-else-if="column.dataIndex=='status'">
-                        <a-radio-group v-model:value="record.status" button-style="solid" @change="onChangeStatus(record)">
-                            <a-radio-button value="ATT">Attend</a-radio-button>
-                            <a-radio-button value="lATE">Be Late</a-radio-button>
-                            <a-radio-button value="EARLY">Leave Early</a-radio-button>
-                        </a-radio-group>
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
-                </template>
-            </a-table>
-
-
+        <ol>
+            <li v-for="attendance in attendances['events']">
+                <inertia-link :href="route('member.attendees.index',{type:'event',id:attendance.id})">
+                    {{attendance.id}}-{{ attendance.title_en }}
+                </inertia-link>
+            </li>
+        </ol>
+        <ol>
+            <li v-for="attendance in attendances['forms']">{{attendance.id}}-{{ attendance.title_en }}</li>
+        </ol>
+        <ol>
+            <li v-for="attendance in attendances['attendances']">{{attendance.id}}-{{ attendance.title_en }}</li>
+        </ol>
 
     </MemberLayout>
 
@@ -62,7 +31,7 @@ export default {
     components: {
         MemberLayout,
     },
-    props: ['event','members'],
+    props: ['attendances','members'],
     data() {
         return {
             searchResult:[],

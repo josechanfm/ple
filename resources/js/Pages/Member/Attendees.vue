@@ -5,6 +5,7 @@
                 Attendees
             </h2>
         </template>
+
         <div class="container mx-auto pt-5">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                 <a-collapse v-model:activeKey="activeKey">
@@ -26,7 +27,7 @@
                 </div>
                 
                 <div class="flex-auto pb-3">
-                    <inertia-link class="ant-btn">Scan</inertia-link>
+                    <inertia-link :href="route('member.attendees.scan',{type:instance.type,id:instance.id})"  class="ant-btn">Scan</inertia-link>
                     <a-button @click="onClickConfirm" class="float-right">Confirm</a-button>
                 </div>
 
@@ -46,7 +47,7 @@ export default {
     components: {
         MemberLayout,
     },
-    props: ['members', 'attendees'],
+    props: ['members', 'attendees','instance'],
     data() {
         return {
             attendedMembers: {},

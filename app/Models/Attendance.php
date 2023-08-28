@@ -16,4 +16,11 @@ class Attendance extends Model
     public function member(){
         return $this->belongsTo(Member::class);
     }
+
+    static function getAttendances(){
+        $records['events']=Event::where('with_attendance',true)->get();
+        $records['forms']=Form::where('with_attendance',true)->get();
+        $records['attedances']=Attendance::where('with_attendance',true)->get();
+        return $records;
+    }
 }

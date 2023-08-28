@@ -52,6 +52,9 @@ Route::middleware([
         Route::get('membership', [App\Http\Controllers\Member\MembershipController::class, 'index'])->name('member.membership');
         Route::resource('competition/{competition}/applications',App\Http\Controllers\Member\CompetitionApplicationController::class)->names('member.competition.applications');
         Route::resource('events',App\Http\Controllers\Member\EventController::class)->names('member.events');
+        
+        Route::resource('attendances',App\Http\Controllers\Member\AttendanceController::class)->names('member.attendances');
+
         Route::get('attendees/{type}/{id}',[App\Http\Controllers\Member\AttendeeController::class,'index'])->name('member.attendees.index');
         Route::get('attendees/{type}/{id}/scan',[App\Http\Controllers\Member\AttendeeController::class,'scan'])->name('member.attendees.scan');
         Route::patch('attendees/{type}/{id}/store',[App\Http\Controllers\Member\AttendeeController::class,'store'])->name('member.attendees.store');
