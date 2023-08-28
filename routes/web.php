@@ -52,6 +52,10 @@ Route::middleware([
         Route::get('membership', [App\Http\Controllers\Member\MembershipController::class, 'index'])->name('member.membership');
         Route::resource('competition/{competition}/applications',App\Http\Controllers\Member\CompetitionApplicationController::class)->names('member.competition.applications');
         Route::resource('events',App\Http\Controllers\Member\EventController::class)->names('member.events');
+        Route::get('attendees/{type}/{id}',[App\Http\Controllers\Member\AttendeeController::class,'index'])->name('member.attendees.index');
+        Route::get('attendees/{type}/{id}/scan',[App\Http\Controllers\Member\AttendeeController::class,'scan'])->name('member.attendees.scan');
+        Route::get('attendees/{type}/{id}/update',[App\Http\Controllers\Member\AttendeeController::class,'update'])->name('member.attendees.update');
+
         Route::resource('event/{event}/attendances',App\Http\Controllers\Member\AttendanceController::class)->names('member.event.attendances');
         Route::get('event/{event}/attendance/scan',[App\Http\Controllers\Member\AttendanceController::class,'scan'])->name('member.event.attendance.scan');
         Route::get('event/{event}/attendances_modify',[App\Http\Controllers\Member\AttendanceController::class,'modify'])->name('member.event.attendances.modify');
@@ -92,7 +96,9 @@ Route::middleware([
         Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
         Route::get('event/qrcode',[App\Http\Controllers\Organization\QrcodeController::class,'scan'])->name('manage.event.qrcode');
         Route::resource('event/{event}/attendances',App\Http\Controllers\Organization\AttendanceController::class)->names('manage.event.attendances');
-        Route::resource('attendees/{type}/{id}',App\Http\Controllers\Organization\AttendeeController::class)->names('manage.event.attendees');
+        Route::get('attendees/{type}/{id}',[App\Http\Controllers\Organization\AttendeeController::class,'index'])->name('manage.event.attendees.index');
+        Route::get('attendees/{type}/{id}/scan',[App\Http\Controllers\Organization\AttendeeController::class,'scan'])->name('manage.event.attendees.scan');
+        Route::patch('attendees/{type}/{id}/update',[App\Http\Controllers\Organization\AttendeeController::class,'update'])->name('manage.event.attendees.update');
         Route::resource('configs', App\Http\Controllers\Organization\ConfigController::class)->names('manage.configs');
     });
     Route::prefix('/admin')->group(function () {
