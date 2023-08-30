@@ -5,7 +5,7 @@
                 Qrcode Scanner
             </h2>
         </template>
-        <qrcode-stream @decode="onDecode" @init="onInit"></qrcode-stream>
+        <qrcode-stream @detect="onDetect" @init="onInit"></qrcode-stream>
         <qrcode-drop-zone></qrcode-drop-zone>
         <qrcode-capture></qrcode-capture>
 
@@ -17,7 +17,7 @@
 
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'qrcode-reader-vue3';
+import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader';
 
 export default {
     components: {
@@ -33,7 +33,7 @@ export default {
         }
     },
     methods: {
-        onDecode (result) {
+        onDetect (result) {
             this.result = result
         },
 

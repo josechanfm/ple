@@ -6,7 +6,6 @@
             </h2>
         </template>
         <qrcode-stream @decode="onDecode" @init="onInit">
-            <div style="color: red;" class="frame"></div>
         </qrcode-stream>
         <qrcode-drop-zone></qrcode-drop-zone>
         <qrcode-capture></qrcode-capture>
@@ -20,7 +19,7 @@
 
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'qrcode-reader-vue3';
+import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader';
 
 export default {
     components: {
@@ -46,14 +45,8 @@ export default {
             // })
         },
         onDecode (result) {
-            const data={event_id:this.event.id,scan:result.split(',')}
-            axios.get(route('member.attendance.getMember',data)).then(response=>{
-                if(response.data.result){
-                    this.result = response.data.member.given_name
-                }else{
-                    this.result = response.data.message
-                }
-            })
+
+            console.log(result);
         },
         async onInit (promise) {
             try {

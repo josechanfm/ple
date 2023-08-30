@@ -53,7 +53,7 @@ class AttendeeController extends Controller
         if(!$instance) return redirect()->route('/'); 
         return Inertia::render('Member/AttendeeScan',[
             'type'=>$type,
-            'attendance'=>$instance
+            'instance'=>$instance
         ]);
     }
     public function store(Request $request, $type, $id){
@@ -87,8 +87,9 @@ class AttendeeController extends Controller
         if($tmpHash!==$hash){
             //return redirect()->route('/');
         }
-        $instance->members()->attach($memberId,['status'=>$status]);
-        return response()->json(['h'=>$tmpHash,'o'=>$instance->organization_id,'m'=>$memberId,'t'=>$time]);
+        $instance->members()->syncWithoutDetaching($memberId,['status'=>$status]);
+        $instance->members()->updateExistingPivot($memberId,['status'=>$status]);
+        return response()->json(['h'=>$tmpHash,'o'=>$instance->organization_id,'m'=>$memberId,'t'=>$time,'r'=>$request->all()]);
     }
     public function storeBatch(Request $request, $type,$id){
 
