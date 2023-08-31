@@ -20,7 +20,7 @@
 
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'qrcode-reader-vue3';
+import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
 
 export default {
     components: {
