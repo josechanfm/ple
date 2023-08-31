@@ -14,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 use App\Notifications\SetPasswordNotification;
 use Attribute;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
-
+use Illuminate\Foundation\Concerns\ResolvesDumpSource;
 
 class User extends Authenticatable
 {
@@ -25,7 +25,6 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use HasRoles;
-
 
     /**
      * The attributes that are mass assignable.

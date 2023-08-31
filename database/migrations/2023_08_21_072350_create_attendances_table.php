@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('event_id');
-            $table->bigInteger('member_id');
-            $table->string('status')->nullable();
+            $table->bigInteger('organization_id');
+            $table->string('title');
+            $table->date('date')->nullable();
             $table->bigInteger('user_id')->nullable();
+            $table->boolean('with_attendance'); 
             $table->timestamps();
         });
     }

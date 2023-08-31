@@ -86,7 +86,7 @@ class Form extends Model implements HasMedia
             ->useDisk('form');
     }
     public function members(): MorphToMany{
-        return $this->morphToMany(Member::class,'attendee');
+        return $this->morphToMany(Member::class,'attendee')->withPivot(['status']);
     }
 
 }

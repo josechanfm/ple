@@ -19,13 +19,16 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $attendances=Attendance::getAttendances();
-        
+        if(!auth()->user()->hasPermissionTo('attendance')){
+            return redirect()->route('member.dashboard');
+        }
+        $instances=Attendance::getInstances();
         return Inertia::render('Member/Attendances',[
-            'attendances'=>$attendances,
+            'instances'=>$instances,
             'members'=>session('organization')->members
         ]);
     }
+
     public function modify(Event $event){
         $event->attendances;
         return Inertia::render('Member/AttendancesModify',[

@@ -59,6 +59,9 @@ const logout = () => {
                                 <NavLink class="text-blue-100 hover:text-blue-100">
                                     Portfolios
                                 </NavLink>
+                                <NavLink :href="route('member.attendances.index')" >
+                                    Attendances
+                                </NavLink>
                                 <NavLink :href="route('member.profile.index')" >
                                     Profile
                                 </NavLink>

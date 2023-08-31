@@ -14,6 +14,9 @@ use App\Models\Member;
 class AttendeeController extends Controller
 {
     public function index($type, $id){
+        if(!auth()->user()->hasPermissionTo('attendance')){
+            return redirect()->route('member.dashboard');
+        }
         if(!session('organization')) return redirect()->route('/');
         $instance=null;
         switch($type){
@@ -32,8 +35,8 @@ class AttendeeController extends Controller
         return Inertia::render('Member/Attendees',[
             'attendees'=>$instance->members,
             'members'=>session('organization')->members,
-            'instance'=>(Object)array('type'=>$type,'id'=>$id)
-
+            'instance'=>(Object)array('type'=>$type,'id'=>$id),
+            'type'=>$type
         ]);
     }
     public function scan($type,$id){
@@ -87,12 +90,13 @@ class AttendeeController extends Controller
         if($tmpHash!==$hash){
             //return redirect()->route('/');
         }
+        $member=Member::find($memberId);
         $instance->members()->syncWithoutDetaching($memberId,['status'=>$status]);
         $instance->members()->updateExistingPivot($memberId,['status'=>$status]);
-        return response()->json(['h'=>$tmpHash,'o'=>$instance->organization_id,'m'=>$memberId,'t'=>$time,'r'=>$request->all()]);
+        return response()->json(['h'=>$tmpHash,'o'=>$instance->organization_id,'m'=>$memberId,'t'=>$time,'m'=>$member,'r'=>$request->all()]);
     }
     public function storeBatch(Request $request, $type,$id){
-
+        $instance=null;
         switch($type){
             case 'event':
                 $instance=Event::find($id);
@@ -106,6 +110,7 @@ class AttendeeController extends Controller
         };
         if(!$instance) return redirect()->route('/'); 
         $instance->members()->sync($request->attendees);
-        return response()->json($request->all());
+        //$instance->members()->updateExistingPivot($memberId,['status'=>$status]);
+        return response()->json(['r'=>$request->attendees,'i'=>$instance,'t'=>$type, 'i'=>$id]);
     }
 }

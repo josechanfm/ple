@@ -17,10 +17,13 @@ class Attendance extends Model
         return $this->belongsTo(Member::class);
     }
 
-    static function getAttendances(){
-        $records['events']=Event::where('with_attendance',true)->get();
-        $records['forms']=Form::where('with_attendance',true)->get();
-        $records['attedances']=Attendance::where('with_attendance',true)->get();
+    static function getInstances(){
+        if(!session('organization')){
+            return ['events'=>null,'forms'=>'','attendances'=>null];
+        };
+        $records['events']=Event::where('organization_id',session('organization')->id)->where('with_attendance',true)->get();
+        $records['forms']=Form::where('organization_id',session('organization')->id)->where('with_attendance',true)->get();
+        $records['attendances']=Attendance::where('organization_id',session('organization')->id)->where('with_attendance',true)->get();
         return $records;
     }
 }

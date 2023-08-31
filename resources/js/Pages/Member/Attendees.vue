@@ -5,15 +5,28 @@
                 Attendees
             </h2>
         </template>
-
         <div class="container mx-auto pt-5">
+            <div class="flex-auto h-10">
+                <a-radio-group v-model:value="status" button-style="solid">
+                        <a-radio-button value="ATTEND">Attend</a-radio-button>
+                        <a-radio-button value="LATE">Late</a-radio-button>
+                        <a-radio-button value="EXCUSED">Excused</a-radio-button>
+                        <a-radio-button value="VACATION">Vacation</a-radio-button>
+                    </a-radio-group>
+                    <a href="#" onclick="history.back();return false;" class="ant-btn float-right">Go Back</a>
+            </div>
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
+                <div class="pb-2">
+                    <inertia-link :href="route('member.attendees.scan',{type:instance.type,id:instance.id})"  class="ant-btn ml-5">Scan</inertia-link>
+                    <a-button @click="onClickConfirm" class="float-right mr-5">Confirm</a-button>
+                </div>
+
                 <a-collapse v-model:activeKey="activeKey">
                     <a-collapse-panel key="1" header="Organization Members">
                         <ol>
                             <li v-for="member in members">
                                 <a-checkbox v-model:checked="member.attend" @click="onCheckMember(member)" />
-                                {{ member.member_number }} - {{ member.display_name }} {{ member.attend }}
+                                {{ member.member_number }} - {{ member.display_name }}
                             </li>
                         </ol>
                     </a-collapse-panel>
@@ -22,15 +35,9 @@
                     <a-typography-title :level="5">Attended mebmers:</a-typography-title>
                     <template v-for="member in attendees">
                         <a-checkbox v-model:checked="member.attend" @click="onCheckAttendee(member)" />
-                        {{ member.member_number }}-{{ member.display_name }} {{ member.attend }}<br>
+                        {{ member.member_number }}-{{ member.display_name }} {{ member.status }}<br>
                     </template>
                 </div>
-                
-                <div class="flex-auto pb-3">
-                    <inertia-link :href="route('member.attendees.scan',{type:instance.type,id:instance.id})"  class="ant-btn">Scan</inertia-link>
-                    <a-button @click="onClickConfirm" class="float-right">Confirm</a-button>
-                </div>
-
             </div>
         </div>
 
@@ -47,11 +54,12 @@ export default {
     components: {
         MemberLayout,
     },
-    props: ['members', 'attendees','instance'],
+    props: ['members', 'attendees','instance','type'],
     data() {
         return {
             attendedMembers: {},
             activeKey: [],
+            status:'ATTEND',
             columns: [
                 {
                     title: 'Comptition title',
@@ -95,6 +103,7 @@ export default {
     mounted() {
         Object.values(this.attendees).forEach(attendee => {
             attendee.attend=true
+            attendee.status=attendee.pivot.status
             var member = Object.values(this.members).find((m) => m.id == attendee.id)
         })
     },
@@ -103,8 +112,10 @@ export default {
             // this.attendees[member.id]=member
             var selected = Object.values(this.attendees).find((a) => a.id == member.id)
             if (selected != undefined) {
+                selected.status=this.status
                 selected.attend = !member.attend
             } else {
+                member.status=this.status
                 this.attendees.push(member)
             }
             //this.attendedMembers[member.id]['attend']=!member.attend;
@@ -112,8 +123,8 @@ export default {
         onCheckAttendee(member) {
             var selected=Object.values(this.members).find((m) => m.id == member.id)
             if(selected!==undefined){
-                selected['attend'] = !member.attend
-
+                selected.status = null
+                selected.attend = !member.attend
             }
         },
         onClickConfirm(){
@@ -121,16 +132,12 @@ export default {
             var selected=Object.values(this.attendees).filter((a) => a.attend)
             Object.values(this.attendees).forEach((attendee)=>{
                 if(attendee.attend==true){
-                    data[attendee.id]={'status':true}
+                    data[attendee.id]={'status':attendee.status}
                 }
             })
-            console.log(data)
-            var type='event'
-            var id=1
-
-                axios.post(route('member.attendees.storeBatch',{type:type,id:id}),{attendees:data}).then(resp=>{
-                    console.log(resp);
-                })
+            axios.post(route('member.attendees.storeBatch',{type:this.type,id:this.instance.id}),{attendees:data}).then(resp=>{
+                console.log(resp);
+            })
         }
     },
 }

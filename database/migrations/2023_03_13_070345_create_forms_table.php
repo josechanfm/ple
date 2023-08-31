@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('require_login')->default(false);
             $table->boolean('for_member')->default(false);
             $table->boolean('published')->default(false);
+            $table->boolean('with_attendance')->nullable();
             $table->timestamps();   
         });
 

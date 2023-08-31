@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->text('description')->nullable();
             $table->text('remark')->nullable();
+            $table->boolean('with_attendance')->nullable();
             $table->timestamps();
         });
     }

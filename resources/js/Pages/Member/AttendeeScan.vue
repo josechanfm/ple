@@ -5,20 +5,24 @@
                 Qrcode Scanner
             </h2>
         </template>
-        <a-radio-group v-model:value="status" button-style="solid">
-            <a-radio-button value="ATTEND">Attend</a-radio-button>
-            <a-radio-button value="LATE">Late</a-radio-button>
-            <a-radio-button value="EXCUSED">Excused</a-radio-button>
-            <a-radio-button value="VACATION">Vacation</a-radio-button>
-        </a-radio-group>
+        <div class="p-3">
+            <a-radio-group v-model:value="status" button-style="solid">
+                <a-radio-button value="ATTEND">Attend</a-radio-button>
+                <a-radio-button value="LATE">Late</a-radio-button>
+                <a-radio-button value="EXCUSED">Excused</a-radio-button>
+                <a-radio-button value="VACATION">Vacation</a-radio-button>
+                
+            </a-radio-group>
+            <a href="#" onclick="history.back();return false;" class="ant-btn float-right">Go Back</a>
+            <div class="error">{{ error }}</div>
+            <div class="decode-result pt-2">Result: <b>{{ result }}</b></div>
+        </div>
 
-        <qrcode-stream @detect="onDetect" @init="onInit">
+        <qrcode-stream @detect="onDetect" @error="onError" class="px-3 h-3">
             <div style="color: red;" class="frame"></div>
         </qrcode-stream>
         <qrcode-drop-zone></qrcode-drop-zone>
 
-        <p class="error">{{ error }}</p>
-        <p class="decode-result">Last result: <b>{{ result }}</b></p>
     </MemberLayout>
 </template>
 
@@ -57,30 +61,26 @@ export default {
              beep.play()
              axios.patch(route('member.attendees.store',{type:this.type,id:this.instance.id}),data).then(resp=>{
                 console.log(resp.data);
-                if(resp.data.result){
-                    this.result = resp.data.member.given_name
+                if(resp.data){
+                    this.result = resp.data.m.display_name
                 }else{
                     this.result = resp.data.message
                 }
             })
         },
-        async onInit (promise) {
-            try {
-                await promise
-            } catch (error) {
-                if (error.name === 'NotAllowedError') {
+        onError(error) {
+            if (error.name === 'NotAllowedError') {
                 this.error = "ERROR: you need to grant camera access permisson"
-                } else if (error.name === 'NotFoundError') {
+            } else if (error.name === 'NotFoundError') {
                 this.error = "ERROR: no camera on this device"
-                } else if (error.name === 'NotSupportedError') {
+            } else if (error.name === 'NotSupportedError') {
                 this.error = "ERROR: secure context required (HTTPS, localhost)"
-                } else if (error.name === 'NotReadableError') {
+            } else if (error.name === 'NotReadableError') {
                 this.error = "ERROR: is the camera already in use?"
-                } else if (error.name === 'OverconstrainedError') {
+            } else if (error.name === 'OverconstrainedError') {
                 this.error = "ERROR: installed cameras are not suitable"
-                } else if (error.name === 'StreamApiNotSupportedError') {
+            } else if (error.name === 'StreamApiNotSupportedError') {
                 this.error = "ERROR: Stream API is not supported in this browser"
-                }
             }
         },
         
@@ -88,3 +88,123 @@ export default {
 }
 </script>
 
+<style scoped>
+.error {
+font-weight: bold;
+color: red;
+}
+</style>
+
+<style scoped>
+  /* * {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    height: 700px;
+    margin: 0;
+  } */
+
+  .qr-scanner {
+    background-image:
+      linear-gradient(0deg,
+        transparent 24%,
+        rgba(32, 255, 77, 0.1) 25%,
+        rgba(32, 255, 77, 0.1) 26%,
+        transparent 27%,
+        transparent 74%,
+        rgba(32, 255, 77, 0.1) 75%,
+        rgba(32, 255, 77, 0.1) 76%,
+        transparent 77%,
+        transparent),
+      linear-gradient(90deg,
+        transparent 24%,
+        rgba(32, 255, 77, 0.1) 25%,
+        rgba(32, 255, 77, 0.1) 26%,
+        transparent 27%,
+        transparent 74%,
+        rgba(32, 255, 77, 0.1) 75%,
+        rgba(32, 255, 77, 0.1) 76%,
+        transparent 77%,
+        transparent);
+    background-size: 3rem 3rem;
+    background-position: -1rem -1rem;
+    width: 100%;
+    /* height: 100%; */
+    height: 100vh;
+    position: relative;
+    background-color: #1110;
+
+    /* background-color: #111; */
+  }
+
+  .qr-scanner .box {
+    width: 213px;
+    height: 213px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    border: 0.1rem solid rgba(0, 255, 51, 0.2);
+    /* background: url('http://resource.beige.world/imgs/gongconghao.png') no-repeat center center; */
+  }
+
+  .qr-scanner .line {
+    height: calc(100% - 2px);
+    width: 100%;
+    background: linear-gradient(180deg, rgba(0, 255, 51, 0) 43%, #00ff33 211%);
+    border-bottom: 3px solid #00ff33;
+    transform: translateY(-100%);
+    animation: radar-beam 2s infinite alternate;
+    animation-timing-function: cubic-bezier(0.53, 0, 0.43, 0.99);
+    animation-delay: 1.4s;
+  }
+
+  .qr-scanner .box:after,
+  .qr-scanner .box:before,
+  .qr-scanner .angle:after,
+  .qr-scanner .angle:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 3vw;
+    height: 3vw;
+
+    border: 0.2rem solid transparent;
+  }
+
+  .qr-scanner .box:after,
+  .qr-scanner .box:before {
+    top: 0;
+    border-top-color: #00ff33;
+  }
+
+  .qr-scanner .angle:after,
+  .qr-scanner .angle:before {
+    bottom: 0;
+    border-bottom-color: #00ff33;
+  }
+
+  .qr-scanner .box:before,
+  .qr-scanner .angle:before {
+    left: 0;
+    border-left-color: #00ff33;
+  }
+
+  .qr-scanner .box:after,
+  .qr-scanner .angle:after {
+    right: 0;
+    border-right-color: #00ff33;
+  }
+
+  @keyframes radar-beam {
+    0% {
+      transform: translateY(-100%);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+</style>
