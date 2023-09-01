@@ -26,12 +26,12 @@ class DashboardController extends Controller
         if($member){
             // $organizations=$member->organizations;
             //$member->organization;
-            $member->portfolios;
-            $member->events;
-
-            if(count($member->organizations)<=0){
+            if($member->organizations->count()<=0){
+                dd("you don't belongs to any organization");
                 return redirect()->route('/');
             }
+            $member->portfolios;
+            $member->events;
             $member->organizations[0]->forms;
             session(['organization'=>$member->organizations[0]]);
             //session('organization')->forms;
@@ -39,7 +39,8 @@ class DashboardController extends Controller
             //session('organization')->fresh();
             return Inertia::render('Member/Dashboard',[
                 'member'=>$member,
-                'current_organization'=>session('organization'),
+                'organizations'=>$member->organizations,
+                //'current_organization'=>session('organization'),
                 //'articles'=>Classify::whereBelongsTo(session('organization'))->first()->articles
             ]);
         }

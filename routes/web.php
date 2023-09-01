@@ -40,8 +40,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::prefix('member')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Member\DashboardController::class, 'list'])->name('member');
-        Route::get('dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member.dashboard');
+        Route::get('/', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member.dashboard');
+        //Route::get('dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member.dashboard');
         Route::get('get_qrcode', [\App\Http\Controllers\Member\DashboardController::class, 'getQrcode'])->name('member.getQrcode');
         Route::get('guardian', [\App\Http\Controllers\Member\GuardianController::class, 'index'])->name('member.guardian');
         Route::get('guardian/act_as/{member}', [\App\Http\Controllers\Member\GuardianController::class, 'actAs'])->name('member.guardian.actAs');

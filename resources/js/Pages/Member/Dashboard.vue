@@ -185,11 +185,11 @@ export default {
                       ],
                     },
                   }" :cornersSquareOptions="{
-                    type: 'square',
-                    color: '#e00404'
-                  }" :cornersDotOptions="{
-                    color: '#e00404'
-                  }" />
+  type: 'square',
+  color: '#e00404'
+}" :cornersDotOptions="{
+  color: '#e00404'
+}" />
                 </div>
               </div>
               <!-- card start -->
@@ -255,7 +255,22 @@ export default {
                     class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Email</a>
                 </div>
                 <div class="w-full">
-                  <h3 class="font-medium text-gray-900 text-left px-6">近況</h3>
+                  <div v-if="member.organizations.length>1">
+                    <h3 class="font-medium text-gray-900 text-left px-6">Your Organizations</h3>
+                    <div class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">
+                      <template v-for="organization in member.organizations">
+                        <a href="#"
+                          class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
+                          <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt=""
+                            class="rounded-full h-6 shadow-md inline-block mr-2" />
+                          {{ organization.abbr }} - {{ organization.full_name }}
+                          <span class="text-gray-500 text-xs">24 min ago</span>
+                        </a>
+                      </template>
+                    </div>
+                  </div>
+
+                  <h3 class="font-medium text-gray-900 text-left px-6">Recent updates</h3>
                   <div class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">
                     <template v-for="organization in member.organizations">
                       <a href="#"
