@@ -1,76 +1,51 @@
 <template>
   <OrganizationLayout title="Dashboard">
-    <div class="p-8 pt-8">
-      <div class="flex pb-2">
-        <div
-          class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
-        >
-          Bulletins
+    <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+              Bulletins
+            </h2>
+        </template>
+        <div class="flex-auto pb-3 text-right">
+          <a-button type="primary" class="!rounded" @click="createRecord()">Create Buletin</a-button>
         </div>
-        <div class="flex-auto w-1/2 text-right">
-          <a-button type="primary" class="!rounded" @click="createRecord()"
-            >Create Buletin</a-button>
-        </div>
-      </div>
-      <div class="card drop-shadow-md pt-4">
-        <!-- {{ new Date().getFullYear() - 2009 + 1 }}
-        {{ yearLength }} -->
-        <a-table
-          :dataSource="bulletins.data"
-          :columns="columns"
-          :pagination="pagination"
-          @change="onPaginationChange"
-          ref="dataTable"
-        >
-          <template #headerCell="{column}">
-              {{ column.i18n?$t(column.i18n):column.title}}
-          </template>
-          <template #bodyCell="{ column, text, record, index }">
-            <template v-if="column.key == 'published'">{{
-              record.published == 1 ? "Yes" : "No"
-            }}</template>
-            <template v-if="column.dataIndex == 'operation'">
-              <div class="space-x-2">
-                <a-button @click="editRecord(record)">Edit</a-button>
-                <a-popconfirm
-                  title="Are you sure to delete the record?"
-                  ok-text="Yes"
-                  cancel-text="No"
-                  @confirm="deleteRecord(record.id)"
-                >
-                  <a-button>Delete</a-button>
-                </a-popconfirm>
-              </div></template
-            >
-            <template v-else-if="column.dataIndex == 'category'">
-              {{ bulletinCategories.find((x) => x.value == text)["label"] }}
+
+
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <a-table :dataSource="bulletins.data" :columns="columns" :pagination="pagination" @change="onPaginationChange"
+            ref="dataTable">
+            <template #headerCell="{ column }">
+              {{ column.i18n ? $t(column.i18n) : column.title }}
             </template>
-          </template>
-        </a-table>
+            <template #bodyCell="{ column, text, record, index }">
+              <template v-if="column.key == 'published'">{{
+                record.published == 1 ? "Yes" : "No"
+              }}</template>
+              <template v-if="column.dataIndex == 'operation'">
+                <div class="space-x-2">
+                  <a-button @click="editRecord(record)">Edit</a-button>
+                  <a-popconfirm title="Are you sure to delete the record?" ok-text="Yes" cancel-text="No"
+                    @confirm="deleteRecord(record.id)">
+                    <a-button>Delete</a-button>
+                  </a-popconfirm>
+                </div>
+              </template>
+              <template v-else-if="column.dataIndex == 'category'">
+                {{ bulletinCategories.find((x) => x.value == text)["label"] }}
+              </template>
+            </template>
+          </a-table>
+        </div>
       </div>
       <!-- Modal Start-->
-      <a-modal
-        v-model:visible="modal.isOpen"
-        :title="modal.mode == 'CREATE' ? 'Create' : 'Edit'"
-        width="60%"
-      >
-        <a-form
-          ref="modalRef"
-          :model="modal.data"
-          :label-col="{ span: 4 }"
-          :wrapper-col="{ span: 20 }"
-          :rules="rules"
-          :validate-messages="validateMessages"
-        >
+      <a-modal v-model:visible="modal.isOpen" :title="modal.mode == 'CREATE' ? 'Create' : 'Edit'" width="60%">
+        <a-form ref="modalRef" :model="modal.data" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }" :rules="rules"
+          :validate-messages="validateMessages">
           <a-form-item :label="$t('category')" name="category">
             <a-select v-model:value="modal.data.category" :options="bulletinCategories" />
           </a-form-item>
           <a-form-item :label="$t('date')" name="date">
-            <a-date-picker
-              v-model:value="modal.data.date"
-              :format="dateFormat"
-              :valueFormat="dateFormat"
-            />
+            <a-date-picker v-model:value="modal.data.date" :format="dateFormat" :valueFormat="dateFormat" />
           </a-form-item>
           <a-form-item :label="$t('title')" name="title">
             <a-input v-model:value="modal.data.title" />
@@ -82,18 +57,10 @@
             <a-textarea v-model:value="modal.data.content" />
           </a-form-item>
           <a-form-item :label="$t('published')" name="published">
-            <a-switch
-              v-model:checked="modal.data.published"
-              :unCheckedValue="0"
-              :checkedValue="1"
-            />
+            <a-switch v-model:checked="modal.data.published" :unCheckedValue="0" :checkedValue="1" />
           </a-form-item>
           <a-form-item :label="$t('image')" name="images">
-            <a-upload
-              v-model:file-list="modal.data.images"
-              list-type="picture-card"
-              :beforeUpload="() => false"
-            >
+            <a-upload v-model:file-list="modal.data.images" list-type="picture-card" :beforeUpload="() => false">
               <div>
                 <upload-outlined></upload-outlined>
                 <div style="margin-top: 8px">Upload</div>
@@ -102,25 +69,13 @@
           </a-form-item>
         </a-form>
         <template #footer>
-          <a-button
-            v-if="modal.mode == 'EDIT'"
-            :loading="loading"
-            key="Update"
-            type="primary"
-            @click="updateRecord()"
-            >修改</a-button
-          >
-          <a-button
-            v-if="modal.mode == 'CREATE'"
-            :loading="loading"
-            key="Store"
-            type="primary"
-            @click="storeRecord()"
-            >新增</a-button
-          >
+          <a-button v-if="modal.mode == 'EDIT'" :loading="loading" key="Update" type="primary"
+            @click="updateRecord()">修改</a-button>
+          <a-button v-if="modal.mode == 'CREATE'" :loading="loading" key="Store" type="primary"
+            @click="storeRecord()">新增</a-button>
         </template>
       </a-modal>
-    </div>
+
     <!-- Modal End-->
   </OrganizationLayout>
 </template>
@@ -207,7 +162,7 @@ export default {
       },
     };
   },
-  created() {},
+  created() { },
   compunted: {
     pagination() {
       return {

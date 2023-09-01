@@ -5,30 +5,37 @@
                 Competitions
             </h2>
         </template>
-            <div class="flex-auto pb-3 text-right">
-                <inertia-link :href="route('manage.competitions.create')" class="ant-btn ant-btn-primary">Create Competiton</inertia-link>
+        <div class="flex-auto pb-3 text-right">
+            <inertia-link :href="route('manage.competitions.create')" class="ant-btn ant-btn-primary">Create
+                Competiton</inertia-link>
+        </div>
+        <div class="container mx-auto pt-5">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+
+                <a-table :dataSource="competitions.data" :columns="columns">
+                    <template #headerCell="{ column }">
+                        {{ column.i18n ? $t(column.i18n) : column.title }}
+                    </template>
+                    <template #bodyCell="{ column, text, record, index }">
+                        <template v-if="column.dataIndex == 'operation'">
+                            <inertia-link :href="route('manage.competitions.show', record.id)"
+                                class="ant-btn">View</inertia-link>
+                            <inertia-link :href="route('manage.competitions.edit', record.id)"
+                                class="ant-btn">Edit</inertia-link>
+                            <inertia-link :href="route('manage.competition.applications.index', record.id)"
+                                class="ant-btn">Applications</inertia-link>
+                        </template>
+                        <template v-else-if="column.dataIndex == 'state'">
+                            {{ teacherStateLabels[text] }}
+                        </template>
+                        <template v-else>
+                            {{ record[column.dataIndex] }}
+                        </template>
+                    </template>
+                </a-table>
             </div>
-            <a-table :dataSource="competitions.data" :columns="columns">
-                <template #headerCell="{column}">
-                    {{ column.i18n?$t(column.i18n):column.title}}
-                </template>
-                <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('manage.competitions.show',record.id)" class="ant-btn">View</inertia-link>
-                        <inertia-link :href="route('manage.competitions.edit',record.id)" class="ant-btn">Edit</inertia-link>
-                        <inertia-link :href="route('manage.competition.applications.index',record.id)" class="ant-btn">Applications</inertia-link>
-                    </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
-                </template>
-            </a-table>
-
+        </div>
     </OrganizationLayout>
-
 </template>
 
 <script>
@@ -42,35 +49,35 @@ export default {
     props: ['competitions'],
     data() {
         return {
-            modal:{
-                isOpen:false,
-                data:{},
-                title:"Modal",
-                mode:""
+            modal: {
+                isOpen: false,
+                data: {},
+                title: "Modal",
+                mode: ""
             },
-            teacherStateLabels:{},
-            columns:[
+            teacherStateLabels: {},
+            columns: [
                 {
                     title: 'Comptition title',
                     dataIndex: 'title_en',
-                },{
+                }, {
                     title: 'Start date',
                     dataIndex: 'start_date',
-                },{
+                }, {
                     title: 'End date',
                     dataIndex: 'end_date',
-                },{
+                }, {
                     title: 'Operation',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
             ],
-            rules:{
-                name_zh:{required:true},
-                mobile:{required:true},
-                state:{required:true},
+            rules: {
+                name_zh: { required: true },
+                mobile: { required: true },
+                state: { required: true },
             },
-            validateMessages:{
+            validateMessages: {
                 required: '${label} is required!',
                 types: {
                     email: '${label} is not a valid email!',
@@ -82,12 +89,12 @@ export default {
             },
             labelCol: {
                 style: {
-                width: '150px',
+                    width: '150px',
                 },
             },
         }
     },
-    created(){
+    created() {
     },
     methods: {
     },

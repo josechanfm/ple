@@ -5,28 +5,33 @@
                 Events
             </h2>
         </template>
-                <inertia-link :href="route('manage.event.qrcode')" class="ant-btn ant-btn-primary">QR Scanner</inertia-link>
-            <div class="flex-auto pb-3 text-right">
-                <inertia-link :href="route('manage.events.create')" class="ant-btn ant-btn-primary">Create Event</inertia-link>
+        <inertia-link :href="route('manage.event.qrcode')" class="ant-btn ant-btn-primary">QR Scanner</inertia-link>
+        <div class="flex-auto pb-3 text-right">
+            <inertia-link :href="route('manage.events.create')" class="ant-btn ant-btn-primary">Create Event</inertia-link>
+        </div>
+        <div class="container mx-auto pt-5">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+
+                <a-table :dataSource="events.data" :columns="columns">
+                    <template #headerCell="{ column }">
+                        {{ column.i18n ? $t(column.i18n) : column.title }}
+                    </template>
+                    <template #bodyCell="{ column, text, record, index }">
+                        <template v-if="column.dataIndex == 'operation'">
+                            <inertia-link :href="route('manage.events.show', record.id)" class="ant-btn">View</inertia-link>
+                            <inertia-link :href="route('manage.events.edit', record.id)" class="ant-btn">Edit</inertia-link>
+                            <inertia-link :href="route('manage.event.attendances.index', record.id)"
+                                class="ant-btn">Attendances</inertia-link>
+                        </template>
+                        <template v-else>
+                            {{ record[column.dataIndex] }}
+                        </template>
+                    </template>
+                </a-table>
             </div>
-            <a-table :dataSource="events.data" :columns="columns">
-                <template #headerCell="{column}">
-                    {{ column.i18n?$t(column.i18n):column.title}}
-                </template>
-                <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('manage.events.show',record.id)" class="ant-btn">View</inertia-link>
-                        <inertia-link :href="route('manage.events.edit',record.id)" class="ant-btn">Edit</inertia-link>
-                        <inertia-link :href="route('manage.event.attendances.index',record.id)" class="ant-btn">Attendances</inertia-link>
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
-                </template>
-            </a-table>
+        </div>
 
     </OrganizationLayout>
-
 </template>
 
 <script>
@@ -37,31 +42,31 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['events','categories'],
+    props: ['events', 'categories'],
     data() {
         return {
-            columns:[
+            columns: [
                 {
                     title: 'Comptition title',
                     dataIndex: 'title_en',
-                },{
+                }, {
                     title: 'Start date',
                     dataIndex: 'start_date',
-                },{
+                }, {
                     title: 'End date',
                     dataIndex: 'end_date',
-                },{
+                }, {
                     title: 'Operation',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
             ],
-            rules:{
-                name_zh:{required:true},
-                mobile:{required:true},
-                state:{required:true},
+            rules: {
+                name_zh: { required: true },
+                mobile: { required: true },
+                state: { required: true },
             },
-            validateMessages:{
+            validateMessages: {
                 required: '${label} is required!',
                 types: {
                     email: '${label} is not a valid email!',
@@ -73,12 +78,12 @@ export default {
             },
             labelCol: {
                 style: {
-                width: '150px',
+                    width: '150px',
                 },
             },
         }
     },
-    created(){
+    created() {
     },
     methods: {
     },

@@ -2,7 +2,7 @@
     <MemberLayout title="Dashboard" >
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Qrcode Scanner
+                {{instance.title}}
             </h2>
         </template>
         <div class="p-3">
@@ -11,7 +11,6 @@
                 <a-radio-button value="LATE">Late</a-radio-button>
                 <a-radio-button value="EXCUSED">Excused</a-radio-button>
                 <a-radio-button value="VACATION">Vacation</a-radio-button>
-                
             </a-radio-group>
             <a href="#" onclick="history.back();return false;" class="ant-btn float-right">Go Back</a>
             <div class="error">{{ error }}</div>

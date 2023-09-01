@@ -19,7 +19,7 @@
       </a-menu-item>
       <a-menu-item key="2">
         <template #icon>
-          <DesktopOutlined />
+          <TeamOutlined />
         </template>
         <span>
           <inertia-link :href="route('manage.members.index')">
@@ -29,7 +29,7 @@
       </a-menu-item>
       <a-menu-item key="3">
         <template #icon>
-          <InboxOutlined />
+          <FileProtectOutlined />
         </template>
         <span>
           <inertia-link :href="route('manage.certificates.index')">
@@ -39,7 +39,7 @@
       </a-menu-item>
       <a-menu-item key="4">
         <template #icon>
-          <InboxOutlined />
+          <FormOutlined />
         </template>
         <span>
           <inertia-link :href="route('manage.forms.index')"> {{$t('forms')}} </inertia-link>
@@ -47,7 +47,7 @@
       </a-menu-item>
       <a-menu-item key="5">
         <template #icon>
-          <InboxOutlined />
+          <MergeCellsOutlined/>
         </template>
         <span>
           <inertia-link :href="route('manage.competitions.index')"> {{$t('competitions')}} </inertia-link>
@@ -55,7 +55,7 @@
       </a-menu-item>
       <a-menu-item key="5">
         <template #icon>
-          <InboxOutlined />
+          <CalendarOutlined />
         </template>
         <span>
           <inertia-link :href="route('manage.events.index')"> {{$t('events')}} </inertia-link>
@@ -63,7 +63,7 @@
       </a-menu-item>
       <a-menu-item key="6">
         <template #icon>
-          <InboxOutlined />
+          <CopyOutlined />
         </template>
         <span>
           <inertia-link :href="route('manage.articles.index')"> {{$t('articles')}} </inertia-link>
@@ -71,7 +71,7 @@
       </a-menu-item>
       <a-menu-item key="9">
         <template #icon>
-          <DesktopOutlined />
+          <NotificationOutlined />
         </template>
         <span>
           <inertia-link :href="route('manage.bulletins.index')">
@@ -81,7 +81,7 @@
       </a-menu-item>
       <a-menu-item key="10">
         <template #icon>
-          <DesktopOutlined />
+          <MailOutlined />
         </template>
         <span>
           <inertia-link :href="route('manage.messages.index')">
@@ -89,10 +89,9 @@
           </inertia-link>
         </span>
       </a-menu-item>
-
       <a-sub-menu key="sub1">
         <template #icon>
-          <MailOutlined />
+          <DesktopOutlined/>
         </template>
         <template #title>Navigation One</template>
         <a-menu-item key="101">Option 5</a-menu-item>
@@ -121,6 +120,14 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PieChartOutlined,
+  TeamOutlined,
+  FileProtectOutlined,
+  FormOutlined,
+  MergeCellsOutlined,
+  CalendarOutlined,
+  NotificationOutlined,
+  MessageOutlined,
+  CopyOutlined,
   MailOutlined,
   DesktopOutlined,
   InboxOutlined,
@@ -132,6 +139,14 @@ export default defineComponent({
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     PieChartOutlined,
+    TeamOutlined,
+    FileProtectOutlined,
+    FormOutlined,
+    MergeCellsOutlined,
+    CalendarOutlined,
+    NotificationOutlined,
+    MessageOutlined,
+    CopyOutlined,
     MailOutlined,
     DesktopOutlined,
     InboxOutlined,

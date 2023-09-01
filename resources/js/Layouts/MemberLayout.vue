@@ -68,7 +68,7 @@ const logout = () => {
                                 <NavLink :href="route('member.guardian.back')" v-if="$page.props.by_guardian">
                                     Guardian
                                 </NavLink>
-                                <NavLink :href="route('manage.list')" v-if="$page.props.user.roles.includes('organizer')">
+                                <NavLink :href="route('manage.dashboard')" v-if="$page.props.user.roles.includes('organizer')">
                                     Manager
                                 </NavLink>
                             </div>
@@ -208,14 +208,27 @@ const logout = () => {
                         </div>
 
                         <div class="mt-3 space-y-1">
+                            <ResponsiveNavLink >
+                                Professional
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink >
+                                Porfolios
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('member.attendances.index')" :active="route().current('member.profile.index')">
+                                Attendances
+                            </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('member.profile.index')" :active="route().current('member.profile.index')">
                                 Profile
                             </ResponsiveNavLink>
-
+                            <ResponsiveNavLink  :href="route('member.guardian.back')" v-if="$page.props.by_guardian">
+                                Gardian
+                            </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
                                 Account
                             </ResponsiveNavLink>
-
+                            <ResponsiveNavLink  :href="route('manage.dashboard')" v-if="$page.props.user.roles.includes('organizer')">
+                                Manage
+                            </ResponsiveNavLink>
                             <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">
                                 API Tokens
                             </ResponsiveNavLink>

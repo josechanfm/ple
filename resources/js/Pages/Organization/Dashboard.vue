@@ -5,14 +5,20 @@
                 Management Dashboard
             </h2>
         </template>
-        <p>Club Management</p>
-        <ol v-if="organizations.length>1">
-            <li v-for="organization in organizations">
-                <a :href="route('manage.select',organization.id)">
-                {{organization.abbr}} - {{organization.full_name}}
-                </a>
-            </li>
-        </ol>
+        <div v-if="organizations.length > 1">
+            <p>Club Management</p>
+            <ol v-if="organizations.length>1">
+                <li v-for="organization in organizations">
+                    <a :href="route('manage.select',organization.id)">
+                    {{organization.abbr}} - {{organization.full_name}}
+                    </a>
+                </li>
+            </ol>
+
+        </div>
+        <div v-if="member">
+            <inertia-link :href="route('member.dashboard')">Member Dashboard</inertia-link>
+        </div>
     </OrganizationLayout>
 </template>
 
@@ -25,7 +31,7 @@ export default {
         OrganizationLayout,
         OrganizationList,
     },
-    props: ['organizations'],
+    props: ['organizations','member'],
     data() {
         return {
 

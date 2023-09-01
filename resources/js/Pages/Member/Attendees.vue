@@ -2,7 +2,7 @@
     <MemberLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Attendees
+                {{instance.title}}
             </h2>
         </template>
         <div class="container mx-auto pt-5">
@@ -17,7 +17,7 @@
             </div>
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                 <div class="pb-2">
-                    <inertia-link :href="route('member.attendees.scan',{type:instance.type,id:instance.id})"  class="ant-btn ml-5">Scan</inertia-link>
+                    <inertia-link :href="route('member.attendees.scan',{type:this.type,id:instance.id})"  class="ant-btn ml-5">Scan</inertia-link>
                     <a-button @click="onClickConfirm" class="float-right mr-5">Confirm</a-button>
                 </div>
 
@@ -101,13 +101,16 @@ export default {
     created() {
     },
     mounted() {
-        Object.values(this.attendees).forEach(attendee => {
-            attendee.attend=true
-            attendee.status=attendee.pivot.status
-            var member = Object.values(this.members).find((m) => m.id == attendee.id)
-        })
+        this.init();
     },
     methods: {
+        init(){
+            Object.values(this.attendees).forEach(attendee => {
+                attendee.attend=true
+                attendee.status=attendee.pivot.status
+                var member = Object.values(this.members).find((m) => m.id == attendee.id)
+            })
+        },
         onCheckMember(member) {
             // this.attendees[member.id]=member
             var selected = Object.values(this.attendees).find((a) => a.id == member.id)
@@ -135,9 +138,19 @@ export default {
                     data[attendee.id]={'status':attendee.status}
                 }
             })
-            axios.post(route('member.attendees.storeBatch',{type:this.type,id:this.instance.id}),{attendees:data}).then(resp=>{
-                console.log(resp);
+            this.$inertia.post(route('member.attendees.storeBatch',{type:this.type,id:this.instance.id}),{attendees:data},{
+                onSuccess: (page) => {
+                    console.log(page);
+                    this.init();
+                },
+                onError: (error) => {
+                    alert(error.message);
+                }
             })
+
+            // axios.post(route('member.attendees.storeBatch',{type:this.type,id:this.instance.id}),{attendees:data}).then(resp=>{
+            //     console.log(resp);
+            // })
         }
     },
 }

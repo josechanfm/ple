@@ -35,12 +35,11 @@ class AttendeeController extends Controller
         return Inertia::render('Member/Attendees',[
             'attendees'=>$instance->members,
             'members'=>session('organization')->members,
-            'instance'=>(Object)array('type'=>$type,'id'=>$id),
+            'instance'=>$instance,
             'type'=>$type
         ]);
     }
     public function scan($type,$id){
-
         $instance=null;
         switch($type){
             case 'event':
@@ -111,6 +110,7 @@ class AttendeeController extends Controller
         if(!$instance) return redirect()->route('/'); 
         $instance->members()->sync($request->attendees);
         //$instance->members()->updateExistingPivot($memberId,['status'=>$status]);
-        return response()->json(['r'=>$request->attendees,'i'=>$instance,'t'=>$type, 'i'=>$id]);
+        //return response()->json(['r'=>$request->attendees,'i'=>$instance,'t'=>$type, 'i'=>$id]);
+        return redirect()->back();
     }
 }

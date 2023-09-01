@@ -10,25 +10,29 @@
             <a-button type="primary" class="!rounded" @click="createRecord()"
             >Create Member</a-button>
         </div>
-        <a-table :dataSource="members" :columns="columns">
-            <template #headerCell="{column}">
-                {{ column.i18n?$t(column.i18n):column.title}}
-            </template>
-            <template #bodyCell="{column, text, record, index}">
-                <template v-if="column.dataIndex=='operation'">
-                    <inertia-link :href="route('manage.members.show',record.id)" class="ant-btn">View</inertia-link>
-                    <a-button @click="editRecord(record)">Edit</a-button>
-                    <a-button @click="deleteRecord(record.id)">Delete</a-button>
-                    <a-button @click="createLogin(record.id)" :disabled="record.user!=null">Create login</a-button>
-                </template>
-                <template v-else-if="column.dataIndex=='state'">
-                    {{teacherStateLabels[text]}}
-                </template>
-                <template v-else>
-                    {{record[column.dataIndex]}}
-                </template>
-            </template>
-        </a-table>
+        <div class="container mx-auto pt-5">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+                <a-table :dataSource="members" :columns="columns" >
+                    <template #headerCell="{column}">
+                        {{ column.i18n?$t(column.i18n):column.title}}
+                    </template>
+                    <template #bodyCell="{column, text, record, index}">
+                        <template v-if="column.dataIndex=='operation'">
+                            <inertia-link :href="route('manage.members.show',record.id)" class="ant-btn">View</inertia-link>
+                            <a-button @click="editRecord(record)">Edit</a-button>
+                            <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                            <a-button @click="createLogin(record.id)" :disabled="record.user!=null">Create login</a-button>
+                        </template>
+                        <template v-else-if="column.dataIndex=='state'">
+                            {{teacherStateLabels[text]}}
+                        </template>
+                        <template v-else>
+                            {{record[column.dataIndex]}}
+                        </template>
+                    </template>
+                </a-table>
+            </div>
+        </div>
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
@@ -105,7 +109,8 @@ export default {
                 {
                     title: 'Given name',
                     dataIndex: 'given_name',
-                    i18n:'given_name'
+                    i18n:'given_name',
+                    responsive: ['md'],
                 },{
                     title: 'Family name',
                     dataIndex: 'family_name',

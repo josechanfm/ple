@@ -6,57 +6,46 @@
             </h2>
         </template>
         <p></p>
-        <div v-for="(instance, type) in instances" class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <a-typography-title :level="4">{{ type.toUpperCase() }}</a-typography-title>
-            <a-table :dataSource="instance" :columns="columns">
-                <template #headerCell="{ column }">
-                    {{ column.i18n ? $t(column.i18n) : column.title }}
+        <a-collapse v-for="(instance,key) in instances" :expand-icon-position="expandIconPosition">
+            <template #expandIcon="{isActive}">
+              <CalendarOutlined v-if="key=='events'" style="color:darkgreen"/>
+              <FormOutlined v-if="key=='forms'" style="color:blue"/>
+              <CheckSquareOutlined v-if="key=='attendances'" style="color:darkred"/>
+              <CaretRightOutlined :rotate="isActive?90:0"/>
+            </template>
+            <a-collapse-panel v-for="record in instance" :key="key" :header="record.title">
+                <p>Title: {{record.title}}</p>
+                <p>Start Date: {{record.start_date}}</p>
+                <p>End Date: {{record.end_date}}</p>
+                <p>Credit: {{record.credit}}</p>
+                <div v-html="record.description"/>
+                <template #extra>
+                    <inertia-link :href="route('member.attendees.scan', { type: 'event', id: record.id })" class="ant-btn">
+                        Scan
+                    </inertia-link>
+                    <inertia-link :href="route('member.attendees.index', { type: 'event', id: record.id })" class="ant-btn">
+                        Tick
+                    </inertia-link>
                 </template>
-                <template #bodyCell="{ column, text, record, index }">
-                    <template v-if="column.dataIndex == 'operation'">
-                        <inertia-link :href="route('member.attendees.scan', { type: 'event', id: record.id })" class="ant-btn">
-                            Scan
-                        </inertia-link>
-                        <inertia-link :href="route('member.attendees.index', { type: 'event', id: record.id })" class="ant-btn">
-                            Tick
-                        </inertia-link>
-                    </template>
-                </template>
-            </a-table>
-
-        </div>
-        <ol>
-            <li v-for="attendance in instances['events']">
-                <inertia-link :href="route('member.attendees.index', { type: 'event', id: attendance.id })">
-                    {{ attendance.id }}-{{ attendance.title }}
-                </inertia-link>
-            </li>
-        </ol>
-        <ol>
-            <li v-for="attendance in instances['forms']">
-                <inertia-link :href="route('member.attendees.index', { type: 'form', id: attendance.id })">
-                    {{ attendance.id }}-{{ attendance.title }}
-                </inertia-link>
-            </li>
-        </ol>
-        <ol>
-            <li v-for="attendance in instances['attendances']">
-                <inertia-link :href="route('member.attendees.index', { type: 'attendance', id: attendance.id })">
-                    {{ attendance.id }}-{{ attendance.title }}
-                </inertia-link>
-            </li>
-        </ol>
-
+            </a-collapse-panel>
+        </a-collapse>
     </MemberLayout>
 </template>
 
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
+import { CalendarOutlined,FormOutlined, CheckSquareOutlined, CaretRightOutlined, SettingOutlined } from '@ant-design/icons-vue';
+
 import { defineComponent, reactive } from 'vue';
 
 export default {
     components: {
         MemberLayout,
+        CalendarOutlined,
+        FormOutlined,
+        CheckSquareOutlined,
+        CaretRightOutlined,
+        SettingOutlined
     },
     props: ['instances', 'members'],
     data() {

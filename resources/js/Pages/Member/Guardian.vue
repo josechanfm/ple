@@ -17,7 +17,7 @@ export default {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <span v-if="$page.props.user.roles.includes('admin') || $page.props.user.roles.includes('organizer')">
-                        <inertia-link :href="route('manage.list')">Admin</inertia-link>
+                        <inertia-link :href="route('manage.dashboard')">Admin</inertia-link>
                     </span>
                     
                     <ol>

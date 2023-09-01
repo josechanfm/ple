@@ -5,73 +5,68 @@
                 Articles
             </h2>
         </template>
-            <div class="flex-auto pb-3 text-right">
-                <a-button type="primary" class="!rounded" @click="createRecord()"
-                >Create Article</a-button>
-            </div>
-            <a-table :dataSource="articles" :columns="columns">
-                <template #headerCell="{column}">
-                    {{ column.i18n?$t(column.i18n):column.title}}
-                </template>
-                <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
-                    </template>
-                    <template v-else-if="column.dataIndex=='published'">
-                        {{record.published?'Yes':'No'}}
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
-                </template>
-            </a-table>
+        <div class="flex-auto pb-3 text-right">
+            <a-button type="primary" class="!rounded" @click="createRecord()">Create Article</a-button>
+        </div>
+        <div class="container mx-auto pt-5">
+            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
 
+                <a-table :dataSource="articles" :columns="columns">
+                    <template #headerCell="{ column }">
+                        {{ column.i18n ? $t(column.i18n) : column.title }}
+                    </template>
+                    <template #bodyCell="{ column, text, record, index }">
+                        <template v-if="column.dataIndex == 'operation'">
+                            <a-button @click="editRecord(record)">Edit</a-button>
+                            <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                        </template>
+                        <template v-else-if="column.dataIndex == 'published'">
+                            {{ record.published ? 'Yes' : 'No' }}
+                        </template>
+                        <template v-else>
+                            {{ record[column.dataIndex] }}
+                        </template>
+                    </template>
+                </a-table>
+            </div>
+        </div>
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
-        <a-form
-            ref="modalRef"
-            :model="modal.data"
-            name="Teacher"
-            layout="vertical"
-            autocomplete="off"
-            :rules="rules"
-            :validate-messages="validateMessages"
-        >
-            <a-form-item :label="$t('article_category')" name="category_code">
-                <a-select v-model:value="modal.data.category_code" :options="articleCategories" />
-            </a-form-item>
-            <a-form-item :label="$t('title_en')" name="title_en">
-                <a-input v-model:value="modal.data.title_en" />
-            </a-form-item>
-            <a-form-item :label="$t('title_fn')" name="title_fn">
-                <a-input v-model:value="modal.data.title_fn" />
-            </a-form-item>
-            <a-form-item :label="$t('content')" name="content_en">
-                <quill-editor v-model:value="modal.data.content_en" style="min-height:200px;" />
-            </a-form-item>
-            <a-form-item :label="$t('valid_at')" name="valid_at">
-                <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat"/>
-            </a-form-item>
-            <a-form-item :label="$t('expired_at')" name="expired_at">
-                <a-date-picker v-model:value="modal.data.expired_at" :valueFormat="dateFormat"/>
-            </a-form-item>
-            <a-form-item :label="$t('url')" name="url">
-                <a-input v-model:value="modal.data.url" />
-            </a-form-item>
-            <a-form-item :label="$t('published')" name="published">
-                <a-switch v-model:checked="modal.data.published" :checkedValue="1" :unCheckedValue="0"/>
-            </a-form-item>
+            <a-form ref="modalRef" :model="modal.data" name="Teacher" layout="vertical" autocomplete="off" :rules="rules"
+                :validate-messages="validateMessages">
+                <a-form-item :label="$t('article_category')" name="category_code">
+                    <a-select v-model:value="modal.data.category_code" :options="articleCategories" />
+                </a-form-item>
+                <a-form-item :label="$t('title_en')" name="title_en">
+                    <a-input v-model:value="modal.data.title_en" />
+                </a-form-item>
+                <a-form-item :label="$t('title_fn')" name="title_fn">
+                    <a-input v-model:value="modal.data.title_fn" />
+                </a-form-item>
+                <a-form-item :label="$t('content')" name="content_en">
+                    <quill-editor v-model:value="modal.data.content_en" style="min-height:200px;" />
+                </a-form-item>
+                <a-form-item :label="$t('valid_at')" name="valid_at">
+                    <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat" />
+                </a-form-item>
+                <a-form-item :label="$t('expired_at')" name="expired_at">
+                    <a-date-picker v-model:value="modal.data.expired_at" :valueFormat="dateFormat" />
+                </a-form-item>
+                <a-form-item :label="$t('url')" name="url">
+                    <a-input v-model:value="modal.data.url" />
+                </a-form-item>
+                <a-form-item :label="$t('published')" name="published">
+                    <a-switch v-model:checked="modal.data.published" :checkedValue="1" :unCheckedValue="0" />
+                </a-form-item>
 
-        </a-form>
-        <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
-        </template>
-    </a-modal>    
-    <!-- Modal End-->
+            </a-form>
+            <template #footer>
+                <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
+                <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary" @click="storeRecord()">Add</a-button>
+            </template>
+        </a-modal>
+        <!-- Modal End-->
     </OrganizationLayout>
-
 </template>
 
 <script>
@@ -84,41 +79,41 @@ export default {
         OrganizationLayout,
         quillEditor
     },
-    props: ['classifies','articleCategories','articles'],
+    props: ['classifies', 'articleCategories', 'articles'],
     data() {
         return {
-            dateFormat:"YYYY-MM-DD",
-            modal:{
-                isOpen:false,
-                data:{},
-                title:"Modal",
-                mode:""
+            dateFormat: "YYYY-MM-DD",
+            modal: {
+                isOpen: false,
+                data: {},
+                title: "Modal",
+                mode: ""
             },
-            teacherStateLabels:{},
-            columns:[
+            teacherStateLabels: {},
+            columns: [
                 {
                     title: 'Title',
                     dataIndex: 'title_en',
-                },{
+                }, {
                     title: 'Validated at',
                     dataIndex: 'validated_at',
-                },{
+                }, {
                     title: 'Expired at',
                     dataIndex: 'expired_at',
-                },{
+                }, {
                     title: 'Published',
                     dataIndex: 'published',
-                },{
+                }, {
                     title: 'Operation',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
             ],
-            rules:{
-                classify_id:{required:true},
-                title_en:{required:true},
+            rules: {
+                classify_id: { required: true },
+                title_en: { required: true },
             },
-            validateMessages:{
+            validateMessages: {
                 required: '${label} is required!',
                 types: {
                     email: '${label} is not a valid email!',
@@ -130,34 +125,34 @@ export default {
             },
             labelCol: {
                 style: {
-                width: '150px',
+                    width: '150px',
                 },
             },
         }
     },
-    created(){
+    created() {
     },
     methods: {
-        createRecord(){
-            this.modal.data={};
-            this.modal.mode="CREATE";
-            this.modal.title="Create";
-            this.modal.isOpen=true;
+        createRecord() {
+            this.modal.data = {};
+            this.modal.mode = "CREATE";
+            this.modal.title = "Create";
+            this.modal.isOpen = true;
         },
-        editRecord(record){
-            this.modal.data={...record};
-            this.modal.mode="EDIT";
-            this.modal.title="Edit";
-            this.modal.isOpen=true;
+        editRecord(record) {
+            this.modal.data = { ...record };
+            this.modal.mode = "EDIT";
+            this.modal.title = "Edit";
+            this.modal.isOpen = true;
         },
-        storeRecord(){
-            this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('manage.articles.store'), this.modal.data,{
-                    onSuccess:(page)=>{
-                        this.modal.data={};
-                        this.modal.isOpen=false;
+        storeRecord() {
+            this.$refs.modalRef.validateFields().then(() => {
+                this.$inertia.post(route('manage.articles.store'), this.modal.data, {
+                    onSuccess: (page) => {
+                        this.modal.data = {};
+                        this.modal.isOpen = false;
                     },
-                    onError:(err)=>{
+                    onError: (err) => {
                         console.log(err);
                     }
                 });
@@ -165,37 +160,37 @@ export default {
                 console.log(err);
             });
         },
-        updateRecord(){
+        updateRecord() {
             console.log(this.modal.data);
-            this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.put(route('manage.articles.update', this.modal.data.id), this.modal.data,{
-                    onSuccess:(page)=>{
-                        this.modal.data={};
-                        this.modal.isOpen=false;
+            this.$refs.modalRef.validateFields().then(() => {
+                this.$inertia.put(route('manage.articles.update', this.modal.data.id), this.modal.data, {
+                    onSuccess: (page) => {
+                        this.modal.data = {};
+                        this.modal.isOpen = false;
                         console.log(page);
                     },
-                    onError:(error)=>{
+                    onError: (error) => {
                         console.log(error);
                     }
                 });
             }).catch(err => {
                 console.log("error", err);
             });
-           
+
         },
-        deleteRecord(recordId){
+        deleteRecord(recordId) {
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete(route('manage.articles.destroy',recordId),{
-                onSuccess: (page)=>{
+            this.$inertia.delete(route('manage.articles.destroy', recordId), {
+                onSuccess: (page) => {
                     console.log(page);
                 },
-                onError: (error)=>{
+                onError: (error) => {
                     console.log(error);
                 }
             });
         },
-        createLogin(recordId){
-            console.log('create login'+recordId);
+        createLogin(recordId) {
+            console.log('create login' + recordId);
         },
 
     },

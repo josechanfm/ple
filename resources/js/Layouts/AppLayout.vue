@@ -58,7 +58,7 @@ const logout = () => {
                                 <NavLink :href="route('member.membership')" >
                                     Membership
                                 </NavLink>
-                                <NavLink :href="route('manage.list')" v-if="$page.props.user.roles.includes('admin')">
+                                <NavLink :href="route('manage.dashboard')" v-if="$page.props.user.roles.includes('admin')">
                                     Admin
                                 </NavLink>
                             </div>

@@ -6,7 +6,7 @@
                 <inertia-link href='/'>{{ $page.props.current_organization.abbr }}</inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                <inertia-link :href="route('manage.list')">{{ $page.props.current_organization.full_name }}</inertia-link>
+                <inertia-link :href="route('manage.dashboard')">{{ $page.props.current_organization.full_name }}</inertia-link>
             </div>
 
             <OrganizationMenu :menuKeys='menuKeys'/>

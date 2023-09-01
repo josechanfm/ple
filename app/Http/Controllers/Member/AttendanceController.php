@@ -21,7 +21,10 @@ class AttendanceController extends Controller
     {
         if(!auth()->user()->hasPermissionTo('attendance')){
             return redirect()->route('member.dashboard');
-        }
+        };
+        if(!session('organization')){
+            return redirect()->route('member.dashboard');
+        };
         $instances=Attendance::getInstances();
         return Inertia::render('Member/Attendances',[
             'instances'=>$instances,

@@ -40,7 +40,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::prefix('member')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member');
+        Route::get('/', [\App\Http\Controllers\Member\DashboardController::class, 'list'])->name('member');
         Route::get('dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('member.dashboard');
         Route::get('get_qrcode', [\App\Http\Controllers\Member\DashboardController::class, 'getQrcode'])->name('member.getQrcode');
         Route::get('guardian', [\App\Http\Controllers\Member\GuardianController::class, 'index'])->name('member.guardian');
@@ -79,9 +79,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::prefix('/manage')->group(function () {
-        Route::get('/', [App\Http\Controllers\Organization\DashboardController::class, 'list'])->name('manage.list');
+        Route::get('/', [App\Http\Controllers\Organization\DashboardController::class, 'index'])->name('manage.dashboard');
         Route::get('/select/{organization}', [App\Http\Controllers\Organization\DashboardController::class, 'select'])->name('manage.select');
-        Route::get('/dashboard', [App\Http\Controllers\Organization\DashboardController::class, 'index'])->name('manage.dashboard');
         Route::resource('members', App\Http\Controllers\Organization\MemberController::class)->names('manage.members');
         Route::post('member/create/login/{member}', [App\Http\Controllers\Organization\MemberController::class,'createLogin'])->name('manage.member.createLogin');
         Route::resource('forms', App\Http\Controllers\Organization\FormController::class)->names('manage.forms');

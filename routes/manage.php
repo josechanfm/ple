@@ -39,7 +39,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::prefix('/manage')->group(function(){
-        Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'list'])->name('manage.list');
+        Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'index'])->name('manage.list');
         Route::get('/select/{organization}',[App\Http\Controllers\Organization\DashboardController::class,'select'])->name('manage.select');
         Route::get('/dashboard',[App\Http\Controllers\Organization\DashboardController::class,'index'])->name('manage.dashboard');
         Route::resource('members', App\Http\Controllers\Organization\MemberController::class)->names('manage.members');
