@@ -30,6 +30,7 @@ class DashboardController extends Controller
                 dd("you don't belongs to any organization");
                 return redirect()->route('/');
             }
+
             $member->portfolios;
             $member->events;
             $member->organizations[0]->forms;
@@ -40,7 +41,7 @@ class DashboardController extends Controller
             return Inertia::render('Member/Dashboard',[
                 'member'=>$member,
                 'organizations'=>$member->organizations,
-                //'current_organization'=>session('organization'),
+                'current_organization'=>session('organization'),//set current_organization, coz the first access has not activate session variable yet.
                 //'articles'=>Classify::whereBelongsTo(session('organization'))->first()->articles
             ]);
         }

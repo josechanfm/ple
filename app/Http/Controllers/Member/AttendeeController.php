@@ -31,10 +31,42 @@ class AttendeeController extends Controller
                 break;
         };
         if(!$instance) return redirect()->route('/'); 
+        $members=array_column(session('organization')->members->toArray(),null,"id");
+        $participants=array_column($instance->participants->toArray(),null,'id');
+        $attendedMembers=array_column($instance->attendedMembers->toArray(),null,'id');
+        $attendedParticipants=array_column($instance->attendedParticipants->toArray(),null,'id');
+        $attendees=$instance->attendees;
+
+        // dd($members);
+        //dd($participants);
+        // dd($attendedParticipants);
+        //dd($attendedMembers);
+        foreach($members as $id=>$m){
+            $members[$id]['attended']=isset($attendedMembers[$id])?true:false;
+        };
+        foreach($participants as $id=>$participant){
+            $participants[$id]['attended']=isset($attendedParticipants[$id])?true:false;
+        };
+        foreach($attendees as $id=>$attendee){
+            $attendees[$id]['attended']=true;
+        };
+        foreach($attendedMembers as $id=>$a){
+            $attendedMembers[$id]['attended']=true;
+        }
+        // dd($participants);
+        //dd($members);
+        // dd($instance->attendedParticipants);
+        // dd($instance->attendedMembers);
         //$instance->members()->sync([1,2,3,4]);
         return Inertia::render('Member/Attendees',[
-            'attendees'=>$instance->members,
-            'members'=>session('organization')->members,
+            'members'=>$members,
+            'participants'=>$participants,
+            'attendedMembers'=>$attendedMembers,
+            'attendedParticipants'=>$attendedParticipants,
+            'attendees'=>$attendees,
+            //'members'=>session('organization')->members,
+            //'participants'=>$instance->participants,
+            //'attendees'=>$instance->members,
             'instance'=>$instance,
             'type'=>$type
         ]);

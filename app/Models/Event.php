@@ -24,7 +24,18 @@ class Event extends Model
         return $this->belongsToMany(Member::class,'event_manager','event_id','member_id');
     }
 
-    public function members():MorphToMany{
-        return $this->morphToMany(Member::class,'attendee');
+    public function attendedMembers():MorphToMany{
+        return $this->morphedByMany(Member::class,'attendee')->withPivot('status');
     }
+    public function attendedParticipants(){
+        return $this->morphedByMany(Participant::class,'attendee')->withPivot('status');
+    }
+    public function participants(){
+        return $this->hasMany(Participant::class);
+    }
+    public function attendees(){
+        return $this->hasMany(Attendee::class);
+    }
+
+
 }

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+//use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
@@ -85,8 +85,9 @@ class Form extends Model implements HasMedia
         $this->addMediaCollection('image')
             ->useDisk('form');
     }
-    public function members(): MorphToMany{
-        return $this->morphToMany(Member::class,'attendee')->withPivot(['status']);
-    }
+    // public function members(): MorphToMany{
+    //     return $this->morphToMany(Member::class,'attendee')->withPivot(['status']);
+    // }
 
 }
+    

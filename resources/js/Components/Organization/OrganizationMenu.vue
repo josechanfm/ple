@@ -69,6 +69,7 @@
           <inertia-link :href="route('manage.articles.index')"> {{$t('articles')}} </inertia-link>
         </span>
       </a-menu-item>
+      <!--
       <a-menu-item key="9">
         <template #icon>
           <NotificationOutlined />
@@ -79,6 +80,7 @@
           </inertia-link>
         </span>
       </a-menu-item>
+      -->
       <a-menu-item key="10">
         <template #icon>
           <MailOutlined />

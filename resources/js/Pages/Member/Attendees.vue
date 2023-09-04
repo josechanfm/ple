@@ -5,6 +5,7 @@
                 {{instance.title}}
             </h2>
         </template>
+        {{ attendedMembers }}
         <div class="container mx-auto pt-5">
             <div class="flex-auto h-10">
                 <a-radio-group v-model:value="status" button-style="solid">
@@ -25,7 +26,7 @@
                     <a-collapse-panel key="1" header="Organization Members">
                         <ol>
                             <li v-for="member in members">
-                                <a-checkbox v-model:checked="member.attend" @click="onCheckMember(member)" />
+                                <a-checkbox v-model:checked="member.attended" @click="onCheckMember(member)" />
                                 {{ member.member_number }} - {{ member.display_name }}
                             </li>
                         </ol>
@@ -33,9 +34,9 @@
                 </a-collapse>
                 <div>
                     <a-typography-title :level="5">Attended mebmers:</a-typography-title>
-                    <template v-for="member in attendees">
-                        <a-checkbox v-model:checked="member.attend" @click="onCheckAttendee(member)" />
-                        {{ member.member_number }}-{{ member.display_name }} {{ member.status }}<br>
+                    <template v-for="attendee in attendedMembers">
+                        <a-checkbox v-model:checked="attendee.attended" @click="onChangeAttendee(attendee)" />
+                        {{ attendee.attendee_id }}-{{ attendee.display_name }} {{ attendee.pivot.status }}<br>
                     </template>
                 </div>
             </div>
@@ -54,10 +55,10 @@ export default {
     components: {
         MemberLayout,
     },
-    props: ['members', 'attendees','instance','type'],
+    props: ['members','participants','attendedMembers','attendedParticipants', 'attendees','instance','type'],
     data() {
         return {
-            attendedMembers: {},
+            //attendedMembers: {},
             activeKey: [],
             status:'ATTEND',
             columns: [
@@ -101,7 +102,7 @@ export default {
     created() {
     },
     mounted() {
-        this.init();
+        //this.init();
     },
     methods: {
         init(){
@@ -113,21 +114,26 @@ export default {
         },
         onCheckMember(member) {
             // this.attendees[member.id]=member
-            var selected = Object.values(this.attendees).find((a) => a.id == member.id)
+            var selected = Object.values(this.attendedMembers).find((a) => a.id == member.id)
+
             if (selected != undefined) {
-                selected.status=this.status
-                selected.attend = !member.attend
+                console.log(selected);
+                //selected.pivot={'status':this.status};
+                selected['attended'] = !member.attended
             } else {
-                member.status=this.status
-                this.attendees.push(member)
+                console.log(this.attendedMembers[member.id]);
+                //this.attendedMembers[member.id]['pivot']['status']=this.status;
+                this.attendedMembers[member.id]=member;
+                //this.attendedMembers.push(member)
             }
             //this.attendedMembers[member.id]['attend']=!member.attend;
         },
-        onCheckAttendee(member) {
-            var selected=Object.values(this.members).find((m) => m.id == member.id)
+        onChangeAttendee(attendee) {
+            var selected=Object.values(this.members).find((m) => m.id == attendee.id)
+            attendee.pivot.status=attendee.attended?null:this.status
             if(selected!==undefined){
                 selected.status = null
-                selected.attend = !member.attend
+                selected.attended = !attendee.attended
             }
         },
         onClickConfirm(){

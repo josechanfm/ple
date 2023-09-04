@@ -22,8 +22,8 @@ class Attendance extends Model
             return ['events'=>null,'forms'=>'','attendances'=>null];
         };
         $records['events']=Event::where('organization_id',session('organization')->id)->where('with_attendance',true)->get();
-        $records['forms']=Form::where('organization_id',session('organization')->id)->where('with_attendance',true)->get();
-        $records['attendances']=Attendance::where('organization_id',session('organization')->id)->where('with_attendance',true)->get();
+        //$records['forms']=Form::where('organization_id',session('organization')->id)->where('with_attendance',true)->get();
+        //$records['attendances']=Attendance::where('organization_id',session('organization')->id)->where('with_attendance',true)->get();
         return $records;
     }
 }

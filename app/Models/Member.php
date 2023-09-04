@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -102,12 +103,15 @@ class Member extends Model
         return $this->belongsToMany(Position::class);
     }
 
-    public function events(){
-        return $this->belongsToMany(Event::class,'event_manager','member_id','event_id');
-    }
+    // public function events(){
+    //     return $this->belongsToMany(Event::class,'event_manager','member_id','event_id');
+    // }
 
     public function attendances(){
         return $this->belongsToMany(Attendance::class);
     }
 
+    public function events(){
+        return $this->morphToMany(Event::class,'attendee');
+    }
 }

@@ -9,8 +9,8 @@
         <a-collapse v-for="(instance,key) in instances" :expand-icon-position="expandIconPosition">
             <template #expandIcon="{isActive}">
               <CalendarOutlined v-if="key=='events'" style="color:darkgreen"/>
-              <FormOutlined v-if="key=='forms'" style="color:blue"/>
-              <CheckSquareOutlined v-if="key=='attendances'" style="color:darkred"/>
+              <!-- <FormOutlined v-if="key=='forms'" style="color:blue"/> -->
+              <!-- <CheckSquareOutlined v-if="key=='attendances'" style="color:darkred"/> -->
               <CaretRightOutlined :rotate="isActive?90:0"/>
             </template>
             <a-collapse-panel v-for="record in instance" :key="key" :header="record.title">

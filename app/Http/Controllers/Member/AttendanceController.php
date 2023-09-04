@@ -20,6 +20,9 @@ class AttendanceController extends Controller
     public function index()
     {
         if(!auth()->user()->hasPermissionTo('attendance')){
+            return Inertia::render('Error',[
+                'message'=>"You don't have permission for taking attendance."
+            ]);
             return redirect()->route('member.dashboard');
         };
         if(!session('organization')){
