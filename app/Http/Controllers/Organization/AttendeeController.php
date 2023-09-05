@@ -15,9 +15,9 @@ class AttendeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Event $event)
+    public function index($event)
     {
-        return Inertia::render('Organization/Attendees',[
+        return Inertia::render('Organization/Attendances',[
             'event'=>$event,
             'attendees'=>$event->attendees()
         ]);
