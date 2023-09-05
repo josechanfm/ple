@@ -5,7 +5,7 @@
                 Events
             </h2>
         </template>
-        <inertia-link :href="route('manage.event.qrcode')" class="ant-btn ant-btn-primary">QR Scanner</inertia-link>
+        
         <div class="flex-auto pb-3 text-right">
             <inertia-link :href="route('manage.events.create')" class="ant-btn ant-btn-primary">Create Event</inertia-link>
         </div>
@@ -18,10 +18,10 @@
                     </template>
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <inertia-link :href="route('manage.events.show', record.id)" class="ant-btn">View</inertia-link>
+                            <inertia-link :href="route('member.event.attendees.index', record.id)" class="ant-btn">Tick</inertia-link>
                             <inertia-link :href="route('manage.events.edit', record.id)" class="ant-btn">Edit</inertia-link>
-                            <inertia-link :href="route('manage.event.attendances.index', record.id)"
-                                class="ant-btn">Attendances</inertia-link>
+                            <inertia-link :href="route('manage.event.attendees.index', record.id)"
+                                class="ant-btn">Attendees</inertia-link>
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}

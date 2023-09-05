@@ -19,6 +19,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
+        $event=Event::find(1);
         if(!auth()->user()->hasPermissionTo('attendance')){
             return Inertia::render('Error',[
                 'message'=>"You don't have permission for taking attendance."

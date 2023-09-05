@@ -2,20 +2,28 @@
     <OrganizationLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Attendees
+                Events
             </h2>
         </template>
-                <inertia-link :href="route('manage.event.qrcode')" class="ant-btn ant-btn-primary">QR Scanner</inertia-link>
             <div class="flex-auto pb-3 text-right">
-                <inertia-link :href="route('manage.events.create')" class="ant-btn ant-btn-primary">Create Event</inertia-link>
+                <inertia-link class="ant-btn ant-btn-primary">Add attendees</inertia-link>
             </div>
-            <a-table :dataSource="attenddes" :columns="columns">
+            <a-table :dataSource="attendees" :columns="columns">
                 <template #headerCell="{column}">
                     {{ column.i18n?$t(column.i18n):column.title}}
                 </template>
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        Operation
+                        <inertia-link class="ant-btn">View</inertia-link>
+                        <inertia-link class="ant-btn">Edit</inertia-link>
+                    </template>
+                    <template v-else-if="column.dataIndex=='member'">
+                        <template v-if="record.member">
+                            Member:{{ record.member.member_number }}
+                        </template>
+                        <template v-else-if="record.participant">
+                            {{ record.participant }}
+                        </template>
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -35,19 +43,19 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['events','attendees'],
+    props: ['event','attendees'],
     data() {
         return {
             columns:[
                 {
-                    title: 'Comptition title',
-                    dataIndex: 'title_en',
+                    title: 'Display Name',
+                    dataIndex: 'display_name',
                 },{
-                    title: 'Start date',
-                    dataIndex: 'start_date',
+                    title: 'Attendance Status',
+                    dataIndex: 'status',
                 },{
-                    title: 'End date',
-                    dataIndex: 'end_date',
+                    title: 'Member',
+                    dataIndex: 'member',
                 },{
                     title: 'Operation',
                     dataIndex: 'operation',

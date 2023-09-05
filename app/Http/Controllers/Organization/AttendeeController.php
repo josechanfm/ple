@@ -15,22 +15,12 @@ class AttendeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($type, $id)
+    public function index(Event $event)
     {
-        $instance=null;
-        switch($type){
-            case 'event':
-                $instance=Event::find($id);
-                break;
-            case 'form':
-                $instance=Form::find($id);
-                break;
-        }
-        if(!$instance) return redirect()->route('/');
         return Inertia::render('Organization/Attendees',[
-            'attendees'=>$instance->members
+            'event'=>$event,
+            'attendees'=>$event->attendees()
         ]);
-        //$event->members()->sync([1,2,3,4]);
     }
     public function scan(){
         dd('attendees scan');

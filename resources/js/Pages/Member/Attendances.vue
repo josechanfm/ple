@@ -13,17 +13,17 @@
               <!-- <CheckSquareOutlined v-if="key=='attendances'" style="color:darkred"/> -->
               <CaretRightOutlined :rotate="isActive?90:0"/>
             </template>
-            <a-collapse-panel v-for="record in instance" :key="key" :header="record.title">
-                <p>Title: {{record.title}}</p>
+            <a-collapse-panel v-for="record in instance" :key="key" :header="record.title_en">
+                <p>Title: {{record.title_en}}</p>
                 <p>Start Date: {{record.start_date}}</p>
                 <p>End Date: {{record.end_date}}</p>
                 <p>Credit: {{record.credit}}</p>
                 <div v-html="record.description"/>
                 <template #extra>
-                    <inertia-link :href="route('member.attendees.scan', { type: 'event', id: record.id })" class="ant-btn">
+                    <inertia-link :href="route('member.event.attendees.scan', record.id)" class="ant-btn">
                         Scan
                     </inertia-link>
-                    <inertia-link :href="route('member.attendees.index', { type: 'event', id: record.id })" class="ant-btn">
+                    <inertia-link :href="route('member.event.attendees.index', record.id)" class="ant-btn">
                         Tick
                     </inertia-link>
                 </template>

@@ -27,8 +27,9 @@ class DashboardController extends Controller
             // $organizations=$member->organizations;
             //$member->organization;
             if($member->organizations->count()<=0){
-                dd("you don't belongs to any organization");
-                return redirect()->route('/');
+                return Inertia::render('Error',[
+                    'message'=>"You don't belongs to any organization"
+                ]);
             }
 
             $member->portfolios;

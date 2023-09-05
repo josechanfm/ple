@@ -13,83 +13,38 @@ use App\Models\Member;
 
 class AttendeeController extends Controller
 {
-    public function index($type, $id){
+    public function index(Event $event){
         if(!auth()->user()->hasPermissionTo('attendance')){
+            return Inertia::render('Error',[
+                'message'=>"You don't have permission for taking attendance."
+            ]);
             return redirect()->route('member.dashboard');
+
         }
         if(!session('organization')) return redirect()->route('/');
-        $instance=null;
-        switch($type){
-            case 'event':
-                $instance=Event::find($id);
-                break;
-            case 'form':
-                $instance=Form::find($id);
-                break;
-            case 'attendance':
-                $instance=Attendance::find($id);
-                break;
-        };
-        if(!$instance) return redirect()->route('/'); 
-        $members=array_column(session('organization')->members->toArray(),null,"id");
-        $participants=array_column($instance->participants->toArray(),null,'id');
-        $attendedMembers=array_column($instance->attendedMembers->toArray(),null,'id');
-        $attendedParticipants=array_column($instance->attendedParticipants->toArray(),null,'id');
-        $attendees=$instance->attendees;
-
-        // dd($members);
-        //dd($participants);
-        // dd($attendedParticipants);
-        //dd($attendedMembers);
-        foreach($members as $id=>$m){
-            $members[$id]['attended']=isset($attendedMembers[$id])?true:false;
-        };
-        foreach($participants as $id=>$participant){
-            $participants[$id]['attended']=isset($attendedParticipants[$id])?true:false;
-        };
-        foreach($attendees as $id=>$attendee){
-            $attendees[$id]['attended']=true;
-        };
-        foreach($attendedMembers as $id=>$a){
-            $attendedMembers[$id]['attended']=true;
-        }
-        // dd($participants);
-        //dd($members);
-        // dd($instance->attendedParticipants);
-        // dd($instance->attendedMembers);
-        //$instance->members()->sync([1,2,3,4]);
+        
+        if(!$event) return redirect()->route('/'); 
+        //$event=Event::find($id);
         return Inertia::render('Member/Attendees',[
-            'members'=>$members,
-            'participants'=>$participants,
-            'attendedMembers'=>$attendedMembers,
-            'attendedParticipants'=>$attendedParticipants,
-            'attendees'=>$attendees,
-            //'members'=>session('organization')->members,
-            //'participants'=>$instance->participants,
-            //'attendees'=>$instance->members,
-            'instance'=>$instance,
-            'type'=>$type
+            'event'=>$event,
+            'attendees'=>$event->attendees(),
         ]);
     }
-    public function scan($type,$id){
-        $instance=null;
-        switch($type){
-            case 'event':
-                $instance=Event::find($id);
-                break;
-            case 'form':
-                $instance=Form::find($id);
-                break;
-            case 'attendance':
-                $instance=Attendance::find($id);
-                break;
-        };
-        if(!$instance) return redirect()->route('/'); 
+    public function scan(Event $event){
+        if(!$event) return redirect()->route('/'); 
         return Inertia::render('Member/AttendeeScan',[
-            'type'=>$type,
-            'instance'=>$instance
+            'event'=>$event,
         ]);
+    
     }
+    public function update(Event $event, Request $request){
+        //return response()->json($request->all());
+        Attendee::upsert($request->all(),['display_name','status']);
+
+        
+        return redirect()->back();
+    }
+
     public function store(Request $request, $type, $id){
         $scanedData=$request->scan;
         $organizationId=$scanedData[0];

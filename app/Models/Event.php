@@ -24,18 +24,29 @@ class Event extends Model
         return $this->belongsToMany(Member::class,'event_manager','event_id','member_id');
     }
 
-    public function attendedMembers():MorphToMany{
+    public function members():MorphToMany{
         return $this->morphedByMany(Member::class,'attendee')->withPivot('status');
     }
-    public function attendedParticipants(){
+    public function participants(){
         return $this->morphedByMany(Participant::class,'attendee')->withPivot('status');
     }
-    public function participants(){
-        return $this->hasMany(Participant::class);
+    public function others(){
+        return $this->hasMany(Attendee::class)->where('attendee_type',null);
     }
     public function attendees(){
-        return $this->hasMany(Attendee::class);
-    }
+        $attendees=$this->hasMany(Attendee::class)->get();
+        foreach($attendees as $id=>$attendee){
+            
+            if($attendee->attendee_type){
+                $instance=$attendee->attendee_type::find($attendee->attendee_id)->first();
+                $attendee[strtolower(class_basename($instance))]=$instance;
+    
+            }
+        }
+        return $attendees;
 
+        //return $this->hasMany(Attendee::class);
+        //return $this->hasMany(Attendee::class)->with('member')->where('attendee_type','App\Models\Member');
+    }
 
 }

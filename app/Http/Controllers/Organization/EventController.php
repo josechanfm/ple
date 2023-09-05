@@ -61,10 +61,6 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        return Inertia::render('Organization/EventCheckin',[
-            'event'=>$event,
-            'members'=>Organization::find(session('organization')->id)->members
-        ]);
     }
 
     /**

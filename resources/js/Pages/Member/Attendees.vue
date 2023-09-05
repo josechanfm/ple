@@ -2,10 +2,9 @@
     <MemberLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{instance.title}}
+                {{event.title_en}}
             </h2>
         </template>
-        {{ attendedMembers }}
         <div class="container mx-auto pt-5">
             <div class="flex-auto h-10">
                 <a-radio-group v-model:value="status" button-style="solid">
@@ -18,25 +17,25 @@
             </div>
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                 <div class="pb-2">
-                    <inertia-link :href="route('member.attendees.scan',{type:this.type,id:instance.id})"  class="ant-btn ml-5">Scan</inertia-link>
+
                     <a-button @click="onClickConfirm" class="float-right mr-5">Confirm</a-button>
                 </div>
-
+<!-- 
                 <a-collapse v-model:activeKey="activeKey">
                     <a-collapse-panel key="1" header="Organization Members">
                         <ol>
                             <li v-for="member in members">
-                                <a-checkbox v-model:checked="member.attended" @click="onCheckMember(member)" />
+                                <a-checkbox v-model:checked="member.attended"/>
                                 {{ member.member_number }} - {{ member.display_name }}
                             </li>
                         </ol>
                     </a-collapse-panel>
-                </a-collapse>
+                </a-collapse> -->
                 <div>
                     <a-typography-title :level="5">Attended mebmers:</a-typography-title>
-                    <template v-for="attendee in attendedMembers">
-                        <a-checkbox v-model:checked="attendee.attended" @click="onChangeAttendee(attendee)" />
-                        {{ attendee.attendee_id }}-{{ attendee.display_name }} {{ attendee.pivot.status }}<br>
+                    <template v-for="attendee in attendees">
+                        <a-checkbox v-model:checked="attendee.attended" @change="onChangeAttendee(attendee)" />
+                        {{ attendee.attendee_id }}-{{ attendee.display_name }} {{ attendee.status }}<br>
                     </template>
                 </div>
             </div>
@@ -55,7 +54,7 @@ export default {
     components: {
         MemberLayout,
     },
-    props: ['members','participants','attendedMembers','attendedParticipants', 'attendees','instance','type'],
+    props: ['event','attendees'],
     data() {
         return {
             //attendedMembers: {},
@@ -63,7 +62,7 @@ export default {
             status:'ATTEND',
             columns: [
                 {
-                    title: 'Comptition title',
+                    title: 'Event title',
                     dataIndex: 'title_en',
                 }, {
                     title: 'Start date',
@@ -102,49 +101,27 @@ export default {
     created() {
     },
     mounted() {
-        //this.init();
+        this.init()
     },
     methods: {
         init(){
-            Object.values(this.attendees).forEach(attendee => {
-                attendee.attend=true
-                attendee.status=attendee.pivot.status
-                var member = Object.values(this.members).find((m) => m.id == attendee.id)
+            Object.values(this.attendees).forEach((attendee)=>{
+                attendee['attended']=attendee.status?true:false;
             })
         },
-        onCheckMember(member) {
-            // this.attendees[member.id]=member
-            var selected = Object.values(this.attendedMembers).find((a) => a.id == member.id)
-
-            if (selected != undefined) {
-                console.log(selected);
-                //selected.pivot={'status':this.status};
-                selected['attended'] = !member.attended
-            } else {
-                console.log(this.attendedMembers[member.id]);
-                //this.attendedMembers[member.id]['pivot']['status']=this.status;
-                this.attendedMembers[member.id]=member;
-                //this.attendedMembers.push(member)
-            }
-            //this.attendedMembers[member.id]['attend']=!member.attend;
-        },
-        onChangeAttendee(attendee) {
-            var selected=Object.values(this.members).find((m) => m.id == attendee.id)
-            attendee.pivot.status=attendee.attended?null:this.status
-            if(selected!==undefined){
-                selected.status = null
-                selected.attended = !attendee.attended
-            }
+        onChangeAttendee(attendee){
+            attendee.status=attendee.attended?this.status:null
+            console.log(attendee);
         },
         onClickConfirm(){
-            var data={}
-            var selected=Object.values(this.attendees).filter((a) => a.attend)
+            var data=[]
+
             Object.values(this.attendees).forEach((attendee)=>{
-                if(attendee.attend==true){
-                    data[attendee.id]={'status':attendee.status}
+                if(attendee.attended){
+                    data.push({'id':attendee.id,'event_id':attendee.event_id,'display_name':attendee.display_name,'status':attendee.status})
                 }
             })
-            this.$inertia.post(route('member.attendees.storeBatch',{type:this.type,id:this.instance.id}),{attendees:data},{
+            this.$inertia.put(route('member.event.attendees.update',this.event.id),data,{
                 onSuccess: (page) => {
                     console.log(page);
                     this.init();
