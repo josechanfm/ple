@@ -69,18 +69,6 @@
           <inertia-link :href="route('manage.articles.index')"> {{$t('articles')}} </inertia-link>
         </span>
       </a-menu-item>
-      <!--
-      <a-menu-item key="9">
-        <template #icon>
-          <NotificationOutlined />
-        </template>
-        <span>
-          <inertia-link :href="route('manage.bulletins.index')">
-            {{ $t("bulletin") }}
-          </inertia-link>
-        </span>
-      </a-menu-item>
-      -->
       <a-menu-item key="10">
         <template #icon>
           <MailOutlined />
