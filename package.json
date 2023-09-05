@@ -24,6 +24,7 @@
         "@ant-design/icons-vue": "^6.1.0",
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@inertiajs/progress": "^0.2.7",
+        "@vueup/vue-quill": "^1.2.0",
         "ant-design-vue": "^3.2.15",
         "laravel-vue-i18n": "^2.5.1",
         "qrcode-vue3": "^1.6.8",

@@ -6,9 +6,9 @@
             </h2>
         </template>
         <div class="flex-auto pb-3 text-right">
-            <a-button type="primary" class="!rounded" @click="createRecord()">Create Certificate</a-button>
+            <a-button type="primary" class="!rounded" @click="createRecord()">Add Member</a-button>
         </div>
-
+        
         <a-table :dataSource="certificate.members" :columns="columns">
             <template #headerCell="{ column }">
                 {{ column.i18n ? $t(column.i18n) : column.title }}
@@ -183,7 +183,7 @@ export default {
             };
             this.modal.member={}
             this.modal.mode = "CREATE";
-            this.modal.title = "Create new Certificate";
+            this.modal.title = "Add New Member";
             this.modal.isOpen = true;
         },
         editRecord(record) {

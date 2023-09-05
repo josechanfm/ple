@@ -18,7 +18,7 @@ class CertificateMemberController extends Controller
     public function index(Certificate $certificate)
     {
         $certificate->members;
-        return Inertia::render('Organization/CertificateStudents',[
+        return Inertia::render('Organization/CertificateMembers',[
             'certificate'=>$certificate,
             'members'=>session('organization')->members
         ]);

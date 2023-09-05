@@ -93,14 +93,14 @@
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { UploadOutlined } from '@ant-design/icons-vue';
 import Icon, { RestFilled } from '@ant-design/icons-vue';
-import { quillEditor } from 'vue3-quill';
+
+
 
 export default {
     components: {
         OrganizationLayout,
         UploadOutlined,
         RestFilled,
-        quillEditor,
     },
     props: ['organization', 'forms'],
     data() {
