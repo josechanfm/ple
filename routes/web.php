@@ -105,9 +105,6 @@ Route::middleware([
         Route::resource('articles',App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
         Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
         Route::resource('event/{event}/attendees',App\Http\Controllers\Organization\AttendeeController::class)->names('manage.event.attendees');
-        //Route::get('attendees/{type}/{id}',[App\Http\Controllers\Organization\AttendeeController::class,'index'])->name('manage.event.attendees.index');
-        //Route::get('attendees/{type}/{id}/scan',[App\Http\Controllers\Organization\AttendeeController::class,'scan'])->name('manage.event.attendees.scan');
-        //Route::patch('attendees/{type}/{id}/update',[App\Http\Controllers\Organization\AttendeeController::class,'update'])->name('manage.event.attendees.update');
         Route::resource('configs', App\Http\Controllers\Organization\ConfigController::class)->names('manage.configs');
     });
     Route::prefix('/admin')->group(function () {
