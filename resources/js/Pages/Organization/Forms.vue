@@ -80,10 +80,17 @@
                         v-model:file-list="modal.data.image" 
                         :multiple="false"  
                         :max-count=1 
-                        list-type="picture"
+                        list-type="picture-card"
                         :beforeUpload="beforeUpload"
+                        :show-upload-list="false"
+                        @change="uploadChange"
                         >
-                        <a-button><upload-outlined></upload-outlined>upload</a-button>
+                        <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+                            <div v-else>
+                                <loading-outlined v-if="loading"></loading-outlined>
+                                <plus-outlined v-else></plus-outlined>
+                                <div class="ant-upload-text">Upload</div>
+                            </div>
                     </a-upload>
                 </a-form-item>
             </a-form>
@@ -98,7 +105,7 @@
 
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
-import { UploadOutlined } from '@ant-design/icons-vue';
+import { UploadOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import Icon, { RestFilled } from '@ant-design/icons-vue';
 import { quillEditor, Quill } from 'vue3-quill';
 import { message } from 'ant-design-vue';
@@ -107,6 +114,8 @@ export default {
     components: {
         OrganizationLayout,
         UploadOutlined,
+        LoadingOutlined,
+        PlusOutlined,
         RestFilled,
         quillEditor,
         message
@@ -114,6 +123,8 @@ export default {
     props: ['organization', 'forms'],
     data() {
         return {
+            loading:false,
+            imageUrl:null,
             modal: {
                 isOpen: false,
                 data: {},
@@ -226,10 +237,32 @@ export default {
 
             });
         },
+        uploadChange(info){
+            if(!this.imageUrl){
+                this.modal.data.image=null
+            }
+        },
         beforeUpload(file){
-
-            file.fileList=[];
-            return false;
+            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+            if (!isJpgOrPng) {
+                message.error('You can only upload JPG file!');
+            }
+            const isLt2M = file.size / 1024 / 1024 < 0.2;
+            if (!isLt2M) {
+                message.error('Image must smaller than 2MB!');
+            }
+            if(isJpgOrPng && isLt2M){
+                this.getBase64(file, base64Url => {
+                    this.imageUrl = base64Url;
+                    this.loading = false;
+                });
+            }
+            return false
+        },
+        getBase64(img, callback) {
+            const reader = new FileReader();
+            reader.addEventListener('load', () => callback(reader.result));
+            reader.readAsDataURL(img);
         }
     },
 }

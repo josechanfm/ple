@@ -9,7 +9,7 @@
         <a-table 
             :dataSource="entries" 
             :columns="columns" 
-            :row-selection="rowSelection"
+            :row-selection="{onChange:onChangeSelection,selectedRowKeys:selectedItems}"
             :rowKey="record=>record.id"
         >
             <template #bodyCell="{column, text, record, index}">
@@ -51,6 +51,7 @@ export default {
     data() {
         return {
             rowSelection:{},
+            selectedItems:[],
             modal:{
                 isOpen:false,
                 data:{},
@@ -83,8 +84,14 @@ export default {
         }
     },
     methods: {
+        onChangeSelection(a,b){
+            this.selectedItems=a
+            console.log(a)
+            console.log(b)
+        },
         getSelectedRecord(){
-            console.log(this.entries);
+            //this.selectedItems=[]
+            console.log(this.selectedItems);
             console.log(this.rowSelection);
         },
         viewRecord(record){
