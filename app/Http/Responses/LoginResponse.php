@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
-use App\Models\Organization;
+use App\Models\Member;
+use Inertia\Inertia;
 
 class LoginResponse implements LoginResponseContract
 {
@@ -18,6 +19,13 @@ class LoginResponse implements LoginResponseContract
      */
     public function toResponse($request)
     {
+        $member= Member::where('user_id',auth()->user()->id)->with('guardian')->first();
+        if($member->organizations->count()<=0){
+            return Inertia::render('Error',[
+                'message'=>"You don't belongs to any organization"
+            ]);
+        };
+        session(['organization'=>$member->organizations[0]]);
         /*
         if(auth()->user()->guardian){
             session(['guardian'=>auth()->user()->guardian]);

@@ -186,5 +186,4 @@ export default {
 #pure-html *{
   all: revert;
 }
-
 </style>

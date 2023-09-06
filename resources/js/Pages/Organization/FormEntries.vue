@@ -1,11 +1,17 @@
 <template>
-    <OrganizationLayout title="Dashboard" :department="department">
+    <OrganizationLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Management Dashboard department
             </h2>
         </template>
-        <a-table :dataSource="entries" :columns="columns">
+        <a-button @click="getSelectedRecord">Show</a-button>
+        <a-table 
+            :dataSource="entries" 
+            :columns="columns" 
+            :row-selection="rowSelection"
+            :rowKey="record=>record.id"
+        >
             <template #bodyCell="{column, text, record, index}">
                 <template v-if="column.dataIndex=='operation'">
                     <a-button @click="viewRecord(record)">View</a-button>
@@ -44,13 +50,13 @@ export default {
     props: ['form','entries','columns'],
     data() {
         return {
+            rowSelection:{},
             modal:{
                 isOpen:false,
                 data:{},
                 title:"Modal",
                 mode:""
             },
-
             // columns:[
             //     {
             //         title: 'Number',
@@ -77,8 +83,11 @@ export default {
         }
     },
     methods: {
+        getSelectedRecord(){
+            console.log(this.entries);
+            console.log(this.rowSelection);
+        },
         viewRecord(record){
-            console.log(record);
             this.modal.data=record;
             this.modal.isOpen=true;
         },
@@ -107,7 +116,7 @@ export default {
             }
             return '';
         }
-
     },
+
 }
 </script>

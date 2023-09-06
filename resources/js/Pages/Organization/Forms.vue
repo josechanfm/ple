@@ -47,7 +47,7 @@
                 </a-form-item>
                 <a-form-item :label="$t('require_login')" name="require_login">
                     <a-switch v-model:checked="modal.data.require_login" :unCheckedValue="0" :checkedValue="1"
-                        @change="modal.data.for_member = '0'" />
+                        @change="modal.data.for_member = false" />
                     <span class="pl-3">{{ $t('require_login_note') }}</span>
                 </a-form-item>
                 <a-form-item :label="$t('for_member')" name="for_member" v-if="modal.data.require_login">
@@ -55,8 +55,13 @@
                     <span class="pl-3">{{ $t('for_member_note') }}</span>
                 </a-form-item>
                 <a-form-item :label="$t('published')" name="published">
-                    <a-switch v-model:checked="modal.data.published" :unCheckedValue="0" :checkedValue="1" />
+                    <a-switch v-model:checked="modal.data.published" :unCheckedValue="0" :checkedValue="1" 
+                        @change="modal.data.with_attendance = false" />
                     <span class="pl-3">{{ $t('published_note') }}</span>
+                </a-form-item>
+                <a-form-item :label="$t('with_attendance')" name="with_attendance"  v-if="modal.data.published">
+                    <a-switch v-model:checked="modal.data.with_attendance" :unCheckedValue="0" :checkedValue="1" />
+                    <span class="pl-3">{{ $t('with_attendance_note') }}</span>
                 </a-form-item>
                 <a-form-item :label="$t('banner_image')" name="cert_logo">
                     <div v-if="modal.data.media.length">
@@ -71,12 +76,14 @@
                         </inertia-link>
                         <img :src="'/media/form/' + modal.data.media[0].id + '/' + modal.data.media[0].file_name" width="100" />
                     </div>
-                    <a-upload v-model:file-list="modal.data.image" :multiple="false" :beforeUpload="() => false"
-                        :max-count="1" list-type="picture">
-                        <a-button>
-                            <upload-outlined></upload-outlined>
-                            upload
-                        </a-button>
+                    <a-upload 
+                        v-model:file-list="modal.data.image" 
+                        :multiple="false"  
+                        :max-count=1 
+                        list-type="picture"
+                        :beforeUpload="beforeUpload"
+                        >
+                        <a-button><upload-outlined></upload-outlined>upload</a-button>
                     </a-upload>
                 </a-form-item>
             </a-form>
@@ -93,14 +100,16 @@
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { UploadOutlined } from '@ant-design/icons-vue';
 import Icon, { RestFilled } from '@ant-design/icons-vue';
-
-
+import { quillEditor, Quill } from 'vue3-quill';
+import { message } from 'ant-design-vue';
 
 export default {
     components: {
         OrganizationLayout,
         UploadOutlined,
         RestFilled,
+        quillEditor,
+        message
     },
     props: ['organization', 'forms'],
     data() {
@@ -217,6 +226,11 @@ export default {
 
             });
         },
+        beforeUpload(file){
+
+            file.fileList=[];
+            return false;
+        }
     },
 }
 </script>

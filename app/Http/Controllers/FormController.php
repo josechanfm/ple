@@ -52,7 +52,19 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
+        
         $entry=new Entry();
+        if($request->form['for_member']){
+            $member=auth()->user()->member;
+            if(empty($member)){
+                return Inertia::render('Error',[
+                    'message'=>"This form is for member only."
+                ]);
+                return redirect()->back();
+    
+            }
+            $entry->member_id=$member->id;
+        }
         $entry->form_id=$request->form['id'];
         $entry->save();
         foreach($request->fields as $key=>$value){

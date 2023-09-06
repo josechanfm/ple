@@ -46,7 +46,10 @@ class Form extends Model implements HasMedia
         $fields=$this->in_column_fields;
         foreach($entries as $entry){
             foreach($fields as $field){
-                $entry['extra_'.$field->id]=$entry->records->where('form_field_id',$field->id)->first()->field_value;
+                $f=$entry->records->where('form_field_id',$field->id)->first();
+                if($f){
+                    $entry['extra_'.$field->id]=$f->field_value;
+                }
             }
         }
         return $entries;

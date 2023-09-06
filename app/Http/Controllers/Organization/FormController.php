@@ -121,8 +121,10 @@ class FormController extends Controller
         $form->require_login=$request->require_login;
         $form->for_member=$request->for_member;
         $form->published=$request->published;
+        $form->with_attendance=$request->with_attendance;
         $form->save();
         if($request->file('image')){
+            //dd($request->file('image')[0]['originFileObj']);
             $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
         }
         return redirect()->back();

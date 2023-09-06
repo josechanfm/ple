@@ -7,6 +7,9 @@
         </template>
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
+                <div id="pure-html">
+                    <div v-html="form.description"/>
+                </div>
 
                 <a-form
                     :model="formData"
@@ -199,4 +202,12 @@ export default {
 .ant-form-vertical .ant-form-item-label{
     padding:0px !important;
 }
+
+#pure-html {
+  all:initial
+}
+#pure-html *{
+  all: revert;
+}
+
 </style>

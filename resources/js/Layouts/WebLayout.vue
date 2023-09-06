@@ -66,7 +66,7 @@ const showingNavigationDropdown = ref(false);
                             <li><a href="https://ijf.org" target="_blank"
                                     class="text-gray-700 hover:text-indigo-600 text-md ">IJF</a></li>
                             <template v-if="$page.props.user.id">
-                                <li><a href="member" target="_blank"
+                                <li><a :href="route('member.dashboard')" target="_blank"
                                         class="text-gray-700 hover:text-indigo-600 text-md ">Dashboard</a></li>
                                 <li><a @click="logout">Log Out</a></li>
                             </template>

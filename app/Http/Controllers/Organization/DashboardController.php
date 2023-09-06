@@ -38,21 +38,19 @@ class DashboardController extends Controller
     }
 
     public function index(){
-        if(session('organization')==null){
-            $organizations=auth()->user()->organizations;
-            if($organizations->count()==0){
-                return redirect('/');
-            }else{
-                session(['organization'=>$organizations[0]]);
-            }
-        };
+        // if(session('organization')==null){
+        //     $organizations=auth()->user()->organizations;
+        //     if($organizations->count()==0){
+        //         return redirect('/');
+        //     }else{
+        //         session(['organization'=>$organizations[0]]);
+        //     }
+        // };
         $this->authorize('view',session('organization'));
-        if(session('organization')){
-            return Inertia::render('Organization/Dashboard',[
-                'organizations' => auth()->user()->organizations,
-                'member'=>auth()->user()->member
-            ]);
-        };
+        return Inertia::render('Organization/Dashboard',[
+            'organizations' => auth()->user()->organizations,
+            'member'=>auth()->user()->member
+        ]);
         //return redirect()->route('manage.list');
 
     }
