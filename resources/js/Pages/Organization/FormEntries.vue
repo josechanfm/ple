@@ -5,7 +5,14 @@
                 Management Dashboard department
             </h2>
         </template>
-        <a-button @click="getSelectedRecord">Show</a-button>
+        {{ columns }}
+        <a-select 
+            v-model:value="selectedDisplayName"
+            style="width: 120px;"
+            :options="columns"
+            :field-names="{value:'dataIndex',label:'title'}"
+        />
+        <a-button @click="createEventAttendees">Event Attendees</a-button>
         <a-table 
             :dataSource="entries" 
             :columns="columns" 
@@ -50,6 +57,7 @@ export default {
     props: ['form','entries','columns'],
     data() {
         return {
+            selectedDisplayName:null,
             rowSelection:{},
             selectedItems:[],
             modal:{
@@ -58,41 +66,35 @@ export default {
                 title:"Modal",
                 mode:""
             },
-            // columns:[
-            //     {
-            //         title: 'Number',
-            //         dataIndex: 'uid',
-            //     },{
-            //         title: 'Username',
-            //         dataIndex: 'username',
-            //     },{
-            //         title: 'Education',
-            //         dataIndex: 'education',
-            //     },{
-            //         title: 'For Member',
-            //         dataIndex: 'field',
-            //     },{
-            //         title: 'Published',
-            //         dataIndex: 'published',
-            //     },{
-            //         title: 'Action',
-            //         dataIndex: 'operation',
-            //         key: 'operation',
-            //     },
-            // ],
-
         }
     },
     methods: {
         onChangeSelection(a,b){
             this.selectedItems=a
-            console.log(a)
-            console.log(b)
         },
-        getSelectedRecord(){
-            //this.selectedItems=[]
-            console.log(this.selectedItems);
-            console.log(this.rowSelection);
+        createEventAttendees(){
+            console.log(this.selectedDisplayName)
+            console.log(this.selectedItems)
+            console.log(this.entries);
+            var data={};
+            this.entries.forEach(entry=>{
+                if(this.selectedItems.includes(entry.id)){
+                    if(entry[this.selectedDisplayName]){
+                        data[entry.id]={'display_name':entry[this.selectedDisplayName]}
+                    }
+                }
+            })
+            console.log(data);
+            this.$inertia.post(route('manage.form.createEventAttendees',this.form.id), data, {
+                onSuccess: (page) => {
+                    this.modal.isOpen = false;
+                    this.imageUrl = null;
+                },
+                onError: (err) => {
+                    console.log(err);
+                }
+            });
+
         },
         viewRecord(record){
             this.modal.data=record;
@@ -101,25 +103,7 @@ export default {
         getFieldValue(field){
             const fv=this.modal.data.records.find(r=>r.form_field_id==field.id);
             if(fv){
-                // if(field.type=='checkbox'){
-                //     var entry=JSON.parse(this.modal.data.fields.find(f=>f.form_field_id==field.id).field_value)
-
-                //     var list=[];
-                    
-                //     var options=JSON.parse(field.options);
-                //     console.log(options);
-                //     entry.forEach(f=>{
-                //         list.push(options.find(o=>o.value==f).label)
-                //         //list.push()
-                //     })
-                //     console.log(list);
-                    
-                //     return JSON.parse(fv.field_value,true);
-                // }else{
-                //     return fv.field_value;
-                // }
                 return fv.field_value
-                
             }
             return '';
         }

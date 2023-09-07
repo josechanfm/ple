@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class Event extends Model
 {
     use HasFactory;
-    protected $fillable=['organization_id','title_en','title_fn','category','credit','start_date','end_date','description','remark','with_attendance'];
+    protected $fillable=['organization_id','title_en','title_fn','category_code','credit','start_date','end_date','description','remark','with_attendance'];
     protected $attributes=[
         'title_en'=>'',
-        'category'=>'',
+        'category_code'=>'',
         'credit'=>'',
         'start_date'=>'',
     ];
@@ -30,13 +30,15 @@ class Event extends Model
     public function participants(){
         return $this->morphedByMany(Participant::class,'attendee')->withPivot('status');
     }
+    public function entries(){
+        return $this->morphedByMany(Entry::class,'attendee')->withPivot('status');
+    }
     public function others(){
         return $this->hasMany(Attendee::class)->where('attendee_type',null);
     }
     public function attendees(){
         $attendees=$this->hasMany(Attendee::class)->get();
         foreach($attendees as $id=>$attendee){
-            
             if($attendee->attendee_type){
                 $instance=$attendee->attendee_type::find($attendee->attendee_id)->first();
                 $attendee[strtolower(class_basename($instance))]=$instance;

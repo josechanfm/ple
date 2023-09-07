@@ -6,7 +6,7 @@
             </h2>
         </template>
             <div class="flex-auto pb-3 text-right">
-                <inertia-link class="ant-btn ant-btn-primary">Add attendees</inertia-link>
+                <a-button  @click="addAttendees">Add attendees</a-button>
             </div>
             <a-table :dataSource="attendees" :columns="columns">
                 <template #headerCell="{column}">
@@ -31,6 +31,33 @@
                 </template>
             </a-table>
 
+                    <!-- Modal Start-->
+        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+            <a-transfer
+                v-model:target-keys="targetKeys"
+                v-model:selected-keys="selectedKeys"
+                :data-source="members.map(m=>({key:m.id.toString(),title:m.display_name}))"
+                show-search
+                :list-style="{width:'250px',height:'300px'}"
+                :operations="['','']"
+                :titles="['Members','Attendees']"
+                :render="item => `${item.key}-${item.title}`"
+                @change="handleChange"
+            />
+            <a-button @click="onClickShowSelected">Add Members as attendees</a-button>
+            <ol>
+                <li v-for="name in inputNameList">{{ name }}</li>
+            </ol>
+            <a-input v-model:value="inputName"/>
+            <a-button @click="addInputName">Add</a-button>
+            <a-button @click="storeInputNameList">Add</a-button>
+            <template #footer>
+                <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
+                <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary" @click="storeRecord()">Add</a-button>
+            </template>
+        </a-modal>
+        <!-- Modal End-->
+
     </OrganizationLayout>
 
 </template>
@@ -43,9 +70,17 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['event','attendees'],
+    props: ['event','attendees','members'],
     data() {
         return {
+            targetKeys:[],
+            selectedKeys:[],
+            inputName:null,
+            inputNameList:[],
+            modal: {
+                isOpen: false,
+                title: "Modal",
+            },
             columns:[
                 {
                     title: 'Display Name',
@@ -87,6 +122,50 @@ export default {
     created(){
     },
     methods: {
+        addAttendees(){
+            this.modal.title="Add Attendees"
+            this.modal.isOpen=true
+        },
+        onClickShowSelected(){
+            var data={}
+            this.members.forEach(m=>{
+                console.log(m);
+                if(this.targetKeys.includes(m.id.toString())){
+                    data[m.id]={"display_name":m.display_name}
+                }
+            })
+            this.$inertia.post(route('manage.event.attendees.store',this.event.id), {model:'member',data:data}, {
+                onSuccess: (page) => {
+                    this.modal.data = {};
+                    this.modal.isOpen = false;
+                },
+                onError: (err) => {
+                    console.log(err);
+                }
+            });
+
+        },
+        addInputName(){
+            this.inputNameList.push({display_name:this.inputName})
+            this.inputName=null
+        },
+        storeInputNameList(){
+            console.log(this.inputNameList);
+            this.$inertia.post(route('manage.event.attendees.store',this.event.id), {model:'other',data:this.inputNameList}, {
+                onSuccess: (page) => {
+                    this.modal.data = {};
+                    this.modal.isOpen = false;
+                },
+                onError: (err) => {
+                    console.log(err);
+                }
+            });
+           
+        },
+        handleChange(keys,direction,moveKeys){
+            console.log(keys,direction,moveKeys);
+        },
+
     },
 }
 </script>

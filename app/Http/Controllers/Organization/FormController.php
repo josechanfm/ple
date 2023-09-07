@@ -7,6 +7,8 @@ use App\Models\Organization;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
+use App\Models\Event;
+use App\Models\Attendees;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class FormController extends Controller
@@ -123,9 +125,12 @@ class FormController extends Controller
         $form->published=$request->published;
         $form->with_attendance=$request->with_attendance;
         $form->save();
+        //dd($request->file('image'));
         if($request->file('image')){
-            //dd($request->file('image')[0]['originFileObj']);
-            $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
+            //dd($request->file('image')[0]['originFileObj']->originalName);
+            
+                $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
+            
         }
         return redirect()->back();
     }
@@ -148,5 +153,20 @@ class FormController extends Controller
 
     public function deleteMedia(Media $media){
         $media->delete();
+    }
+
+    public function createEventAttendees(Request $request, Form $form){
+        $event=new Event();
+        $event->organization_id=$form->organization_id;
+        $event->category_code='FORM';
+        $event->title_en=$form->title;
+        $event->credit=0;
+        $event->start_date=null;
+        $event->end_date=null;
+        $event->form_id=$form->id;
+        $event->with_attendance=true;
+        $event->save();
+        $event->entries()->attach($request->all());      
+        return redirect()->back();
     }
 }

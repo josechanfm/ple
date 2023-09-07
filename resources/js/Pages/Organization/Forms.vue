@@ -10,7 +10,6 @@
         </div>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-
                 <a-table :dataSource="forms" :columns="columns">
                     <template #headerCell="{ column }">
                         {{ column.i18n ? $t(column.i18n) : column.title }}
@@ -76,22 +75,24 @@
                         </inertia-link>
                         <img :src="'/media/form/' + modal.data.media[0].id + '/' + modal.data.media[0].file_name" width="100" />
                     </div>
-                    <a-upload 
-                        v-model:file-list="modal.data.image" 
-                        :multiple="false"  
-                        :max-count=1 
-                        list-type="picture-card"
-                        :beforeUpload="beforeUpload"
-                        :show-upload-list="false"
-                        @change="uploadChange"
-                        >
-                        <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-                            <div v-else>
-                                <loading-outlined v-if="loading"></loading-outlined>
-                                <plus-outlined v-else></plus-outlined>
-                                <div class="ant-upload-text">Upload</div>
-                            </div>
-                    </a-upload>
+                    <div v-else>
+                        <a-upload 
+                            v-model:file-list="modal.data.image" 
+                            :multiple="false"  
+                            :max-count=1 
+                            list-type="picture-card"
+                            :beforeUpload="()=>{return false}"
+                            :show-upload-list="false"
+                            @change="uploadChange"
+                            >
+                            <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+                                <div v-else>
+                                    <loading-outlined v-if="loading"></loading-outlined>
+                                    <plus-outlined v-else></plus-outlined>
+                                    <div class="ant-upload-text">Upload</div>
+                                </div>
+                        </a-upload>
+                    </div>
                 </a-form-item>
             </a-form>
             <template #footer>
@@ -105,7 +106,7 @@
 
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
-import { UploadOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { UploadOutlined, LoadingOutlined, PlusOutlined, InfoCircleFilled } from '@ant-design/icons-vue';
 import Icon, { RestFilled } from '@ant-design/icons-vue';
 import { quillEditor, Quill } from 'vue3-quill';
 import { message } from 'ant-design-vue';
@@ -189,8 +190,8 @@ export default {
             this.modal.isOpen = true;
         },
         editRecord(record) {
-            console.log(record);
             this.modal.data = { ...record };
+            this.imageUrl = null;
             this.modal.mode = "EDIT";
             this.modal.title = "Edit Form";
             this.modal.isOpen = true;
@@ -200,6 +201,7 @@ export default {
                 this.$inertia.post(route('manage.forms.store'), this.modal.data, {
                     onSuccess: (page) => {
                         this.modal.isOpen = false;
+                        this.imageUrl = null;
                     },
                     onError: (err) => {
                         console.log(err);
@@ -238,26 +240,24 @@ export default {
             });
         },
         uploadChange(info){
-            if(!this.imageUrl){
-                this.modal.data.image=null
-            }
-        },
-        beforeUpload(file){
-            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+            const isJpgOrPng = info.file.type === 'image/jpeg' || info.file.type === 'image/png';
             if (!isJpgOrPng) {
                 message.error('You can only upload JPG file!');
             }
-            const isLt2M = file.size / 1024 / 1024 < 0.2;
+            const isLt2M = info.file.size / 1024 / 1024 < 0.2;
             if (!isLt2M) {
                 message.error('Image must smaller than 2MB!');
             }
+
             if(isJpgOrPng && isLt2M){
-                this.getBase64(file, base64Url => {
+                this.getBase64(info.file, base64Url => {
                     this.imageUrl = base64Url;
-                    this.loading = false;
+                    this.loading = true;
                 });
+            }else{
+                this.modal.data.image=[]
             }
-            return false
+
         },
         getBase64(img, callback) {
             const reader = new FileReader();
