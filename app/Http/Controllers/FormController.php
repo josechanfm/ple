@@ -23,10 +23,10 @@ class FormController extends Controller
             if(auth()->user()->member){
                 $orgIds=auth()->user()->member->organizations->pluck('id')->toArray();
                 $memberForms=Form::whereIn('organization_id',$orgIds)->where('published',1)->where('require_login',1)->get();
-                $forms->merge($memberForms);
+                $forms=$forms->merge($memberForms);
             }
             $organizationForms=Form::where('published',1)->where('require_login',0)->get();
-            $forms->merge($organizationForms);
+            $forms=$forms->merge($organizationForms);
         }
         return Inertia::render('Form/Form',[
             'forms'=>$forms
