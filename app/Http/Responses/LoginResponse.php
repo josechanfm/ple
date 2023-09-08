@@ -20,6 +20,9 @@ class LoginResponse implements LoginResponseContract
     public function toResponse($request)
     {
         $member= Member::where('user_id',auth()->user()->id)->with('guardian')->first();
+        if(empty($member)){
+            return redirect()->route('/');
+        }
         if($member->organizations->count()<=0){
             return Inertia::render('Error',[
                 'message'=>"You don't belongs to any organization"
