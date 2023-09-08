@@ -14,8 +14,7 @@
                 </template>
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <inertia-link class="ant-btn">View</inertia-link>
-                        <inertia-link class="ant-btn">Edit</inertia-link>
+                        <a-button @click="deleteAttendee(record)">delete</a-button>
                     </template>
                     <template v-else-if="column.dataIndex=='member'">
                         <template v-if="record.member">
@@ -25,6 +24,21 @@
                             {{ record.participant }}
                         </template>
                     </template>
+                    <template v-else-if="column.dataIndex=='display_name'">
+                        <div class="editable-cell">
+                            <div v-if="editableData[record.id]"  class="editable-cell-input-wrapper">
+                                <a-input v-model:value="editableData[record.id].display_name" @pressEnter="save(record.key)" />
+                                <check-outlined class="editable-cell-icon-check" @click="saveAttendee(record)" />
+                            </div>
+                            <div v-else class="editable-cell-text-wrapper">
+                                {{ text || ' ' }}
+                                <edit-outlined class="editable-cell-icon" @click="editAttendee(record)" />
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else-if="column.dataIndex=='status'">
+                        <a-select v-model:value="record.status" :options="attendance_status" style="width:100px" @change="updateAttendeeAttendance(record)"></a-select>
+                    </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
                     </template>
@@ -33,24 +47,47 @@
 
                     <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
-            <a-transfer
-                v-model:target-keys="targetKeys"
-                v-model:selected-keys="selectedKeys"
-                :data-source="members.map(m=>({key:m.id.toString(),title:m.display_name}))"
-                show-search
-                :list-style="{width:'250px',height:'300px'}"
-                :operations="['','']"
-                :titles="['Members','Attendees']"
-                :render="item => `${item.key}-${item.title}`"
-                @change="handleChange"
-            />
-            <a-button @click="onClickShowSelected">Add Members as attendees</a-button>
-            <ol>
-                <li v-for="name in inputNameList">{{ name }}</li>
-            </ol>
-            <a-input v-model:value="inputName"/>
-            <a-button @click="addInputName">Add</a-button>
-            <a-button @click="storeInputNameList">Add</a-button>
+            <a-collapse  v-model:activeKey="activeKey" accordion>
+                <a-collapse-panel key="1" header="Select Members to attendee list">
+                    <a-transfer
+                        v-model:target-keys="targetKeys"
+                        v-model:selected-keys="selectedKeys"
+                        :data-source="members.map(m=>({key:m.id.toString(),title:m.display_name}))"
+                        show-search
+                        :list-style="{width:'250px',height:'300px'}"
+                        :operations="['','']"
+                        :titles="['Members','Attendees']"
+                        :render="item => `${item.key}-${item.title}`"
+                        @change="handleChange"
+                    />
+                    <a-button @click="onClickShowSelected">Add Members as attendees</a-button>
+                </a-collapse-panel>
+                <a-collapse-panel key="2" header="Input Non-member to attendee list">
+                    <ol class="list-disc ml-5">
+                        <li v-for="(name,id) in inputNameList">
+                            {{ name.display_name }}
+                            <span class="float-right text-red-300" @click="deleteFromInputNameList(id)"><DeleteOutlined /></span>
+                        </li>
+                    </ol>
+                    <a-form-item :label="$t('attendee_name')" name="attendeeName">
+                        <a-input v-model:value="inputName"/>
+                    </a-form-item>
+                    <a-button @click="addInputName">Add</a-button>
+                    <a-button @click="storeInputNameList" class="float-right">Save</a-button>
+                </a-collapse-panel>
+                <a-collapse-panel key="3" header="Batch input non-member to attendee list">
+                    <ol class="list-disc ml-5">
+                        <li v-for="name in inputNameList">
+                            {{ name.display_name }}
+                            <span class="float-right text-red-300" @click="deleteFromInputNameList(id)"><DeleteOutlined /></span>
+                        </li>
+                    </ol>
+                    <label>{{ $t('attendee_name') }}</label>
+                    <a-textarea v-model:value="batchInputNames" :rows="10"></a-textarea>
+                    <a-button @click="addBatchInputNames">Add</a-button>
+                    <a-button @click="storeInputNameList" class="float-right">Save</a-button>
+                </a-collapse-panel>
+            </a-collapse>
             <template #footer>
                 <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
                 <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary" @click="storeRecord()">Add</a-button>
@@ -65,18 +102,26 @@
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { defineComponent, reactive } from 'vue';
+import { DeleteOutlined,CheckOutlined,EditOutlined } from '@ant-design/icons-vue';
 
 export default {
     components: {
         OrganizationLayout,
+        DeleteOutlined,
+        CheckOutlined,
+        EditOutlined
     },
-    props: ['event','attendees','members'],
+    props: ['event','attendees','members','attendance_status'],
     data() {
         return {
+            editableData:{},
+            activeKey:['1'],
             targetKeys:[],
             selectedKeys:[],
             inputName:null,
             inputNameList:[],
+            batchInputNames:null,
+            batchInputNameList:[],
             modal: {
                 isOpen: false,
                 title: "Modal",
@@ -120,6 +165,11 @@ export default {
         }
     },
     created(){
+        Object.values(this.attendees).forEach((attendee)=>{
+            if(attendee.attendee_type=='App\\Models\\Member'){
+                this.targetKeys.push(attendee.attendee_id.toString())
+            }
+        })
     },
     methods: {
         addAttendees(){
@@ -129,7 +179,6 @@ export default {
         onClickShowSelected(){
             var data={}
             this.members.forEach(m=>{
-                console.log(m);
                 if(this.targetKeys.includes(m.id.toString())){
                     data[m.id]={"display_name":m.display_name}
                 }
@@ -150,17 +199,54 @@ export default {
             this.inputName=null
         },
         storeInputNameList(){
-            console.log(this.inputNameList);
             this.$inertia.post(route('manage.event.attendees.store',this.event.id), {model:'other',data:this.inputNameList}, {
                 onSuccess: (page) => {
-                    this.modal.data = {};
-                    this.modal.isOpen = false;
+                    this.modal.data = {}
+                    this.modal.isOpen = false
+                    this.inputNameList=[]
                 },
                 onError: (err) => {
                     console.log(err);
                 }
             });
-           
+        },
+        addBatchInputNames(){
+          var items = this.batchInputNames.split(/[',|;|\r|\n']/).filter(i => i !== '')
+          items.forEach(i=>{
+            this.inputNameList.push({'display_name':i})
+          })
+          this.batchInputNames=null
+        },
+        deleteFromInputNameList(id){
+            this.inputNameList.splice(id,1)
+        },  
+        deleteAttendee(attendee){
+            this.$inertia.delete(route('manage.event.attendees.destroy',{event:this.event.id,attendee:attendee.id}),{
+                onSuccess: (page) => {
+                    console.log('attendee removed!');
+                },
+                onError: (err) => {
+                    console.log(err);
+                }
+            });
+        },
+        editAttendee(attendee){
+            this.editableData[attendee.id]=attendee
+        },
+        saveAttendee(attendee){
+            this.$inertia.patch(route('manage.event.attendees.update',{event:this.event.id,attendee:attendee.id}),attendee,{
+                onSuccess: (page) => {
+                    console.log('attendee name updated!');
+                },
+                onError: (err) => {
+                    console.log(err);
+                }
+            });
+            delete this.editableData[attendee.id]
+        },
+        updateAttendeeAttendance(attendee){
+            console.log(attendee)
+            this.saveAttendee(attendee)
         },
         handleChange(keys,direction,moveKeys){
             console.log(keys,direction,moveKeys);
@@ -169,3 +255,46 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.editable-cell {
+  position: relative;
+  .editable-cell-input-wrapper,
+  .editable-cell-text-wrapper {
+    padding-right: 24px;
+  }
+
+  .editable-cell-text-wrapper {
+    padding: 5px 24px 5px 5px;
+  }
+
+  .editable-cell-icon,
+  .editable-cell-icon-check {
+    position: absolute;
+    right: 0;
+    width: 20px;
+    cursor: pointer;
+  }
+
+  .editable-cell-icon {
+    margin-top: 4px;
+    display: none;
+  }
+
+  .editable-cell-icon-check {
+    line-height: 28px;
+  }
+
+  .editable-cell-icon:hover,
+  .editable-cell-icon-check:hover {
+    color: #108ee9;
+  }
+
+  .editable-add-btn {
+    margin-bottom: 8px;
+  }
+}
+.editable-cell:hover .editable-cell-icon {
+  display: inline-block;
+}
+</style>

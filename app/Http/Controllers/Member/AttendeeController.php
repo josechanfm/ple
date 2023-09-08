@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Config;
 use App\Models\Event;
 use App\Models\Form;
 use App\Models\Attendance;
@@ -28,12 +29,14 @@ class AttendeeController extends Controller
         return Inertia::render('Member/Attendees',[
             'event'=>$event,
             'attendees'=>$event->attendees(),
+            'attendance_status'=>Config::item('attendance_status')
         ]);
     }
     public function scan(Event $event){
         if(!$event) return redirect()->route('/'); 
         return Inertia::render('Member/AttendeeScan',[
             'event'=>$event,
+            'attendance_status'=>Config::item('attendance_status')
         ]);
     
     }

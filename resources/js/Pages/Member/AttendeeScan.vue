@@ -7,10 +7,9 @@
         </template>
         <div class="p-3">
             <a-radio-group v-model:value="status" button-style="solid">
-                <a-radio-button value="ATTEND">Attend</a-radio-button>
-                <a-radio-button value="LATE">Late</a-radio-button>
-                <a-radio-button value="EXCUSED">Excused</a-radio-button>
-                <a-radio-button value="VACATION">Vacation</a-radio-button>
+              <template v-for="status in attendance_status">
+                    <a-radio-button :value="status.value">{{ status.label }}</a-radio-button>
+                </template>
             </a-radio-group>
             <a href="#" onclick="history.back();return false;" class="ant-btn float-right">Go Back</a>
             <div class="error">{{ error }}</div>
@@ -37,7 +36,7 @@ export default {
         QrcodeDropZone,
         QrcodeCapture
     },
-    props: ['event','type','instance'],
+    props: ['event','attendance_status'],
     data() {
         return {
             status:'ATTEND',

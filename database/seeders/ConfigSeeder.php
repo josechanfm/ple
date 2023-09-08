@@ -230,6 +230,22 @@ class ConfigSeeder extends Seeder
                 "label": "Other"
             }]',
         ]);
-        
+        DB::table('configs')->insert([
+            'organization_id'=>0,
+            'key'=>'attendance_status',
+            'value'=>'[{
+                    "value": "ATTEND",
+                    "label": "Attend"
+                }, {
+                    "value": "LATE",
+                    "label": "Late"
+                }, {
+                    "value": "EXCUSE",
+                    "label": "Excuse"
+                }, {
+                    "value": "ABSENT",
+                    "label": "Absent"
+            }]'
+        ]);
     }
 }

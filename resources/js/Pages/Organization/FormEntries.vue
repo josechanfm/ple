@@ -5,14 +5,14 @@
                 Management Dashboard department
             </h2>
         </template>
-        {{ columns }}
+        {{ selectedDisplayName }}
         <a-select 
             v-model:value="selectedDisplayName"
             style="width: 120px;"
-            :options="columns"
+            :options="columns.filter(c=> c.dataIndex.substring(0,6)=='extra_')"
             :field-names="{value:'dataIndex',label:'title'}"
         />
-        <a-button @click="createEventAttendees">Event Attendees</a-button>
+        <a-button @click="createEventAttendees" :disabled="!selectedDisplayName">Event Attendees</a-button>
         <a-table 
             :dataSource="entries" 
             :columns="columns" 
@@ -73,9 +73,6 @@ export default {
             this.selectedItems=a
         },
         createEventAttendees(){
-            console.log(this.selectedDisplayName)
-            console.log(this.selectedItems)
-            console.log(this.entries);
             var data={};
             this.entries.forEach(entry=>{
                 if(this.selectedItems.includes(entry.id)){
@@ -84,11 +81,11 @@ export default {
                     }
                 }
             })
-            console.log(data);
             this.$inertia.post(route('manage.form.createEventAttendees',this.form.id), data, {
                 onSuccess: (page) => {
                     this.modal.isOpen = false;
                     this.imageUrl = null;
+                    console.log('created');
                 },
                 onError: (err) => {
                     console.log(err);

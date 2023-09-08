@@ -8,12 +8,11 @@
         <div class="container mx-auto pt-5">
             <div class="flex-auto h-10">
                 <a-radio-group v-model:value="status" button-style="solid">
-                        <a-radio-button value="ATTEND">Attend</a-radio-button>
-                        <a-radio-button value="LATE">Late</a-radio-button>
-                        <a-radio-button value="EXCUSED">Excused</a-radio-button>
-                        <a-radio-button value="VACATION">Vacation</a-radio-button>
-                    </a-radio-group>
-                    <a href="#" onclick="history.back();return false;" class="ant-btn float-right">Go Back</a>
+                    <template v-for="status in attendance_status">
+                        <a-radio-button :value="status.value">{{ status.label }}</a-radio-button>
+                    </template>
+                </a-radio-group>
+                <a href="#" onclick="history.back();return false;" class="ant-btn float-right">Go Back</a>
             </div>
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                 <div class="pb-2">
@@ -54,7 +53,7 @@ export default {
     components: {
         MemberLayout,
     },
-    props: ['event','attendees'],
+    props: ['event','attendees','attendance_status'],
     data() {
         return {
             //attendedMembers: {},

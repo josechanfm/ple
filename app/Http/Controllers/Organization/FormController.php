@@ -156,7 +156,10 @@ class FormController extends Controller
     }
 
     public function createEventAttendees(Request $request, Form $form){
-        $event=new Event();
+        $event=Event::where('form_id',$form->id)->first();
+        if(empty($event)){
+            $event=new Event();
+        }
         $event->organization_id=$form->organization_id;
         $event->category_code='FORM';
         $event->title_en=$form->title;
@@ -166,7 +169,7 @@ class FormController extends Controller
         $event->form_id=$form->id;
         $event->with_attendance=true;
         $event->save();
-        $event->entries()->attach($request->all());      
+        $event->entries()->syncWithoutDetaching($request->all());      
         return redirect()->back();
     }
 }
