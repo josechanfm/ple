@@ -7,6 +7,29 @@
         </template>
         <button @click="createRecord()"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create field</button>
+            <div class="ant-table">
+                <div class="ant-table-container">
+                    <table class="ant-table-layout" component='VueDraggableNext' animation="500" force-fallback="true" width="100%">
+                        <thead class="ant-table-thead">
+                            <tr>
+                                <th v-for="column in columns">{{ column.title }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <draggable tag="tbody" class="dragArea list-group w-full" :list="columns" @change="rowChange">
+                                <transition-group v-for="(record, idx) in columns" :key="record.id">
+                                    <tr class="ant-table-row ant-table-row-level-0">
+                                        <td v-for="column in columns" class="ant-table-cell">
+                                            aa
+                                        </td>
+                                    </tr>
+                                </transition-group>
+                            </draggable>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <p></p>
             <a-table :dataSource="fields" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
@@ -91,10 +114,12 @@
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { defineComponent, reactive } from 'vue';
+import { VueDraggableNext } from 'vue-draggable-next'
 
 export default {
     components: {
         OrganizationLayout,
+        VueDraggableNext
     },
     props: ['department','form','fields'],
     data() {

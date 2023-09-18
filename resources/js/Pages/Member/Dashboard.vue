@@ -14,6 +14,30 @@ export default {
     return {
       qrcode: '',
       interval: 0,
+      features:[
+        {
+          image:"https://dummyimage.com/300x5:3",
+          title:"Forms",
+          description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
+          tags:['#hashtag','#hashtag','#hashtag']
+        },{
+          image:"https://dummyimage.com/300x5:3",
+          title:"Competitions",
+          description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
+          tags:['#hashtag','#hashtag','#hashtag']
+        },{
+          image:"https://dummyimage.com/300x5:3",
+          title:"Events",
+          description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
+          tags:['#hashtag','#hashtag','#hashtag']
+        },{
+          image:"https://dummyimage.com/300x5:3",
+          title:"Other",
+          description:"Other descriptions",
+          tags:['#hashtag','#hashtag','#hashtag']
+        }
+
+      ],
       data: [
         {
           title: "News",
@@ -75,70 +99,39 @@ export default {
         Membership
       </h2>
     </template>
+
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
+
+          
           <!-- Feature Section -->
           <div class="container mx-auto pt-5">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="w-full bg-white overflow-hidden shadow-xl sm:rounded-lg">
+              <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+                <template v-for="feature in features">
+                  <div class="gutter-row lg:w-48 px-2">
+                    <div class="max-w rounded overflow-hidden shadow-lg">
+                      <img class="w-full" alt="Use any sample image here..." :src="feature.image">
+                      <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">{{ feature.title }}</div>
+                        <p class="text-gray-700 text-base pl-3">
+                          {{ feature.description }}
+                        <ol class="list-disc">
+                          <li v-for="form in $page.props.current_organization.forms">
+                            <inertia-link :href="route('forms.show', form.id)">{{ form.title }}</inertia-link>
+                          </li>
+                        </ol>
+                        </p>
+                      </div>
+                      <div class="px-6 py-4">
+                        <span v-for="tag in feature.tags" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{{ tag }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </template>
 
-              <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 32 }">
-                <a-col class="gutter-row" :span="8">
-                  <div class="max-w-lg rounded overflow-hidden shadow-lg">
-                    <img class="w-full" alt="Use any sample image here..." src="https://dummyimage.com/300x5:3">
-                    <div class="px-6 py-4">
-                      <div class="font-bold text-xl mb-2">Forms</div>
-                      <p class="text-gray-700 text-base pl-3">
-                      <ol class="list-disc">
-                        <li v-for="form in $page.props.current_organization.forms">
-                          <inertia-link :href="route('forms.show', form.id)">{{ form.title }}</inertia-link>
-                        </li>
-                      </ol>
-                      </p>
-                    </div>
-                    <div class="px-6 py-4">
-                      <span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#hashtag</span>
-                    </div>
-                  </div>
-                </a-col>
-                <a-col class="gutter-row" :span="8">
-                  <div class="max-w-lg rounded overflow-hidden shadow-lg">
-                    <img class="w-full" alt="Use any sample image here..." src="https://dummyimage.com/300x5:3">
-                    <div class="px-6 py-4">
-                      <div class="font-bold text-xl mb-2">Competitions</div>
-                      <p class="text-gray-700 text-base">
-                        Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit. Sed recusandae libero possimus culpa quod </p>
-                    </div>
-                    <div class="px-6 py-4"><span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#hashtag</span>
-                    </div>
-                  </div>
-                </a-col>
-                <a-col class="gutter-row" :span="8">
-                  <div class="max-w-lg rounded overflow-hidden shadow-lg">
-                    <img class="w-full" alt="Use any sample image here..." src="https://dummyimage.com/300x5:3">
-                    <div class="px-6 py-4">
-                      <div class="font-bold text-xl mb-2">Events</div>
-                      <p class="text-gray-700 text-base">
-                        {{ member.events }}
-                        Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit. Sed recusandae libero possimus culpa quod.
-                      </p>
-                    </div>
-                    <div class="px-6 py-4"><span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#hashtag</span><span
-                        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#hashtag</span>
-                    </div>
-                  </div>
-                </a-col>
-              </a-row>
+              </div>
             </div>
           </div>
           <!-- Feature Section end-->
@@ -197,8 +190,8 @@ export default {
               </div>
               <!-- card start -->
               <div class="mx-auto relative py-4 w-96 hover:scale-105 transform transition-transform mb-4">
-                <div class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 shadow-xl text-sm w-full"
-                  :class="card_style['font']" @click="onShowQrcode">
+                <div  :class="card_style['font']" class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 shadow-xl text-sm w-full"
+                  @click="onShowQrcode">
                   <div class="flex flex-col w-xl">
                     <div class="flex justify-center">
                       <div class="text-lg font-bold">{{ $page.props.current_organization.full_name }}</div>
