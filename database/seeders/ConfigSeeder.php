@@ -249,7 +249,7 @@ class ConfigSeeder extends Seeder
         ]);
         DB::table('configs')->insert([
             'organization_id'=>0,
-            'key'=>'attendance_status',
+            'key'=>'card_style',
             'value'=>'{
                     "card_01": {
                         "card_name": "card_01.png",

@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('registration_code')->nullable();
             $table->string('president')->nullable();
             $table->string('status')->nullable();
+            $table->string('card_style')->nullable();
             $table->timestamps();
       
         });

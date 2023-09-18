@@ -76,7 +76,8 @@ class OrganizationSeeder extends Seeder
                 'address'=>$org['address'],
                 'href'=>$org['web'],
                 'email'=>$org['email'],
-                'president'=>$org['president']
+                'president'=>$org['president'],
+                'card_style'=>'card_01'
             ]);
         }
         DB::table('organizations')->where('id',22)->update([
