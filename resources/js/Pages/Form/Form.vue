@@ -22,29 +22,6 @@
             </div>
         </div>
 
-
-        <a-steps :current="currentStep">
-            <a-step>
-            <!-- <span slot="title">Finished</span> -->
-            <template #title>Finished</template>
-            <template #description>
-                <span>This is a description.</span>
-            </template>
-            </a-step>
-            <a-step title="In Progress" sub-title="Left 00:00:08" description="This is a description." />
-            <a-step title="Waiting" description="This is a description." />
-        </a-steps>
-        <div v-if="currentStep==0" class="h-48 bg-sky-500">
-            <p>Page 0</p>
-        </div>
-        <div v-if="currentStep==1"  class="h-48 bg-orange-500 transition duration-700 ease-in opacity-100" :class="currentStep==1?'opacity-50':'opacity-0'">
-            <p>Page 1</p>
-        </div>
-        <div v-if="currentStep==2" class="h-48 bg-yellow-500 ">
-            <p>Page 2</p>
-        </div>
-        <a-button @click="currentStep--">previours</a-button>
-        <a-button @click="currentStep++">next</a-button>
     </WebLayout>
 
 </template>

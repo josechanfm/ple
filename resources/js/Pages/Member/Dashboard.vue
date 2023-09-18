@@ -9,7 +9,7 @@ export default {
     MemberLayout,
     QRCodeVue3
   },
-  props: ['member', 'articles'],
+  props: ['member', 'articles', 'card_style'],
   data() {
     return {
       qrcode: '',
@@ -82,13 +82,6 @@ export default {
           <div class="container mx-auto pt-5">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
-              <div class="grid grid-cols-3">
-                <div>aaa</div>
-                <div>bb</div>
-                <div>ccc</div>
-                <div>dddd</div>
-
-              </div>
               <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 32 }">
                 <a-col class="gutter-row" :span="8">
                   <div class="max-w-lg rounded overflow-hidden shadow-lg">
@@ -192,19 +185,20 @@ export default {
                         { offset: 1, color: '#26249a' },
                       ],
                     },
-                  }" :cornersSquareOptions="{
-  type: 'square',
-  color: '#e00404'
-}" :cornersDotOptions="{
-  color: '#e00404'
-}" />
+                  }" 
+                  :cornersSquareOptions="{
+                    type: 'square',
+                    color: '#e00404'
+                  }" 
+                  :cornersDotOptions="{
+                    color: '#e00404'
+                  }" />
                 </div>
               </div>
               <!-- card start -->
               <div class="mx-auto relative py-4 w-96 hover:scale-105 transform transition-transform mb-4">
-                <div
-                  class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 text-white shadow-xl text-sm font-serif w-full"
-                  @click="onShowQrcode">
+                <div class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 shadow-xl text-sm w-full"
+                  :class="card_style['font']" @click="onShowQrcode">
                   <div class="flex flex-col w-xl">
                     <div class="flex justify-center">
                       <div class="text-lg font-bold">{{ $page.props.current_organization.full_name }}</div>
@@ -232,7 +226,8 @@ export default {
                     </div>
                   </div>
                 </div>
-                <img class="relative object-cover w-96 h-52 rounded-lg z-0" src="/images/card_blue.png" width="10px" />
+                <img class="relative object-cover w-96 h-52 rounded-lg z-0" :src="'/images/' + card_style['card_name']"
+                  width="10px" />
               </div>
               <!-- card end -->
 
@@ -263,7 +258,7 @@ export default {
                     class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Email</a>
                 </div>
                 <div class="w-full">
-                  <div v-if="member.organizations.length>1">
+                  <div v-if="member.organizations.length > 1">
                     <h3 class="font-medium text-gray-900 text-left px-6">Your Organizations</h3>
                     <div class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">
                       <template v-for="organization in member.organizations">

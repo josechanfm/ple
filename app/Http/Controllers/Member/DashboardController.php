@@ -7,6 +7,7 @@ use App\Models\Classify;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Config;
 use App\Models\Form;
 use App\Models\Member;
 use App\Models\Organization;
@@ -22,9 +23,14 @@ class DashboardController extends Controller
             ]);
 
         }
+        //dd(Config::item('card_style'));
+        //dd(session('organization')->card_style);
+
+       
         return Inertia::render('Member/Dashboard',[
             'member'=>$member,
             'organizations'=>$member->organizations,
+            'card_style'=>Config::item('card_style')->{session('organization')->card_style}
             //'current_organization'=>session('organization'),//set current_organization, coz the first access has not activate session variable yet.
             //'articles'=>Classify::whereBelongsTo(session('organization'))->first()->articles
         ]);
