@@ -19,16 +19,30 @@ class LoginResponse implements LoginResponseContract
      */
     public function toResponse($request)
     {
-        $member= Member::where('user_id',auth()->user()->id)->with('guardian')->first();
-        if(empty($member)){
-            return redirect()->route('/');
-        }
-        if($member->organizations->count()<=0){
+        // dd(Auth()->user()->member);
+        // $member= Member::where('user_id',auth()->user()->id)->with('guardian')->first();
+        $member=Auth()->user()->member;
+        if($member){
+            if($member->organizations->count()>0){
+                session(['organization'=>$member->organizations[0]]);
+                return redirect()->route('member.dashboard');
+            }
             return Inertia::render('Error',[
                 'message'=>"You don't belongs to any organization"
             ]);
-        };
-        session(['organization'=>$member->organizations[0]]);
+        }
+        if(Auth()->user()->organizations->count()>0){
+            session(['organization'=>Auth()->user()->organizations[0]]);
+            return redirect()->route('manage.dashboard');
+        // }else{
+        //     return Inertia::render('Error',[
+        //         'message'=>"You don't belongs to any organization"
+        //     ]);
+        }
+        if(Auth()->user()->hasRole('admin')){
+            return redirect()->route('admin.dashboard');
+        }
+        // session(['organization'=>$member->organizations[0]]);
         /*
         if(auth()->user()->guardian){
             session(['guardian'=>auth()->user()->guardian]);

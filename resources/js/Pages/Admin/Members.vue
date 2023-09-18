@@ -1,13 +1,13 @@
 <template>
   <AdminLayout title="Dashboard">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">課程規劃</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Members</h2>
     </template>
     <button
       @click="createRecord()"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3"
     >
-      Create Subject template
+      Create Member
     </button>
     <a-table :dataSource="members" :columns="columns">
       <template #bodyCell="{ column, text, record, index }">
@@ -16,8 +16,10 @@
           <a-button @click="deleteRecord(record.id)">Delete</a-button>
           <a-button @click="createLogin(record.id)">Create login</a-button>
         </template>
-        <template v-else-if="column.dataIndex == 'state'">
-          {{ teacherStateLabels[text] }}
+        <template v-else-if="column.dataIndex == 'login'">
+          <span v-if="record['user']">
+            {{ record['user'].email }}
+          </span>
         </template>
         <template v-else>
           {{ record[column.dataIndex] }}
@@ -37,21 +39,23 @@
         :rules="rules"
         :validate-messages="validateMessages"
       >
-        <a-input type="hidden" v-model:value="modal.data.id" />
-        <a-form-item label="姓名(中文)" name="name_zh">
-          <a-input v-model:value="modal.data.name_zh" />
+        <a-form-item label="Given Name" name="given_name">
+          <a-input v-model:value="modal.data.given_name" />
         </a-form-item>
-        <a-form-item label="姓名(外文)" name="name_zh">
-          <a-input v-model:value="modal.data.name_fn" />
+        <a-form-item label="Middle Name" name="middle_name">
+          <a-input v-model:value="modal.data.middle_name" />
         </a-form-item>
-        <a-form-item label="別名" name="nickname">
-          <a-input v-model:value="modal.data.nickname" />
+        <a-form-item label="Family Name" name="family_name">
+          <a-input v-model:value="modal.data.family_name" />
         </a-form-item>
-        <a-form-item label="手機" name="mobile">
-          <a-input v-model:value="modal.data.mobile" />
+        <a-form-item label="Email" name="email">
+          <a-input v-model:value="modal.data.email" />
         </a-form-item>
-        <a-form-item label="狀態" name="status">
-          <a-select v-model:value="modal.data.state" :options="employmentStates" />
+        <a-form-item label="Gender" name="gender">
+          <a-switch v-model:checked="modal.data.gender" checkedValue="1" unCheckedValue="0"/>
+        </a-form-item>
+        <a-form-item label="Date of Birth" name="dob">
+          <a-date-picker v-model:value="modal.data.dob" :format="dateFormat" :valueFormat="dateFormat"/>
         </a-form-item>
       </a-form>
       <template #footer>
@@ -86,6 +90,7 @@ export default {
   props: ["members"],
   data() {
     return {
+      dateFormat:'YYYY-MM-DD',
       modal: {
         isOpen: false,
         data: {},
@@ -95,27 +100,19 @@ export default {
       teacherStateLabels: {},
       columns: [
         {
-          title: "姓名(中文)",
-          dataIndex: "first_name",
-        },
-        {
-          title: "姓名(外文)",
-          dataIndex: "last_name",
-        },
-        {
-          title: "別名",
-          dataIndex: "gender",
-        },
-        {
-          title: "手機",
-          dataIndex: "dob",
-        },
-        {
-          title: "狀態",
-          dataIndex: "state",
-        },
-        {
-          title: "操作",
+          title: "Given Name",
+          dataIndex: "given_name",
+        },{
+          title: "Family Name",
+          dataIndex: "family_name",
+        },{
+          title: "Display Name",
+          dataIndex: "display_name",
+        },{
+          title: "Login email",
+          dataIndex: "login",
+        },{
+          title: "Operations",
           dataIndex: "operation",
           key: "operation",
         },
@@ -123,7 +120,6 @@ export default {
       rules: {
         name_zh: { required: true },
         mobile: { required: true },
-        state: { required: true },
       },
       validateMessages: {
         required: "${label} is required!",

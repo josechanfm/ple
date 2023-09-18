@@ -1,24 +1,26 @@
 <template>
   <AdminLayout title="Dashboard">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Organization Members</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Users</h2>
     </template>
     <button
       @click="createRecord()"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3"
     >
-      Add members
+      Create User
     </button>
-    <a-table :dataSource="members" :columns="columns">
+    <a-table :dataSource="users" :columns="columns">
       <template #bodyCell="{ column, text, record, index }">
         <template v-if="column.dataIndex == 'operation'">
           <a-button @click="editRecord(record)">Edit</a-button>
           <a-button @click="deleteRecord(record.id)">Delete</a-button>
         </template>
-        <template v-else-if="column.dataIndex == 'login'">
-          <span v-if="record.user">
-            {{ record.user.email }}
-          </span>
+        <template v-else-if="column.dataIndex == 'organizations'">
+            <ol class="list-decimal">
+                    <li v-for="organization in record['organizations']">
+                    {{ organization.abbr }}
+                </li>
+            </ol>
         </template>
         <template v-else>
           {{ record[column.dataIndex] }}
@@ -39,20 +41,21 @@
         :validate-messages="validateMessages"
       >
         <a-input type="hidden" v-model:value="modal.data.id" />
-        <a-form-item label="姓名(中文)" name="name_zh">
-          <a-input v-model:value="modal.data.name_zh" />
+        <a-form-item label="用戶名稱" name="name">
+          <a-input v-model:value="modal.data.name" />
         </a-form-item>
-        <a-form-item label="姓名(外文)" name="name_zh">
-          <a-input v-model:value="modal.data.name_fn" />
+        <a-form-item label="電郵" name="email">
+          <a-input v-model:value="modal.data.email" />
         </a-form-item>
-        <a-form-item label="別名" name="nickname">
-          <a-input v-model:value="modal.data.nickname" />
+        <a-form-item label="密碼" name="password" v-if="modal.mode=='CREATE'">
+          <a-input v-model:value="modal.data.password" />
         </a-form-item>
-        <a-form-item label="手機" name="mobile">
-          <a-input v-model:value="modal.data.mobile" />
-        </a-form-item>
-        <a-form-item label="狀態" name="status">
-          <a-select v-model:value="modal.data.state" :options="employmentStates" />
+        <a-form-item label="屬會" name="organization_ids">
+            <a-select v-model:value="modal.data.organization_ids"
+                mode="multiple"
+                :options="organizations"
+                :fieldNames="{value:'id',label:'full_name'}"
+            />
         </a-form-item>
       </a-form>
       <template #footer>
@@ -84,7 +87,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["members"],
+  props: ["organizations","users"],
   data() {
     return {
       modal: {
@@ -96,20 +99,17 @@ export default {
       teacherStateLabels: {},
       columns: [
         {
-          title: "Given Name",
-          dataIndex: "given_name",
+          title: "Username",
+          dataIndex: "name",
         },{
-          title: "Family Name",
-          dataIndex: "family_name",
+          title: "Email",
+          dataIndex: "email",
         },{
-          title: "Gender",
-          dataIndex: "gender",
+          title: "Organizations",
+          dataIndex: "organizations",
         },{
-          title: "DOB",
-          dataIndex: "dob",
-        },{
-          title: "Login Username",
-          dataIndex: "login",
+          title: "State",
+          dataIndex: "state",
         },{
           title: "Operation",
           dataIndex: "operation",
@@ -117,9 +117,9 @@ export default {
         },
       ],
       rules: {
-        name_zh: { required: true },
-        mobile: { required: true },
-        state: { required: true },
+        name: { required: true },
+        email:{ required: true,type:'email' },
+        password: { required: true },
       },
       validateMessages: {
         required: "${label} is required!",
@@ -143,20 +143,21 @@ export default {
     createRecord() {
       this.modal.data = {};
       this.modal.mode = "CREATE";
-      this.modal.title = "新增問卷";
+      this.modal.title = "Create User";
       this.modal.isOpen = true;
     },
     editRecord(record) {
       this.modal.data = { ...record };
+      this.modal.data.organization_ids=record.organizations.map(item=>(item.id));
       this.modal.mode = "EDIT";
-      this.modal.title = "修改";
+      this.modal.title = "Edit User";
       this.modal.isOpen = true;
     },
     storeRecord() {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.post("/admin/teachers/", this.modal.data, {
+          this.$inertia.post("/admin/users/", this.modal.data, {
             onSuccess: (page) => {
               this.modal.data = {};
               this.modal.isOpen = false;
@@ -172,28 +173,20 @@ export default {
     },
     updateRecord() {
       console.log(this.modal.data);
-      this.$refs.modalRef
-        .validateFields()
-        .then(() => {
-          this.$inertia.patch("/admin/teachers/" + this.modal.data.id, this.modal.data, {
-            onSuccess: (page) => {
-              this.modal.data = {};
-              this.modal.isOpen = false;
-              console.log(page);
-            },
-            onError: (error) => {
-              console.log(error);
-            },
-          });
-        })
-        .catch((err) => {
-          console.log("error", err);
+        this.$inertia.patch("/admin/users/" + this.modal.data.id, this.modal.data, {
+        onSuccess: (page) => {
+            this.modal.data = {};
+            this.modal.isOpen = false;
+            console.log(page);
+        },
+        onError: (error) => {
+            console.log(error);
+        },
         });
     },
     deleteRecord(recordId) {
-      console.log(recordId);
       if (!confirm("Are you sure want to remove?")) return;
-      this.$inertia.delete("/admin/teachers/" + recordId, {
+      this.$inertia.delete("/admin/users/" + recordId, {
         onSuccess: (page) => {
           console.log(page);
         },

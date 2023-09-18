@@ -81,6 +81,14 @@ export default {
           <!-- Feature Section -->
           <div class="container mx-auto pt-5">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+
+              <div class="grid grid-cols-3">
+                <div>aaa</div>
+                <div>bb</div>
+                <div>ccc</div>
+                <div>dddd</div>
+
+              </div>
               <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 32 }">
                 <a-col class="gutter-row" :span="8">
                   <div class="max-w-lg rounded overflow-hidden shadow-lg">

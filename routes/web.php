@@ -22,6 +22,8 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'isMember'=>Auth()->user()?Auth()->user()->member:false,
+        'isOrganizer'=>Auth()->user()?Auth()->user()->hasRole('organizer'):false
     ]);
 })->name('/');;
 Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
@@ -113,5 +115,6 @@ Route::middleware([
         Route::resource('organizations', App\Http\Controllers\Admin\OrganizationController::class)->names('admin.organizations');
         Route::get('organization/{organization}/members', [App\Http\Controllers\Admin\OrganizationController::class,'members'])->name('admin.organization.members');
         Route::resource('members', App\Http\Controllers\Admin\MemberController::class)->names('admin.members');
+        Route::resource('users', App\Http\Controllers\Admin\UserController::class)->names('admin.users');
     });
 });

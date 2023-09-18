@@ -17,7 +17,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members=Member::all();
+        $members=Member::with('organizations')->with('user')->get();
         return Inertia::render('Admin/Members',[
             'members'=>$members,
         ]);

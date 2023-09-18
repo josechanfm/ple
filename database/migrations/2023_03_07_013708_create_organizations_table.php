@@ -30,6 +30,7 @@ return new class extends Migration
             $table->text('content')->nullable();
             $table->string('registration_code')->nullable();
             $table->string('president')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
       
         });

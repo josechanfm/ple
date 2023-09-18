@@ -15,47 +15,19 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $member=Member::where('user_id',auth()->user()->id)->with('guardian')->first();
-        //login user has guardian role
-        if(auth()->user()->guardian){
-            session(['guardian'=>auth()->user()->guardian]);
-            return redirect()->route('member.guardian');
-        }
-        //login user is member
-
-        if($member){
-            // $organizations=$member->organizations;
-            //$member->organization;
-            if($member->organizations->count()<=0){
-                return Inertia::render('Error',[
-                    'message'=>"You don't belongs to any organization"
-                ]);
-            }
-
-            $member->portfolios;
-            $member->events;
-            $member->organizations[0]->forms;
-            session(['organization'=>$member->organizations[0]]);
-            //session('organization')->forms;
-                
-            //session('organization')->fresh();
-            return Inertia::render('Member/Dashboard',[
-                'member'=>$member,
-                'organizations'=>$member->organizations,
-                'current_organization'=>session('organization'),//set current_organization, coz the first access has not activate session variable yet.
-                //'articles'=>Classify::whereBelongsTo(session('organization'))->first()->articles
+        $member=Auth()->user()->member;
+        if(!$member){
+            return Inertia::render('Error',[
+                'message'=>"You are not a register member."
             ]);
-        }
 
-        //login user is organizer
-        if (auth()->user()->hasRole(['organizer'])) {
-            return redirect('manage');
         }
-
-        //login user not a member but with specific roles
-        if (auth()->user()->hasRole(['admin','master'])) {
-            return redirect('admin');
-        }
+        return Inertia::render('Member/Dashboard',[
+            'member'=>$member,
+            'organizations'=>$member->organizations,
+            //'current_organization'=>session('organization'),//set current_organization, coz the first access has not activate session variable yet.
+            //'articles'=>Classify::whereBelongsTo(session('organization'))->first()->articles
+        ]);
                 
     }
     public function getQrcode()

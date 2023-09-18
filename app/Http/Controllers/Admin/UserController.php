@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Organization;
-use App\Models\Member;
 use App\Models\User;
-use Illuminate\Support\Facades\Password;
+use App\Models\Team;
 
-class OrganizationController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,10 +19,9 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-        $organizations=Organization::with('users')->get();
-        return Inertia::render('Admin/Organizations',[
-            'organizations'=>$organizations,
-            'users'=>User::all()
+        return Inertia::render('Admin/Users',[
+            'organizations'=>Organization::all(),
+            'users'=>User::with('organizations')->get()
         ]);
     }
 
@@ -44,7 +43,27 @@ class OrganizationController extends Controller
      */
     public function store(Request $request)
     {
-        Organization::create($request->all());
+        $this->validate($request,[
+            'name' => 'required',
+            'email'=>'required|email',
+            'password'=>'required',
+        ]);
+
+        $user=User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make('password'),
+        ]);
+        //$user->assignRole('organizer');
+        $user->ownedTeams()->save(Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'personal_team' => true,
+        ]));
+        if($request->organization_ids){
+            $user->organizations()->sync($request->organization_ids);
+        }
+
         return redirect()->back();
     }
 
@@ -77,41 +96,22 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Organization $organization)
+    public function update(Request $request, User $user)
     {
-        $organization->update($request->all());
-        $organization->users()->sync($request->user_ids);
+        $user->organizations()->sync($request->organization_ids);
         return redirect()->back();
     }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
-    }
-
-    public function members(Organization $organization){
-        //$members=Member::whereBelongsTo($)->get();
-        return Inertia::render('Admin/OrganizationMembers',[
-            'members'=>$organization->members,
-        ]);
-
-    }
-    public function createLogin(Member $member){
-
-        if (!$member->hasUser()) {
-            $user = $member->createUser();
-        } else {
-            $user = $member->user;
-        }
-
-        Password::broker(config('fortify.passwords'))->sendResetLink(
-            [ 'email' => $user->email ]
-        );
+        $user->delete();
+        return redirect()->back();
 
     }
 }

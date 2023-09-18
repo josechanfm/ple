@@ -14,8 +14,15 @@
                         <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     </template>
-                    <template v-if="column.dataIndex=='region'">
+                    <template v-else-if="column.dataIndex=='region'">
                         {{ zones.find(z=>z.value==record[column.dataIndex]).label }}
+                    </template>
+                    <template v-else-if="column.dataIndex=='manager'">
+                        <ol class="list-decimal">
+                            <li v-for="user in record['users']">
+                                {{ user.name }}
+                            </li>
+                        </ol>
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -81,6 +88,13 @@
             <a-form-item label="Status" name="status" :rules="[{required:true}]">
                 <a-select v-model:value="modal.data.status" :options="organizationStates"/>
             </a-form-item>
+            <a-form-item label="Manager" name="manager">
+                <a-select v-model:value="modal.data.user_ids" 
+                    mode="multiple"
+                    :options="users"
+                    :fieldNames="{value:'id',label:'name'}"
+                />
+            </a-form-item>
         </a-form>
         <template #footer>
             <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
@@ -100,7 +114,7 @@ export default {
     components: {
         AdminLayout,
     },
-    props: ['organizations'],
+    props: ['organizations','users'],
     data() {
         return {
             modal:{
@@ -134,8 +148,11 @@ export default {
                     title: 'Full name',
                     dataIndex: 'full_name',
                 },{
-                    title: 'email',
+                    title: 'Email',
                     dataIndex: 'email',
+                },{
+                    title: 'Manager',
+                    dataIndex: 'manager',
                 },{
                     title: 'Operation',
                     dataIndex: 'operation',
@@ -175,6 +192,7 @@ export default {
         },
         editRecord(record){
             this.modal.data={...record};
+            this.modal.data.user_ids=record.users.map(item=>(item.id));
             this.modal.mode="EDIT";
             this.modal.title="Edit Record";
             this.modal.isOpen=true;
