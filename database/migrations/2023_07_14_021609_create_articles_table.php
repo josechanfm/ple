@@ -23,11 +23,14 @@ return new class extends Migration
             $table->text('intro_fn')->nullable();
             $table->text('content_en')->nullable();
             $table->text('content_fn')->nullable();
-            $table->boolean('published');
             $table->date('valid_at')->nullable();
             $table->date('expired_at')->nullable();
             $table->text('url')->nullable();
             $table->string('reference')->nullable();
+            $table->text('author')->nullable();
+            $table->bigInteger('user_id');
+            $table->boolean('public');
+            $table->boolean('published');
             $table->timestamps();
         });
     }

@@ -17,19 +17,22 @@ export default {
       features:[
         {
           image:"https://dummyimage.com/300x5:3",
+          title:"Public",
+          description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
+          tags:['#hashtag','#hashtag','#hashtag'],
+          link:'/'
+        },{
+          image:"https://dummyimage.com/300x5:3",
           title:"Forms",
           description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags:['#hashtag','#hashtag','#hashtag']
+          tags:['#hashtag','#hashtag','#hashtag'],
+          link:'forms'
         },{
           image:"https://dummyimage.com/300x5:3",
           title:"Competitions",
           description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags:['#hashtag','#hashtag','#hashtag']
-        },{
-          image:"https://dummyimage.com/300x5:3",
-          title:"Events",
-          description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags:['#hashtag','#hashtag','#hashtag']
+          tags:['#hashtag','#hashtag','#hashtag'],
+          link:'competitions'
         },{
           image:"https://dummyimage.com/300x5:3",
           title:"Other",
@@ -104,13 +107,12 @@ export default {
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
 
-          
           <!-- Feature Section -->
-          <div class="container mx-auto pt-5">
-            <div class="w-full bg-white overflow-hidden shadow-xl sm:rounded-lg">
-              <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-                <template v-for="feature in features">
-                  <div class="gutter-row lg:w-48 px-2">
+          <div class="container mx-auto mt-5 bg-white rounded-lg">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-3 px-2">
+              <template v-for="feature in features">
+                <a :href="feature.link">
+                  <div class="gutter-row">
                     <div class="max-w rounded overflow-hidden shadow-lg">
                       <img class="w-full" alt="Use any sample image here..." :src="feature.image">
                       <div class="px-6 py-4">
@@ -129,9 +131,8 @@ export default {
                       </div>
                     </div>
                   </div>
-                </template>
-
-              </div>
+                  </a>
+              </template>
             </div>
           </div>
           <!-- Feature Section end-->

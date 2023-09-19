@@ -4,7 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-
+use App\Models\Article;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,7 +23,8 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
         'isMember'=>Auth()->user()?Auth()->user()->member:false,
-        'isOrganizer'=>Auth()->user()?Auth()->user()->hasRole('organizer'):false
+        'isOrganizer'=>Auth()->user()?Auth()->user()->hasRole('organizer'):false,
+        'articles'=>Article::public()
     ]);
 })->name('/');;
 Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
@@ -92,7 +93,9 @@ Route::middleware([
         Route::post('member/create/login/{member}', [App\Http\Controllers\Organization\MemberController::class,'createLogin'])->name('manage.member.createLogin');
         Route::resource('forms', App\Http\Controllers\Organization\FormController::class)->names('manage.forms');
         Route::get('form/delete_media/{media}', [App\Http\Controllers\Organization\FormController::class, 'deleteMedia'])->name('manage.form.deleteMedia');
+        Route::post('form/{form}/backup', [App\Http\Controllers\Organization\FormController::class,'backup'])->name('manage.form.backup');
         Route::resource('form/{form}/fields', App\Http\Controllers\Organization\FormFieldController::class)->names('manage.form.fields');
+        Route::post('form/{form}/fields_sequence', [App\Http\Controllers\Organization\FormFieldController::class, 'fieldsSequence'])->name('manage.form.fieldsSequence');
         Route::resource('form/{form}/entries', App\Http\Controllers\Organization\EntryController::class)->names('manage.form.entries');
         Route::post('form/{form}/createEventAttendees', [App\Http\Controllers\Organization\FormController::class, 'createEventAttendees'])->name('manage.form.createEventAttendees');
         Route::get('member/export', [App\Http\Controllers\Organization\MemberController::class, 'export'])->name('member.member.export');

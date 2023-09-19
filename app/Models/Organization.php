@@ -22,9 +22,9 @@ class Organization extends Model
         return $this->belongsToMany(Member::class)->with('user');
     }
 
-    // public function hasUser($user){
-    //     return in_array($user->id,$this->users()->get()->pluck('id')->toArray());
-    // }
+    public function hasUser($user){
+        return in_array($user->id,$this->users()->get()->pluck('id')->toArray());
+    }
 
     public function approbates(){
         return $this->hasMany(Approbate::class);
@@ -36,8 +36,12 @@ class Organization extends Model
     public function events(){
         return $this->hasMany(Event::class);
     }
-    public function forms(){
-        return $this->hasMany(Form::class)->where('published',true)->with('media');
+    public function forms($published=null){
+        if($published==null){
+            return $this->hasMany(Form::class)->with('media')->withCount('entries');    
+        }else{
+            return $this->hasMany(Form::class)->where('published',$published)->with('media')->withCount('entries');
+        }
     }
 
 }

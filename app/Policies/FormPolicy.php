@@ -79,6 +79,7 @@ class FormPolicy
         if($user->hasRole('admin')){
             return true;
         }
+        //determine if the form belongs to current user
         return $form->organization->hasUser($user);
     }
 

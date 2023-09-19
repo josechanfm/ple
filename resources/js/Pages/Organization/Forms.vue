@@ -19,10 +19,19 @@
                             <inertia-link :href="route('manage.form.entries.index', { form: record.id })"
                                 class="ant-btn">Responses</inertia-link>
                             <a :href="route('manage.entry.export', { form: record.id })" class="ant-btn">Export</a>
-                            <inertia-link :href="route('manage.form.fields.index', { form: record.id })" class="ant-btn">Data
-                                Fields</inertia-link>
+                            <inertia-link :href="route('manage.form.fields.index', { form: record.id })" class="ant-btn">
+                                Data Fields
+                            </inertia-link>
                             <a-button @click="editRecord(record)">Edit</a-button>
-                            <a-button @click="deleteRecord(record)">Delete</a-button>
+                            <a-button @click="deleteRecord(record)" :disabled="record.published==1">Delete</a-button>
+                            <a-button @click="backupRecords(record)" v-if="record.entries_count>0">Backup</a-button>
+                        </template>
+                        <template v-else-if="column.type=='yesno'">
+                            <span v-if="record[column.dataIndex]==1">Yes</span>
+                            <span v-else>No</span>
+                        </template>
+                        <template v-else-if="column.dataIndex=='entries'">
+                            {{ record.entries_count }}
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}
@@ -55,8 +64,11 @@
                 </a-form-item>
                 <a-form-item :label="$t('published')" name="published">
                     <a-switch v-model:checked="modal.data.published" :unCheckedValue="0" :checkedValue="1" 
-                        @change="modal.data.with_attendance = false" />
-                    <span class="pl-3">{{ $t('published_note') }}</span>
+                        @change="modal.data.with_attendance = false" 
+                        :disabled="modal.data.entries_count>0"
+                    />
+                    <span class="pl-3">{{ $t('published_note') }}</span><br>
+                    <span v-if="modal.data.entries_count>0"> The form has responses, please backup before unpublished.</span>
                 </a-form-item>
                 <a-form-item :label="$t('with_attendance')" name="with_attendance"  v-if="modal.data.published">
                     <a-switch v-model:checked="modal.data.with_attendance" :unCheckedValue="0" :checkedValue="1" />
@@ -142,12 +154,19 @@ export default {
                 }, {
                     title: 'Require_login',
                     dataIndex: 'require_login',
+                    type:'yesno'
                 }, {
                     title: 'For Staff',
                     dataIndex: 'for_staff',
+                    type:'yesno'
                 }, {
                     title: 'Published',
                     dataIndex: 'published',
+                    type:'yesno'
+                }, {
+                    title: 'Entries',
+                    dataIndex: 'entries',
+                    key: 'entries',
                 }, {
                     title: 'Action',
                     dataIndex: 'operation',
@@ -236,7 +255,18 @@ export default {
                 onError: (error) => {
                     alert(error.message);
                 }
-
+            });
+        },
+        backupRecords(record){
+            console.log(record);
+            if (!confirm('Are you sure want to backup?')) return;
+            this.$inertia.post(route('manage.form.backup', record.id), {
+                onSuccess: (page) => {
+                    console.log(page);
+                },
+                onError: (error) => {
+                    alert(error.message);
+                }
             });
         },
         uploadChange(info){

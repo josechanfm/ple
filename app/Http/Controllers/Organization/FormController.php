@@ -7,6 +7,8 @@ use App\Models\Organization;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
+use App\Models\Entry;
+use App\Models\EntryRecord;
 use App\Models\Event;
 use App\Models\Attendees;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -26,11 +28,14 @@ class FormController extends Controller
      */
     public function index()
     {
+        //dd(Form::find($formId)->entries()->delete());
+        // echo ($entries);
+        // echo ($form);
+
         //$this->authorize('view',$organization);
-        
         return Inertia::render('Organization/Forms',[
-            'organization' => session('organization'),
-            'forms'=>session('organization')->fresh()->forms
+            'organization' => Organization::find(session('organization')->id),
+            'forms'=>Organization::find(session('organization')->id)->forms
         ]);
     }
 
@@ -149,6 +154,27 @@ class FormController extends Controller
             $form->delete();
             return redirect()->back();
         }
+    }
+    public function backup(Form $form){
+        //return response()->json($form);
+        $data=new \stdClass();
+        $form->fields;
+        //$data->form=Form::with('fields')->find($formId);
+        $data->form=$form;
+
+        if($data->form){
+            $data->entries=Entry::where('form_id',3)->with('records')->get();
+            $file=\Storage::put('dbbackup/'.$data->form->organization_id.'/backup_'.$data->form->id.'.txt',json_encode($data));
+            if($file){
+                $data->entries;
+            };
+            //dd($file);
+            $ids=Entry::where('form_id',$data->form->id)->pluck('id')->toArray();
+            EntryRecord::whereIn('entry_id',$ids)->delete();
+            Entry::where('form_id',$data->form->id)->delete();
+        }
+        return response()->json($data);
+
     }
 
     public function deleteMedia(Media $media){

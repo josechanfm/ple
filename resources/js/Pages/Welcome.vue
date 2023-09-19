@@ -7,6 +7,9 @@ defineProps({
   canRegister: Boolean,
   laravelVersion: String,
   phpVersion: String,
+  isMember: Object,
+  isOrganizer: Boolean,
+  articles: Array
 });
 </script>
 
@@ -23,6 +26,8 @@ defineProps({
         </a> -->
       </div>
     </div>
+    {{ articles }}
+    asdfa
     <div class="px-4 py-2 mt-2 bg-white rounded-md">
             <h2 class="font-bold text-2xl text-gray-800">Warm welcome!</h2>
                 <div class="lg:text-lg sm:text-sm text-xs text-gray-700 px-2 mr-1 my-3">

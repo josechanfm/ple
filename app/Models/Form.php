@@ -20,7 +20,7 @@ class Form extends Model implements HasMedia
     }
 
     public function fields(){
-        return $this->hasMany(FormField::class);
+        return $this->hasMany(FormField::class)->orderBy('sequence');
     }
     //extra fields show in entry table
     public function in_column_fields(){

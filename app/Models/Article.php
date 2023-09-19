@@ -10,4 +10,8 @@ class Article extends Model
     use HasFactory;
 
     protected $fillable=['organization_id','category_code','title_en','title_fn','content_en','content_fn','valid_at','expired_at','url','reference','published'];
+
+    public static function publics(){
+        return Article::where('published',true)->where('public',true)->get();
+    }
 }

@@ -14,6 +14,17 @@
                         <template v-if="column.dataIndex=='operation'">
                             <a @click="toApply(record)">Apply</a>
                         </template>
+                        <template v-else-if="column.dataIndex=='abbr'">
+                            {{record.organization.abbr}}
+                        </template>
+                        <template v-else-if="column.type=='yesno'">
+                            <span v-if="record[column.dataIndex]==1">
+                                Yes
+                            </span>
+                            <span v-else>
+                                No
+                            </span>
+                        </template>
                         <template v-else>
                             {{record[column.dataIndex]}}
                         </template>
@@ -58,20 +69,19 @@ export default {
             ],
             columns:[
                 {
-                    title: 'Name',
-                    dataIndex: 'name',
+                    title: 'Organization',
+                    dataIndex: 'abbr',
                 },{
                     title: 'Title',
                     dataIndex: 'title',
                 },{
                     title: 'Login',
                     dataIndex: 'require_login',
+                    type:'yesno'
                 },{
                     title: 'For member',
                     dataIndex: 'for_member',
-                },{
-                    title: 'Published',
-                    dataIndex: 'published',
+                    type:'yesno'
                 },{
                     title: 'Action',
                     dataIndex: 'operation',

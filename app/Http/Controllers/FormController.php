@@ -18,14 +18,14 @@ class FormController extends Controller
      */
     public function index()
     {
-        $forms=Form::where('published',1)->where('for_member',0)->get();
+        $forms=Form::where('published',true)->where('for_member',false)->with('organization')->get();
         if(auth()->user()){
             if(auth()->user()->member){
                 $orgIds=auth()->user()->member->organizations->pluck('id')->toArray();
-                $memberForms=Form::whereIn('organization_id',$orgIds)->where('published',1)->where('require_login',1)->get();
+                $memberForms=Form::whereIn('organization_id',$orgIds)->where('published',true)->where('require_login',true)->with('organization')->get();
                 $forms=$forms->merge($memberForms);
             }
-            $organizationForms=Form::where('published',1)->where('require_login',0)->get();
+            $organizationForms=Form::where('published',true)->where('require_login',false)->with('organization')->get();
             $forms=$forms->merge($organizationForms);
         }
         return Inertia::render('Form/Form',[
