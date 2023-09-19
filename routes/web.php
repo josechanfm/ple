@@ -24,7 +24,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
         'isMember'=>Auth()->user()?Auth()->user()->member:false,
         'isOrganizer'=>Auth()->user()?Auth()->user()->hasRole('organizer'):false,
-        'articles'=>Article::public()
+        'articles'=>Article::publics()
     ]);
 })->name('/');;
 Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
