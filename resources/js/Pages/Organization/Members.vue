@@ -20,7 +20,15 @@
                         <template v-if="column.dataIndex=='operation'">
                             <inertia-link :href="route('manage.members.show',record.id)" class="ant-btn">View</inertia-link>
                             <a-button @click="editRecord(record)">Edit</a-button>
-                            <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                            <a-popconfirm
+                                title="Are you sure to delete the record?"
+                                ok-text="Yes"
+                                cancel-text="No"
+                                @confirm="deleteConfirmed(record.id)"
+                                >
+                                <a-button>Delete</a-button>
+                            </a-popconfirm>
+
                             <a-button @click="createLogin(record.id)" :disabled="record.user!=null">Create login</a-button>
                         </template>
                         <template v-else-if="column.dataIndex=='state'">
@@ -205,18 +213,7 @@ export default {
                 console.log("error", err);
             });
         },
-        deleteRecord(recordId){
-            // console.log(recordId);
-            // var confirm =PopupModal.confirm({
-            //     'title':'Confirm',
-            //     'content':'Are you sure?',
-            //     onOk(){
-            //         this.toDelete(recordId)
-            //         //this.$inertia.delete(route('manage.members.destroy',{member:recordId}));
-            //     }
-            // })
-            //console.log(confirm);
-            if (!confirm('Are you sure want to remove?')) return;
+        deleteConfirmed(recordId){
             this.$inertia.delete(route('manage.members.destroy',{member:recordId}));
         },
 

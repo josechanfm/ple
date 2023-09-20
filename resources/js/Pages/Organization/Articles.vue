@@ -18,7 +18,14 @@
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="editRecord(record)">Edit</a-button>
-                            <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                            <a-popconfirm
+                                title="Are you sure to delete the record?"
+                                ok-text="Yes"
+                                cancel-text="No"
+                                @confirm="deleteConfirmed(record.id)"
+                                >
+                                <a-button>Delete</a-button>
+                            </a-popconfirm>
                         </template>
                         <template v-else-if="column.dataIndex == 'published'">
                             {{ record.published ? 'Yes' : 'No' }}
@@ -73,6 +80,7 @@
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { quillEditor } from 'vue3-quill';
 import { defineComponent, reactive } from 'vue';
+
 
 export default {
     components: {
@@ -178,8 +186,7 @@ export default {
             });
 
         },
-        deleteRecord(recordId) {
-            if (!confirm('Are you sure want to remove?')) return;
+        deleteConfirmed(){
             this.$inertia.delete(route('manage.articles.destroy', recordId), {
                 onSuccess: (page) => {
                     console.log(page);
@@ -188,7 +195,18 @@ export default {
                     console.log(error);
                 }
             });
-        },
+        }, 
+        //deleteRecord(recordId) {
+            //if (!confirm('Are you sure want to remove?')) return;
+            // this.$inertia.delete(route('manage.articles.destroy', recordId), {
+            //     onSuccess: (page) => {
+            //         console.log(page);
+            //     },
+            //     onError: (error) => {
+            //         console.log(error);
+            //     }
+            // });
+        //},
         createLogin(recordId) {
             console.log('create login' + recordId);
         },

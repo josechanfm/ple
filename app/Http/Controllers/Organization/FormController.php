@@ -164,7 +164,7 @@ class FormController extends Controller
 
         if($data->form){
             $data->entries=Entry::where('form_id',3)->with('records')->get();
-            $file=\Storage::put('dbbackup/'.$data->form->organization_id.'/backup_'.$data->form->id.'.txt',json_encode($data));
+            $file=\Storage::put('dbbackup/'.$data->form->organization_id.'/form_'.$data->form->id.'_'.time().'.txt',json_encode($data));
             if($file){
                 $data->entries;
             };
@@ -174,7 +174,6 @@ class FormController extends Controller
             Entry::where('form_id',$data->form->id)->delete();
         }
         return response()->json($data);
-
     }
 
     public function deleteMedia(Media $media){

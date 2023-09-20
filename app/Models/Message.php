@@ -21,7 +21,12 @@ class Message extends Model
 
     public function getReceivedMembersAttribute()
     {
-        return Member::whereIn('id',$this->receiver)->get();
+        if($this->receiver){
+            return Member::whereIn('id',$this->receiver)->get();
+        }else{
+            return null;
+        }
+        
     }
     // public function received_member(){
     //     return $this->belongsTo(Member::class,'receiver');

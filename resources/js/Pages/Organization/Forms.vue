@@ -23,7 +23,15 @@
                                 Data Fields
                             </inertia-link>
                             <a-button @click="editRecord(record)">Edit</a-button>
-                            <a-button @click="deleteRecord(record)" :disabled="record.published==1">Delete</a-button>
+                            <a-popconfirm
+                                title="Are you sure to delete the record?"
+                                ok-text="Yes"
+                                cancel-text="No"
+                                @confirm="deleteConfirmed(record.id)"
+                                :disabled="record.published==1"
+                                >
+                                <a-button>Delete</a-button>
+                            </a-popconfirm>
                             <a-button @click="backupRecords(record)" v-if="record.entries_count>0">Backup</a-button>
                         </template>
                         <template v-else-if="column.type=='yesno'">
@@ -97,7 +105,7 @@
                             :show-upload-list="false"
                             @change="uploadChange"
                             >
-                            <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+                            <img v-if="imageUrl" :src="imageUrl" alt="banner" />
                                 <div v-else>
                                     <loading-outlined v-if="loading"></loading-outlined>
                                     <plus-outlined v-else></plus-outlined>
@@ -246,7 +254,7 @@ export default {
                 console.log("error", err);
             });
         },
-        deleteRecord(record) {
+        deleteConfirmed(record) {
             if (!confirm('Are you sure want to remove?')) return;
             this.$inertia.delete(route('manage.forms.destroy', { form: record.id }), {
                 onSuccess: (page) => {
@@ -258,7 +266,6 @@ export default {
             });
         },
         backupRecords(record){
-            console.log(record);
             if (!confirm('Are you sure want to backup?')) return;
             this.$inertia.post(route('manage.form.backup', record.id), {
                 onSuccess: (page) => {
@@ -270,12 +277,15 @@ export default {
             });
         },
         uploadChange(info){
+            console.log(info);
             const isJpgOrPng = info.file.type === 'image/jpeg' || info.file.type === 'image/png';
             if (!isJpgOrPng) {
-                message.error('You can only upload JPG file!');
+                console.log('image format!');
+                message.error('You can only upload JPG/PNG file!');
             }
             const isLt2M = info.file.size / 1024 / 1024 < 0.2;
             if (!isLt2M) {
+                console.log('image size');
                 message.error('Image must smaller than 2MB!');
             }
 
