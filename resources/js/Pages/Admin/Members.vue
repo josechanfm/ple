@@ -57,6 +57,15 @@
         <a-form-item label="Date of Birth" name="dob">
           <a-date-picker v-model:value="modal.data.dob" :format="dateFormat" :valueFormat="dateFormat"/>
         </a-form-item>
+        <a-form-item label="Organizations" name="organization_ids">
+          <a-select v-model:value="modal.data.organization_ids"
+                  mode="multiple"
+                  show-search
+                  :filter-option="filterOption"
+                  :options="organizations"
+                  :fieldNames="{value:'id',label:'full_name'}"
+              />
+        </a-form-item>
       </a-form>
       <template #footer>
         <a-button
@@ -87,7 +96,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["members"],
+  props: ["organizations","members"],
   data() {
     return {
       dateFormat:'YYYY-MM-DD',
@@ -140,23 +149,28 @@ export default {
   },
   created() {},
   methods: {
+    filterOption(input, option) {
+      return option.full_name.toLowerCase().indexOf(input.toLowerCase())>=0
+    },
     createRecord() {
-      this.modal.data = {};
-      this.modal.mode = "CREATE";
-      this.modal.title = "新增問卷";
-      this.modal.isOpen = true;
+      this.modal.data = {}
+      this.modal.data.organization_ids=[]
+      this.modal.mode = "CREATE"
+      this.modal.title = "新增問卷"
+      this.modal.isOpen = true
     },
     editRecord(record) {
-      this.modal.data = { ...record };
-      this.modal.mode = "EDIT";
-      this.modal.title = "修改";
-      this.modal.isOpen = true;
+      this.modal.data = { ...record }
+      this.modal.data.organization_ids=record.organizations.map(item=>(item.id))
+      this.modal.mode = "EDIT"
+      this.modal.title = "修改"
+      this.modal.isOpen = true
     },
     storeRecord() {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.post("/admin/teachers/", this.modal.data, {
+          this.$inertia.post(route('admin.members.store'), this.modal.data, {
             onSuccess: (page) => {
               this.modal.data = {};
               this.modal.isOpen = false;
@@ -175,7 +189,7 @@ export default {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.patch("/admin/teachers/" + this.modal.data.id, this.modal.data, {
+          this.$inertia.patch(route('admin.members.update', this.modal.data.id), this.modal.data, {
             onSuccess: (page) => {
               this.modal.data = {};
               this.modal.isOpen = false;

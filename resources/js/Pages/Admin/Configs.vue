@@ -1,26 +1,21 @@
 <template>
   <AdminLayout title="Dashboard">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Users</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Configs</h2>
     </template>
     <button
       @click="createRecord()"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3"
     >
-      Create User
+      Create Config Item
     </button>
-    <a-table :dataSource="users" :columns="columns">
+    <a-table :dataSource="configs" :columns="columns">
       <template #bodyCell="{ column, text, record, index }">
         <template v-if="column.dataIndex == 'operation'">
           <a-button @click="editRecord(record)">Edit</a-button>
-          <a-button @click="deleteRecord(record.id)">Delete</a-button>
         </template>
-        <template v-else-if="column.dataIndex == 'organizations'">
-            <ol class="list-decimal">
-                    <li v-for="organization in record['organizations']">
-                    {{ organization.abbr }}
-                </li>
-            </ol>
+        <template v-else-if="column.dataIndex == 'organization_id'">
+            {{ record[column.dataIndex] }}
         </template>
         <template v-else>
           {{ record[column.dataIndex] }}
@@ -41,31 +36,20 @@
         :validate-messages="validateMessages"
       >
         <a-input type="hidden" v-model:value="modal.data.id" />
-        <a-form-item label="用戶名稱" name="name">
-          <a-input v-model:value="modal.data.name" />
-        </a-form-item>
-        <a-form-item label="電郵" name="email">
-          <a-input v-model:value="modal.data.email" />
-        </a-form-item>
-        <a-form-item label="密碼" name="password" v-if="modal.mode=='CREATE'">
-          <a-input v-model:value="modal.data.password" />
-        </a-form-item>
-        <a-form-item label="屬會管理員" name="organization_ids">
-            <a-select v-model:value="modal.data.organization_ids"
-                mode="multiple"
-                show-search
-                :filter-option="filterOption"
+        <a-form-item label="Organization" name="organization_id">
+            <a-select v-model:value="modal.data.organization_id"
                 :options="organizations"
                 :fieldNames="{value:'id',label:'full_name'}"
             />
         </a-form-item>
-        <a-form-item label="Roles" name="roles">
-          <a-checkbox-group v-model:value="modal.data.role_ids">
-            <template v-for="role in roles">
-              <a-checkbox :value="role.id" :style="verticalStyle">{{ role.name }}</a-checkbox>
-            </template>
-            
-          </a-checkbox-group>
+        <a-form-item label="Key" name="key">
+          <a-input v-model:value="modal.data.key" />
+        </a-form-item>
+        <a-form-item label="Value" name="value">
+            <a-textarea v-model:value="modal.data.value" :rows="15"/>
+        </a-form-item>
+        <a-form-item label="Remark" name="remark">
+            <a-textarea v-model:value="modal.data.remark"/>
         </a-form-item>
       </a-form>
       <template #footer>
@@ -97,7 +81,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["organizations","users","roles"],
+  props: ["organizations","users","configs"],
   data() {
     return {
       modal: {
@@ -109,17 +93,11 @@ export default {
       teacherStateLabels: {},
       columns: [
         {
-          title: "Username",
-          dataIndex: "name",
+          title: "Organization",
+          dataIndex: "organization_id",
         },{
-          title: "Email",
-          dataIndex: "email",
-        },{
-          title: "Organizations",
-          dataIndex: "organizations",
-        },{
-          title: "State",
-          dataIndex: "state",
+          title: "Key",
+          dataIndex: "key",
         },{
           title: "Operation",
           dataIndex: "operation",
@@ -146,40 +124,29 @@ export default {
           width: "150px",
         },
       },
-      verticalStyle:{
-          display: 'flex',
-          height: '30px',
-          lineHeight: '30px',
-          width: '100%',
-          marginLeft: '20px'
-      },
-
     };
   },
-  created() {},
+  created() {
+    this.organizations.unshift({id:0,full_name:'General Config Item'});
+  },
   methods: {
-    filterOption(input, option) {
-      return option.full_name.toLowerCase().indexOf(input.toLowerCase())>=0
-    },
     createRecord() {
       this.modal.data = {};
-      this.modal.mode = "CREATE"
-      this.modal.title = "Create User"
-      this.modal.isOpen = true
+      this.modal.mode = "CREATE";
+      this.modal.title = "Create Config Item";
+      this.modal.isOpen = true;
     },
     editRecord(record) {
-      this.modal.data = { ...record }
-      this.modal.data.organization_ids=record.organizations.map(item=>(item.id))
-      this.modal.data.role_ids=record.roles.map(item=>(item.id))
-      this.modal.mode = "EDIT"
-      this.modal.title = "Edit User"
-      this.modal.isOpen = true
+      this.modal.data = { ...record };
+      this.modal.mode = "EDIT";
+      this.modal.title = "Edit Config Item";
+      this.modal.isOpen = true;
     },
     storeRecord() {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.post("/admin/users/", this.modal.data, {
+          this.$inertia.post(route("admin.configs.store"), this.modal.data, {
             onSuccess: (page) => {
               this.modal.data = {};
               this.modal.isOpen = false;
@@ -195,7 +162,7 @@ export default {
     },
     updateRecord() {
       console.log(this.modal.data);
-        this.$inertia.patch("/admin/users/" + this.modal.data.id, this.modal.data, {
+        this.$inertia.patch(route("admin.configs.update",this.modal.data.id), this.modal.data, {
         onSuccess: (page) => {
             this.modal.data = {};
             this.modal.isOpen = false;
@@ -205,17 +172,6 @@ export default {
             console.log(error);
         },
         });
-    },
-    deleteRecord(recordId) {
-      if (!confirm("Are you sure want to remove?")) return;
-      this.$inertia.delete("/admin/users/" + recordId, {
-        onSuccess: (page) => {
-          console.log(page);
-        },
-        onError: (error) => {
-          console.log(error);
-        },
-      });
     },
   },
 };

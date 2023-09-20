@@ -10,7 +10,6 @@
                 <div id="pure-html">
                     <div v-html="form.description"/>
                 </div>
-
                 <a-form
                     :model="formData"
                     ref="formRef"
@@ -92,7 +91,7 @@
                         </div>
                     </template>
                     <div class="text-center pb-10">
-                        <a-button @click="storeRecord" type="primary">遞交 Submit</a-button>
+                        <a-button @click="storeRecord" type="primary">Submit</a-button>
                     </div>
                     
                 </a-form>

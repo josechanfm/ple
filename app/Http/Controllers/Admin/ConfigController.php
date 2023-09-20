@@ -8,9 +8,10 @@ use App\Models\Organization;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
+use App\Models\Config;
 use App\Models\Team;
 
-class UserController extends Controller
+class ConfigController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,10 +20,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Users',[
+        return Inertia::render('Admin/Configs',[
             'organizations'=>Organization::all(),
-            'users'=>User::with('organizations')->with('roles')->get(),
-            'roles'=>\Spatie\Permission\Models\Role::all()
+            'users'=>User::with('organizations')->get(),
+            'configs'=>Config::all(),
         ]);
     }
 
@@ -97,10 +98,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Config $config)
     {
-        $user->roles()->sync($request->role_ids);
-        $user->organizations()->sync($request->organization_ids);
+        $config->update($request->all());
+        return response()->json($request->all());   
         return redirect()->back();
     }
 
