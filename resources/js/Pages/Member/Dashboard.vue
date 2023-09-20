@@ -191,11 +191,11 @@ export default {
               </div>
               <!-- card start -->
               <div class="mx-auto relative py-4 w-96 hover:scale-105 transform transition-transform mb-4">
-                <div  :class="card_style['font']" class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 shadow-xl text-sm w-full"
+                <div :style="card_style['font_style']" class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 shadow-xl text-sm w-full"
                   @click="onShowQrcode">
                   <div class="flex flex-col w-xl">
                     <div class="flex justify-center">
-                      <div class="text-lg font-bold">{{ $page.props.current_organization.full_name }}</div>
+                      <div class="text-lg font-bold">{{ $page.props.current_organization.full_name }}...</div>
                     </div>
                     <div class="flex">
                       <div class="flex flex-col flex-auto gap-1">
