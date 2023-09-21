@@ -26,11 +26,12 @@ class DashboardController extends Controller
         //dd(Config::item('card_style'));
         //dd(session('organization')->card_style);
 
-       
+       $member->organizations;
         return Inertia::render('Member/Dashboard',[
             'member'=>$member,
-            'organizations'=>$member->organizations,
-            'card_style'=>Config::item('card_style')->{session('organization')->card_style}
+            // 'organizations'=>$member->organizations,
+            'articles'=>Article::privates(),
+            'card_style'=>Config::item('card_style')->{session('organization')->card_style},
             //'current_organization'=>session('organization'),//set current_organization, coz the first access has not activate session variable yet.
             //'articles'=>Classify::whereBelongsTo(session('organization'))->first()->articles
         ]);

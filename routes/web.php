@@ -27,6 +27,7 @@ Route::get('/', function () {
         'articles'=>Article::publics()
     ]);
 })->name('/');;
+Route::get('article', [\App\Http\Controllers\ArticleController::class, 'item'])->name('article.item');
 Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
 Route::post('registration', [\App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');
 

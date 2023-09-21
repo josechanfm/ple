@@ -22,7 +22,7 @@
                                 title="Are you sure to delete the record?"
                                 ok-text="Yes"
                                 cancel-text="No"
-                                @confirm="deleteConfirmed(record.id)"
+                                @confirm="deleteConfirmed(record)"
                                 >
                                 <a-button>Delete</a-button>
                             </a-popconfirm>
@@ -57,14 +57,24 @@
                     <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat" />
                 </a-form-item>
                 <a-form-item :label="$t('expired_at')" name="expired_at">
-                    <a-date-picker v-model:value="modal.data.expired_at" :valueFormat="dateFormat" />
+                    <a-date-picker v-model:value="modal.data.expire_at" :valueFormat="dateFormat" />
                 </a-form-item>
                 <a-form-item :label="$t('url')" name="url">
                     <a-input v-model:value="modal.data.url" />
                 </a-form-item>
-                <a-form-item :label="$t('published')" name="published">
-                    <a-switch v-model:checked="modal.data.published" :checkedValue="1" :unCheckedValue="0" />
-                </a-form-item>
+                <a-row>
+                    <a-col>
+                        <a-form-item :label="$t('published')" name="published">
+                            <a-switch v-model:checked="modal.data.published" :checkedValue="1" :unCheckedValue="0" 
+                            @change="modal.data.public = 0" />
+                        </a-form-item>
+                    </a-col>
+                    <a-col class="pl-10" v-if="modal.data.published">
+                        <a-form-item :label="$t('public')" name="public">
+                            <a-switch v-model:checked="modal.data.public" :checkedValue="1" :unCheckedValue="0" />
+                        </a-form-item>
+                    </a-col>
+                </a-row>
 
             </a-form>
             <template #footer>
@@ -186,8 +196,8 @@ export default {
             });
 
         },
-        deleteConfirmed(){
-            this.$inertia.delete(route('manage.articles.destroy', recordId), {
+        deleteConfirmed(record){
+            this.$inertia.delete(route('manage.articles.destroy', record.id), {
                 onSuccess: (page) => {
                     console.log(page);
                 },

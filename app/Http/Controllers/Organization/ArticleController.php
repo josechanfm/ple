@@ -8,7 +8,7 @@ use Inertia\Inertia;
 use App\Models\Config;
 use App\Models\Classify;
 use App\Models\Article;
-use App\Models\Organization;
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -46,6 +46,9 @@ class ArticleController extends Controller
     {
         $data=$request->all();
         $data['organization_id']=session('organization')->id;
+        $data['uuid']=Str::uuid();
+        $data['user_id']=auth()->user()->id;
+        $data['author']=auth()->user()->name;
         Article::create($data);
         return redirect()->back();
     }
@@ -91,8 +94,11 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
-        //
+        if(session('organization')->id==$article->organization_id){
+            $article->delete();
+        }
+        return redirect()->back();
     }
 }

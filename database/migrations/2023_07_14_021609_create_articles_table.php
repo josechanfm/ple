@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('content_en')->nullable();
             $table->text('content_fn')->nullable();
             $table->date('valid_at')->nullable();
-            $table->date('expired_at')->nullable();
+            $table->date('expire_at')->nullable();
             $table->text('url')->nullable();
             $table->string('reference')->nullable();
             $table->text('author')->nullable();
