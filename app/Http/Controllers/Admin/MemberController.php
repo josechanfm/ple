@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Member;
+use App\Models\Organization;
 use Illuminate\Support\Facades\Password;
 
 class MemberController extends Controller
@@ -20,6 +21,7 @@ class MemberController extends Controller
         $members=Member::with('organizations')->with('user')->get();
         return Inertia::render('Admin/Members',[
             'members'=>$members,
+            'organizations'=>Organization::all()
         ]);
     }
 
@@ -73,9 +75,11 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Member $member)
     {
-        //
+        $member->update($request->all());
+        $member->organizations()->sync($request->organization_ids);
+        return redirect()->back();
     }
 
     /**

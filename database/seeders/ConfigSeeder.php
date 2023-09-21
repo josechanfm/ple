@@ -253,59 +253,59 @@ class ConfigSeeder extends Seeder
             'value'=>'{
                     "card_01": {
                         "card_name": "card_01.png",
-                        "font": "text-red-900 font-serif"
+                        "font_style": "font-family:sans-serif;color:#c24641"
                     },
                     "card_02": {
                         "card_name": "card_02.png",
-                        "font": "text-white font-serif"
+                        "font_style": "font-family:sans-serif;color:white"
                     },
                     "card_03": {
                         "card_name": "card_03.png",
-                        "font": "text-white font-serif"
+                        "font_style": "font-family:sans-serif;color:white"
                     },
                     "card_04": {
                         "card_name": "card_04.png",
-                        "font": "text-white font-serif"
+                        "font_style": "font-family:sans-serif;color:white"
                     },
                     "card_05": {
                         "card_name": "card_05.png",
-                        "font": "text-white font-serif"
+                        "font_style": "font-family:sans-serif;color:white"
                     },
                     "card_06": {
                         "card_name": "card_06.png",
-                        "font": "text-white font-serif"
+                        "font_style": "font-family:sans-serif;color:white"
                     },
                     "card_07": {
                         "card_name": "card_07.png",
-                        "font": "text-blue-900 font-serif"
+                        "font_style": "font-family:sans-serif;color:#c24641"
                     },
                     "card_08": {
                         "card_name": "card_08.png",
-                        "font": "text-blue-900 font-serif"
+                        "font_style": "font-family:sans-serif;color:#c24641"
                     },
                     "card_09": {
                         "card_name": "card_09.png",
-                        "font": "text-white font-serif"
+                        "font_style": "font-family:sans-serif;color:white"
                     },
                     "card_10": {
                         "card_name": "card_10.png",
-                        "font": "text-white font-serif"
+                        "font_style": "font-family:sans-serif;color:white"
                     },
                     "card_11": {
                         "card_name": "card_11.png",
-                        "font": "text-white font-serif"
+                        "font_style": "font-family:sans-serif;color:white"
                     },
                     "card_12": {
                         "card_name": "card_12.png",
-                        "font": "text-white font-serif"
+                        "font_style": "font-family:sans-serif;color:white"
                     },
                     "card_13": {
                         "card_name": "card_13.png",
-                        "fontr": "text-blue-900 font-serif"
+                        "font_style": "font-family:sans-serif;color:#c24641"
                     },
                     "card_14": {
                         "card_name": "card_14.png",
-                        "font": "text-white font-serif"
+                        "font_style": "font-family:sans-serif;color:white"
                     }
                 }'
             ]);

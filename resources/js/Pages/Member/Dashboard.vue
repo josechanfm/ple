@@ -1,5 +1,6 @@
 <script>
 import MemberLayout from "@/Layouts/MemberLayout.vue";
+import ArticleList from "@/Components/ArticleList.vue";
 import axios from "axios";
 import QRCodeVue3 from "qrcode-vue3";
 import { onMounted } from "vue";
@@ -7,6 +8,7 @@ import { onMounted } from "vue";
 export default {
   components: {
     MemberLayout,
+    ArticleList,
     QRCodeVue3
   },
   props: ['member', 'articles', 'card_style'],
@@ -14,30 +16,30 @@ export default {
     return {
       qrcode: '',
       interval: 0,
-      features:[
+      features: [
         {
-          image:"https://dummyimage.com/300x5:3",
-          title:"Public",
-          description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags:['#hashtag','#hashtag','#hashtag'],
-          link:'/'
-        },{
-          image:"https://dummyimage.com/300x5:3",
-          title:"Forms",
-          description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags:['#hashtag','#hashtag','#hashtag'],
-          link:'forms'
-        },{
-          image:"https://dummyimage.com/300x5:3",
-          title:"Competitions",
-          description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags:['#hashtag','#hashtag','#hashtag'],
-          link:'competitions'
-        },{
-          image:"https://dummyimage.com/300x5:3",
-          title:"Other",
-          description:"Other descriptions",
-          tags:['#hashtag','#hashtag','#hashtag']
+          image: "https://dummyimage.com/300x5:3",
+          title: "Public",
+          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
+          tags: ['#hashtag', '#hashtag', '#hashtag'],
+          link: '/'
+        }, {
+          image: "https://dummyimage.com/300x5:3",
+          title: "Forms",
+          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
+          tags: ['#hashtag', '#hashtag', '#hashtag'],
+          link: 'forms'
+        }, {
+          image: "https://dummyimage.com/300x5:3",
+          title: "Competitions",
+          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
+          tags: ['#hashtag', '#hashtag', '#hashtag'],
+          link: 'competitions'
+        }, {
+          image: "https://dummyimage.com/300x5:3",
+          title: "Other",
+          description: "Other descriptions",
+          tags: ['#hashtag', '#hashtag', '#hashtag']
         }
 
       ],
@@ -102,7 +104,6 @@ export default {
         Membership
       </h2>
     </template>
-
     <div class="container mx-auto">
       <div class="flex flex-col-reverse md:flex-row gap-6">
         <div class="flex-auto">
@@ -127,11 +128,13 @@ export default {
                         </p>
                       </div>
                       <div class="px-6 py-4">
-                        <span v-for="tag in feature.tags" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{{ tag }}</span>
+                        <span v-for="tag in feature.tags"
+                          class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{{
+                            tag }}</span>
                       </div>
                     </div>
                   </div>
-                  </a>
+                </a>
               </template>
             </div>
           </div>
@@ -140,23 +143,7 @@ export default {
           <!-- News Section-->
           <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg pl-5">
-              <a-list item-layout="horizontal" :data-source="data">
-                <template #header>
-                  <div>News</div>
-                </template>
-                <template #renderItem="{ item }">
-                  <a-list-item>
-                    <a-list-item-meta :description="item.content">
-                      <template #title>
-                        <a :href="item.url">{{ item.title }}</a>
-                      </template>
-                      <template #avatar>
-                        <a-avatar src="https://joeschmoe.io/api/v1/random" />
-                      </template>
-                    </a-list-item-meta>
-                  </a-list-item>
-                </template>
-              </a-list>
+              <ArticleList :articles="articles"/>
             </div>
           </div>
           <!-- News Section end-->
@@ -179,23 +166,22 @@ export default {
                         { offset: 1, color: '#26249a' },
                       ],
                     },
-                  }" 
-                  :cornersSquareOptions="{
+                  }" :cornersSquareOptions="{
                     type: 'square',
                     color: '#e00404'
-                  }" 
-                  :cornersDotOptions="{
+                  }" :cornersDotOptions="{
                     color: '#e00404'
                   }" />
                 </div>
               </div>
               <!-- card start -->
               <div class="mx-auto relative py-4 w-96 hover:scale-105 transform transition-transform mb-4">
-                <div  :class="card_style['font']" class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 shadow-xl text-sm w-full"
+                <div :style="card_style['font_style']"
+                  class="absolute z-50 h-52 flex rounded-lg flex-col py-3 px-8 shadow-xl text-sm w-full"
                   @click="onShowQrcode">
                   <div class="flex flex-col w-xl">
                     <div class="flex justify-center">
-                      <div class="text-lg font-bold">{{ $page.props.current_organization.full_name }}</div>
+                      <div class="text-lg font-bold">{{ $page.props.current_organization.full_name }}...</div>
                     </div>
                     <div class="flex">
                       <div class="flex flex-col flex-auto gap-1">
@@ -291,12 +277,12 @@ export default {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
       </div>
     </div>
+    
   </MemberLayout>
 </template>
 

@@ -62,11 +62,6 @@ return [
         ],
         'form' => [
             'driver' => 'local',
-            'root'   => public_path('/media/organization'),
-            'url'    => env('APP_URL').'/media/organization',
-        ],
-        'form' => [
-            'driver' => 'local',
             'root'   => public_path('/media/form'),
             'url'    => env('APP_URL').'/media/form',
             // 'permissions' =>[

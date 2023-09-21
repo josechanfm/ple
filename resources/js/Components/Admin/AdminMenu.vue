@@ -59,6 +59,16 @@
           </inertia-link>
         </span>
       </a-menu-item>
+      <a-menu-item key="4">
+        <template #icon>
+          <PieChartOutlined />
+        </template>
+        <span>
+          <inertia-link :href="route('admin.configs.index')">
+            Configs
+          </inertia-link>
+        </span>
+      </a-menu-item>
 
       <a-sub-menu key="sub1">
         <template #icon>

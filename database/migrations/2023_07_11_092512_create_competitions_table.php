@@ -26,6 +26,7 @@ return new class extends Migration
             $table->text('categories_weights');
             $table->text('roles');
             $table->text('scope')->nullable();
+            $table->boolean('published');
             $table->timestamps();
         });
     }

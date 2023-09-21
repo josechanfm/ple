@@ -18,7 +18,14 @@
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="editRecord(record)">Edit</a-button>
-                            <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                            <a-popconfirm
+                                title="Are you sure to delete the record?"
+                                ok-text="Yes"
+                                cancel-text="No"
+                                @confirm="deleteConfirmed(record)"
+                                >
+                                <a-button>Delete</a-button>
+                            </a-popconfirm>
                         </template>
                         <template v-else-if="column.dataIndex == 'published'">
                             {{ record.published ? 'Yes' : 'No' }}
@@ -31,7 +38,7 @@
             </div>
         </div>
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="100%">
             <a-form ref="modalRef" :model="modal.data" name="Teacher" layout="vertical" autocomplete="off" :rules="rules"
                 :validate-messages="validateMessages">
                 <a-form-item :label="$t('article_category')" name="category_code">
@@ -44,20 +51,30 @@
                     <a-input v-model:value="modal.data.title_fn" />
                 </a-form-item>
                 <a-form-item :label="$t('content')" name="content_en">
-                    <quill-editor v-model:value="modal.data.content_en" style="min-height:200px;" />
+                    <CKEditor :editor="editor" v-model="modal.data.content_en" :config="editorConfig"></CKEditor>
                 </a-form-item>
                 <a-form-item :label="$t('valid_at')" name="valid_at">
                     <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat" />
                 </a-form-item>
                 <a-form-item :label="$t('expired_at')" name="expired_at">
-                    <a-date-picker v-model:value="modal.data.expired_at" :valueFormat="dateFormat" />
+                    <a-date-picker v-model:value="modal.data.expire_at" :valueFormat="dateFormat" />
                 </a-form-item>
                 <a-form-item :label="$t('url')" name="url">
                     <a-input v-model:value="modal.data.url" />
                 </a-form-item>
-                <a-form-item :label="$t('published')" name="published">
-                    <a-switch v-model:checked="modal.data.published" :checkedValue="1" :unCheckedValue="0" />
-                </a-form-item>
+                <a-row>
+                    <a-col>
+                        <a-form-item :label="$t('published')" name="published">
+                            <a-switch v-model:checked="modal.data.published" :checkedValue="1" :unCheckedValue="0" 
+                            @change="modal.data.public = 0" />
+                        </a-form-item>
+                    </a-col>
+                    <a-col class="pl-10" v-if="modal.data.published">
+                        <a-form-item :label="$t('public')" name="public">
+                            <a-switch v-model:checked="modal.data.public" :checkedValue="1" :unCheckedValue="0" />
+                        </a-form-item>
+                    </a-col>
+                </a-row>
 
             </a-form>
             <template #footer>
@@ -71,13 +88,16 @@
 
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
-import { quillEditor } from 'vue3-quill';
 import { defineComponent, reactive } from 'vue';
+import { component as CKEditor } from '@ckeditor/ckeditor5-vue';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 
 export default {
     components: {
         OrganizationLayout,
-        quillEditor
+        CKEditor,
+        ClassicEditor
     },
     props: ['classifies', 'articleCategories', 'articles'],
     data() {
@@ -90,6 +110,20 @@ export default {
                 mode: ""
             },
             teacherStateLabels: {},
+            editor: ClassicEditor,
+            editorData: 'ckeditor 5 for laravel and vuejs',
+            editorConfig: {
+                    // The configuration of the editor.
+            },
+            editorOptions: {
+                debug: 'info',
+                modules: {
+                    toolbar: ['bold', 'italic', 'underline','fullscreen']
+                },
+                placeholder: 'Compose an epic...',
+                readOnly: true,
+                theme: 'snow'
+            },
             columns: [
                 {
                     title: 'Title',
@@ -178,9 +212,8 @@ export default {
             });
 
         },
-        deleteRecord(recordId) {
-            if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete(route('manage.articles.destroy', recordId), {
+        deleteConfirmed(record){
+            this.$inertia.delete(route('manage.articles.destroy', record.id), {
                 onSuccess: (page) => {
                     console.log(page);
                 },
@@ -188,7 +221,18 @@ export default {
                     console.log(error);
                 }
             });
-        },
+        }, 
+        //deleteRecord(recordId) {
+            //if (!confirm('Are you sure want to remove?')) return;
+            // this.$inertia.delete(route('manage.articles.destroy', recordId), {
+            //     onSuccess: (page) => {
+            //         console.log(page);
+            //     },
+            //     onError: (error) => {
+            //         console.log(error);
+            //     }
+            // });
+        //},
         createLogin(recordId) {
             console.log('create login' + recordId);
         },

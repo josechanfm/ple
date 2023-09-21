@@ -10,7 +10,8 @@ class Config extends Model
 {
     use HasFactory;
     //protected $casts=['value'=>'json'];
-
+    protected $fillable=['organization_id','key','value','remark'];
+    
     static function item($key,$organization=null)
     {
         $item=null;
