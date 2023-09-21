@@ -51,7 +51,7 @@
                     <a-input v-model:value="modal.data.title_fn" />
                 </a-form-item>
                 <a-form-item :label="$t('content')" name="content_en">
-                    <CKEditor :editor="editor" v-model="modal.data.content_en" :config="editorConfig"></CKEditor>
+                    <quill-editor v-model:value="modal.data.content_en" style="min-height:200px;" />
                 </a-form-item>
                 <a-form-item :label="$t('valid_at')" name="valid_at">
                     <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat" />
@@ -91,13 +91,15 @@ import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { defineComponent, reactive } from 'vue';
 import { component as CKEditor } from '@ckeditor/ckeditor5-vue';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { quillEditor } from 'vue3-quill';
 
 
 export default {
     components: {
         OrganizationLayout,
+        quillEditor,
         CKEditor,
-        ClassicEditor
+        ClassicEditor,
     },
     props: ['classifies', 'articleCategories', 'articles'],
     data() {
@@ -110,19 +112,12 @@ export default {
                 mode: ""
             },
             teacherStateLabels: {},
-            editor: ClassicEditor,
-            editorData: 'ckeditor 5 for laravel and vuejs',
-            editorConfig: {
-                    // The configuration of the editor.
-            },
-            editorOptions: {
-                debug: 'info',
-                modules: {
-                    toolbar: ['bold', 'italic', 'underline','fullscreen']
+            editor:{
+                them: ClassicEditor,
+                data: 'ckeditor 5 for laravel and vuejs',
+                config: {
+                    //toolbar: [ 'bold', 'italic', '|', 'link' ],
                 },
-                placeholder: 'Compose an epic...',
-                readOnly: true,
-                theme: 'snow'
             },
             columns: [
                 {
@@ -169,6 +164,7 @@ export default {
     methods: {
         createRecord() {
             this.modal.data = {};
+            this.modal.data.public=0;
             this.modal.mode = "CREATE";
             this.modal.title = "Create";
             this.modal.isOpen = true;
