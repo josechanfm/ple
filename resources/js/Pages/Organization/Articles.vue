@@ -38,7 +38,7 @@
             </div>
         </div>
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="100%">
             <a-form ref="modalRef" :model="modal.data" name="Teacher" layout="vertical" autocomplete="off" :rules="rules"
                 :validate-messages="validateMessages">
                 <a-form-item :label="$t('article_category')" name="category_code">
@@ -51,7 +51,9 @@
                     <a-input v-model:value="modal.data.title_fn" />
                 </a-form-item>
                 <a-form-item :label="$t('content')" name="content_en">
-                    <quill-editor v-model:value="modal.data.content_en" style="min-height:200px;" />
+                    <quill-editor 
+                        v-model:value="modal.data.content_en" style="min-height:200px;" 
+                    />
                 </a-form-item>
                 <a-form-item :label="$t('valid_at')" name="valid_at">
                     <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat" />
@@ -108,6 +110,15 @@ export default {
                 mode: ""
             },
             teacherStateLabels: {},
+            editorOptions: {
+                debug: 'info',
+                modules: {
+                    toolbar: ['bold', 'italic', 'underline','fullscreen']
+                },
+                placeholder: 'Compose an epic...',
+                readOnly: true,
+                theme: 'snow'
+            },
             columns: [
                 {
                     title: 'Title',

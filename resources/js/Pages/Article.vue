@@ -33,3 +33,14 @@ export default {
     
 </template>
 
+<style >
+.ql-align-right {
+	text-align: right;
+}
+.ql-align-center {
+	text-align: center;
+}
+.ql-align-left {
+	text-align: left;
+}
+</style>
