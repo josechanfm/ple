@@ -51,9 +51,7 @@
                     <a-input v-model:value="modal.data.title_fn" />
                 </a-form-item>
                 <a-form-item :label="$t('content')" name="content_en">
-                    <quill-editor 
-                        v-model:value="modal.data.content_en" style="min-height:200px;" 
-                    />
+                    <CKEditor :editor="editor" v-model="modal.data.content_en" :config="editorConfig"></CKEditor>
                 </a-form-item>
                 <a-form-item :label="$t('valid_at')" name="valid_at">
                     <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat" />
@@ -90,14 +88,16 @@
 
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
-import { quillEditor } from 'vue3-quill';
 import { defineComponent, reactive } from 'vue';
+import { component as CKEditor } from '@ckeditor/ckeditor5-vue';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
 export default {
     components: {
         OrganizationLayout,
-        quillEditor
+        CKEditor,
+        ClassicEditor
     },
     props: ['classifies', 'articleCategories', 'articles'],
     data() {
@@ -110,6 +110,11 @@ export default {
                 mode: ""
             },
             teacherStateLabels: {},
+            editor: ClassicEditor,
+            editorData: 'ckeditor 5 for laravel and vuejs',
+            editorConfig: {
+                    // The configuration of the editor.
+            },
             editorOptions: {
                 debug: 'info',
                 modules: {
