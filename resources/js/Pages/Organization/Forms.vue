@@ -82,7 +82,7 @@
                     <a-switch v-model:checked="modal.data.with_attendance" :unCheckedValue="0" :checkedValue="1" />
                     <span class="pl-3">{{ $t('with_attendance_note') }}</span>
                 </a-form-item>
-                <a-form-item :label="$t('banner_image')" name="cert_logo">
+                <a-form-item :label="$t('banner_image')" name="banner_image">
                     <div v-if="modal.data.media.length">
                         <inertia-link :href="route('manage.form.deleteMedia', modal.data.media[0].id)"
                             class="float-right text-red-500">

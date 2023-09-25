@@ -10,7 +10,6 @@
         </div>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-
                 <a-table :dataSource="articles" :columns="columns">
                     <template #headerCell="{ column }">
                         {{ column.i18n ? $t(column.i18n) : column.title }}
@@ -51,7 +50,8 @@
                     <a-input v-model:value="modal.data.title_fn" />
                 </a-form-item>
                 <a-form-item :label="$t('content')" name="content_en">
-                    <CKEditor :editor="editor" v-model="modal.data.content_en" :config="editorConfig"></CKEditor>
+                    <a-textarea  v-model="modal.data.content_en"/>
+                    <ckeditor :editor="editor" v-model="modal.data.content_en" :config="editorConfig"/>
                 </a-form-item>
                 <a-form-item :label="$t('valid_at')" name="valid_at">
                     <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat" />
@@ -89,15 +89,12 @@
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { defineComponent, reactive } from 'vue';
-import { component as CKEditor } from '@ckeditor/ckeditor5-vue';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
+import ClasicEditor from "@ckeditor/ckeditor5-build-classic";
 
 export default {
     components: {
         OrganizationLayout,
-        CKEditor,
-        ClassicEditor
+        ClasicEditor
     },
     props: ['classifies', 'articleCategories', 'articles'],
     data() {
@@ -105,24 +102,15 @@ export default {
             dateFormat: "YYYY-MM-DD",
             modal: {
                 isOpen: false,
-                data: {},
+                data: {content_en:""},
                 title: "Modal",
                 mode: ""
+
             },
             teacherStateLabels: {},
-            editor: ClassicEditor,
-            editorData: 'ckeditor 5 for laravel and vuejs',
+            editor: ClasicEditor,
             editorConfig: {
-                    // The configuration of the editor.
-            },
-            editorOptions: {
-                debug: 'info',
-                modules: {
-                    toolbar: ['bold', 'italic', 'underline','fullscreen']
-                },
-                placeholder: 'Compose an epic...',
-                readOnly: true,
-                theme: 'snow'
+                // The configuration of the editor.
             },
             columns: [
                 {
@@ -144,6 +132,7 @@ export default {
                 },
             ],
             rules: {
+                category_code: { required: true },
                 classify_id: { required: true },
                 title_en: { required: true },
             },
@@ -238,5 +227,10 @@ export default {
         },
 
     },
+    watch:{
+        "modal.data.content_en"(text){
+            this.$emit("input",text)
+        }
+    }
 }
 </script>

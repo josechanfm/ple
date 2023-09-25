@@ -121,7 +121,9 @@ class FormController extends Controller
             'title'=>'required',
         ]);
         $organization = Organization::find($request->organization_id);
-
+        if($organization->id!=session('organization')->id){
+            return redirect()->back();
+        };
         $form->name=$request->name;
         $form->title=$request->title;
         $form->description=$request->description;

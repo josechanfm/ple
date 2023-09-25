@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Organization;
-use App\Models\Certificate;
+use App\Models\Certificate; 
 use App\Models\Config;
 
 class CertificateController extends Controller
@@ -24,7 +24,7 @@ class CertificateController extends Controller
     public function index()
     {
         return Inertia::render('Organization/Certificates',[
-            'certificates'=>session('organization')->fresh()->certificates,
+            'certificates'=>session('organization')->certificates,
             'certificate_categories'=>Config::item('certificate_categories')
         ]);
 
@@ -89,6 +89,16 @@ class CertificateController extends Controller
      */
     public function update(Request $request, Certificate $certificate)
     {
+        dd($request->all());
+        $this->validate($request,[
+            'organization_id' => 'required',
+            'category_code'=>'required',
+            'name'=>'required',
+        ]);
+        $organization = Organization::find($request->organization_id);
+        if($organization->id!=session('organization')->id){
+            return redirect()->back();
+        };
         $certificate->update($request->all());
         return redirect()->back();
     }

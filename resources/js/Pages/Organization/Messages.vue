@@ -123,8 +123,11 @@ export default {
         },
       ],
       rules: {
-        field: { required: true },
-        label: { required: true },
+        category_code: { required: true },
+        receiver: { required: true },
+        sender: { required: true },
+        title: { required: true },
+        content: { required: true },
       },
       validateMessages: {
         required: '${label} is required!',

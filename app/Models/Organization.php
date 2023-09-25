@@ -31,7 +31,7 @@ class Organization extends Model
     }
 
     public function certificates(){
-        return $this->hasMany(Certificate::class);
+        return $this->hasMany(Certificate::class)->with('media');
     }
     public function events(){
         return $this->hasMany(Event::class);
