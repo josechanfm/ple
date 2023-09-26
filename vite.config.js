@@ -1,6 +1,9 @@
+import { fileURLToPath, URL } from 'node:url';
 import { defineConfig, loadEnv } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import ckeditor5 from '@ckeditor/vite-plugin-ckeditor5';
+
 
 export default defineConfig(({ mode }) => {
 
@@ -26,6 +29,13 @@ export default defineConfig(({ mode }) => {
                     },
                 },
             }),
+            ckeditor5( { theme: require.resolve( '@ckeditor/ckeditor5-theme-lark' ) } )
         ],
+        resolve: {
+            // alias: {
+            //   '@': fileURLToPath( new URL( './resources', import.meta.url ) )
+            // }
+        }
+    
     }
 });

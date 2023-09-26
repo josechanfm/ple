@@ -50,8 +50,7 @@
                     <a-input v-model:value="modal.data.title_fn" />
                 </a-form-item>
                 <a-form-item :label="$t('content')" name="content_en">
-                    <a-textarea  v-model="modal.data.content_en"/>
-                    <ckeditor :editor="editor" v-model="modal.data.content_en" :config="editorConfig"/>
+                    <CKEditor :editor="editor" v-model="modal.data.content_en" :config="editorConfig"/>
                 </a-form-item>
                 <a-form-item :label="$t('valid_at')" name="valid_at">
                     <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat" />
@@ -89,12 +88,12 @@
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { defineComponent, reactive } from 'vue';
-import ClasicEditor from "@ckeditor/ckeditor5-build-classic";
+import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
 
 export default {
     components: {
         OrganizationLayout,
-        ClasicEditor
+        ClassicEditor,
     },
     props: ['classifies', 'articleCategories', 'articles'],
     data() {
@@ -108,7 +107,8 @@ export default {
 
             },
             teacherStateLabels: {},
-            editor: ClasicEditor,
+            editor: ClassicEditor,
+            editorData:'<p>Content of the editor.</p>',
             editorConfig: {
                 // The configuration of the editor.
             },

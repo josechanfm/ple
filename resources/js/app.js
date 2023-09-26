@@ -10,7 +10,7 @@ import { InertiaProgress } from '@inertiajs/progress';
 import Antd from 'ant-design-vue';
 import { i18nVue } from 'laravel-vue-i18n'
 import 'ant-design-vue/dist/antd.css';
-import CKEditor from '@ckeditor/ckeditor5-vue';
+
 
 // import { createI18n } from 'vue-i18n';
 // import messages from '@/lang/messages.js'
@@ -28,7 +28,6 @@ createInertiaApp({
     setup({ el, app, props, plugin }) {
         return createApp({ render: () => h(app, props) })
             .use(plugin)
-            .use(CKEditor)
             .use(ZiggyVue, Ziggy)
             .use(Antd)
             .use(i18nVue, {
