@@ -13,8 +13,10 @@ class Certificate extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
-    protected $fillable=['organization_id','category_code','name','cert_title','cert_body','cert_logo','cert_template','number_format','rank_catption','descreption'];
+
+    protected $fillable=['organization_id','category_code','name','cert_title','cert_body','cert_template','number_format','rank_catption','descreption'];
     protected $appends=['cid','cert_number'];
+
 
     public function getCidAttribute(){
         return $this->id;
@@ -45,8 +47,8 @@ class Certificate extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('image')
-            ->useDisk('form');
+        $this->addMediaCollection('cert_logo')
+            ->useDisk('certificate');
     }
     
 }

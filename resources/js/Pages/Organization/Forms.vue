@@ -124,6 +124,7 @@
     </OrganizationLayout>
 </template>
 
+
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { UploadOutlined, LoadingOutlined, PlusOutlined, InfoCircleFilled } from '@ant-design/icons-vue';

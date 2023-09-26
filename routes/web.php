@@ -109,6 +109,7 @@ Route::group([
     Route::resource('bulletins', App\Http\Controllers\Organization\BulletinController::class)->names('manage.bulletins');
     Route::resource('messages', App\Http\Controllers\Organization\MessageController::class)->names('manage.messages');
     Route::resource('certificates', App\Http\Controllers\Organization\CertificateController::class)->names('manage.certificates');
+    Route::get('certificates/delete_media/{certificate}', [App\Http\Controllers\Organization\CertificateController::class, 'deleteMedia'])->name('manage.certificate.deleteMedia');
     Route::resource('certificate/{certificate}/members',App\Http\Controllers\Organization\CertificateMemberController::class)->names('manage.certificate.members');
     Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
     Route::resource('competitions', App\Http\Controllers\Organization\CompetitionController::class)->names('manage.competitions');

@@ -17,7 +17,7 @@
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button @click="editRecord(record)">Edit</a-button>
-                            <inertia-link :href="route('manage.certificate.members.index', record.id)">Members</inertia-link>
+                            <inertia-link :href="route('manage.certificate.members.index', record.id)" class="ant-btn">Members</inertia-link>
                         </template>
                         <template v-else-if="column.dataIndex == 'state'">
                             {{ teacherStateLabels[text] }}
@@ -30,8 +30,7 @@
             </div>
         </div>
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
-            {{ modal.data }}
+        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" :afterClose="modalClose">
             <a-form ref="modalRef" :model="modal.data" name="Teacher" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
                 autocomplete="off" :rules="rules" :validate-messages="validateMessages">
                 <a-form-item label="Type of Certificate" name="category_code">
@@ -44,35 +43,29 @@
                     <a-input v-model:value="modal.data.cert_body" />
                 </a-form-item>
                 <a-form-item :label="$t('cert_logo')" name="cert_logo">
-                    <div v-if="modal.data.media.length">
-                        <inertia-link :href="route('manage.certificate.deleteMedia', modal.data.media[0].id)"
-                            class="float-right text-red-500">
-                            <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor"
-                                aria-hidden="true" viewBox="64 64 896 896">
-                                <path
-                                    d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z">
-                                </path>
-                            </svg>
-                        </inertia-link>
-                        <img :src="'/media/certificate/' + modal.data.media[0].id + '/' + modal.data.media[0].file_name" width="100" />
+                    <a-button @click="cropper.showModal = true">Upload Profile Image</a-button>
+                    <CropperModal v-if="cropper.showModal" :minAspectRatioProp="{ width: 8, height: 8 }"
+                        :maxAspectRatioProp="{ width: 8, height: 8 }" @croppedImageData="setCroppedImageData"
+                        @showModal="cropper.showModal = false" 
+                    />
+                    <div class="flex flex-wrap mt-4 mb-6">
+                    <div class="w-full px-3">
+                        <div v-if="cropper.preview">
+                            <img :src="cropper.preview" class="md:w-1/2"/>
+                        </div>
+                        <div v-else-if="modal.data.cert_logo">
+                            <inertia-link :href="route('manage.certificate.deleteMedia', modal.data.id)"
+                                class="float-right text-red-500">
+                                <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor"
+                                    aria-hidden="true" viewBox="64 64 896 896">
+                                    <path
+                                        d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z">
+                                    </path>
+                                </svg>
+                            </inertia-link>
+                            <img :src="'/media/certificate/'+modal.data.cert_logo" class="md:w-1/2"/>
+                        </div>
                     </div>
-                    <div v-else>
-                        <a-upload 
-                            v-model:file-list="modal.data.cert_logo" 
-                            :multiple="false"  
-                            :max-count=1 
-                            list-type="picture-card"
-                            :beforeUpload="()=>{return false}"
-                            :show-upload-list="false"
-                            @change="uploadChange"
-                            >
-                            <img v-if="imageUrl" :src="imageUrl" alt="Cert Logo" />
-                                <div v-else>
-                                    <loading-outlined v-if="loading"></loading-outlined>
-                                    <plus-outlined v-else></plus-outlined>
-                                    <div class="ant-upload-text">Upload</div>
-                                </div>
-                        </a-upload>
                     </div>
                 </a-form-item>
                 <a-form-item label="Certificate template" name="cert_template">
@@ -101,17 +94,24 @@
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { UploadOutlined, LoadingOutlined, PlusOutlined, InfoCircleFilled } from '@ant-design/icons-vue';
 import { defineComponent, reactive } from 'vue';
+import CropperModal from "@/Components/Member/CropperModal.vue";
 
 export default {
     components: {
         OrganizationLayout,
         UploadOutlined, LoadingOutlined,PlusOutlined, InfoCircleFilled,
+        CropperModal
     },
     props: ['certificates', 'certificate_categories'],
     data() {
         return {
             loading:false,
             imageUrl:null,
+            cropper:{
+                showModal:false,
+                preview: null,
+                data:null,
+            },
             modal: {
                 isOpen: false,
                 data: {},
@@ -179,6 +179,7 @@ export default {
         },
         editRecord(record) {
             this.modal.data = { ...record };
+            this.imageUrl = null;
             this.modal.mode = "EDIT";
             this.modal.title = "修改";
             this.modal.isOpen = true;
@@ -200,13 +201,12 @@ export default {
         },
         updateRecord() {
             this.$refs.modalRef.validateFields().then(() => {
-                console.log(this.modal.data);
+                this.modal.data.cert_logo=this.cropper.data.blob
                 this.modal.data._method = 'PATCH';
-                this.$inertia.put(route('manage.certificates.update', this.modal.data.id), this.modal.data, {
+                this.$inertia.post(route('manage.certificates.update', this.modal.data.id), this.modal.data, {
                     onSuccess: (page) => {
                         this.modal.data = {};
                         this.modal.isOpen = false;
-                        console.log(page);
                     },
                     onError: (error) => {
                         console.log(error);
@@ -216,35 +216,14 @@ export default {
                 console.log("error", err);
             });
         },
-        uploadChange(info){
-            console.log(info);
-            const isJpgOrPng = info.file.type === 'image/jpeg' || info.file.type === 'image/png';
-            if (!isJpgOrPng) {
-                console.log('image format!');
-                message.error('You can only upload JPG/PNG file!');
-            }
-            const isLt2M = info.file.size / 1024 / 1024 < 0.2;
-            if (!isLt2M) {
-                console.log('image size');
-                message.error('Image must smaller than 2MB!');
-            }
-
-            if(isJpgOrPng && isLt2M){
-                this.getBase64(info.file, base64Url => {
-                    this.imageUrl = base64Url;
-                    this.loading = true;
-                });
-            }else{
-                this.modal.data.image=[]
-            }
-
+        setCroppedImageData(data) {
+            this.cropper.preview = data.imageUrl
+            this.cropper.data=data
         },
-        getBase64(img, callback) {
-            console.log("base64");
-            const reader = new FileReader();
-            reader.addEventListener('load', () => callback(reader.result));
-            reader.readAsDataURL(img);
+        modalClose(){
+            this.cropper.preview=null;
         }
+
     },
 }
 </script>

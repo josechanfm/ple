@@ -75,6 +75,11 @@ return [
             //     ]
             // ]
         ],
+        'certificate' => [
+            'driver' => 'local',
+            'root'   => public_path('/media/certificate'),
+            'url'    => env('APP_URL').'/media/certificate',
+        ],
 
 
     ],
