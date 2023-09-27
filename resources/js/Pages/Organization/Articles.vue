@@ -50,7 +50,7 @@
                     <a-input v-model:value="modal.data.title_fn" />
                 </a-form-item>
                 <a-form-item :label="$t('content')" name="content_en">
-                    <CKEditor :editor="editor" v-model="modal.data.content_en" :config="editorConfig"/>
+                    <ckeditor :editor="editor" v-model="modal.data.content_en" :config="editorConfig"/>
                 </a-form-item>
                 <a-form-item :label="$t('valid_at')" name="valid_at">
                     <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat" />
@@ -88,12 +88,19 @@
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { defineComponent, reactive } from 'vue';
-import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
+//import Editor from 'ckeditor5-custom-build/build/ckeditor';
+import CKEditor from '@ckeditor/ckeditor5-vue';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import UploadAdapter from '../../imageUploadAdapter';
+
+//import UploadAdapter from '@/Components/ImageUploadAdapter.vue';
+
 
 export default {
     components: {
         OrganizationLayout,
-        ClassicEditor,
+        ckeditor:CKEditor.component,
+        //UploadAdapter
     },
     props: ['classifies', 'articleCategories', 'articles'],
     data() {
@@ -110,6 +117,13 @@ export default {
             editor: ClassicEditor,
             editorData:'<p>Content of the editor.</p>',
             editorConfig: {
+                extraPlugins: [
+                    function(editor){
+                        editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+                            return new UploadAdapter( loader );
+                        };
+                    }
+                ]
                 // The configuration of the editor.
             },
             columns: [
@@ -165,7 +179,7 @@ export default {
         editRecord(record) {
             this.modal.data = { ...record };
             this.modal.mode = "EDIT";
-            this.modal.title = "Edit";
+            //this.modal.title = "Edit";
             this.modal.isOpen = true;
         },
         storeRecord() {
@@ -225,12 +239,12 @@ export default {
         createLogin(recordId) {
             console.log('create login' + recordId);
         },
+        uploader(editor){
+            editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+                return new UploadAdapter( loader );
+            };
+        }
 
     },
-    watch:{
-        "modal.data.content_en"(text){
-            this.$emit("input",text)
-        }
-    }
 }
 </script>
