@@ -146,7 +146,7 @@
                     </a-form-item>
                   </a-col>
                 </a-row>
-              </a-collapse-panel>
+              </a-collapse-panel>this.modal.data.cert_logo_upload=this.cropper.datab
               <!--
               <a-collapse-panel key="8" :header="$t('guest_title')" v-if="member.positions.includes('GUE')">
                       888
@@ -206,7 +206,6 @@ export default {
       avatarData:null,
       activeKey: ["1", "3", "4", "5", "6", "7", "8", "9"],
       loading: false,
-      imageUrl: "",
       modal: {
         isOpen: false,
         data: {},
@@ -254,6 +253,7 @@ export default {
     setCroppedImageData(data) {
       this.avatarPreview = data.imageUrl
       this.avatarData=data
+      console.log(data);
     },
 
     handleUploaded({ form, request, response }) {

@@ -92,6 +92,7 @@ class CertificateController extends Controller
      */
     public function update(Certificate $certificate, Request $request)
     {
+
         //dd($certificate);
         // dd($request->file());
         // dd($request->all());
@@ -104,23 +105,12 @@ class CertificateController extends Controller
         if($organization->id!=session('organization')->id){
             return redirect()->back();
         };
-        $certificate->update($request->all());
-        if($request->file('cert_logo')){
-            if($certificate->cert_logo!=null){
-                if(Storage::disk('certificate')->exists($certificate->cert_logo)){
-                    Storage::disk('certificate')->delete($certificate->cert_logo);
-                }
-            }
-            $file = $request->file('cert_logo');
-            $path = Storage::disk('certificate')->put('/',$file);
-            $certificate->cert_logo = $path;
-            $certificate->save();
+        
+        if($request->file('cert_logo_upload')){
+            $file=$request->file('cert_logo_upload');
+            $certificate->addMedia($file)->usingName(pathinfo($request->orignial_file_name,PATHINFO_FILENAME))->usingFileName($request->orignial_file_name)->toMediaCollection('cert_logo');
 
         }
-
-        // if($request->file('cert_logo')){
-        //         //$certificate->addMedia($request->file('cert_logo')[0]['originFileObj'])->toMediaCollection('cert_logo');
-        // }
 
         return redirect()->back();
     }
@@ -135,14 +125,16 @@ class CertificateController extends Controller
     {
         //
     }
-    public function deleteMedia(Certificate $certificate){
-        if($certificate->cert_logo){
-            if(Storage::disk('certificate')->exists($certificate->cert_logo)){
-                Storage::disk('certificate')->delete($certificate->cert_logo);
-                $certificate->cert_logo=null;
-                $certificate->save();
-            }
-        }
+    public function deleteMedia($media){
+        $media->delete();
+        return redirect()->back();
+        // if($certificate->cert_logo){
+        //     if(Storage::disk('certificate')->exists($certificate->cert_logo)){
+        //         Storage::disk('certificate')->delete($certificate->cert_logo);
+        //         $certificate->cert_logo=null;
+        //         $certificate->save();
+        //     }
+        // }
     }
 
     public function members(Organization $organization, Certificate $certificate){

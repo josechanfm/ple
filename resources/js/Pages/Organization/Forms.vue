@@ -93,7 +93,7 @@
                                 </path>
                             </svg>
                         </inertia-link>
-                        <img :src="'/media/form/' + modal.data.media[0].id + '/' + modal.data.media[0].file_name" width="100" />
+                        <img :src="modal.data.media[0].preview_url" width="100" />
                     </div>
                     <div v-else>
                         <a-upload 

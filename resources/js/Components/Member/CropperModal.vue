@@ -223,6 +223,7 @@
         canvas.toBlob(blob => {
             croppedImageData.blob = blob
         },'image/jpg');
+        console.log(fileInput.value.files[0]);
         croppedImageData.file = fileInput.value.files[0]
         croppedImageData.imageUrl = canvas.toDataURL()
         croppedImageData.height = coordinates.height

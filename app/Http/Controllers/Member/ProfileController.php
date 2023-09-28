@@ -90,7 +90,7 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //dd($request->file('avatar'));
+        dd($request->file());
         $data = $request->all();
         $member = Member::find($id);
         //$data['positions']=$request->positions;

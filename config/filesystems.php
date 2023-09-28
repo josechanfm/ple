@@ -80,6 +80,11 @@ return [
             'root'   => public_path('/media/certificate'),
             'url'    => env('APP_URL').'/media/certificate',
         ],
+        'article' => [
+            'driver' => 'local',
+            'root'   => public_path('/media/article'),
+            'url'    => env('APP_URL').'/media/article',
+        ],
 
 
     ],

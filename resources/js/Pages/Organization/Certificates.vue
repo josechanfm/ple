@@ -31,8 +31,8 @@
         </div>
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" :afterClose="modalClose">
-            <a-form ref="modalRef" :model="modal.data" name="Teacher" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
-                autocomplete="off" :rules="rules" :validate-messages="validateMessages">
+            <a-form ref="modalRef" :model="modal.data" name="Certificate" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
+                autocomplete="off" :rules="rules" :validate-messages="validateMessages" enctype="multipart/form-data">
                 <a-form-item label="Type of Certificate" name="category_code">
                     <a-select v-model:value="modal.data.category_code" :options="certificate_categories" />
                 </a-form-item>
@@ -44,17 +44,18 @@
                 </a-form-item>
                 <a-form-item :label="$t('cert_logo')" name="cert_logo">
                     <a-button @click="cropper.showModal = true">Upload Profile Image</a-button>
+
                     <CropperModal v-if="cropper.showModal" :minAspectRatioProp="{ width: 8, height: 8 }"
                         :maxAspectRatioProp="{ width: 8, height: 8 }" @croppedImageData="setCroppedImageData"
                         @showModal="cropper.showModal = false" 
                     />
                     <div class="flex flex-wrap mt-4 mb-6">
                     <div class="w-full px-3">
-                        <div v-if="cropper.preview">
-                            <img :src="cropper.preview" class="md:w-1/2"/>
+                        <div v-if="uploadPreview">
+                            <img :src="uploadPreview" class="md:w-1/2"/>
                         </div>
-                        <div v-else-if="modal.data.cert_logo">
-                            <inertia-link :href="route('manage.certificate.deleteMedia', modal.data.id)"
+                        <div v-else-if="modal.data.media">
+                            <inertia-link :href="route('manage.certificate.deleteMedia', modal.data.media[0].id)"
                                 class="float-right text-red-500">
                                 <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor"
                                     aria-hidden="true" viewBox="64 64 896 896">
@@ -63,7 +64,7 @@
                                     </path>
                                 </svg>
                             </inertia-link>
-                            <img :src="'/media/certificate/'+modal.data.cert_logo" class="md:w-1/2"/>
+                            <img :src="modal.data.media[0].original_url" class="md:w-1/2"/>
                         </div>
                     </div>
                     </div>
@@ -82,6 +83,7 @@
                 </a-form-item>
             </a-form>
             <template #footer>
+                <a-button @click="onSubmit" type="primary">Submit</a-button>
                 <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
                 <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary" @click="storeRecord()">Add</a-button>
             </template>
@@ -106,7 +108,8 @@ export default {
     data() {
         return {
             loading:false,
-            imageUrl:null,
+            uploadPreview: null,
+            uploadData:null,
             cropper:{
                 showModal:false,
                 preview: null,
@@ -171,6 +174,11 @@ export default {
     created() {
     },
     methods: {
+        setCroppedImageData(data) {
+            this.uploadPreview = data.imageUrl
+            this.uploadData=data
+            console.log(data.file.name);
+        },
         createRecord() {
             this.modal.data = {};
             this.modal.mode = "CREATE";
@@ -179,7 +187,6 @@ export default {
         },
         editRecord(record) {
             this.modal.data = { ...record };
-            this.imageUrl = null;
             this.modal.mode = "EDIT";
             this.modal.title = "修改";
             this.modal.isOpen = true;
@@ -201,12 +208,13 @@ export default {
         },
         updateRecord() {
             this.$refs.modalRef.validateFields().then(() => {
-                this.modal.data.cert_logo=this.cropper.data.blob
-                this.modal.data._method = 'PATCH';
-                this.$inertia.post(route('manage.certificates.update', this.modal.data.id), this.modal.data, {
+                this.modal.data.cert_logo_upload={'filename':'abc','file':this.uploadData.blob};
+                this.modal.data._method="PATCH";
+                console.log(this.modal.data);
+                this.$inertia.patch(route('manage.certificates.update', this.modal.data.id), this.modal.data, {
                     onSuccess: (page) => {
-                        this.modal.data = {};
-                        this.modal.isOpen = false;
+                        //this.modal.data = {};
+                        //this.modal.isOpen = false;
                     },
                     onError: (error) => {
                         console.log(error);
@@ -216,13 +224,23 @@ export default {
                 console.log("error", err);
             });
         },
-        setCroppedImageData(data) {
-            this.cropper.preview = data.imageUrl
-            this.cropper.data=data
-        },
         modalClose(){
-            this.cropper.preview=null;
+            //this.cropper.preview=null;
+        },
+        onSubmit(){
+            this.modal.data.cert_logo_upload=this.uploadData.blob;
+            this.modal.data.orignial_file_name=this.uploadData.file.name;
+            this.modal.data._method="PATCH"
+            this.$inertia.post(route('manage.certificates.update', this.modal.data.id), this.modal.data, {
+                onSuccess: (page) => {
+                    //this.modal.isOpen = false;
+                },
+                onError: (error) => {
+                    console.log(error);
+                }
+            });
         }
+
 
     },
 }

@@ -136,7 +136,7 @@ class FormController extends Controller
         if($request->file('image')){
             //dd($request->file('image')[0]['originFileObj']->originalName);
             
-                $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
+                $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('form_banner');
             
         }
         return redirect()->back();

@@ -91,15 +91,16 @@ import { defineComponent, reactive } from 'vue';
 //import Editor from 'ckeditor5-custom-build/build/ckeditor';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import UploadAdapter from '../../imageUploadAdapter';
+//import UploadAdapter from '../../imageUploadAdapter';
 
-//import UploadAdapter from '@/Components/ImageUploadAdapter.vue';
+import UploadAdapter from '@/Components/ImageUploadAdapter.vue';
 
 
 export default {
     components: {
         OrganizationLayout,
         ckeditor:CKEditor.component,
+        UploadAdapter
         //UploadAdapter
     },
     props: ['classifies', 'articleCategories', 'articles'],
@@ -168,6 +169,8 @@ export default {
         }
     },
     created() {
+    },
+    mounted(){
     },
     methods: {
         createRecord() {

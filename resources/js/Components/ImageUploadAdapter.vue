@@ -1,12 +1,14 @@
 <script>
 
-    class MyUploadAdapter {
+export default class UploadAdapter {
+
         // The constructor method.
         // ...
         constructor( loader ) {
             // The file loader instance to use during the upload. It sounds scary but do not
             // worry — the loader will be passed into the adapter later on in this guide.
             this.loader = loader;
+
         }
         // Starts the upload process.
         upload() {
@@ -32,8 +34,10 @@
             // integration to choose the right communication channel. This example uses
             // a POST request with JSON as a data structure but your configuration
             // could be different.
-            xhr.open( 'POST', '{{ route("admin.image_upload") }}', true );
-            xhr.setRequestHeader('x-csrf-token','{{ csrf_token() }}');
+            //let csrf = RegExp('XSRF-TOKEN[^;]+').exec(document.cookie)
+            //csrf= decodeURIComponent(csrf ? csrf.toString().replace(/^[^=]+./, '') : '')
+            //console.log(csrf);            
+            xhr.open( 'POST', route('manage.image_upload'), true );
             xhr.responseType = 'json';
         }
         // Initializes XMLHttpRequest listeners.
@@ -46,7 +50,7 @@
             xhr.addEventListener( 'abort', () => reject() );
             xhr.addEventListener( 'load', () => {
                 const response = xhr.response;
-
+                console.log(response);
                 // This example assumes the XHR server's "response" object will come with
                 // an "error" which has its own "message" that can be passed to reject()
                 // in the upload promise.
@@ -89,6 +93,12 @@
             // like authentication and CSRF protection. For instance, you can use
             // XMLHttpRequest.setRequestHeader() to set the request headers containing
             // the CSRF token generated earlier by your application.
+            let xsrf = RegExp('XSRF-TOKEN[^;]+').exec(document.cookie)
+            xsrf= decodeURIComponent(xsrf ? xsrf.toString().replace(/^[^=]+./, '') : '')
+            console.log(xsrf);            
+
+            this.xhr.setRequestHeader('X-XSRF-TOKEN',xsrf);
+
 
             // Send the request.
             this.xhr.send( data );
@@ -97,11 +107,11 @@
         // ...
     }
 
-    function MyCustomUploadAdapterPlugin( editor ) {
-        editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
-            // Configure the URL to the upload script in your back-end here!
-            return new MyUploadAdapter( loader );
-        };
-    }
+    // function UploadAdapterPlugin( editor ) {
+    //     editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+    //         // Configure the URL to the upload script in your back-end here!
+    //         return new UploadAdapter( loader );
+    //     };
+    // }
 
 </script>

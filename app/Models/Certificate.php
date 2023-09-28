@@ -17,6 +17,18 @@ class Certificate extends Model implements HasMedia
     protected $fillable=['organization_id','category_code','name','cert_title','cert_body','cert_template','number_format','rank_catption','descreption'];
     protected $appends=['cid','cert_number'];
 
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Manipulations::FIT_CROP, 300, 300)
+            ->nonQueued();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('cert_content');
+    }
 
     public function getCidAttribute(){
         return $this->id;
@@ -37,18 +49,5 @@ class Certificate extends Model implements HasMedia
         return $this->belongsTo(Organization::class);
     }
 
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Manipulations::FIT_CROP, 300, 300)
-            ->nonQueued();
-    }
-
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('cert_logo')
-            ->useDisk('certificate');
-    }
     
 }
