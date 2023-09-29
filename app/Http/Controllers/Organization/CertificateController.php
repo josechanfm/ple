@@ -125,7 +125,7 @@ class CertificateController extends Controller
     {
         //
     }
-    public function deleteMedia($media){
+    public function deleteMedia($mediaId){
         $media->delete();
         return redirect()->back();
         // if($certificate->cert_logo){

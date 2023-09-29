@@ -9,24 +9,34 @@
     >
       Create Member
     </button>
-    <a-table :dataSource="members" :columns="columns">
-      <template #bodyCell="{ column, text, record, index }">
-        <template v-if="column.dataIndex == 'operation'">
-          <a-button @click="editRecord(record)">Edit</a-button>
-          <a-button @click="deleteRecord(record.id)">Delete</a-button>
-          <a-button @click="createLogin(record.id)">Create login</a-button>
-        </template>
-        <template v-else-if="column.dataIndex == 'login'">
-          <span v-if="record['user']">
-            {{ record['user'].email }}
-          </span>
-        </template>
-        <template v-else>
-          {{ record[column.dataIndex] }}
-        </template>
-      </template>
-    </a-table>
-
+     <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+        <a-table :dataSource="members" :columns="columns">
+          <template #bodyCell="{ column, text, record, index }">
+            <template v-if="column.dataIndex == 'operation'">
+              <a-button @click="editRecord(record)">Edit</a-button>
+              <a-popconfirm
+                    title="Are you sure to delete the record?"
+                    ok-text="Yes"
+                    cancel-text="No"
+                    @confirm="deleteRecord(record)"
+                    >
+                    <a-button>Delete</a-button>
+                </a-popconfirm>
+              <a-button @click="createLogin(record)">Create login</a-button>
+            </template>
+            <template v-else-if="column.dataIndex == 'login'">
+              <span v-if="record['user']">
+                {{ record['user'].email }}
+              </span>
+            </template>
+            <template v-else>
+              {{ record[column.dataIndex] }}
+            </template>
+          </template>
+        </a-table>
+      </div>
+    </div>
     <!-- Modal Start-->
     <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
       <a-form
@@ -52,7 +62,7 @@
           <a-input v-model:value="modal.data.email" />
         </a-form-item>
         <a-form-item label="Gender" name="gender">
-          <a-switch v-model:checked="modal.data.gender" checkedValue="1" unCheckedValue="0"/>
+          <a-switch v-model:checked="modal.data.gender" :checkedValue="1" :unCheckedValue="0"/>
         </a-form-item>
         <a-form-item label="Date of Birth" name="dob">
           <a-date-picker v-model:value="modal.data.dob" :format="dateFormat" :valueFormat="dateFormat"/>
@@ -204,10 +214,8 @@ export default {
           console.log("error", err);
         });
     },
-    deleteRecord(recordId) {
-      console.log(recordId);
-      if (!confirm("Are you sure want to remove?")) return;
-      this.$inertia.delete("/admin/teachers/" + recordId, {
+    deleteRecord(record) {
+      this.$inertia.delete(route('admin.members.destroy',record.id), {
         onSuccess: (page) => {
           console.log(page);
         },
@@ -216,8 +224,8 @@ export default {
         },
       });
     },
-    createLogin(recordId) {
-      console.log("create login" + recordId);
+    createLogin(record) {
+      console.log("create login" + record.id);
     },
   },
 };

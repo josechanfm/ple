@@ -46,26 +46,10 @@ class ConfigController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required',
-            'email'=>'required|email',
-            'password'=>'required',
+            'key' => 'required',
+            'value'=>'required',
         ]);
-
-        $user=User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make('password'),
-        ]);
-        //$user->assignRole('organizer');
-        $user->ownedTeams()->save(Team::forceCreate([
-            'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0]."'s Team",
-            'personal_team' => true,
-        ]));
-        if($request->organization_ids){
-            $user->organizations()->sync($request->organization_ids);
-        }
-
+        Config::create($request->all());
         return redirect()->back();
     }
 
@@ -101,7 +85,7 @@ class ConfigController extends Controller
     public function update(Request $request, Config $config)
     {
         $config->update($request->all());
-        return response()->json($request->all());   
+        //return response()->json($request->all());   
         return redirect()->back();
     }
 
@@ -111,9 +95,9 @@ class ConfigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Config $config)
     {
-        $user->delete();
+        $config->delete();
         return redirect()->back();
 
     }

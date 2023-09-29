@@ -62,7 +62,7 @@
                 </a-radio>
               </a-radio-group>
             </a-form-item>
-            <template v-if="application.role=='athlete'">
+            <template v-if="application.role=='athlete' && application.gender">
               <a-form-item :label="$t('category')" name="category">
                 <a-radio-group v-model:value="application.category">
                   <a-radio v-for="cat in competition.categories_weights" :style="virticalStyle" :value="cat.code"
