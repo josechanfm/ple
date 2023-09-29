@@ -31,7 +31,7 @@ class FormController extends Controller
         //dd(Form::find($formId)->entries()->delete());
         // echo ($entries);
         // echo ($form);
-
+        //dd(Organization::find(session('organization')->id)->forms);
         //$this->authorize('view',$organization);
         return Inertia::render('Organization/Forms',[
             'organization' => Organization::find(session('organization')->id),

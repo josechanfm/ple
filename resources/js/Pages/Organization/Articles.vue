@@ -22,8 +22,9 @@
                                 ok-text="Yes"
                                 cancel-text="No"
                                 @confirm="deleteConfirmed(record)"
+                                :disabled="record.published==1"
                                 >
-                                <a-button>Delete</a-button>
+                                <a-button :disabled="record.published==1">Delete</a-button>
                             </a-popconfirm>
                         </template>
                         <template v-else-if="column.dataIndex == 'published'">
@@ -35,6 +36,7 @@
                     </template>
                 </a-table>
             </div>
+            <p>Article CAN NOT be delete if published.</p>
         </div>
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="100%">
@@ -91,8 +93,6 @@ import { defineComponent, reactive } from 'vue';
 //import Editor from 'ckeditor5-custom-build/build/ckeditor';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-//import UploadAdapter from '../../imageUploadAdapter';
-
 import UploadAdapter from '@/Components/ImageUploadAdapter.vue';
 
 

@@ -23,14 +23,15 @@
                                 Data Fields
                             </inertia-link>
                             <a-button @click="editRecord(record)">Edit</a-button>
+
                             <a-popconfirm
                                 title="Are you sure to delete the record?"
                                 ok-text="Yes"
                                 cancel-text="No"
-                                @confirm="deleteConfirmed(record.id)"
-                                :disabled="record.published==1"
+                                @confirm="deleteConfirmed(record)"
+                                :disabled="record.entries_count>0"
                                 >
-                                <a-button>Delete</a-button>
+                                <a-button :disabled="record.entries_count>0">Delete</a-button>
                             </a-popconfirm>
                             <a-button @click="backupRecords(record)" v-if="record.entries_count>0">Backup</a-button>
                         </template>
@@ -47,6 +48,7 @@
                     </template>
                 </a-table>
             </div>
+            <p>From CAN NOT be delete, if Response is not empty.</p>
         </div>
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
@@ -256,7 +258,8 @@ export default {
             });
         },
         deleteConfirmed(record) {
-            if (!confirm('Are you sure want to remove?')) return;
+            console.log("delete");
+            console.log(record);
             this.$inertia.delete(route('manage.forms.destroy', { form: record.id }), {
                 onSuccess: (page) => {
                     console.log(page);
