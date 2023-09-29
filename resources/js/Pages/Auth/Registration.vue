@@ -73,9 +73,9 @@ export default {
                         :rules="[{ required: true, message: 'Please input your password!' }]">
                         <a-input-password v-model:value="formState.password" />
                     </a-form-item>
-                    <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+                    <div class="flex flex-row item-center justify-center">
                         <a-button type="primary" html-type="submit">Submit</a-button>
-                    </a-form-item>
+                    </div>
                 </a-form>
             </div>
         </div>

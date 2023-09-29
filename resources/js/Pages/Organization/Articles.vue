@@ -6,7 +6,7 @@
             </h2>
         </template>
         <div class="flex-auto pb-3 text-right">
-            <a-button type="primary" class="!rounded" @click="createRecord()">Create Article</a-button>
+            <inertia-link :href="route('manage.articles.create')" class="ant-btn ant-btn-primary">Create Article</inertia-link>
         </div>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
@@ -16,7 +16,7 @@
                     </template>
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="editRecord(record)">Edit</a-button>
+                            <inertia-link :href="route('manage.articles.edit',record.id)" class="ant-btn">Edit</inertia-link>
                             <a-popconfirm
                                 title="Are you sure to delete the record?"
                                 ok-text="Yes"

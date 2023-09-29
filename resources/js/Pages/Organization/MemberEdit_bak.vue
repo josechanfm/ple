@@ -36,9 +36,9 @@
             <a-form-item name="nationality" label="Nationality" >
                 <a-input v-model:value="member.nationality" />
             </a-form-item>
-            <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
+            <div class="flex flex-row item-center justify-center">
                 <a-button type="primary" html-type="submit">Submit</a-button>
-            </a-form-item>            
+            </div>
         </a-form>
 
     </OrganizationLayout>

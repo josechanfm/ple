@@ -8,22 +8,14 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
-                    <a-form ref="formRef" name="Form" autocomplete="off" 
-                        v-bind="layout"
-                        :model="member"
-                        layout="vertical" 
-                        :rules="rules"
-                        :validate-messages="validateMessages" 
-                        @finish="onFinish">
-
-                                        <a-form-item label="Family Name" name="family_name">
-                                            <a-input v-model:value="member.family_name" />
-                                        </a-form-item>
-
-                        <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
-                            <a-button type="primary" html-type="submit">Submit</a-button>
+                    <a-form ref="formRef" name="Form" autocomplete="off" v-bind="layout" :model="member" layout="vertical"
+                        :rules="rules" :validate-messages="validateMessages" @finish="onFinish">
+                        <a-form-item label="Family Name" name="family_name">
+                            <a-input v-model:value="member.family_name" />
                         </a-form-item>
-
+                        <div class="flex flex-row item-center justify-center">
+                            <a-button type="primary" html-type="submit">Submit</a-button>
+                        </div>
                     </a-form>
 
                 </div>

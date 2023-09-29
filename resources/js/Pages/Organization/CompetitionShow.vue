@@ -78,9 +78,9 @@
               </a-form-item>
 
             </template>
-            <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
+            <div class="flex flex-row item-center justify-center">
                 <a-button type="primary" html-type="submit">{{$t('submit')}}</a-button>
-            </a-form-item>
+            </div>
 
           </a-form>
         </div>

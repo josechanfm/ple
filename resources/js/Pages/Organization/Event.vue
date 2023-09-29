@@ -44,9 +44,9 @@
           <a-form-item :label="$t('with_attendance')" name="with_attendance">
             <a-switch v-model:checked="event.with_attendance" :checkedValue="1" :unCheckedValue="0"/>
           </a-form-item>
-          <a-form-item>
+          <div class="flex flex-row item-center justify-center">
             <a-button type="primary" html-type="submit">Submit</a-button>
-          </a-form-item>
+          </div>
         </a-form>
       </div>
     </div>

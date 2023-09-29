@@ -214,6 +214,7 @@ export default {
             this.modal.data.require_login = false;
             this.modal.data.for_member = false;
             this.modal.data.published = false;
+            this.modal.data.with_attendance=0
             this.modal.data.media = [];
             this.modal.mode = "CREATE";
             this.modal.title = "Create New Form";

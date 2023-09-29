@@ -11,7 +11,6 @@
         </div>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-
                 <a-table :dataSource="events.data" :columns="columns">
                     <template #headerCell="{ column }">
                         {{ column.i18n ? $t(column.i18n) : column.title }}

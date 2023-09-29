@@ -33,7 +33,12 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Organization/Article',[
+            'classifies'=>Classify::whereBelongsTo(session('organization'))->get(),
+            'articleCategories'=>Config::item('article_categories'),
+            'article'=>new Article()
+        ]);
+
     }
 
     /**
@@ -50,7 +55,7 @@ class ArticleController extends Controller
         $data['user_id']=auth()->user()->id;
         $data['author']=auth()->user()->name;
         Article::create($data);
-        return redirect()->back();
+        return redirect()->route('manage.articles.index');
     }
 
     /**
@@ -70,9 +75,13 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Article $article)
     {
-        //
+        return Inertia::render('Organization/Article',[
+            'classifies'=>Classify::whereBelongsTo(session('organization'))->get(),
+            'articleCategories'=>Config::item('article_categories'),
+            'article'=>$article
+        ]);
     }
 
     /**
@@ -85,7 +94,7 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $article->update($request->all());
-        return redirect()->back();
+        return redirect()->route('manage.articles.index');
     }
 
     /**

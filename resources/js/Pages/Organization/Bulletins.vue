@@ -1,15 +1,13 @@
 <template>
   <OrganizationLayout title="Dashboard">
     <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-              Bulletins
-            </h2>
-        </template>
-        <div class="flex-auto pb-3 text-right">
-          <a-button type="primary" class="!rounded" @click="createRecord()">Create Buletin</a-button>
-        </div>
-
-
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        Bulletins
+      </h2>
+    </template>
+      <div class="flex-auto pb-3 text-right">
+        <a-button type="primary" class="!rounded" @click="createRecord()">Create Buletin</a-button>
+      </div>
       <div class="container mx-auto pt-5">
         <div class="bg-white relative shadow rounded-lg overflow-x-auto">
           <a-table :dataSource="bulletins.data" :columns="columns" :pagination="pagination" @change="onPaginationChange"
