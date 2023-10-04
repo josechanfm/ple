@@ -1,4 +1,5 @@
 <script setup>
+import { UserOutlined } from '@ant-design/icons-vue';
 
 const props = defineProps({
     articles: Object

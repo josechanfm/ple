@@ -3,98 +3,98 @@ import MemberLayout from "@/Layouts/MemberLayout.vue";
 import ArticleList from "@/Components/ArticleList.vue";
 import axios from "axios";
 import QRCodeVue3 from "qrcode-vue3";
-import { onMounted } from "vue";
 
 export default {
   components: {
     MemberLayout,
     ArticleList,
-    QRCodeVue3
+    QRCodeVue3,
   },
-  props: ['member', 'articles', 'card_style'],
+  props: ["member", "articles", "card_style"],
   data() {
     return {
-      qrcode: '',
+      qrcode: "",
       interval: 0,
       features: [
         {
           image: "https://dummyimage.com/300x5:3",
           title: "Public",
-          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags: ['#hashtag', '#hashtag', '#hashtag'],
-          link: '/'
-        }, {
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
+          tags: ["#hashtag", "#hashtag", "#hashtag"],
+          link: "/",
+        },
+        {
           image: "https://dummyimage.com/300x5:3",
           title: "Forms",
-          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags: ['#hashtag', '#hashtag', '#hashtag'],
-          link: 'forms'
-        }, {
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
+          tags: ["#hashtag", "#hashtag", "#hashtag"],
+          link: "forms",
+        },
+        {
           image: "https://dummyimage.com/300x5:3",
           title: "Competitions",
-          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags: ['#hashtag', '#hashtag', '#hashtag'],
-          link: 'competitions'
-        }, {
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
+          tags: ["#hashtag", "#hashtag", "#hashtag"],
+          link: "competitions",
+        },
+        {
           image: "https://dummyimage.com/300x5:3",
           title: "Other",
           description: "Other descriptions",
-          tags: ['#hashtag', '#hashtag', '#hashtag']
-        }
-
+          tags: ["#hashtag", "#hashtag", "#hashtag"],
+        },
       ],
       data: [
         {
           title: "News",
           url: "./",
-          content: "Competition ABC is now open for registration"
+          content: "Competition ABC is now open for registration",
         },
         {
           title: "Ant Design Title 2",
-          url: '',
-          content: "Competition ABC is now open for registration"
+          url: "",
+          content: "Competition ABC is now open for registration",
         },
         {
           title: "Ant Design Title 3",
-          url: '',
-          content: "Competition ABC is now open for registration"
+          url: "",
+          content: "Competition ABC is now open for registration",
         },
         {
           title: "Ant Design Title 4",
-          url: '',
-          content: "Competition ABC is now open for registration"
+          url: "",
+          content: "Competition ABC is now open for registration",
         },
       ],
       showQrcode: false,
-    }
+    };
   },
   created() {
+    
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     getQrcode() {
-      axios.get(route('member.getQrcode')).then(response => {
-        this.qrcode = response.data
-      })
+      axios.get(route("member.getQrcode")).then((response) => {
+        this.qrcode = response.data;
+      });
     },
     onShowQrcode() {
       this.showQrcode = !this.showQrcode;
       if (this.showQrcode) {
         this.getQrcode();
         this.interval = setInterval(() => {
-          this.getQrcode()
-        }, 10000)
+          this.getQrcode();
+        }, 10000);
       } else {
         clearInterval(this.interval);
       }
     },
-  }
-
-}
-
-
+  },
+};
 </script>
 
 <template>
@@ -288,7 +288,7 @@ export default {
 
 <style scope>
 #pure-html {
-  all: initial
+  all: initial;
 }
 
 #pure-html * {

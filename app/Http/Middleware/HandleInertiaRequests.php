@@ -48,7 +48,8 @@ class HandleInertiaRequests extends Middleware
             //'user.permissions' => $request->user() ? $request->user()->getPermissionsViaRoles()->pluck('name') : [],
             'user.permissions' => $permissions,
             'current_organization' => session('organization'),
-            'by_guardian'=>session('guardian')
+            'by_guardian'=>session('guardian'),
+            'lang'=>session('locale')
         ]);
     }
 }

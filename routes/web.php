@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Models\Article;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,7 +35,8 @@ Route::post('registration', [\App\Http\Controllers\RegistrationController::class
 Route::get('/language/{language}', function ($language) {
     session(['locale'=>$language]);
     app()->setLocale($language);
-    //return redirect()->refresh();
+    //dd(app()->getLocale());
+    return redirect()->back();
 })->name('language');
 
 

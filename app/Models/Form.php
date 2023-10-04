@@ -29,6 +29,19 @@ class Form extends Model implements HasMedia
         $this->addMediaCollection('form_content');
     }
 
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Manipulations::FIT_CROP, 300, 300)
+            ->nonQueued();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('form_content');
+    }
+
     public function organization(){
         return $this->belongsTo(Organization::class);
     }

@@ -31,6 +31,7 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .use(Antd)
             .use(i18nVue, {
+                lang: 'en',
                 resolve: async lang => {
                     const langs = import.meta.glob('../../lang/*.json');
                     return await langs[`../../lang/${lang}.json`]();

@@ -1,5 +1,5 @@
-<script setup>
-import { ref } from 'vue';
+<script>
+import { onMounted, ref } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
@@ -10,23 +10,63 @@ import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { loadLanguageAsync } from 'laravel-vue-i18n';
 
-defineProps({
-    title: String,
-});
+export default {
+    components: {
+        Head,Link,
+        ApplicationMark,
+        Banner,
+        Dropdown, DropdownLink,
+        NavLink, ResponsiveNavLink,
+        loadLanguageAsync
+    },
+    props: ['title'],
+    setup(props){
+        console.log(props);
+        const showingNavigationDropdown = ref(false);
 
-const showingNavigationDropdown = ref(false);
+        const switchToTeam = (team) => {
+            Inertia.put(route('current-team.update'), {
+                team_id: team.id,
+            }, {
+                preserveState: false,
+            });
+        };
 
-const switchToTeam = (team) => {
-    Inertia.put(route('current-team.update'), {
-        team_id: team.id,
-    }, {
-        preserveState: false,
-    });
-};
+        const logout = () => {
+            Inertia.post(route('logout'));
+        };
+        return {
+            showingNavigationDropdown,
+            switchToTeam,
+            logout,
+            loadLanguageAsync
+        }
+    },
+    mounted(){
+        this.loadLanguageAsync(this.$page.props.lang)
+    }
+}
+// defineProps({
+//     title: String,
+// });
 
-const logout = () => {
-    Inertia.post(route('logout'));
-};
+// const showingNavigationDropdown = ref(false);
+
+// const switchToTeam = (team) => {
+//     Inertia.put(route('current-team.update'), {
+//         team_id: team.id,
+//     }, {
+//         preserveState: false,
+//     });
+// };
+
+// const logout = () => {
+//     Inertia.post(route('logout'));
+// };
+// onMounted(() => {
+//   console.log('mounted')
+// })
+
 </script>
 
 <template>
@@ -91,10 +131,10 @@ const logout = () => {
                                     <template #content>
                                         <div class="w-20">
                                             <template v-if="$page.props.jetstream.hasTeamFeatures">
-                                                <DropdownLink  @click="loadLanguageAsync('zh')">
+                                                <DropdownLink  :href="route('language','zh')">
                                                     Chinese
                                                 </DropdownLink>
-                                                <DropdownLink  @click="loadLanguageAsync('en')">
+                                                <DropdownLink  :href="route('language','en')">
                                                     English
                                                 </DropdownLink>
                                             </template>
