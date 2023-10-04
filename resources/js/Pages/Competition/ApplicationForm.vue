@@ -62,7 +62,7 @@
                 </a-radio>
               </a-radio-group>
             </a-form-item>
-            <template v-if="application.role=='athlete'">
+            <template v-if="application.role=='athlete' && application.gender">
               <a-form-item :label="$t('category')" name="category">
                 <a-radio-group v-model:value="application.category">
                   <a-radio v-for="cat in competition.categories_weights" :style="virticalStyle" :value="cat.code"
@@ -78,10 +78,9 @@
               </a-form-item>
 
             </template>
-            <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
+            <div class="flex flex-row item-center justify-center">
                 <a-button type="primary" html-type="submit">{{$t('submit')}}</a-button>
-            </a-form-item>
-
+            </div>
           </a-form>
         </div>
       </div>

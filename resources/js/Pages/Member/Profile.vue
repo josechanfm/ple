@@ -146,17 +146,17 @@
                     </a-form-item>
                   </a-col>
                 </a-row>
-              </a-collapse-panel>
+              </a-collapse-panel>this.modal.data.cert_logo_upload=this.cropper.datab
               <!--
               <a-collapse-panel key="8" :header="$t('guest_title')" v-if="member.positions.includes('GUE')">
                       888
               </a-collapse-panel>
               -->
               <a-collapse-panel key="9" :header="$t('picture_title')">
-                <a-button @click="showModal = true">Upload Profile Image</a-button>
-                <CropperModal v-if="showModal" :minAspectRatioProp="{ width: 8, height: 8 }"
+                <a-button @click="showCropModal = true">Upload Profile Image</a-button>
+                <CropperModal v-if="showCropModal" :minAspectRatioProp="{ width: 8, height: 8 }"
                   :maxAspectRatioProp="{ width: 8, height: 8 }" @croppedImageData="setCroppedImageData"
-                  @showModal="showModal = false" />
+                  @showModal="showCropModal = false" />
                 <div class="flex flex-wrap mt-4 mb-6">
                   <div class="w-full md:w-1/2 px-3">
                     <div v-if="avatarPreview !== null">
@@ -169,7 +169,6 @@
                 </div>
               </a-collapse-panel>
             </a-collapse>
-
             <a-form-item :wrapper-col="{ offset: 10, span: 24 }" style="padding-top:20px">
               <a-button @click="onSubmit" type="primary">Submit</a-button>
             </a-form-item>
@@ -202,12 +201,11 @@ export default {
   data() {
     return {
       dateFormat:'YYYY-MM-DD',
-      showModal: false,
+      showCropModal: false,
       avatarPreview: null,
       avatarData:null,
       activeKey: ["1", "3", "4", "5", "6", "7", "8", "9"],
       loading: false,
-      imageUrl: "",
       modal: {
         isOpen: false,
         data: {},
@@ -255,6 +253,7 @@ export default {
     setCroppedImageData(data) {
       this.avatarPreview = data.imageUrl
       this.avatarData=data
+      console.log(data);
     },
 
     handleUploaded({ form, request, response }) {

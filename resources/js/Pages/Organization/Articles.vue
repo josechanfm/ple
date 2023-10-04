@@ -6,25 +6,25 @@
             </h2>
         </template>
         <div class="flex-auto pb-3 text-right">
-            <a-button type="primary" class="!rounded" @click="createRecord()">Create Article</a-button>
+            <inertia-link :href="route('manage.articles.create')" class="ant-btn ant-btn-primary">Create Article</inertia-link>
         </div>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-
                 <a-table :dataSource="articles" :columns="columns">
                     <template #headerCell="{ column }">
                         {{ column.i18n ? $t(column.i18n) : column.title }}
                     </template>
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button @click="editRecord(record)">Edit</a-button>
+                            <inertia-link :href="route('manage.articles.edit',record.id)" class="ant-btn">Edit</inertia-link>
                             <a-popconfirm
                                 title="Are you sure to delete the record?"
                                 ok-text="Yes"
                                 cancel-text="No"
                                 @confirm="deleteConfirmed(record)"
+                                :disabled="record.published==1"
                                 >
-                                <a-button>Delete</a-button>
+                                <a-button :disabled="record.published==1">Delete</a-button>
                             </a-popconfirm>
                         </template>
                         <template v-else-if="column.dataIndex == 'published'">
@@ -36,6 +36,7 @@
                     </template>
                 </a-table>
             </div>
+            <p>Article CAN NOT be delete if published.</p>
         </div>
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="100%">
@@ -51,7 +52,7 @@
                     <a-input v-model:value="modal.data.title_fn" />
                 </a-form-item>
                 <a-form-item :label="$t('content')" name="content_en">
-                    <quill-editor v-model:value="modal.data.content_en" style="min-height:200px;" />
+                    <ckeditor :editor="editor" v-model="modal.data.content_en" :config="editorConfig"/>
                 </a-form-item>
                 <a-form-item :label="$t('valid_at')" name="valid_at">
                     <a-date-picker v-model:value="modal.data.valid_at" :format="dateFormat" :valueFormat="dateFormat" />
@@ -89,17 +90,18 @@
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
 import { defineComponent, reactive } from 'vue';
-import { component as CKEditor } from '@ckeditor/ckeditor5-vue';
+//import Editor from 'ckeditor5-custom-build/build/ckeditor';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { quillEditor } from 'vue3-quill';
+import UploadAdapter from '@/Components/ImageUploadAdapter.vue';
 
 
 export default {
     components: {
         OrganizationLayout,
-        quillEditor,
-        CKEditor,
-        ClassicEditor,
+        ckeditor:CKEditor.component,
+        UploadAdapter
+        //UploadAdapter
     },
     props: ['classifies', 'articleCategories', 'articles'],
     data() {
@@ -107,17 +109,23 @@ export default {
             dateFormat: "YYYY-MM-DD",
             modal: {
                 isOpen: false,
-                data: {},
+                data: {content_en:""},
                 title: "Modal",
                 mode: ""
+
             },
             teacherStateLabels: {},
-            editor:{
-                them: ClassicEditor,
-                data: 'ckeditor 5 for laravel and vuejs',
-                config: {
-                    //toolbar: [ 'bold', 'italic', '|', 'link' ],
-                },
+            editor: ClassicEditor,
+            editorData:'<p>Content of the editor.</p>',
+            editorConfig: {
+                extraPlugins: [
+                    function(editor){
+                        editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+                            return new UploadAdapter( loader );
+                        };
+                    }
+                ]
+                // The configuration of the editor.
             },
             columns: [
                 {
@@ -139,6 +147,7 @@ export default {
                 },
             ],
             rules: {
+                category_code: { required: true },
                 classify_id: { required: true },
                 title_en: { required: true },
             },
@@ -161,6 +170,8 @@ export default {
     },
     created() {
     },
+    mounted(){
+    },
     methods: {
         createRecord() {
             this.modal.data = {};
@@ -172,7 +183,7 @@ export default {
         editRecord(record) {
             this.modal.data = { ...record };
             this.modal.mode = "EDIT";
-            this.modal.title = "Edit";
+            //this.modal.title = "Edit";
             this.modal.isOpen = true;
         },
         storeRecord() {
@@ -232,6 +243,11 @@ export default {
         createLogin(recordId) {
             console.log('create login' + recordId);
         },
+        uploader(editor){
+            editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+                return new UploadAdapter( loader );
+            };
+        }
 
     },
 }

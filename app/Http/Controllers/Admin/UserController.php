@@ -99,6 +99,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $user->update($request->all());
         $user->roles()->sync($request->role_ids);
         $user->organizations()->sync($request->organization_ids);
         return redirect()->back();

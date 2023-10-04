@@ -31,7 +31,7 @@ class FormController extends Controller
         //dd(Form::find($formId)->entries()->delete());
         // echo ($entries);
         // echo ($form);
-
+        //dd(Organization::find(session('organization')->id)->forms);
         //$this->authorize('view',$organization);
         return Inertia::render('Organization/Forms',[
             'organization' => Organization::find(session('organization')->id),
@@ -121,7 +121,9 @@ class FormController extends Controller
             'title'=>'required',
         ]);
         $organization = Organization::find($request->organization_id);
-
+        if($organization->id!=session('organization')->id){
+            return redirect()->back();
+        };
         $form->name=$request->name;
         $form->title=$request->title;
         $form->description=$request->description;
@@ -134,7 +136,7 @@ class FormController extends Controller
         if($request->file('image')){
             //dd($request->file('image')[0]['originFileObj']->originalName);
             
-                $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
+                $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('form_banner');
             
         }
         return redirect()->back();

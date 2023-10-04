@@ -92,6 +92,7 @@ Route::group([
         'role:organizer'
     ]
 ],function () {
+    Route::get('/{organization}/medias', [App\Http\Controllers\Organization\MediaController::class, 'getMedias'])->name('manage.medias');
     Route::get('/', [App\Http\Controllers\Organization\DashboardController::class, 'index'])->name('manage.dashboard');
     Route::get('/select/{organization}', [App\Http\Controllers\Organization\DashboardController::class, 'select'])->name('manage.select');
     Route::resource('members', App\Http\Controllers\Organization\MemberController::class)->names('manage.members');
@@ -109,6 +110,7 @@ Route::group([
     Route::resource('bulletins', App\Http\Controllers\Organization\BulletinController::class)->names('manage.bulletins');
     Route::resource('messages', App\Http\Controllers\Organization\MessageController::class)->names('manage.messages');
     Route::resource('certificates', App\Http\Controllers\Organization\CertificateController::class)->names('manage.certificates');
+    Route::get('certificates/delete_media/{mediaId}', [App\Http\Controllers\Organization\CertificateController::class, 'deleteMedia'])->name('manage.certificate.deleteMedia');
     Route::resource('certificate/{certificate}/members',App\Http\Controllers\Organization\CertificateMemberController::class)->names('manage.certificate.members');
     Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
     Route::resource('competitions', App\Http\Controllers\Organization\CompetitionController::class)->names('manage.competitions');
@@ -117,6 +119,7 @@ Route::group([
     Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
     Route::resource('event/{event}/attendees',App\Http\Controllers\Organization\AttendeeController::class)->names('manage.event.attendees');
     Route::resource('configs', App\Http\Controllers\Organization\ConfigController::class)->names('manage.configs');
+    Route::post('image_upload', [App\Http\Controllers\Organization\UploaderController::class, 'image'])->name('manage.image_upload');
 });
 
 Route::group([

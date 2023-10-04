@@ -43,24 +43,25 @@ class Config extends Model
     //     return $collections;
     // }
 
-    static function categories_weights($organization=null)
+    static function items($key='', $organization=null)
     {
         if($organization){
             $items = Config::where('organization_id',$organization->id)->where('key', 'categories_weights')->get();
             if($items->count()==0){
                 $items = Config::where('organization_id',0)->where('key', 'categories_weights')->get();                
             }
-        }elseif(Session::has('organization')){
+        }elseif(session('organization')){
             $items = Config::where('organization_id',session('organization')->id)->where('key', 'categories_weights')->get();
             if($items->count()==0){
                 $items = Config::where('organization_id',0)->where('key', 'categories_weights')->get();                
             }
         }else{
-            $items = Config::where('organization_id',0)->where('key', 'categories_weights')->get();
+            //$items = Config::where('organization_id',0)->where('key', 'categories_weights')->get();
+            $items = null;
         }
         
         $collections=[];
-        if(!empty($item)){
+        if(!empty($items)){
             foreach($items as $item){
                 $collections[]=json_decode($item->value,true);
             }

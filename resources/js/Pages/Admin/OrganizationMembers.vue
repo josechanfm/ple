@@ -3,17 +3,21 @@
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">Organization Members</h2>
     </template>
+    <!--
     <button
       @click="createRecord()"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3"
     >
       Add members
     </button>
+    -->
     <a-table :dataSource="members" :columns="columns">
       <template #bodyCell="{ column, text, record, index }">
         <template v-if="column.dataIndex == 'operation'">
+          <!--
           <a-button @click="editRecord(record)">Edit</a-button>
           <a-button @click="deleteRecord(record.id)">Delete</a-button>
+          -->
         </template>
         <template v-else-if="column.dataIndex == 'login'">
           <span v-if="record.user">

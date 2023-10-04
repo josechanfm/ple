@@ -9,25 +9,35 @@
     >
       Create User
     </button>
-    <a-table :dataSource="users" :columns="columns">
-      <template #bodyCell="{ column, text, record, index }">
-        <template v-if="column.dataIndex == 'operation'">
-          <a-button @click="editRecord(record)">Edit</a-button>
-          <a-button @click="deleteRecord(record.id)">Delete</a-button>
-        </template>
-        <template v-else-if="column.dataIndex == 'organizations'">
-            <ol class="list-decimal">
-                    <li v-for="organization in record['organizations']">
-                    {{ organization.abbr }}
-                </li>
-            </ol>
-        </template>
-        <template v-else>
-          {{ record[column.dataIndex] }}
-        </template>
-      </template>
-    </a-table>
-
+    <div class="container mx-auto pt-5">
+      <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+        <a-table :dataSource="users" :columns="columns">
+          <template #bodyCell="{ column, text, record, index }">
+            <template v-if="column.dataIndex == 'operation'">
+              <a-button @click="editRecord(record)">Edit</a-button>
+              <a-popconfirm
+                    title="Are you sure to delete the record?"
+                    ok-text="Yes"
+                    cancel-text="No"
+                    @confirm="deleteRecord(record)"
+                    >
+                    <a-button>Delete</a-button>
+                </a-popconfirm>
+            </template>
+            <template v-else-if="column.dataIndex == 'organizations'">
+                <ol class="list-decimal">
+                        <li v-for="organization in record['organizations']">
+                        {{ organization.abbr }}
+                    </li>
+                </ol>
+            </template>
+            <template v-else>
+              {{ record[column.dataIndex] }}
+            </template>
+          </template>
+        </a-table>
+      </div>
+    </div>
     <!-- Modal Start-->
     <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
       <a-form
@@ -179,7 +189,7 @@ export default {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.post("/admin/users/", this.modal.data, {
+          this.$inertia.post(route('admin.users.store'), this.modal.data, {
             onSuccess: (page) => {
               this.modal.data = {};
               this.modal.isOpen = false;
@@ -194,8 +204,7 @@ export default {
         });
     },
     updateRecord() {
-      console.log(this.modal.data);
-        this.$inertia.patch("/admin/users/" + this.modal.data.id, this.modal.data, {
+        this.$inertia.patch(route('admin.users.update',this.modal.data.id), this.modal.data, {
         onSuccess: (page) => {
             this.modal.data = {};
             this.modal.isOpen = false;
@@ -206,9 +215,8 @@ export default {
         },
         });
     },
-    deleteRecord(recordId) {
-      if (!confirm("Are you sure want to remove?")) return;
-      this.$inertia.delete("/admin/users/" + recordId, {
+    deleteRecord(record) {
+      this.$inertia.delete(route('admin.users.destroy'),record.id, {
         onSuccess: (page) => {
           console.log(page);
         },

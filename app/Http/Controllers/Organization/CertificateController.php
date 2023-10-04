@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Organization;
-use App\Models\Certificate;
+use App\Models\Certificate; 
 use App\Models\Config;
+use Illuminate\Support\Facades\Storage;
+//use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class CertificateController extends Controller
 {
@@ -23,6 +25,7 @@ class CertificateController extends Controller
      */
     public function index()
     {
+        //  dd(Organization::find(session('organization')->id)->certificates);
         return Inertia::render('Organization/Certificates',[
             'certificates'=>session('organization')->fresh()->certificates,
             'certificate_categories'=>Config::item('certificate_categories')
@@ -87,9 +90,28 @@ class CertificateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Certificate $certificate)
+    public function update(Certificate $certificate, Request $request)
     {
-        $certificate->update($request->all());
+
+        //dd($certificate);
+        // dd($request->file());
+        // dd($request->all());
+        $this->validate($request,[
+            'id' => 'required',
+            'category_code'=>'required',
+            'cert_title'=>'required',
+        ]);
+        $organization = Organization::find($request->organization_id);
+        if($organization->id!=session('organization')->id){
+            return redirect()->back();
+        };
+        
+        if($request->file('cert_logo_upload')){
+            $file=$request->file('cert_logo_upload');
+            $certificate->addMedia($file)->usingName(pathinfo($request->orignial_file_name,PATHINFO_FILENAME))->usingFileName($request->orignial_file_name)->toMediaCollection('cert_logo');
+
+        }
+
         return redirect()->back();
     }
 
@@ -103,6 +125,17 @@ class CertificateController extends Controller
     {
         //
     }
+    public function deleteMedia($mediaId){
+        $media->delete();
+        return redirect()->back();
+        // if($certificate->cert_logo){
+        //     if(Storage::disk('certificate')->exists($certificate->cert_logo)){
+        //         Storage::disk('certificate')->delete($certificate->cert_logo);
+        //         $certificate->cert_logo=null;
+        //         $certificate->save();
+        //     }
+        // }
+    }
 
     public function members(Organization $organization, Certificate $certificate){
         $this->authorize('view',$organization);
@@ -112,6 +145,6 @@ class CertificateController extends Controller
             'certificate'=>$certificate,
             'members'=>$certificate->members
         ]);
-        
+       
     }
 }

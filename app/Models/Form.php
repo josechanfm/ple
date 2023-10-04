@@ -14,6 +14,20 @@ class Form extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    protected $fillable=[];
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Manipulations::FIT_CROP, 300, 300)
+            ->nonQueued();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('form_content');
+    }
 
     public function organization(){
         return $this->belongsTo(Organization::class);
@@ -74,19 +88,6 @@ class Form extends Model implements HasMedia
     }
     public function hasChild(){
         return $this->fields()->exists();
-    }
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Manipulations::FIT_CROP, 300, 300)
-            ->nonQueued();
-    }
-
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('image')
-            ->useDisk('form');
     }
     // public function members(): MorphToMany{
     //     return $this->morphToMany(Member::class,'attendee')->withPivot(['status']);

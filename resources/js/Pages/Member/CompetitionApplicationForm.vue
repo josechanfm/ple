@@ -5,6 +5,7 @@
         表格例表
       </h2>
     </template>
+    
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="p-5 bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -18,8 +19,7 @@
           <div id="pure-html">
               <div v-html="competition.description"/>
           </div>
-          
-
+         
           <a-form 
             :model="application" 
             v-bind="layout" 
@@ -62,7 +62,7 @@
                 </a-radio>
               </a-radio-group>
             </a-form-item>
-            <template v-if="application.role=='athlete'">
+            <template v-if="application.role=='athlete' && application.gender!=''">
               <a-form-item :label="$t('category')" name="category">
                 <a-radio-group v-model:value="application.category">
                   <a-radio v-for="cat in competition.categories_weights" :style="virticalStyle" :value="cat.code"
@@ -70,6 +70,7 @@
                   </a-radio>
                 </a-radio-group>
               </a-form-item>
+              {{ competition }}
               <a-form-item :label="$t('weight')" name="weight">
                 <a-radio-group v-model:value="application.weight">
                   <a-radio v-for="cat in competition.weights" :style="virticalStyle" :value="cat.code">{{ cat.name }}
@@ -78,9 +79,9 @@
               </a-form-item>
 
             </template>
-            <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
+            <div class="flex flex-row item-center justify-center">
                 <a-button type="primary" html-type="submit">{{$t('submit')}}</a-button>
-            </a-form-item>
+            </div>
 
           </a-form>
         </div>
@@ -173,16 +174,12 @@ export default {
   },
   methods: {
     onGenderChange(event) {
-      console.log(event);
       if (this.application.category) {
-        console.log("ok");
         this.weightSelection(event.target.value, this.application.category);
       }
     },
     onCategoryChange(event) {
-      console.log(event);
       if (this.application.gender) {
-        console.log("ok");
         this.weightSelection(this.application.gender, event.target.value);
       }
     },

@@ -9,20 +9,23 @@
     >
       Create Config Item
     </button>
-    <a-table :dataSource="configs" :columns="columns">
-      <template #bodyCell="{ column, text, record, index }">
-        <template v-if="column.dataIndex == 'operation'">
-          <a-button @click="editRecord(record)">Edit</a-button>
-        </template>
-        <template v-else-if="column.dataIndex == 'organization_id'">
-            {{ record[column.dataIndex] }}
-        </template>
-        <template v-else>
-          {{ record[column.dataIndex] }}
-        </template>
-      </template>
-    </a-table>
-
+    <div class="container mx-auto pt-5">
+      <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+        <a-table :dataSource="configs" :columns="columns">
+          <template #bodyCell="{ column, text, record, index }">
+            <template v-if="column.dataIndex == 'operation'">
+              <a-button @click="editRecord(record)">Edit</a-button>
+            </template>
+            <template v-else-if="column.dataIndex == 'organization_id'">
+                {{ record[column.dataIndex] }}
+            </template>
+            <template v-else>
+              {{ record[column.dataIndex] }}
+            </template>
+          </template>
+        </a-table>
+      </div>
+    </div>
     <!-- Modal Start-->
     <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
       <a-form

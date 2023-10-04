@@ -7,29 +7,40 @@
         </template>
         <button @click="createRecord()"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Organization</button>
-            <a-table :dataSource="organizations" :columns="columns">
-                <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('admin.organization.members',record.id)" class="ant-btn">Members</inertia-link>
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
-                    </template>
-                    <template v-else-if="column.dataIndex=='region'">
-                        {{ zones.find(z=>z.value==record[column.dataIndex]).label }}
-                    </template>
-                    <template v-else-if="column.dataIndex=='manager'">
-                        <ol class="list-decimal">
-                            <li v-for="user in record['users']">
-                                {{ user.name }}
-                            </li>
-                        </ol>
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
-                </template>
-            </a-table>
-
+            <div class="container mx-auto pt-5">
+                <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+                    <a-table :dataSource="organizations" :columns="columns">
+                        <template #bodyCell="{column, text, record, index}">
+                            <template v-if="column.dataIndex=='operation'">
+                                <inertia-link :href="route('admin.organization.members',record.id)" class="ant-btn">Members</inertia-link>
+                                <a-button @click="editRecord(record)">Edit</a-button>
+                                <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                                <a-popconfirm
+                                    title="Are you sure to delete the record?"
+                                    ok-text="Yes"
+                                    cancel-text="No"
+                                    @confirm="deleteRecord(record)"
+                                    >
+                                    <a-button>Delete</a-button>
+                                </a-popconfirm>
+                            </template>
+                            <template v-else-if="column.dataIndex=='region'">
+                                {{ zones.find(z=>z.value==record[column.dataIndex]).label }}
+                            </template>
+                            <template v-else-if="column.dataIndex=='manager'">
+                                <ol class="list-decimal">
+                                    <li v-for="user in record['users']">
+                                        {{ user.name }}
+                                    </li>
+                                </ol>
+                            </template>
+                            <template v-else>
+                                {{record[column.dataIndex]}}
+                            </template>
+                        </template>
+                    </a-table>
+                </div>
+            </div>
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
         <a-form
@@ -86,7 +97,7 @@
                 <a-input v-model:value="modal.data.president" />
             </a-form-item>
             <a-form-item label="Status" name="status" :rules="[{required:true}]">
-                <a-select v-model:value="modal.data.status" :options="organizationStates"/>
+                <a-switch v-model:checked="modal.data.status"  :checkedValue="1" :unCheckedValue="0"/>
             </a-form-item>
             <a-form-item label="Manager" name="manager">
                 <a-select v-model:value="modal.data.user_ids" 
@@ -199,7 +210,7 @@ export default {
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/organization/teachers/', this.modal.data,{
+                this.$inertia.post(route('admin.organizations.store'), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -230,10 +241,8 @@ export default {
             });
            
         },
-        deleteRecord(recordId){
-            console.log(recordId);
-            if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/organization/teachers/' + recordId,{
+        deleteRecord(record){
+            this.$inertia.delete(route('admin.organizations.destroy',record.id),{
                 onSuccess: (page)=>{
                     console.log(page);
                 },

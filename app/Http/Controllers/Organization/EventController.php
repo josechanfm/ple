@@ -86,8 +86,10 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
+        //dd($event);
+        //dd($request->all());
         $event->update($request->all());
-        return redirect()->route('manage.events.index');
+        return redirect()->back();
     }
 
     /**

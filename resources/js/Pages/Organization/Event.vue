@@ -15,8 +15,8 @@
           <a-form-item :label="$t('event_title_fn')" name="title_fn">
             <a-input v-model:value="event.title_fn" />
           </a-form-item>
-          <a-form-item :label="$t('category')" name="category">
-            <a-select v-model:value="event.category" :options="categories" />
+          <a-form-item :label="$t('category_code')" name="category_code">
+            <a-select v-model:value="event.category_code" :options="categories" />
           </a-form-item>
           <a-row>
             <a-col :xs="24" :md="8">
@@ -35,21 +35,21 @@
                 </a-form-item>
             </a-col>
           </a-row>
-
           <a-form-item :label="$t('description')" name="description">
             <quill-editor v-model:value="event.description" style="min-height: 200px" />
           </a-form-item>
           <a-form-item :label="$t('remark')" name="remark">
             <quill-editor v-model:value="event.remark" style="min-height: 200px" />
           </a-form-item>
-          <a-form-item>
-            <a-button type="primary" html-type="submit">Submit</a-button>
+          <a-form-item :label="$t('with_attendance')" name="with_attendance">
+            <a-switch v-model:checked="event.with_attendance" :checkedValue="1" :unCheckedValue="0"/>
           </a-form-item>
+          <div class="flex flex-row item-center justify-center">
+            <a-button type="primary" html-type="submit">Submit</a-button>
+          </div>
         </a-form>
       </div>
     </div>
-
-
   </OrganizationLayout>
 </template>
 

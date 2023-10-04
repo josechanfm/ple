@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('organization_id');
-            $table->string('category');
+            $table->string('category_code');
             $table->tinyInteger('credit')->nullable();
             $table->string('title_en');
             $table->string('title_fn')->nullable();

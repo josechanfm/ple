@@ -9,7 +9,7 @@ defineProps({
   canRegister: Boolean,
   laravelVersion: String,
   phpVersion: String,
-  isMember: Object,
+  isMember: Boolean,
   isOrganizer: Boolean,
   articles: Array,
 });

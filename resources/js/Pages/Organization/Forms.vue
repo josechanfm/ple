@@ -23,14 +23,15 @@
                                 Data Fields
                             </inertia-link>
                             <a-button @click="editRecord(record)">Edit</a-button>
+
                             <a-popconfirm
                                 title="Are you sure to delete the record?"
                                 ok-text="Yes"
                                 cancel-text="No"
-                                @confirm="deleteConfirmed(record.id)"
-                                :disabled="record.published==1"
+                                @confirm="deleteConfirmed(record)"
+                                :disabled="record.entries_count>0"
                                 >
-                                <a-button>Delete</a-button>
+                                <a-button :disabled="record.entries_count>0">Delete</a-button>
                             </a-popconfirm>
                             <a-button @click="backupRecords(record)" v-if="record.entries_count>0">Backup</a-button>
                         </template>
@@ -47,6 +48,7 @@
                     </template>
                 </a-table>
             </div>
+            <p>From CAN NOT be delete, if Response is not empty.</p>
         </div>
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
@@ -82,7 +84,7 @@
                     <a-switch v-model:checked="modal.data.with_attendance" :unCheckedValue="0" :checkedValue="1" />
                     <span class="pl-3">{{ $t('with_attendance_note') }}</span>
                 </a-form-item>
-                <a-form-item :label="$t('banner_image')" name="cert_logo">
+                <a-form-item :label="$t('banner_image')" name="banner_image">
                     <div v-if="modal.data.media.length">
                         <inertia-link :href="route('manage.form.deleteMedia', modal.data.media[0].id)"
                             class="float-right text-red-500">
@@ -93,7 +95,7 @@
                                 </path>
                             </svg>
                         </inertia-link>
-                        <img :src="'/media/form/' + modal.data.media[0].id + '/' + modal.data.media[0].file_name" width="100" />
+                        <img :src="modal.data.media[0].preview_url" width="100" />
                     </div>
                     <div v-else>
                         <a-upload 
@@ -123,6 +125,7 @@
         <!-- Modal End-->
     </OrganizationLayout>
 </template>
+
 
 <script>
 import OrganizationLayout from '@/Layouts/OrganizationLayout.vue';
@@ -211,6 +214,7 @@ export default {
             this.modal.data.require_login = false;
             this.modal.data.for_member = false;
             this.modal.data.published = false;
+            this.modal.data.with_attendance=0
             this.modal.data.media = [];
             this.modal.mode = "CREATE";
             this.modal.title = "Create New Form";
@@ -255,7 +259,8 @@ export default {
             });
         },
         deleteConfirmed(record) {
-            if (!confirm('Are you sure want to remove?')) return;
+            console.log("delete");
+            console.log(record);
             this.$inertia.delete(route('manage.forms.destroy', { form: record.id }), {
                 onSuccess: (page) => {
                     console.log(page);

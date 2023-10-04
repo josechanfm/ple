@@ -11,6 +11,7 @@ import Antd from 'ant-design-vue';
 import { i18nVue } from 'laravel-vue-i18n'
 import 'ant-design-vue/dist/antd.css';
 
+
 // import { createI18n } from 'vue-i18n';
 // import messages from '@/lang/messages.js'
 // const i18n = createI18n({
