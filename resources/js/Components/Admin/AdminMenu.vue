@@ -13,7 +13,7 @@
         </template>
         <span>
           <inertia-link :href="route('admin.dashboard')">
-            Dashboard
+            {{ $t("dashboard") }}
           </inertia-link>
         </span>
       </a-menu-item>
@@ -35,7 +35,7 @@
         </template>
         <span>
           <inertia-link :href="route('admin.organizations.index')">
-            Organizations
+            {{ $t("organization") }}
           </inertia-link>
         </span>
       </a-menu-item>
@@ -45,7 +45,7 @@
         </template>
         <span>
           <inertia-link :href="route('admin.members.index')">
-            Members
+            {{ $t("members") }}
           </inertia-link>
         </span>
       </a-menu-item>
@@ -55,7 +55,7 @@
         </template>
         <span>
           <inertia-link :href="route('admin.users.index')">
-            Users
+            {{ $t("user") }}
           </inertia-link>
         </span>
       </a-menu-item>
@@ -65,7 +65,7 @@
         </template>
         <span>
           <inertia-link :href="route('admin.configs.index')">
-            Configs
+            {{ $t("configs") }}
           </inertia-link>
         </span>
       </a-menu-item>

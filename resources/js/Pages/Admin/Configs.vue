@@ -1,23 +1,28 @@
 <template>
   <AdminLayout title="Dashboard">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Configs</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ $t("configs") }}
+      </h2>
     </template>
     <button
       @click="createRecord()"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3"
     >
-      Create Config Item
+      {{ $t("create_config_item") }}
     </button>
     <div class="container mx-auto pt-5">
       <div class="bg-white relative shadow rounded-lg overflow-x-auto">
         <a-table :dataSource="configs" :columns="columns">
+          <template #headerCell="{ column }">
+            {{ column.i18n ? $t(column.i18n) : column.title }}
+          </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <a-button @click="editRecord(record)">Edit</a-button>
+              <a-button @click="editRecord(record)">{{ $t("edit") }}</a-button>
             </template>
             <template v-else-if="column.dataIndex == 'organization_id'">
-                {{ record[column.dataIndex] }}
+              {{ record[column.dataIndex] }}
             </template>
             <template v-else>
               {{ record[column.dataIndex] }}
@@ -27,7 +32,7 @@
       </div>
     </div>
     <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+    <a-modal v-model:visible="modal.isOpen" :title="$t(modal.title)" width="60%">
       <a-form
         ref="modalRef"
         :model="modal.data"
@@ -39,20 +44,21 @@
         :validate-messages="validateMessages"
       >
         <a-input type="hidden" v-model:value="modal.data.id" />
-        <a-form-item label="Organization" name="organization_id">
-            <a-select v-model:value="modal.data.organization_id"
-                :options="organizations"
-                :fieldNames="{value:'id',label:'full_name'}"
-            />
+        <a-form-item :label="$t('organization')" name="organization_id">
+          <a-select
+            v-model:value="modal.data.organization_id"
+            :options="organizations"
+            :fieldNames="{ value: 'id', label: 'full_name' }"
+          />
         </a-form-item>
-        <a-form-item label="Key" name="key">
+        <a-form-item :label="$t('key')" name="key">
           <a-input v-model:value="modal.data.key" />
         </a-form-item>
-        <a-form-item label="Value" name="value">
-            <a-textarea v-model:value="modal.data.value" :rows="15"/>
+        <a-form-item :label="$t('value')" name="value">
+          <a-textarea v-model:value="modal.data.value" :rows="15" />
         </a-form-item>
-        <a-form-item label="Remark" name="remark">
-            <a-textarea v-model:value="modal.data.remark"/>
+        <a-form-item :label="$t('remark')" name="remark">
+          <a-textarea v-model:value="modal.data.remark" />
         </a-form-item>
       </a-form>
       <template #footer>
@@ -61,14 +67,14 @@
           key="Update"
           type="primary"
           @click="updateRecord()"
-          >Update</a-button
+          >{{ $t("update") }}</a-button
         >
         <a-button
           v-if="modal.mode == 'CREATE'"
           key="Store"
           type="primary"
           @click="storeRecord()"
-          >Add</a-button
+          >{{ $t("add") }}</a-button
         >
       </template>
     </a-modal>
@@ -84,7 +90,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["organizations","users","configs"],
+  props: ["organizations", "users", "configs"],
   data() {
     return {
       modal: {
@@ -97,19 +103,24 @@ export default {
       columns: [
         {
           title: "Organization",
+          i18n: "organization",
           dataIndex: "organization_id",
-        },{
+        },
+        {
           title: "Key",
+          i18n: "key",
           dataIndex: "key",
-        },{
+        },
+        {
           title: "Operation",
+          i18n: "operation",
           dataIndex: "operation",
           key: "operation",
         },
       ],
       rules: {
         name: { required: true },
-        email:{ required: true,type:'email' },
+        email: { required: true, type: "email" },
         password: { required: true },
       },
       validateMessages: {
@@ -130,19 +141,19 @@ export default {
     };
   },
   created() {
-    this.organizations.unshift({id:0,full_name:'General Config Item'});
+    this.organizations.unshift({ id: 0, full_name: "General Config Item" });
   },
   methods: {
     createRecord() {
       this.modal.data = {};
       this.modal.mode = "CREATE";
-      this.modal.title = "Create Config Item";
+      this.modal.title = "create";
       this.modal.isOpen = true;
     },
     editRecord(record) {
       this.modal.data = { ...record };
       this.modal.mode = "EDIT";
-      this.modal.title = "Edit Config Item";
+      this.modal.title = "edit";
       this.modal.isOpen = true;
     },
     storeRecord() {
@@ -165,16 +176,20 @@ export default {
     },
     updateRecord() {
       console.log(this.modal.data);
-        this.$inertia.patch(route("admin.configs.update",this.modal.data.id), this.modal.data, {
-        onSuccess: (page) => {
+      this.$inertia.patch(
+        route("admin.configs.update", this.modal.data.id),
+        this.modal.data,
+        {
+          onSuccess: (page) => {
             this.modal.data = {};
             this.modal.isOpen = false;
             console.log(page);
-        },
-        onError: (error) => {
+          },
+          onError: (error) => {
             console.log(error);
-        },
-        });
+          },
+        }
+      );
     },
   },
 };

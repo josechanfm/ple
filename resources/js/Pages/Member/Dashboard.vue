@@ -101,7 +101,7 @@ export default {
   <MemberLayout title="Dashboard">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Membership
+        {{$t('membership')}}
       </h2>
     </template>
     <div class="container mx-auto">

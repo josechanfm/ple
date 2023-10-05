@@ -2,15 +2,24 @@
   <MemberLayout title="Dashboard">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Personal Profile
+        {{ $t("profile") }}
       </h2>
     </template>
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
-          <a-form ref="formRef" name="Form" autocomplete="off" v-bind="layout" :model="member" layout="vertical"
-            :rules="rules" :validate-messages="validateMessages" enctype="multipart/form-data">
+          <a-form
+            ref="formRef"
+            name="Form"
+            autocomplete="off"
+            v-bind="layout"
+            :model="member"
+            layout="vertical"
+            :rules="rules"
+            :validate-messages="validateMessages"
+            enctype="multipart/form-data"
+          >
             <a-collapse v-model:activeKey="activeKey">
               <a-collapse-panel key="1" :header="$t('profile_title')">
                 <a-row :gutter="24" :span="24">
@@ -36,7 +45,11 @@
                 <a-row :gutter="24" :span="24">
                   <a-col :span="12">
                     <a-form-item :label="$t('dob')" name="dob">
-                      <a-date-picker v-model:value="member.dob" :format="dateFormat" :valueFormat="dateFormat"/>
+                      <a-date-picker
+                        v-model:value="member.dob"
+                        :format="dateFormat"
+                        :valueFormat="dateFormat"
+                      />
                     </a-form-item>
                     <a-form-item :label="$t('country')" name="country">
                       <a-input v-model:value="member.country" />
@@ -78,16 +91,31 @@
               </a-collapse-panel>
               <a-collapse-panel key="3" :header="$t('position_title')">
                 <a-checkbox-group v-model:value="member.positions">
-                  <a-checkbox :style="virticalStyle" value="ATH">Compettitor</a-checkbox>
-                  <a-checkbox :style="virticalStyle" value="REF">Referee</a-checkbox>
-                  <a-checkbox :style="virticalStyle" value="COA">Coach</a-checkbox>
-                  <a-checkbox :style="virticalStyle" value="OFF">Official</a-checkbox>
-                  <a-checkbox :style="virticalStyle" value="GUE">Guest
+                  <a-checkbox :style="virticalStyle" value="ATH">{{
+                    $t("compettitor")
+                  }}</a-checkbox>
+                  <a-checkbox :style="virticalStyle" value="REF">{{
+                    $t("referee_title")
+                  }}</a-checkbox>
+                  <a-checkbox :style="virticalStyle" value="COA">{{
+                    $t("coach")
+                  }}</a-checkbox>
+                  <a-checkbox :style="virticalStyle" value="OFF">{{
+                    $t("official_title")
+                  }}</a-checkbox>
+                  <a-checkbox :style="virticalStyle" value="GUE"
+                    >{{ $t("guest_title") }}
                     <a-typography-text type="secondary">
-                      (VIP, VVIP, Media etc.)</a-typography-text></a-checkbox>
+                      (VIP, VVIP, Media etc.)</a-typography-text
+                    ></a-checkbox
+                  >
                 </a-checkbox-group>
               </a-collapse-panel>
-              <a-collapse-panel key="4" :header="$t('athlete_title')" v-if="member.positions.includes('ATH')">
+              <a-collapse-panel
+                key="4"
+                :header="$t('athlete_title')"
+                v-if="member.positions.includes('ATH')"
+              >
                 <a-row :gutter="24" :span="24">
                   <a-col :span="12">
                     <a-form-item :label="$t('coach')" name="coach">
@@ -113,11 +141,18 @@
                   </a-col>
                 </a-row>
               </a-collapse-panel>
-              <a-collapse-panel key="5" :header="$t('referee_title')" v-if="member.positions.includes('REF')">
+              <a-collapse-panel
+                key="5"
+                :header="$t('referee_title')"
+                v-if="member.positions.includes('REF')"
+              >
                 <a-checkbox-group v-model:checked="member.role_referees">
-                  <a-checkbox v-for="position in positions.filter(
-                    (p) => p.scope == 'REFEREE'
-                  )" :style="virticalStyle" :value="position.code">{{ position.title_en }}</a-checkbox>
+                  <a-checkbox
+                    v-for="position in positions.filter((p) => p.scope == 'REFEREE')"
+                    :style="virticalStyle"
+                    :value="position.code"
+                    >{{ position.title_en }}</a-checkbox
+                  >
                 </a-checkbox-group>
               </a-collapse-panel>
               <!-- 
@@ -125,38 +160,64 @@
                 Coach
               </a-collapse-panel>
               -->
-              <a-collapse-panel key="7" :header="$t('official_title')" v-if="member.positions.includes('OFF')">
+              <a-collapse-panel
+                key="7"
+                :header="$t('official_title')"
+                v-if="member.positions.includes('OFF')"
+              >
                 <a-row :gutter="24" :span="24">
                   <a-col :span="12">
-                    <a-form-item :label="$t('federation_function')" name="federation_officials">
+                    <a-form-item
+                      :label="$t('federation_function')"
+                      name="federation_officials"
+                    >
                       <a-checkbox-group v-model:value="member.federation_officials">
-                        <a-checkbox v-for="position in positions.filter(
-                          (p) => p.scope == 'FEDERATION'
-                        )" :style="virticalStyle" :value="position.code">{{ position.title_en }}</a-checkbox>
+                        <a-checkbox
+                          v-for="position in positions.filter(
+                            (p) => p.scope == 'FEDERATION'
+                          )"
+                          :style="virticalStyle"
+                          :value="position.code"
+                          >{{ position.title_en }}</a-checkbox
+                        >
                       </a-checkbox-group>
                     </a-form-item>
                   </a-col>
                   <a-col :span="12">
-                    <a-form-item :label="$t('organization_function')" name="organization_officials">
+                    <a-form-item
+                      :label="$t('organization_function')"
+                      name="organization_officials"
+                    >
                       <a-checkbox-group v-model:value="member.organization_officials">
-                        <a-checkbox v-for="position in positions.filter(
-                          (p) => p.scope == 'ORGANIZATION'
-                        )" :style="virticalStyle" :value="position.code">{{ position.title_en }}</a-checkbox>
+                        <a-checkbox
+                          v-for="position in positions.filter(
+                            (p) => p.scope == 'ORGANIZATION'
+                          )"
+                          :style="virticalStyle"
+                          :value="position.code"
+                          >{{ position.title_en }}</a-checkbox
+                        >
                       </a-checkbox-group>
                     </a-form-item>
                   </a-col>
-                </a-row>
-              </a-collapse-panel>this.modal.data.cert_logo_upload=this.cropper.datab
+                </a-row> </a-collapse-panel
+              >this.modal.data.cert_logo_upload=this.cropper.datab
               <!--
               <a-collapse-panel key="8" :header="$t('guest_title')" v-if="member.positions.includes('GUE')">
                       888
               </a-collapse-panel>
               -->
               <a-collapse-panel key="9" :header="$t('picture_title')">
-                <a-button @click="showCropModal = true">Upload Profile Image</a-button>
-                <CropperModal v-if="showCropModal" :minAspectRatioProp="{ width: 8, height: 8 }"
-                  :maxAspectRatioProp="{ width: 8, height: 8 }" @croppedImageData="setCroppedImageData"
-                  @showModal="showCropModal = false" />
+                <a-button @click="showCropModal = true">{{
+                  $t("upload_profile_image")
+                }}</a-button>
+                <CropperModal
+                  v-if="showCropModal"
+                  :minAspectRatioProp="{ width: 8, height: 8 }"
+                  :maxAspectRatioProp="{ width: 8, height: 8 }"
+                  @croppedImageData="setCroppedImageData"
+                  @showModal="showCropModal = false"
+                />
                 <div class="flex flex-wrap mt-4 mb-6">
                   <div class="w-full md:w-1/2 px-3">
                     <div v-if="avatarPreview !== null">
@@ -169,8 +230,11 @@
                 </div>
               </a-collapse-panel>
             </a-collapse>
-            <a-form-item :wrapper-col="{ offset: 10, span: 24 }" style="padding-top:20px">
-              <a-button @click="onSubmit" type="primary">Submit</a-button>
+            <a-form-item
+              :wrapper-col="{ offset: 10, span: 24 }"
+              style="padding-top: 20px"
+            >
+              <a-button @click="onSubmit" type="primary">{{ $t("submit") }}</a-button>
             </a-form-item>
           </a-form>
         </div>
@@ -178,7 +242,6 @@
     </div>
   </MemberLayout>
 </template>
-
 
 <script>
 import MemberLayout from "@/Layouts/MemberLayout.vue";
@@ -200,10 +263,10 @@ export default {
   props: ["member", "positions"],
   data() {
     return {
-      dateFormat:'YYYY-MM-DD',
+      dateFormat: "YYYY-MM-DD",
       showCropModal: false,
       avatarPreview: null,
-      avatarData:null,
+      avatarData: null,
       activeKey: ["1", "3", "4", "5", "6", "7", "8", "9"],
       loading: false,
       modal: {
@@ -213,10 +276,10 @@ export default {
         mode: "",
       },
       rules: {
-        given_name:{ required: true },
-        family_name:{ required: true },
-        display_name:{ required: true },
-        email:{ required: true,type:'email' },
+        given_name: { required: true },
+        family_name: { required: true },
+        display_name: { required: true },
+        email: { required: true, type: "email" },
         field: { required: true },
         label: { required: true },
       },
@@ -251,8 +314,8 @@ export default {
   },
   methods: {
     setCroppedImageData(data) {
-      this.avatarPreview = data.imageUrl
-      this.avatarData=data
+      this.avatarPreview = data.imageUrl;
+      this.avatarData = data;
       console.log(data);
     },
 
@@ -260,17 +323,16 @@ export default {
       // update user avatar attribute
     },
     onSubmit() {
-      this.member.avatar=this.avatarData.blob
-      this.member._method = "PATCH"
-      this.$inertia.post(route("member.profile.update", this.member.id),this.member,{
-          onSuccess: (page) => {
-            console.log(page);
-          },
-          onError: (err) => {
-            console.log(err);
-          },
-        }
-      );
+      this.member.avatar = this.avatarData.blob;
+      this.member._method = "PATCH";
+      this.$inertia.post(route("member.profile.update", this.member.id), this.member, {
+        onSuccess: (page) => {
+          console.log(page);
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      });
     },
   },
 };

@@ -1,33 +1,38 @@
 <template>
   <AdminLayout title="Dashboard">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Members</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ $t("members") }}
+      </h2>
     </template>
     <button
       @click="createRecord()"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3"
     >
-      Create Member
+      {{ $t("create_member") }}
     </button>
-     <div class="container mx-auto pt-5">
-        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+    <div class="container mx-auto pt-5">
+      <div class="bg-white relative shadow rounded-lg overflow-x-auto">
         <a-table :dataSource="members" :columns="columns">
+          <template #headerCell="{ column }">
+            {{ column.i18n ? $t(column.i18n) : column.title }}
+          </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <a-button @click="editRecord(record)">Edit</a-button>
+              <a-button @click="editRecord(record)">{{ $t("edit") }}</a-button>
               <a-popconfirm
-                    title="Are you sure to delete the record?"
-                    ok-text="Yes"
-                    cancel-text="No"
-                    @confirm="deleteRecord(record)"
-                    >
-                    <a-button>Delete</a-button>
-                </a-popconfirm>
-              <a-button @click="createLogin(record)">Create login</a-button>
+                :title="$t('confirm_delete_record')"
+                ok-text="Yes"
+                cancel-text="No"
+                @confirm="deleteRecord(record)"
+              >
+                <a-button>{{ $t("delete") }}</a-button>
+              </a-popconfirm>
+              <a-button @click="createLogin(record)">{{ $t("create_login") }}</a-button>
             </template>
             <template v-else-if="column.dataIndex == 'login'">
               <span v-if="record['user']">
-                {{ record['user'].email }}
+                {{ record["user"].email }}
               </span>
             </template>
             <template v-else>
@@ -38,7 +43,7 @@
       </div>
     </div>
     <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+    <a-modal v-model:visible="modal.isOpen" :title="$t(modal.title)" width="60%">
       <a-form
         ref="modalRef"
         :model="modal.data"
@@ -49,32 +54,41 @@
         :rules="rules"
         :validate-messages="validateMessages"
       >
-        <a-form-item label="Given Name" name="given_name">
+        <a-form-item :label="$t('given_name')" name="given_name">
           <a-input v-model:value="modal.data.given_name" />
         </a-form-item>
-        <a-form-item label="Middle Name" name="middle_name">
+        <a-form-item :label="$t('middle_name')" name="middle_name">
           <a-input v-model:value="modal.data.middle_name" />
         </a-form-item>
-        <a-form-item label="Family Name" name="family_name">
+        <a-form-item :label="$t('family_name')" name="family_name">
           <a-input v-model:value="modal.data.family_name" />
         </a-form-item>
-        <a-form-item label="Email" name="email">
+        <a-form-item :label="$t('email')" name="email">
           <a-input v-model:value="modal.data.email" />
         </a-form-item>
-        <a-form-item label="Gender" name="gender">
-          <a-switch v-model:checked="modal.data.gender" :checkedValue="1" :unCheckedValue="0"/>
+        <a-form-item :label="$t('gender')" name="gender">
+          <a-switch
+            v-model:checked="modal.data.gender"
+            :checkedValue="1"
+            :unCheckedValue="0"
+          />
         </a-form-item>
-        <a-form-item label="Date of Birth" name="dob">
-          <a-date-picker v-model:value="modal.data.dob" :format="dateFormat" :valueFormat="dateFormat"/>
+        <a-form-item :label="$t('date_of_birth')" name="dob">
+          <a-date-picker
+            v-model:value="modal.data.dob"
+            :format="dateFormat"
+            :valueFormat="dateFormat"
+          />
         </a-form-item>
-        <a-form-item label="Organizations" name="organization_ids">
-          <a-select v-model:value="modal.data.organization_ids"
-                  mode="multiple"
-                  show-search
-                  :filter-option="filterOption"
-                  :options="organizations"
-                  :fieldNames="{value:'id',label:'full_name'}"
-              />
+        <a-form-item :label="$t('organizations')" name="organization_ids">
+          <a-select
+            v-model:value="modal.data.organization_ids"
+            mode="multiple"
+            show-search
+            :filter-option="filterOption"
+            :options="organizations"
+            :fieldNames="{ value: 'id', label: 'full_name' }"
+          />
         </a-form-item>
       </a-form>
       <template #footer>
@@ -83,14 +97,14 @@
           key="Update"
           type="primary"
           @click="updateRecord()"
-          >Update</a-button
+          >{{ $t("update") }}</a-button
         >
         <a-button
           v-if="modal.mode == 'CREATE'"
           key="Store"
           type="primary"
           @click="storeRecord()"
-          >Add</a-button
+          >{{ $t("add") }}</a-button
         >
       </template>
     </a-modal>
@@ -106,10 +120,10 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["organizations","members"],
+  props: ["organizations", "members"],
   data() {
     return {
-      dateFormat:'YYYY-MM-DD',
+      dateFormat: "YYYY-MM-DD",
       modal: {
         isOpen: false,
         data: {},
@@ -120,18 +134,27 @@ export default {
       columns: [
         {
           title: "Given Name",
+          i18n: "given_name",
           dataIndex: "given_name",
-        },{
+        },
+        {
           title: "Family Name",
+          i18n: "family_name",
           dataIndex: "family_name",
-        },{
+        },
+        {
           title: "Display Name",
+          i18n: "display_name",
           dataIndex: "display_name",
-        },{
-          title: "Login email",
+        },
+        {
+          title: "Login Email",
+          i18n: "login_email",
           dataIndex: "login",
-        },{
-          title: "Operations",
+        },
+        {
+          title: "Operation",
+          i18n: "operation",
           dataIndex: "operation",
           key: "operation",
         },
@@ -160,27 +183,27 @@ export default {
   created() {},
   methods: {
     filterOption(input, option) {
-      return option.full_name.toLowerCase().indexOf(input.toLowerCase())>=0
+      return option.full_name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     },
     createRecord() {
-      this.modal.data = {}
-      this.modal.data.organization_ids=[]
-      this.modal.mode = "CREATE"
-      this.modal.title = "新增問卷"
-      this.modal.isOpen = true
+      this.modal.data = {};
+      this.modal.data.organization_ids = [];
+      this.modal.mode = "CREATE";
+      this.modal.title = "create";
+      this.modal.isOpen = true;
     },
     editRecord(record) {
-      this.modal.data = { ...record }
-      this.modal.data.organization_ids=record.organizations.map(item=>(item.id))
-      this.modal.mode = "EDIT"
-      this.modal.title = "修改"
-      this.modal.isOpen = true
+      this.modal.data = { ...record };
+      this.modal.data.organization_ids = record.organizations.map((item) => item.id);
+      this.modal.mode = "EDIT";
+      this.modal.title = "edit";
+      this.modal.isOpen = true;
     },
     storeRecord() {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.post(route('admin.members.store'), this.modal.data, {
+          this.$inertia.post(route("admin.members.store"), this.modal.data, {
             onSuccess: (page) => {
               this.modal.data = {};
               this.modal.isOpen = false;
@@ -199,23 +222,27 @@ export default {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.patch(route('admin.members.update', this.modal.data.id), this.modal.data, {
-            onSuccess: (page) => {
-              this.modal.data = {};
-              this.modal.isOpen = false;
-              console.log(page);
-            },
-            onError: (error) => {
-              console.log(error);
-            },
-          });
+          this.$inertia.patch(
+            route("admin.members.update", this.modal.data.id),
+            this.modal.data,
+            {
+              onSuccess: (page) => {
+                this.modal.data = {};
+                this.modal.isOpen = false;
+                console.log(page);
+              },
+              onError: (error) => {
+                console.log(error);
+              },
+            }
+          );
         })
         .catch((err) => {
           console.log("error", err);
         });
     },
     deleteRecord(record) {
-      this.$inertia.delete(route('admin.members.destroy',record.id), {
+      this.$inertia.delete(route("admin.members.destroy", record.id), {
         onSuccess: (page) => {
           console.log(page);
         },

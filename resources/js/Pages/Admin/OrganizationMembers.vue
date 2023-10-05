@@ -1,7 +1,9 @@
 <template>
   <AdminLayout title="Dashboard">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Organization Members</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ $t("organization_members") }}
+      </h2>
     </template>
     <!--
     <button
@@ -12,6 +14,9 @@
     </button>
     -->
     <a-table :dataSource="members" :columns="columns">
+      <template #headerCell="{ column }">
+        {{ column.i18n ? $t(column.i18n) : column.title }}
+      </template>
       <template #bodyCell="{ column, text, record, index }">
         <template v-if="column.dataIndex == 'operation'">
           <!--
@@ -31,7 +36,7 @@
     </a-table>
 
     <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+    <a-modal v-model:visible="modal.isOpen" :title="$t(modal.title)" width="60%">
       <a-form
         ref="modalRef"
         :model="modal.data"
@@ -43,19 +48,19 @@
         :validate-messages="validateMessages"
       >
         <a-input type="hidden" v-model:value="modal.data.id" />
-        <a-form-item label="姓名(中文)" name="name_zh">
+        <a-form-item :label="$t('name_zh')" name="name_zh">
           <a-input v-model:value="modal.data.name_zh" />
         </a-form-item>
-        <a-form-item label="姓名(外文)" name="name_zh">
+        <a-form-item :label="$t('name_fn')" name="name_fn">
           <a-input v-model:value="modal.data.name_fn" />
         </a-form-item>
-        <a-form-item label="別名" name="nickname">
+        <a-form-item :label="$t('nickname')" name="nickname">
           <a-input v-model:value="modal.data.nickname" />
         </a-form-item>
-        <a-form-item label="手機" name="mobile">
+        <a-form-item :label="$t('mobile')" name="mobile">
           <a-input v-model:value="modal.data.mobile" />
         </a-form-item>
-        <a-form-item label="狀態" name="status">
+        <a-form-item :label="$t('status')" name="status">
           <a-select v-model:value="modal.data.state" :options="employmentStates" />
         </a-form-item>
       </a-form>
@@ -65,14 +70,14 @@
           key="Update"
           type="primary"
           @click="updateRecord()"
-          >Update</a-button
+          >{{ $t("update") }}</a-button
         >
         <a-button
           v-if="modal.mode == 'CREATE'"
           key="Store"
           type="primary"
           @click="storeRecord()"
-          >Add</a-button
+          >{{ $t("add") }}</a-button
         >
       </template>
     </a-modal>
@@ -101,21 +106,32 @@ export default {
       columns: [
         {
           title: "Given Name",
+          i18n: "given_name",
           dataIndex: "given_name",
-        },{
+        },
+        {
           title: "Family Name",
+          i18n: "family_name",
           dataIndex: "family_name",
-        },{
+        },
+        {
           title: "Gender",
+          i18n: "gender",
           dataIndex: "gender",
-        },{
-          title: "DOB",
+        },
+        {
+          title: "Dob",
+          i18n: "dob",
           dataIndex: "dob",
-        },{
+        },
+        {
           title: "Login Username",
+          i18n: "login_username",
           dataIndex: "login",
-        },{
+        },
+        {
           title: "Operation",
+          i18n: "operation",
           dataIndex: "operation",
           key: "operation",
         },
@@ -147,13 +163,13 @@ export default {
     createRecord() {
       this.modal.data = {};
       this.modal.mode = "CREATE";
-      this.modal.title = "新增問卷";
+      this.modal.title = "create";
       this.modal.isOpen = true;
     },
     editRecord(record) {
       this.modal.data = { ...record };
       this.modal.mode = "EDIT";
-      this.modal.title = "修改";
+      this.modal.title = "edit";
       this.modal.isOpen = true;
     },
     storeRecord() {
