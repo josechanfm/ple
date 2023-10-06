@@ -21,10 +21,10 @@
               }}</template>
               <template v-if="column.dataIndex == 'operation'">
                 <div class="space-x-2">
-                  <a-button @click="editRecord(record)">Edit</a-button>
-                  <a-popconfirm title="Are you sure to delete the record?" ok-text="Yes" cancel-text="No"
+                  <a-button @click="editRecord(record)">{{$t('edit')}}</a-button>
+                  <a-popconfirm :title="$t('confirm_delete_record')" :ok-text="$t('yes')" :cancel-text="$t('no')"
                     @confirm="deleteRecord(record.id)">
-                    <a-button>Delete</a-button>
+                    <a-button>{{$t('delete')}}</a-button>
                   </a-popconfirm>
                 </div>
               </template>

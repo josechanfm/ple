@@ -41,7 +41,7 @@
         <p>{{$t('family_name')}}: {{ record.family_name }}</p>
         <p>{{$t('display_name')}}: {{ record.display_name }}</p>
         <p>{{$t('gender')}}: {{ record.gender }}</p>
-        <p>{{$t('date_of_birth')}}: {{ record.dob }}</p>
+        <p>{{$t('dob')}}: {{ record.dob }}</p>
         <p>{{$t('email')}}: {{ record.email }}</p>
         <p>{{$t('number')}}: {{ record.pivot.number }}</p>
         <!-- <p>Number Display: {{ record.pivot.number_display }}</p> -->

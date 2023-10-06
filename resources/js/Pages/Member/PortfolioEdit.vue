@@ -14,7 +14,7 @@
                             <a-input v-model:value="member.family_name" />
                         </a-form-item>
                         <div class="flex flex-row item-center justify-center">
-                            <a-button type="primary" html-type="submit">Submit</a-button>
+                            <a-button type="primary" html-type="submit">{{$t('submit')}}</a-button>
                         </div>
                     </a-form>
 

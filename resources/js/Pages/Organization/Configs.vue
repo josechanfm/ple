@@ -16,7 +16,7 @@
                 </template>
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">Edit</a-button>
+                        <a-button @click="editRecord(record)">{{$t('edit')}}</a-button>
                     </template>
                     <template v-else-if="column.dataIndex=='state'">
                         {{teacherStateLabels[text]}}
@@ -54,8 +54,8 @@
             </a-form-item>
         </a-form>
         <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
+            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">{{$t('update')}}</a-button>
+            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">{{$t('add')}}</a-button>
         </template>
     </a-modal>    
     <!-- Modal End-->

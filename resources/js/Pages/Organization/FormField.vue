@@ -24,8 +24,8 @@
                                     {{ record[column.dataIndex] }}
                                 </td>
                                 <td>
-                                    <a-button @click="editRecord(record)">Edit</a-button>
-                                    <a-button @click="deleteRecord(record)" :disabled="form.published==1">Delete</a-button>
+                                    <a-button @click="editRecord(record)">{{$t('edit')}}</a-button>
+                                    <a-button @click="deleteRecord(record)" :disabled="form.published==1">{{$t('delete')}}</a-button>
                                </td>
                             </tr>
                         </transition-group>
@@ -89,7 +89,7 @@
                 </a-form-item>
             </a-form>
             <template #footer>
-                <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary" @click="updateRecord()">Update</a-button>
+                <a-button v-if="modal.mode == 'EDIT'" key="Update" type="primary" @click="updateRecord()">{{$t('update')}}</a-button>
                 <a-button v-if="modal.mode == 'CREATE'" key="Store" type="primary" @click="storeRecord()">Create</a-button>
             </template>
         </a-modal>

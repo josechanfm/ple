@@ -14,7 +14,7 @@
                 </template>
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="route('member.event.attendances.destroy',{event:record.event_id,attendance:record.id})" class="ant-btn">Delete</inertia-link>
+                        <inertia-link :href="route('member.event.attendances.destroy',{event:record.event_id,attendance:record.id})" class="ant-btn">{{$t('delete')}}</inertia-link>
                     </template>
                     <template v-else-if="column.dataIndex=='member'">
                         {{ record.member.given_name }}

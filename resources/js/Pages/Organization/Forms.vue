@@ -38,8 +38,8 @@
 
               <a-popconfirm
                 :title="$t('confirm_delete_record')"
-                ok-text="Yes"
-                cancel-text="No"
+                :ok-text="$t('yes')"
+                :cancel-text="$t('no')"
                 @confirm="deleteConfirmed(record)"
                 :disabled="record.entries_count > 0"
               >

@@ -21,7 +21,7 @@
         >
             <template #bodyCell="{column, text, record, index}">
                 <template v-if="column.dataIndex=='operation'">
-                    <a-button @click="viewRecord(record)">View</a-button>
+                    <a-button @click="viewRecord(record)">{{$t('view')}}</a-button>
                 </template>
                 <template v-else-if="column.dataIndex=='created_at'">
                     {{ record[column.dataIndex] }}

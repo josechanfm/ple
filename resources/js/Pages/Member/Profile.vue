@@ -70,8 +70,8 @@
                   <a-col :span="12">
                     <a-form-item :label="$t('gender')" name="gender">
                       <a-radio-group v-model:value="member.gender" button-style="solid">
-                        <a-radio-button value="M">Male</a-radio-button>
-                        <a-radio-button value="F">Female</a-radio-button>
+                        <a-radio-button value="M">{{$t('male')}}</a-radio-button>
+                        <a-radio-button value="F">{{$t('female')}}</a-radio-button>
                       </a-radio-group>
                     </a-form-item>
                     <a-form-item :label="$t('club')" name="club">

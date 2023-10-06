@@ -13,8 +13,8 @@
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <inertia-link :href="route('member.event.attendance.scan',record.id)">Scan</inertia-link>
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                        <a-button @click="editRecord(record)">{{$t('edit')}}</a-button>
+                        <a-button @click="deleteRecord(record.id)">{{$t('delete')}}</a-button>
                     </template>
                     <template v-else-if="column.dataIndex=='published'">
                         {{record.published?'Yes':'No'}}

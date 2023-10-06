@@ -91,7 +91,7 @@
                         </div>
                     </template>
                     <div class="text-center pb-10">
-                        <a-button @click="storeRecord" type="primary">Submit</a-button>
+                        <a-button @click="storeRecord" type="primary">{{$t('submit')}}</a-button>
                     </div>
                     
                 </a-form>

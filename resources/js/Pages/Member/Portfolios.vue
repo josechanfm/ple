@@ -21,8 +21,8 @@
                     <a-table :dataSource="member.portfolios" :columns="columns">
                         <template #bodyCell="{column, text, record, index}">
                             <template v-if="column.dataIndex=='operation'">
-                                <a-button @click="editRecord(record)">Edit</a-button>
-                                <a-button @click="deleteRecord(record.id)">Delete</a-button>
+                                <a-button @click="editRecord(record)">{{$t('edit')}}</a-button>
+                                <a-button @click="deleteRecord(record.id)">{{$t('delete')}}</a-button>
                             </template>
                             <template v-else>
                                 {{record[column.dataIndex]}}
@@ -89,7 +89,7 @@ export default {
                     dataIndex: 'title',
                 },{
                     title: 'validated at',
-                    dataIndex: 'validated_at',
+                    dataIndex: 'valid_at',
                 },{
                     title: 'Expired at',
                     dataIndex: 'expired_at',

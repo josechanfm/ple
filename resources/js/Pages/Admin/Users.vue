@@ -20,8 +20,8 @@
               <a-button @click="editRecord(record)">{{ $t("edit") }}</a-button>
               <a-popconfirm
                 :title="$t('confirm_delete_record')"
-                ok-text="Yes"
-                cancel-text="No"
+                :ok-text="$t('yes')"
+                :cancel-text="$t('no')"
                 @confirm="deleteRecord(record)"
               >
                 <a-button>{{ $t("delete") }}</a-button>

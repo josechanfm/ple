@@ -75,7 +75,7 @@
         </template>
         <span>
           <inertia-link :href="route('manage.messages.index')">
-            {{ $t("message") }}
+            {{ $t("messages") }}
           </inertia-link>
         </span>
       </a-menu-item>

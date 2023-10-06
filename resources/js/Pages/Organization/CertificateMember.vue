@@ -8,7 +8,7 @@
             <a-table :dataSource="members" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="viewRecord(record)">View</a-button>
+                        <a-button @click="viewRecord(record)">{{$t('view')}}</a-button>
                     </template>
                     <template v-else-if="column.pivot">
                         {{record.pivot[column.dataIndex]}}
@@ -46,8 +46,8 @@
             </a-form-item>
         </a-form>
         <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
+            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">{{$t('update')}}</a-button>
+            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">{{$t('add')}}</a-button>
         </template>
     </a-modal>    
     <!-- Modal End-->

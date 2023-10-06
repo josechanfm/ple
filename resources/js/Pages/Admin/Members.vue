@@ -22,8 +22,8 @@
               <a-button @click="editRecord(record)">{{ $t("edit") }}</a-button>
               <a-popconfirm
                 :title="$t('confirm_delete_record')"
-                ok-text="Yes"
-                cancel-text="No"
+                :ok-text="$t('yes')"
+                :cancel-text="$t('no')"
                 @confirm="deleteRecord(record)"
               >
                 <a-button>{{ $t("delete") }}</a-button>
@@ -73,7 +73,7 @@
             :unCheckedValue="0"
           />
         </a-form-item>
-        <a-form-item :label="$t('date_of_birth')" name="dob">
+        <a-form-item :label="$t('dob')" name="dob">
           <a-date-picker
             v-model:value="modal.data.dob"
             :format="dateFormat"

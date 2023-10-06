@@ -16,16 +16,16 @@
             <a-form-item name="title" label="Title" >
                 <a-input v-model:value="organization.title" />
             </a-form-item>
-            <a-form-item name="email" label="Email" >
+            <a-form-item name="email" :label="$t('email')" >
                 <a-input v-model:value="organization.email" />
             </a-form-item>
-            <a-form-item name="phone" label="Phone" >
+            <a-form-item name="phone" :label="$t('phone')" >
                 <a-input v-model:value="organization.phone" />
             </a-form-item>
-            <a-form-item name="address" label="Address" >
+            <a-form-item name="address" :label="$t('address')" >
                 <a-input v-model:value="organization.address" />
             </a-form-item>
-            <a-form-item name="country" label="Country" >
+            <a-form-item name="country" :label="$t('country')" >
                 <a-input v-model:value="organization.country" />
             </a-form-item>
             <a-form-item name="href" label="Official Website" >
@@ -41,7 +41,7 @@
                 <a-input v-model:value="organization.content" />
             </a-form-item>
             <div class="flex flex-row item-center justify-center">
-                <a-button type="primary" html-type="submit">Submit</a-button>
+                <a-button type="primary" html-type="submit">{{$t('submit')}}</a-button>
             </div>
         </a-form>
     </OrganizationLayout>
