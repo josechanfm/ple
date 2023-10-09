@@ -99,6 +99,7 @@
     "entries":"Entries",
     "with_attendance_note":"With Attendance Note",
     "organization_member_only":"Organization member only",
+    "attended_mebmers":"Attended members",
 
     "competitions":"Competitions",
     "competition_title_en":"Competition Title (English)",
@@ -143,6 +144,7 @@
     "url":"Url",
     "search":"Search",
     "last_result":"Last Result",
+    "result":"Result",
 
     "certificate_title":"Title",
     "cert_body":"Cert. Body",
@@ -198,6 +200,8 @@
     "add":"Add",
     "update":"Update",
     "export":"Export",
+    "confirm":"Confirm",
+    "go_back":"Go Back",
 
     "yes":"Yes",
     "no":"No",

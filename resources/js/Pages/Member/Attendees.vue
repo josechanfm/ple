@@ -17,7 +17,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
                 <div class="pb-2">
 
-                    <a-button @click="onClickConfirm" class="float-right mr-5">Confirm</a-button>
+                    <a-button @click="onClickConfirm" class="float-right mr-5">{{$t('confirm')}}</a-button>
                 </div>
 <!-- 
                 <a-collapse v-model:activeKey="activeKey">
@@ -31,7 +31,7 @@
                     </a-collapse-panel>
                 </a-collapse> -->
                 <div>
-                    <a-typography-title :level="5">Attended mebmers:</a-typography-title>
+                    <a-typography-title :level="5">{{$t('attended_mebmers')}}:</a-typography-title>
                     <template v-for="attendee in attendees">
                         <a-checkbox v-model:checked="attendee.attended" @change="onChangeAttendee(attendee)" />
                         {{ attendee.attendee_id }}-{{ attendee.display_name }} {{ attendee.status }}<br>

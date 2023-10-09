@@ -2,7 +2,7 @@
   <MemberLayout title="Dashboard">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        表格例表
+        {{$t('forms')}}
       </h2>
     </template>
     
@@ -10,7 +10,7 @@
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="p-5 bg-white overflow-hidden shadow-xl sm:rounded-lg">
           <a-typography-title :level="3" class="text-center">{{ competition.title_fn }}</a-typography-title>
-          <a-typography-title :level="4" >Date: {{ competition.start_date }} - {{ competition.end_date }}</a-typography-title>
+          <a-typography-title :level="4" >{{$t('date')}}: {{ competition.start_date }} - {{ competition.end_date }}</a-typography-title>
           <!--
           <a-typography-title :level="4" >Match Date: 
             <span v-for="date in competition.match_dates">{{ date }} ,</span>

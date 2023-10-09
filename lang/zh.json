@@ -99,6 +99,7 @@
     "entries":"條目",
     "with_attendance_note":"附有出席紀錄",
     "organization_member_only":"只供組織成員",
+    "attended_mebmers":"出席會員",
 
     "competitions":"賽事列表",
     "competition_title_en":"賽事名稱(英文)",
@@ -143,6 +144,7 @@
     "url":"網址",
     "search":"搜索",
     "last_result":"最後結果",
+    "result":"結果",
 
     "certificate_title":"證書名稱",
     "cert_body":"認證機構",
@@ -200,10 +202,16 @@
     "store":"新增",
     "update":"更新",
     "export":"輸出",
+    "confirm":"確認",
+    "go_back":"返回",
 
     "yes":"是",
     "no":"否",
     "and":"和",
+
+    "attend":"出席",
+    "be_late":"遲到",
+    "leave_early":"早退",
 
     "confirm_delete_record":"是否確定刪這條記錄?",
     "add_members_as_attendees":"新增成員為參與者",

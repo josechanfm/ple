@@ -11,9 +11,9 @@
                     <a-radio-button :value="status.value">{{ status.label }}</a-radio-button>
                 </template>
             </a-radio-group>
-            <a href="#" onclick="history.back();return false;" class="ant-btn float-right">Go Back</a>
+            <a href="#" onclick="history.back();return false;" class="ant-btn float-right">{{$t('go_back')}}</a>
             <div class="error">{{ error }}</div>
-            <div class="decode-result pt-2">Result: <b>{{ result }}</b></div>
+            <div class="decode-result pt-2">{{$t('result')}}: <b>{{ result }}</b></div>
         </div>
 
         <qrcode-stream @detect="onDetect" @error="onError" class="px-3 h-3">
