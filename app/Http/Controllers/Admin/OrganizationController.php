@@ -20,6 +20,7 @@ class OrganizationController extends Controller
     public function index()
     {
         $organizations=Organization::with('users')->get();
+        // dd($organizations);
         return Inertia::render('Admin/Organizations',[
             'organizations'=>$organizations,
             'users'=>User::all()

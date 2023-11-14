@@ -21,39 +21,45 @@ class FormSeeder extends Seeder
             'title'=>'First form of title'
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '1',
+            'form_id' =>1,
+            'sequence'=>1,
             'field_name'=>'username',
             'field_label'=>'Username',
             'type'=>'input'
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '1',
+            'form_id' =>1,
+            'sequence'=>2,
             'field_name'=>'gender',
             'field_label'=>'Gender',
             'type'=>'radio',
             'options'=>'[{"value":"M","label":"Male"},{"value":"F","label":"Female"}]'
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '1',
+            'form_id' =>1,
+            'sequence'=>3,
             'field_name'=>'dob',
             'field_label'=>'DOB',
             'type'=>'date',
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '1',
+            'form_id' =>1,
+            'sequence'=>4,
             'field_name'=>'education',
             'field_label'=>'Education',
             'type'=>'select',
             'options'=>'[{"value":"B","label":"Bachalor"},{"value":"M","label":"Master"},{"value":"D","label":"PhD."}]'
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '1',
+            'form_id' =>1,
+            'sequence'=>5,
             'field_name'=>'email',
             'field_label'=>'Email',
             'type'=>'email'
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '1',
+            'form_id' =>1,
+            'sequence'=>6,
             'field_name'=>'remark',
             'field_label'=>'Remark',
             'type'=>'textarea'
@@ -67,7 +73,8 @@ class FormSeeder extends Seeder
             'published'=>true
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '2',
+            'form_id' =>2,
+            'sequence'=>1,
             'field_name'=>'username',
             'field_label'=>'Username',
             'type'=>'input',
@@ -82,7 +89,8 @@ class FormSeeder extends Seeder
         ]);
 
         DB::table('form_fields')->insert([
-            'form_id' => '3',
+            'form_id' =>3,
+            'sequence'=>1,
             'field_name'=>'性別',
             'field_label'=>'性別',
             'options'=>'[{"value":"M","label":"\u7537"},{"value":"F","label":"\u5973"}]',
@@ -91,7 +99,8 @@ class FormSeeder extends Seeder
             'type'=>'radio',
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '3',
+            'form_id' =>3,
+            'sequence'=>2,
             'field_name'=>'柔道年資',
             'field_label'=>'柔道年資',
             'options'=>NULL,
@@ -100,7 +109,8 @@ class FormSeeder extends Seeder
             'type'=>'input',
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '3',
+            'form_id' =>3,
+            'sequence'=>3,
             'field_name'=>'原因',
             'field_label'=>'報讀活動原因 (多選)',
             'options'=>'[{"value":"option_1","label":"\u500b\u4eba\u8208\u8da3"},{"value":"option_2","label":"\u67d4\u9053\u6703\u8981\u6c42"},{"value":"option_3","label":"\u67d4\u9053\u5c08\u696d\u8981\u6c42"}]',
@@ -109,7 +119,8 @@ class FormSeeder extends Seeder
             'type'=>'checkbox',
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '3',
+            'form_id' =>3,
+            'sequence'=>4,
             'field_name'=>'目標陳述',
             'field_label'=>'課程目標陳述清楚',
             'options'=>'[{"value":5,"label":"\u975e\u5e38\u540c\u610f"},{"value":4,"label":"\u540c\u610f"},{"value":3,"label":"\u666e\u901a"},{"value":2,"label":"\u4e0d\u540c\u610f"},{"value":1,"label":"\u975e\u5e38\u4e0d\u540c\u610f"},{"value":0,"label":"\u4e0d\u9069\u7528"}]',
@@ -118,9 +129,10 @@ class FormSeeder extends Seeder
             'type'=>'radio',
         ]);
         DB::table('form_fields')->insert([
-            'form_id' => '3',
+            'form_id' =>3,
+            'sequence'=>5,
             'field_name'=>'符合專業',
-            'field_label'=>'課程內容符合您個人專業實務需求',
+            'field_label'=>'課程內容符合您個人專業實務需求',    
             'options'=>'[{"value":5,"label":"\u975e\u5e38\u540c\u610f"},{"value":4,"label":"\u540c\u610f"},{"value":3,"label":"\u666e\u901a"},{"value":2,"label":"\u4e0d\u540c\u610f"},{"value":1,"label":"\u975e\u5e38\u4e0d\u540c\u610f"},{"value":0,"label":"\u4e0d\u9069\u7528"}]',
             'direction'=>'V',
             'in_column'=>'0',

@@ -9,10 +9,10 @@
       class="shadow-md"
     >
       <div class="m-4 text-center text-lg" v-if="collapsed">
-        <inertia-link href="/">JUA</inertia-link>
+        <inertia-link href="/">MJA</inertia-link>
       </div>
       <div class="m-4 text-center text-lg" v-else>
-        <inertia-link href="/">JUA Admin</inertia-link>
+        <inertia-link href="/">MJA Admin</inertia-link>
       </div>
 
       <AdminMenu :menuKeys="menuKeys" />

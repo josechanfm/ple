@@ -35,7 +35,7 @@ const showingNavigationDropdown = ref(false);
           <h1
             class="pt-4 text-2xl font-bold bg-gradient-to-tr from-indigo-600 to-green-600 bg-clip-text text-transparent hover:cursor-pointer"
           >
-            <a href="/"> Judo Union of Asia </a>
+            <a href="/"> Macao Judo Association </a>
           </h1>
         </div>
 

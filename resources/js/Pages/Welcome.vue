@@ -21,7 +21,7 @@ defineProps({
       <div class="ml-5 lg:ml-20 lg:w-3/5">
         <h2 class="text-white text-4xl">What this is:</h2>
         <p class="lg:text-lg text-indigo-100 mt-4 capitalize font-thick tracking-wider leading-7">
-          The Judo Union of Asia membership website is a comprehensive platform for judo enthusiasts across the continent.
+          The Macao Judo Association membership website is a comprehensive platform for judo enthusiasts across the continent.
           As a member, you can create your individual membership card and personal profile, which allows you to connect
           with other judokas and showcase your achievements in the sport.
         </p>

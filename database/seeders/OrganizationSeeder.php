@@ -66,6 +66,12 @@ class OrganizationSeeder extends Seeder
             ["region"=>"S","name"=>"Bhutan","abbr"=>"BHUTAN","title"=>" Bhutan Judo Association","address"=>" Tashi Pelkhil Village 11001 THIMPHU CITY","phone"=>"Phone : +97517110083","web"=>"","email"=>" bhutanjudo@gmail.com","president"=>"DORJI Karma"]
         ];
 
+        $data=[
+            ["region"=>"L","name"=>"澳門柔道館","abbr"=>"MJA","title"=>"Macao Judo Association","address"=>"澳門德勝體育館","phone"=>"Phone : 28523909","web"=>"macaojudo.org.mo","email"=>"info@macaujudo.org.mo","president"=>"--"],
+            ["region"=>"L","name"=>"宣道堂柔道館","abbr"=>"STT","title"=>"Centro Comunitario Sun Tou Tong","address"=>"高士德大馬路100號宣道堂三樓","phone"=>"Phone : ","web"=>"--","email"=>"--","president"=>"--"],
+            ["region"=>"L","name"=>"澳門培正中學","abbr"=>"PCS","title"=>"Pui Cheng Middle School",'address'=>"澳門培正中學","phone"=>"Phone : ","web"=>"--","email"=>"--","president"=>"--"],
+            ["region"=>"L","name"=>"澳門化地瑪中學","abbr"=>"NSF","title"=>"Escola Nossa Senhora de Fátima",'address'=>"澳門培正中學","phone"=>"Phone : ","web"=>"--","email"=>"--","president"=>"--"],
+        ];
         foreach($data as $org){
             DB::table('organizations')->insert([
                 'region'=>$org['region'],
@@ -87,47 +93,6 @@ class OrganizationSeeder extends Seeder
             'user_id'=>'3',
             'organization_id'=>'22',
         ]);
-        /*
-        DB::table('organization_user')->insert([
-            'user_id'=>'1',
-            'organization_id'=>'1',
-        ]);
-        DB::table('organization_user')->insert([
-            'user_id'=>'2',
-            'organization_id'=>'3',
-        ]);
-        DB::table('organization_user')->insert([
-            'user_id'=>'4',
-            'organization_id'=>'4',
-        ]);
-        */
-        /*
-        DB::table('member_organization')->insert([
-            'member_id'=>'1',
-            'organization_id'=>'1',
-        ]);
-        DB::table('member_organization')->insert([
-            'member_id'=>'2',
-            'organization_id'=>'1',
-        ]);
-        DB::table('member_organization')->insert([
-            'member_id'=>'3',
-            'organization_id'=>'1',
-        ]);
-        DB::table('member_organization')->insert([
-            'member_id'=>'4',
-            'organization_id'=>'2',
-        ]);
-        DB::table('member_organization')->insert([
-            'member_id'=>'5',
-            'organization_id'=>'2',
-        ]);
-        DB::table('member_organization')->insert([
-            'member_id'=>'6',
-            'organization_id'=>'2',
-        ]);
-        */
-
 
 
     }

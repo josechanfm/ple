@@ -173,6 +173,7 @@ export default {
         mode: "",
       },
       zones: [
+        { value: "L", label: "Macao Local"},
         { value: "C", label: "Central Zone" },
         { value: "SE", label: "South East Zone" },
         { value: "E", label: "East Zone" },
