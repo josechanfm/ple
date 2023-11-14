@@ -90,6 +90,21 @@
             :fieldNames="{ value: 'id', label: 'full_name' }"
           />
         </a-form-item>
+        <template v-if="modal.data.user_id">
+          <a-form-item :label="$t('users')" name="user_id">
+            <p>{{ modal.data.user.email }}</p>
+          </a-form-item>
+        </template>
+        <template v-else>
+          <a-form-item :label="$t('users')" name="user_id">
+            <a-select
+              v-model:value="modal.data.user_id"
+              show-search
+              :options="users"
+              :fieldNames="{ value: 'id', label: 'email' }"
+            />
+          </a-form-item>
+        </template>
       </a-form>
       <template #footer>
         <a-button
@@ -120,7 +135,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["organizations", "members"],
+  props: ["organizations", "members","users"],
   data() {
     return {
       dateFormat: "YYYY-MM-DD",

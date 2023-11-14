@@ -12,7 +12,7 @@
                 <a-table :dataSource="forms" :columns="columns">
                     <template #bodyCell="{column, text, record, index}">
                         <template v-if="column.dataIndex=='operation'">
-                            <a @click="toApply(record)">Apply</a>
+                            <a @click="toApply(record)">填寫</a>
                         </template>
                         <template v-else-if="column.dataIndex=='abbr'">
                             {{record.organization.abbr}}
@@ -69,21 +69,21 @@ export default {
             ],
             columns:[
                 {
-                    title: 'Organization',
+                    title: '屬會',
                     dataIndex: 'abbr',
                 },{
-                    title: 'Title',
+                    title: '名稱',
                     dataIndex: 'title',
                 },{
-                    title: 'Login',
+                    title: '需要登入',
                     dataIndex: 'require_login',
                     type:'yesno'
                 },{
-                    title: 'For member',
+                    title: '只供會員',
                     dataIndex: 'for_member',
                     type:'yesno'
                 },{
-                    title: 'Action',
+                    title: '操作',
                     dataIndex: 'operation',
                     key: 'operation',
                 },

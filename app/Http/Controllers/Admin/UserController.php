@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Team;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -21,8 +22,9 @@ class UserController extends Controller
     {
         return Inertia::render('Admin/Users',[
             'organizations'=>Organization::all(),
-            'users'=>User::with('organizations')->with('roles')->get(),
-            'roles'=>\Spatie\Permission\Models\Role::all()
+            'users'=>User::with('organizations')->with('roles')->with('permissions')->get(),
+            'roles'=>\Spatie\Permission\Models\Role::all(),
+            'permissions'=>Permission::all()
         ]);
     }
 
@@ -101,6 +103,7 @@ class UserController extends Controller
     {
         $user->update($request->all());
         $user->roles()->sync($request->role_ids);
+        $user->givePermissionTo($request->permission_ids);
         $user->organizations()->sync($request->organization_ids);
         return redirect()->back();
     }

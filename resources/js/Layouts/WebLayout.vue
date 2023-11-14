@@ -35,7 +35,7 @@ const showingNavigationDropdown = ref(false);
           <h1
             class="pt-4 text-2xl font-bold bg-gradient-to-tr from-indigo-600 to-green-600 bg-clip-text text-transparent hover:cursor-pointer"
           >
-            <a href="/"> Macao Judo Association </a>
+            <a href="/">澳門柔道協會</a>
           </h1>
         </div>
 
@@ -217,11 +217,11 @@ const showingNavigationDropdown = ref(false);
             <div class="bg-white rounded-md list-none text-center">
               <li class="py-3 border-b-2">
                 <inertia-link :href="route('competitions.index')"
-                  >Competitions</inertia-link
+                  >賽事報名</inertia-link
                 >
               </li>
               <li class="py-3 border-b-2">
-                <inertia-link :href="route('forms.index')">Forms</inertia-link>
+                <inertia-link :href="route('forms.index')">表格填寫</inertia-link>
               </li>
               <li class="py-3 border-b-2">
                 <a
@@ -238,9 +238,6 @@ const showingNavigationDropdown = ref(false);
                   target="_blank"
                   >澳門體育局</a
                 >
-              </li>
-              <li class="py-3">
-                <a href="#" class="list-none border-b-2 hover:text-indigo-600">Feature</a>
               </li>
             </div>
           </div>

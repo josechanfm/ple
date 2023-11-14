@@ -3,6 +3,7 @@
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t("users") }}</h2>
     </template>
+    {{ permissions }}
     <button
       @click="createRecord()"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3"
@@ -47,8 +48,8 @@
         ref="modalRef"
         :model="modal.data"
         name="Teacher"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
+        :label-col="{ span: 4 }"
+        :wrapper-col="{ span: 20 }"
         autocomplete="off"
         :rules="rules"
         :validate-messages="validateMessages"
@@ -77,15 +78,32 @@
             :fieldNames="{ value: 'id', label: 'full_name' }"
           />
         </a-form-item>
-        <a-form-item :label="$t('roles')" name="roles">
-          <a-checkbox-group v-model:value="modal.data.role_ids">
-            <template v-for="role in roles">
-              <a-checkbox :value="role.id" :style="verticalStyle">{{
-                role.name
-              }}</a-checkbox>
-            </template>
-          </a-checkbox-group>
-        </a-form-item>
+        <a-row>
+          <a-col :span="4"></a-col>
+          <a-col :span="10">
+            <a-form-item :label="$t('roles')" name="roles">
+              <a-checkbox-group v-model:value="modal.data.role_ids">
+                <template v-for="role in roles">
+                  <a-checkbox :value="role.id" :style="verticalStyle">{{
+                    role.name
+                  }}</a-checkbox>
+                </template>
+              </a-checkbox-group>
+            </a-form-item>
+          </a-col>
+          <a-col :span="10">
+            <a-form-item :label="$t('permissions')" name="permissions">
+              <a-checkbox-group v-model:value="modal.data.permission_ids">
+                <template v-for="permission in permissions">
+                  <a-checkbox :value="permission.id" :style="verticalStyle">{{
+                    permission.name
+                  }}</a-checkbox>
+                </template>
+              </a-checkbox-group>
+            </a-form-item>
+
+          </a-col>
+        </a-row>
       </a-form>
       <template #footer>
         <a-button
@@ -116,7 +134,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["organizations", "users", "roles"],
+  props: ["organizations", "users", "roles","permissions"],
   data() {
     return {
       modal: {
@@ -198,6 +216,7 @@ export default {
       this.modal.data = { ...record };
       this.modal.data.organization_ids = record.organizations.map((item) => item.id);
       this.modal.data.role_ids = record.roles.map((item) => item.id);
+      this.modal.data.permission_ids = record.permissions.map((item) => item.id);
       this.modal.mode = "EDIT";
       this.modal.title = "edit";
       this.modal.isOpen = true;
@@ -221,6 +240,7 @@ export default {
         });
     },
     updateRecord() {
+      console.log(this.modal.data);
       this.$inertia.patch(
         route("admin.users.update", this.modal.data.id),
         this.modal.data,

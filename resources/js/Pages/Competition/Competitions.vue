@@ -3,7 +3,7 @@
     <WebLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Competitions
+                賽事報名
             </h2>
         </template>
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
@@ -40,7 +40,7 @@ export default {
                     title: 'Name',
                     dataIndex: 'name',
                 },{
-                    title: 'Title',
+                    title: '賽事名稱',
                     dataIndex: 'title_en',
                 },{
                     title: 'Login',

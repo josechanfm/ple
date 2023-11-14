@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\User;
 use App\Models\Member;
 use App\Models\Organization;
 use Illuminate\Support\Facades\Password;
@@ -18,10 +19,10 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members=Member::with('organizations')->with('user')->get();
         return Inertia::render('Admin/Members',[
-            'members'=>$members,
-            'organizations'=>Organization::all()
+            'members'=>Member::with('organizations')->with('user')->get(),
+            'organizations'=>Organization::all(),
+            'users'=>User::whereNotIn('id',Member::whereNotNull('user_id')->get()->pluck('user_id'))->get()
         ]);
     }
 

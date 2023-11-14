@@ -65,6 +65,7 @@ export default {
   props: ["instances", "members"],
   data() {
     return {
+      expandIconPosition:"right",
       searchResult: [],
       selected: null,
       targetKeys: [],

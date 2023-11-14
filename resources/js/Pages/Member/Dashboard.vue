@@ -191,7 +191,7 @@ export default {
                         <div class="font-sans mb-2">{{ member.member_number }}</div>
                       </div>
                       <div class="flex text-right">
-                        <img class="w-20 h-20" src="/images/judo_logo.png" />
+                        <img class="w-20 h-20" src="/images/site_logo.png" />
                       </div>
                     </div>
                   </div>
