@@ -17,34 +17,31 @@ export default {
       interval: 0,
       features: [
         {
-          image: "https://dummyimage.com/300x5:3",
-          title: "Public",
-          description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags: ["#hashtag", "#hashtag", "#hashtag"],
+          image: "images/features_public.png",
+          title: "公眾",
+          description:"主要公開內容，無需會員登入。包括網站介紹及所有公開信息，及連結等。",
+          tags: ["#通告"],
           link: "/",
         },
         {
-          image: "https://dummyimage.com/300x5:3",
-          title: "Forms",
-          description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags: ["#hashtag", "#hashtag", "#hashtag"],
+          image: "/images/features_forms.png",
+          title: "表格",
+          description:"所有線上表格，系統會跟據登入狀態及屬會顯示所填的線上表格內容。",
+          tags: ["#報名"],
           link: "forms",
         },
         {
-          image: "https://dummyimage.com/300x5:3",
-          title: "Competitions",
-          description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed recusandae libero possimus culpa quod.",
-          tags: ["#hashtag", "#hashtag", "#hashtag"],
+          image: "images/features_competition.png",
+          title: "賽事",
+          description:"與表格相類此，但只適用於賽事報名。同樣不同用戶可能顯示出不同內容。",
+          tags: ["#報名", "#比賽"],
           link: "competitions",
         },
         {
-          image: "https://dummyimage.com/300x5:3",
-          title: "Other",
-          description: "Other descriptions",
-          tags: ["#hashtag", "#hashtag", "#hashtag"],
+          image: "images/features_other.png",
+          title: "其它",
+          description: "包括線上學習、分享、留言、意見回饋等功能，會逐步開放供用戶使用。",
+          tags: ["#學習", "#留言"],
         },
       ],
       data: [
