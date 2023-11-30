@@ -155,7 +155,7 @@ export default {
               <!-- QRcode -->
               <div class="flex flex-col justify-center items-center" v-if="showQrcode">
                 <div>
-                  <QRCodeVue3 :key="qrcode" v-bind:value="qrcode" image="/images/site_logo.png" :dotsOptions="{
+                  <QRCodeVue3 :key="qrcode" v-bind:value="qrcode" :image="'/images/' + card_style['logo']" :dotsOptions="{
                     type: 'dots',
                     color: '#26249a',
                     gradient: {
@@ -191,7 +191,7 @@ export default {
                         <div class="font-sans mb-2">{{ member.member_number }}</div>
                       </div>
                       <div class="flex text-right">
-                        <img class="w-20 h-20" src="/images/site_logo.png" />
+                        <img class="w-20 h-20" :src="'/images/' + card_style['logo']" />
                       </div>
                     </div>
                   </div>
@@ -206,8 +206,7 @@ export default {
                     </div>
                   </div>
                 </div>
-                <img class="relative object-cover w-96 h-52 rounded-lg z-0" :src="'/images/' + card_style['card_name']"
-                  width="10px" />
+                <img class="relative object-cover w-96 h-52 rounded-lg z-0" :src="'/images/' + card_style['background']"/>
               </div>
               <!-- card end -->
 
