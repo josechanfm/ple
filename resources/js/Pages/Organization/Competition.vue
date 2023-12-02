@@ -1,8 +1,11 @@
 <template>
   <OrganizationLayout title="Dashboard">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      <h2 v-if="mode=='CREATE'" class="font-semibold text-xl text-gray-800 leading-tight">
         {{ $t("create_competition") }}
+      </h2>
+      <h2 v-else class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ $t("edit_competition") }}
       </h2>
     </template>
 
@@ -16,7 +19,7 @@
           :rules="rules"
           @finish="onFinish"
         >
-          <a-form-item :label="$t('competition_title_en')" name="title_en">
+          <a-form-item :label="$t('competition_title_zh')" name="title_en">
             <a-input v-model:value="competitionData.title_en" />
           </a-form-item>
           <a-form-item :label="$t('competition_title_fn')" name="title_fn">
@@ -77,10 +80,8 @@
           <a-form-item :label="$t('scope')" name="scope">
             <a-radio-group v-model:value="competitionData.scope" button-style="solid">
               <a-radio-button value="PUB">{{ $t("public") }}</a-radio-button>
-              <a-radio-button value="JUA">JUA {{ $t("members") }}</a-radio-button>
-              <a-radio-button value="ORG">{{
-                $t("organization_member_only")
-              }}</a-radio-button>
+              <a-radio-button value="MJA">MJA {{ $t("members") }}</a-radio-button>
+              <a-radio-button value="ORG">{{$t("organization_member_only")}}</a-radio-button>
             </a-radio-group>
           </a-form-item>
           <div class="flex flex-row item-center justify-center">
@@ -165,6 +166,7 @@ export default {
     onCompetitionPeriodChange() {
       //var days = (this.competition.period[1]-this.competition.period[0])/(1000*60*60*24)+1
       //var getDaysArray = function(s,e) {for(var a=[],d=new Date(s);d<=new Date(e);d.setDate(d.getDate()+1)){ a.push(new Date(d));}return a;};
+      this.competitionData.match_dates=[]
       this.getDaysArray(this.competitionData.period[0], this.competitionData.period[1]);
     },
     getDaysArray(start, end) {

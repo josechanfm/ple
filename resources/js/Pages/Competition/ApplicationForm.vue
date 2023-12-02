@@ -8,8 +8,10 @@
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="p-5 bg-white overflow-hidden shadow-xl sm:rounded-lg">
-          <a-typography-title :level="3" class="text-center">{{ competition.title_fn }}</a-typography-title>
-          <a-typography-title :level="4" >Date: {{ competition.start_date }} - {{ competition.end_date }}</a-typography-title>
+          <a-typography-title :level="3" class="text-center">{{ competition.title_zh }}</a-typography-title>
+          <a-typography-title :level="4" >賽事日: 
+            <span v-for="date in competition.match_dates">{{date}}</span>
+          </a-typography-title>
           <!--
           <a-typography-title :level="4" >Match Date: 
             <span v-for="date in competition.match_dates">{{ date }} ,</span>
@@ -18,8 +20,6 @@
           <div id="pure-html">
               <div v-html="competition.description"/>
           </div>
-          
-
           <a-form 
             :model="application" 
             v-bind="layout" 
@@ -35,11 +35,14 @@
             <a-form-item :label="$t('family_name')" name="family_name">
               <a-input v-model:value="application.family_name"/>
             </a-form-item>
-            <a-form-item :label="$t('middle_name')" name="middle_name">
+            <!-- <a-form-item :label="$t('middle_name')" name="middle_name">
               <a-input v-model:value="application.middle_name"/>
-            </a-form-item>
+            </a-form-item> -->
             <a-form-item :label="$t('display_name')" name="display_name">
               <a-input v-model:value="application.display_name"/>
+            </a-form-item>
+            <a-form-item :label="$t('belt_rank')" name="belt_rank">
+              <a-select v-model:value="application.belt_rank" :options="belt_ranks" :field-names="{value:'rankCode',label:'name_zh'}"/>
             </a-form-item>
             <a-form-item :label="$t('dob')" name="dob" >
               <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat"/>
@@ -56,7 +59,7 @@
             <a-form-item :label="$t('mobile')" name="mobile">
               <a-input v-model:value="application.mobile"/>
             </a-form-item>
-            <a-form-item :label="$t('role')" name="role">
+            <a-form-item :label="$t('role')" name="role" v-if="application.gender">
               <a-radio-group v-model:value="application.role">
                 <a-radio v-for="role in competition.roles" :style="virticalStyle" :value="role.value">{{ role.label }}
                 </a-radio>
@@ -65,15 +68,16 @@
             <template v-if="application.role=='athlete' && application.gender">
               <a-form-item :label="$t('category')" name="category">
                 <a-radio-group v-model:value="application.category">
-                  <a-radio v-for="cat in competition.categories_weights" :style="virticalStyle" :value="cat.code"
-                    @change="onCategoryChange">{{ cat.name }}
+                  <a-radio v-for="cat in competition.categories_weights" :style="virticalStyle" :value="cat.code" @change="onCategoryChange">
+                    {{ cat.name }}- [{{ cat.description }}]
                   </a-radio>
                 </a-radio-group>
               </a-form-item>
               <a-form-item :label="$t('weight')" name="weight">
                 <a-radio-group v-model:value="application.weight">
-                  <a-radio v-for="cat in competition.weights" :style="virticalStyle" :value="cat.code">{{ cat.name }}
-                  </a-radio>
+                    <a-radio v-for="cat in competition.weights" :style="virticalStyle" :value="cat.code">
+                      {{ cat.name }}
+                    </a-radio>
                 </a-radio-group>
               </a-form-item>
 
@@ -107,7 +111,7 @@ export default {
     message,
     Modal
   },
-  props: ["member", "competition"],
+  props: ["belt_ranks","member", "competition"],
   data() {
     return {
       modal:{
@@ -123,6 +127,7 @@ export default {
         given_name: { required: true },
         family_name: { required: true },
         display_name: { required: true },
+        belt_rank: { required: true },
         dob: { required: true },
         gender: { required: true },
         category: { required: true },
@@ -175,11 +180,12 @@ export default {
   },
   methods: {
     onGenderChange(event) {
-      console.log(event);
       if (this.application.category) {
-        console.log("ok");
         this.weightSelection(event.target.value, this.application.category);
       }
+      this.application.role=null;
+      this.application.category=null;
+      this.application.weight=null;
     },
     onCategoryChange(event) {
       console.log(event);
@@ -200,7 +206,7 @@ export default {
       }
     },
     onFinish() {
-      console.log(this.application);
+      console.log(this.competition);
       this.$inertia.post(route('competitions.store',this.competition.id), this.application, {
         onSuccess: (page) => {
             console.log(page);

@@ -38,43 +38,46 @@ class CompetitionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Competition $competition, Request $request)
+    public function store(Request $request)
     {
         //dd($competition);
         $data=$request->all();
-        if($data['role']=='athlete'){
-            //max 2 applicatition same competition, in defferent category and/or weight
-            $applicationCount=CompetitionApplication::where('competition_id',$data['competition_id'])
-                            ->where('member_id',$data['member_id'])
-                            ->count();
-            if($applicationCount>=2){
-                return redirect()->back()->withErrors(['message'=>'You have 2 applications']);
+        $competition=Competition::find($data['competition_id']);
+        if($competition->scope!='PUB'){
+            if($data['role']=='athlete'){
+                //max 2 applicatition same competition, in defferent category and/or weight
+                $applicationCount=CompetitionApplication::where('competition_id',$data['competition_id'])
+                                ->where('member_id',$data['member_id'])
+                                ->count();
+                if($applicationCount>=2){
+                    return redirect()->back()->withErrors(['message'=>'You have 2 applications']);
+                }
+                //max 1 in same category same weight
+                $applicationCount=CompetitionApplication::where('competition_id',$data['competition_id'])
+                                ->where('member_id',$data['member_id'])
+                                ->where('category',$data['category'])
+                                ->where('weight',$data['weight'])
+                                ->count();
+                if($applicationCount>=1){
+                    return redirect()->back()->withErrors(['message'=>'Duplicate in same category and/or weight']);
+                }
+                $applicationCount=CompetitionApplication::where('competition_id',$data['competition_id'])
+                                ->where('member_id',$data['member_id'])
+                                ->where('role','!=','athlete')
+                                ->count();
+                if($applicationCount>=1){
+                    return redirect()->back()->withErrors(['message'=>'Applied multiple roles']);
+                }
+            }else{
+                //max 1 in same category same weight
+                $applicationCount=CompetitionApplication::where('competition_id',$data['competition_id'])
+                                ->where('member_id',$data['member_id'])
+                                ->count();
+                if($applicationCount>=1){
+                    return redirect()->back()->withErrors(['message'=>'Duplicate application']);
+                }
+                
             }
-            //max 1 in same category same weight
-            $applicationCount=CompetitionApplication::where('competition_id',$data['competition_id'])
-                            ->where('member_id',$data['member_id'])
-                            ->where('category',$data['category'])
-                            ->where('weight',$data['weight'])
-                            ->count();
-            if($applicationCount>=1){
-                return redirect()->back()->withErrors(['message'=>'Duplicate in same category and/or weight']);
-            }
-            $applicationCount=CompetitionApplication::where('competition_id',$data['competition_id'])
-                            ->where('member_id',$data['member_id'])
-                            ->where('role','!=','athlete')
-                            ->count();
-            if($applicationCount>=1){
-                return redirect()->back()->withErrors(['message'=>'Applied multiple roles']);
-            }
-        }else{
-            //max 1 in same category same weight
-            $applicationCount=CompetitionApplication::where('competition_id',$data['competition_id'])
-                            ->where('member_id',$data['member_id'])
-                            ->count();
-            if($applicationCount>=1){
-                return redirect()->back()->withErrors(['message'=>'Duplicate application']);
-            }
-            
         }
         CompetitionApplication::create($data);
         return redirect()->back();
@@ -89,6 +92,7 @@ class CompetitionController extends Controller
     public function show(Competition $competition)
     {
         return Inertia::render('Competition/ApplicationForm',[
+            'belt_ranks'=>Config::item("belt_ranks"),
             'competition'=>$competition,
             'member'=>auth()->user()?auth()->user()->member:null
         ]);

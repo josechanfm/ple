@@ -25,6 +25,9 @@ class Article extends Model implements HasMedia
                 ->get();
     }
     public static function privates(){
+        if(empty(session('organization'))){
+            return false;
+        }
         return Article::where('published',true)->where('public',false)->where('organization_id',session('organization')->id)
                 ->where(function($query){
                     $query->whereNull('valid_at')->orWhere('valid_at','<=',date('Y-m-d'));

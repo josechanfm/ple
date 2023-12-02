@@ -17,6 +17,7 @@ defineProps({
 
 <template>
   <WebLayout title="Dashboard">
+    <a-button>OK</a-button>
     <div class="lg:h-96 bg-gradient-to-tr bg-[#0081C8] rounded-md flex items-center">
       <div class="ml-5 lg:ml-20 lg:w-3/5">
         <h2 class="text-white text-4xl">What this is:</h2>

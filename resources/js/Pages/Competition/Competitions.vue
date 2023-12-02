@@ -37,22 +37,16 @@ export default {
         return {
             columns:[
                 {
-                    title: 'Name',
-                    dataIndex: 'name',
-                },{
                     title: '賽事名稱',
                     dataIndex: 'title_en',
                 },{
-                    title: 'Login',
-                    dataIndex: 'description',
+                    title: '日期',
+                    dataIndex: 'start_date',
                 },{
-                    title: 'For member',
+                    title: '只限會員',
                     dataIndex: 'for_member',
                 },{
-                    title: 'Published',
-                    dataIndex: 'published',
-                },{
-                    title: 'Action',
+                    title: '操作',
                     dataIndex: 'operation',
                     key: 'operation',
                 },

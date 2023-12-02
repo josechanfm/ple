@@ -42,6 +42,7 @@
     "given_name":"Given Name",
     "middle_name":"Middle Name",
     "display_name":"Display Name",
+    "belt_rank":"Belt Rank",
     "dob":"Date of Birth",
     "club":"Club",
     "gender":"Gender",
@@ -102,6 +103,9 @@
     "attended_mebmers":"Attended members",
 
     "competitions":"Competitions",
+    "create_competition":"Create Competition",
+    "edit_competition":"Edit Competition",
+    "competition_title_zh":"Competition Title (Chinese)",
     "competition_title_en":"Competition Title (English)",
     "competition_title_fn":"Competition Title (Foreign)",
     "competition_period":"Period",

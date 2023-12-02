@@ -91,7 +91,7 @@ class OrganizationSeeder extends Seeder
         ]);
         DB::table('organization_user')->insert([
             'user_id'=>'3',
-            'organization_id'=>'22',
+            'organization_id'=>'1',
         ]);
 
 
