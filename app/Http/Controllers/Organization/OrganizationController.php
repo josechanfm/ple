@@ -70,7 +70,7 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        \App::setLocale('en');
+        // \App::setLocale('en');
 
         return Inertia::render('Organization/Dashboard',[
             'organization'=>$organization

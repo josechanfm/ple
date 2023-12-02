@@ -17,16 +17,18 @@ class AuthUserSetLocale
      */
     public function handle(Request $request, Closure $next)
     {
-        if(session('locale')){
-            app()->setLocale(session('locale'));
-            $request->except(0); 
+        // if(session('locale')){
+        //     app()->setLocale(session('locale'));
+        //     $request->except(0); 
+        //     // dd(session('locale'));
+        // }elseif(auth()->user() && auth()->user()->locale){
+        //     //\App::setLocale(auth()->user()->locale);
+        //     //config(['app.locale'=>auth()->user()->locale]);
+        //     app()->setLocale(auth()->user()->locale);
+        //     $request->except(0); 
+        //     //dd(auth()->user()->locale);
+        // }
 
-        }elseif(auth()->user() && auth()->user()->locale){
-            //\App::setLocale(auth()->user()->locale);
-            //config(['app.locale'=>auth()->user()->locale]);
-            app()->setLocale(auth()->user()->locale);
-            $request->except(0); 
-        }
 
         return $next($request);
     }

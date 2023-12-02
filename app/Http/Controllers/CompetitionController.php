@@ -81,7 +81,7 @@ class CompetitionController extends Controller
         }
         CompetitionApplication::create($data);
         //return redirect()->back();
-        return redirect()->route('competitions');
+        return redirect()->route('competitions.index');
     }
 
     /**

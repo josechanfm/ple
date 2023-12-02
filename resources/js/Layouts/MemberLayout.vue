@@ -50,7 +50,8 @@ export default {
     };
   },
   mounted() {
-    this.loadLanguageAsync(this.$page.props.lang);
+    
+    //this.loadLanguageAsync(this.$page.props.lang);
   },
 };
 // defineProps({
@@ -158,7 +159,7 @@ export default {
                   <template #content>
                     <div class="w-20">
                       <template v-if="$page.props.jetstream.hasTeamFeatures">
-                        <DropdownLink :href="route('language', 'zh')">
+                        <DropdownLink :href="route('language', 'zh_TW')">
                           {{ $t("chinese") }}
                         </DropdownLink>
                         <DropdownLink :href="route('language', 'en')">

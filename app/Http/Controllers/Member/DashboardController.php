@@ -16,6 +16,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+
         $member=Auth()->user()->member;
         if(!$member){
             return Inertia::render('Error',[

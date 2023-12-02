@@ -33,8 +33,8 @@ Route::get('registration', [\App\Http\Controllers\RegistrationController::class,
 Route::post('registration', [\App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');
 
 Route::get('/language/{language}', function ($language) {
-    session(['locale'=>$language]);
-    app()->setLocale($language);
+    // session(['locale'=>$language]);
+    // app()->setLocale($language);
     //dd(app()->getLocale());
     return redirect()->back();
 })->name('language');
