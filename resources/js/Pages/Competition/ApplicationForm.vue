@@ -85,7 +85,6 @@
               </a-form-item>
 
             </template>
-      {{competition.roles}}
             <template v-if="application.role=='referee'">
               <a-form-item :label="$t('referee_options')" name="referee_options" v-if="application.gender">
                 <a-radio-group v-model:value="application.referee_options">
