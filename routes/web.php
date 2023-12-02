@@ -94,8 +94,8 @@ Route::group([
         'role:organizer'
     ]
 ],function () {
-    Route::get('/{organization}/medias', [App\Http\Controllers\Organization\MediaController::class, 'getMedias'])->name('manage.medias');
     Route::get('/', [App\Http\Controllers\Organization\DashboardController::class, 'index'])->name('manage.dashboard');
+    Route::get('/{organization}/medias', [App\Http\Controllers\Organization\MediaController::class, 'getMedias'])->name('manage.medias');
     Route::get('/select/{organization}', [App\Http\Controllers\Organization\DashboardController::class, 'select'])->name('manage.select');
     Route::resource('members', App\Http\Controllers\Organization\MemberController::class)->names('manage.members');
     Route::post('member/create/login/{member}', [App\Http\Controllers\Organization\MemberController::class,'createLogin'])->name('manage.member.createLogin');

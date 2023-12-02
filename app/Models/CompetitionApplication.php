@@ -9,5 +9,7 @@ class CompetitionApplication extends Model
 {
     use HasFactory;
     protected $fillable=['competition_id','organization_id','member_id','given_name','family_name','middle_name','display_name','gender','dob','belt_rank','email','mobile','category','weight','role','staff_options','referee_options'];
+    protected $casts=['staff_options'=>'json','referee_options'=>'json'];
+
 
 }
