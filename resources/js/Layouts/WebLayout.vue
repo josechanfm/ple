@@ -168,7 +168,7 @@ const showingNavigationDropdown = ref(false);
   </header>
   <!-- Page Heading -->
   <header v-if="$slots.header" class="bg-gray-100 shadow">
-    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
       <slot name="header" />
     </div>
   </header>
@@ -177,7 +177,7 @@ const showingNavigationDropdown = ref(false);
     <!-- section hero -->
     <section>
       <div
-        class="bg-gray-100 sm:grid grid-cols-5 grid-rows-2 px-4 py-6 min-h-full lg:min-h-screen space-y-6 sm:space-y-0 sm:gap-4"
+        class="bg-gray-100 sm:grid grid-cols-5 grid-rows-2 px-4 py-4 min-h-full lg:min-h-screen space-y-6 sm:space-y-0 sm:gap-4"
       >
         <div class="col-span-4">
           <!-- Page Content -->

@@ -11,7 +11,15 @@
                 <a-table :dataSource="competitions" :columns="columns">
                     <template #bodyCell="{column, text, record, index}">
                         <template v-if="column.dataIndex=='operation'">
-                            <a @click="toApply(record)">Apply</a>
+                            <a @click="toApply(record)">報名</a>
+                        </template>
+                        <template v-if="column.dataIndex=='for_member'">
+                            <span v-if="text">
+                                是
+                            </span>
+                            <span v-else>
+                                否
+                            </span>
                         </template>
                         <template v-else>
                             {{record[column.dataIndex]}}
@@ -38,7 +46,7 @@ export default {
             columns:[
                 {
                     title: '賽事名稱',
-                    dataIndex: 'title_en',
+                    dataIndex: 'title_zh',
                 },{
                     title: '日期',
                     dataIndex: 'start_date',

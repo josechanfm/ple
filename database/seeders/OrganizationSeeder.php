@@ -69,9 +69,7 @@ class OrganizationSeeder extends Seeder
         $data=[
             ["region"=>"L","name"=>"澳門柔道館","abbr"=>"MJA","title"=>"Macao Judo Association","address"=>"澳門德勝體育館","phone"=>"Phone : 28523909","web"=>"macaojudo.org.mo","email"=>"info@macaujudo.org.mo","president"=>"--"],
             ["region"=>"L","name"=>"宣道堂柔道館","abbr"=>"STT","title"=>"Centro Comunitario Sun Tou Tong","address"=>"高士德大馬路100號宣道堂三樓","phone"=>"Phone : ","web"=>"--","email"=>"--","president"=>"--"],
-            ["region"=>"L","name"=>"澳門培正中學","abbr"=>"PCS","title"=>"Pui Cheng Middle School",'address'=>"澳門培正中學","phone"=>"Phone : ","web"=>"--","email"=>"--","president"=>"--"],
-            ["region"=>"L","name"=>"澳門化地瑪中學","abbr"=>"NSF","title"=>"Escola Nossa Senhora de Fátima",'address'=>"澳門培正中學","phone"=>"Phone : ","web"=>"--","email"=>"--","president"=>"--"],
-        ];
+            ["region"=>"L","name"=>"一本柔道部","abbr"=>"IPJ","title"=>"Ippon Judo",'address'=>"澳門培正中學","phone"=>"Phone : ","web"=>"--","email"=>"--","president"=>"--"]        ];
         foreach($data as $org){
             DB::table('organizations')->insert([
                 'region'=>$org['region'],

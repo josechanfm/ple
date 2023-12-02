@@ -70,8 +70,8 @@ export default {
       columns: [
         {
           title: "Competition title",
-          i18n: "competition_title_en",
-          dataIndex: "title_en",
+          i18n: "competition_title_zh",
+          dataIndex: "title_zh",
         },
         {
           title: "Start date",

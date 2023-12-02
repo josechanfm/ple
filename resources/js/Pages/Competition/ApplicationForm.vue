@@ -5,7 +5,7 @@
         表格例表
       </h2>
     </template>
-    <div class="py-12">
+    <div class="py-0">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="p-5 bg-white overflow-hidden shadow-xl sm:rounded-lg">
           <a-typography-title :level="3" class="text-center">{{ competition.title_zh }}</a-typography-title>
@@ -29,6 +29,9 @@
             :rules="rules" 
             @finish="onFinish"
           >
+            <a-form-item :label="$t('organization')" name="organization_id">
+              <a-select v-model:value="application.organization_id" :options="organizations" :field-names="{value:'value',label:'label'}"/>
+            </a-form-item>
             <a-form-item :label="$t('given_name')" name="given_name">
               <a-input v-model:value="application.given_name"/>
             </a-form-item>
@@ -61,15 +64,15 @@
             </a-form-item>
             <a-form-item :label="$t('role')" name="role" v-if="application.gender">
               <a-radio-group v-model:value="application.role">
-                <a-radio v-for="role in competition.roles" :style="virticalStyle" :value="role.value">{{ role.label }}
+                <a-radio v-for="role in competition.roles" :value="role.value" :style="virticalStyle">{{ role.label }}
                 </a-radio>
               </a-radio-group>
             </a-form-item>
             <template v-if="application.role=='athlete' && application.gender">
               <a-form-item :label="$t('category')" name="category">
                 <a-radio-group v-model:value="application.category">
-                  <a-radio v-for="cat in competition.categories_weights" :style="virticalStyle" :value="cat.code" @change="onCategoryChange">
-                    {{ cat.name }}- [{{ cat.description }}]
+                  <a-radio v-for="cat in competition.categories_weights" :value="cat.code" :style="virticalStyle" @change="onCategoryChange">
+                    {{ cat.name }} - [{{ cat.description }}]
                   </a-radio>
                 </a-radio-group>
               </a-form-item>
@@ -82,6 +85,23 @@
               </a-form-item>
 
             </template>
+
+            <template v-if="application.role=='referee'">
+              <a-form-item :label="$t('referee_option')" name="referee_option" v-if="application.gender">
+                <a-radio-group v-model:value="application.referee_option">
+                  <a-radio v-for="option in refereeOptions" :value="option.value" :style="virticalStyle">{{option.label}}</a-radio>
+                </a-radio-group>
+              </a-form-item>
+            </template>
+
+            <template v-if="application.role=='volunteer'">
+              <a-form-item :label="$t('volunteer_option')" name="referee_option" v-if="application.gender">
+                <a-checkbox-group v-model:value="application.volunteer_option">
+                  <a-checkbox v-for="option in volunteerOptions" :value="option.value" :style="virticalStyle">{{option.label}}</a-checkbox>
+                </a-checkbox-group>
+              </a-form-item>
+            </template>
+
             <div class="flex flex-row item-center justify-center">
                 <a-button type="primary" html-type="submit">{{$t('submit')}}</a-button>
             </div>
@@ -89,13 +109,14 @@
         </div>
       </div>
     </div>
-  </WebLayout>
     <a-modal v-model:visible="modal.isOpen" :title="modal.title" :cancelButtonProps="{style:'display:none'}" okText="$t{'understand'}">
       <p>Duplicate entry,</p>
       <p>If you are Athlete, you may apply at most 2 categories in the same competition.</p>
       <p>Or you may apply one role only.</p>
       <p>{{modal.content}}</p>
     </a-modal>
+
+  </WebLayout>
 </template>
 
 <script>
@@ -123,7 +144,35 @@ export default {
       dateFormat: "YYYY-MM-DD",
       dateList: ["2023-01-02"],
       application: {},
+      refereeOptions:[
+        {value:"International_A", label:"已持有國際A級裁判資格"},
+        {value:"International_B", label:"已持有國際B級裁判資格"},
+        {value:"Local_A", label:"已持有本地裁判A級資格"},
+        {value:"Local_B", label:"已持有本地裁判B級資格"},
+        {value:"Other_Country", label:"其他地區裁判資格"},
+        {value:"Trainee", label:"實習裁判"}
+      ],
+      volunteerOptions:[
+        {value:"parent",label:"家長義工"},
+        {value:"student",label:"學生義工"},
+        {value:"weighting",label:"過磅工作人員(裁判人員或已有相關工作經驗優先)"},
+        {value:"mc_match",label:"賽事司儀(已有相關工作經驗優先)"},
+        {value:"checker",label:"檢錄組(已有相關工作經驗優先)"},
+        {value:"score_digital",label:"電子計分操作員(已持有IJF 國際柔道賽事計時記分系統操作員培訓優先報名)"},
+        {value:"score_manual",label:"計時記分操作員(手動計時記分)"},
+        {value:"control",label:"司令台(已有相關工作經驗優先)"},
+        {value:"mc_award",label:"頒獎禮司儀(已有相關工作經驗優先)"},
+        {value:"helper_award",label:"頒獎小組(已有相關工作經驗優先)"},
+        {value:"general",label:"總務小組"},
+        {value:"venue_setup",label:"場地佈置"}
+      ],
+      organizations:[
+        {value:"1",label:"澳門柔道館"},
+        {value:"2",label:"宣道堂柔道會"},
+        {value:"3",label:"一本柔道部"},
+      ],
       rules: {
+        organization_id: { required: true },
         given_name: { required: true },
         family_name: { required: true },
         display_name: { required: true },
@@ -154,7 +203,7 @@ export default {
       },
       virticalStyle: {
         display: "flex",
-        height: "30px",
+        minHeight: "30px",
         lineHeight: "30px",
         marginLeft: "8px",
       },

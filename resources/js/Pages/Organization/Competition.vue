@@ -19,8 +19,8 @@
           :rules="rules"
           @finish="onFinish"
         >
-          <a-form-item :label="$t('competition_title_zh')" name="title_en">
-            <a-input v-model:value="competitionData.title_en" />
+          <a-form-item :label="$t('competition_title_zh')" name="title_zh">
+            <a-input v-model:value="competitionData.title_zh" />
           </a-form-item>
           <a-form-item :label="$t('competition_title_fn')" name="title_fn">
             <a-input v-model:value="competitionData.title_fn" />
@@ -46,20 +46,49 @@
               <a-select-option v-for="d in dateList" :value="d">{{ d }}</a-select-option>
             </a-select>
           </a-form-item>
+
+          <a @click="showWeightList=!showWeightList" class="float-right">詳細內容</a>
           <a-checkbox-group v-model:value="competitionData.cwSelected" class="w-full">
             <a-row :span="24">
               <template v-for="cw in categories_weights">
-                <a-col :span="6">
-                  <a-checkbox :value="cw.code">{{ cw.name }}</a-checkbox>
-                  <ol>
-                    <li v-for="male in cw.male">
-                      {{ male.name }} : {{ male.limit[0] }} - {{ male.limit[1] }}
-                    </li>
-                  </ol>
+                <a-col :span="24/categories_weights.length">
+                  <a-checkbox :value="cw.code">{{ cw.name }}</a-checkbox><br>
                 </a-col>
               </template>
             </a-row>
           </a-checkbox-group>
+
+          <a-divider></a-divider>
+
+          <a-card v-show="showWeightList">
+            <template #title>
+              各級重量
+            </template>
+            <table width="100%">
+              <tr>
+                <th v-for="cw in categories_weights" class="text-left">
+                  <a-typography-title :level="5">{{cw.name}}</a-typography-title>
+                </th>
+              </tr>
+              <tr class="align-top">
+                <td v-for="cw in categories_weights">
+                    <a-typography-text strong>男子組</a-typography-text>
+                    <ol>
+                      <li v-for="male in cw.male">
+                        {{ male.name }} : {{ male.limit[0] }} - {{ male.limit[1] }}
+                      </li>
+                    </ol>
+                    <a-typography-text strong>女子組</a-typography-text>
+                    <ol>
+                      <li v-for="female in cw.female">
+                        {{ female.name }} : {{ female.limit[0] }} - {{ female.limit[1] }}
+                      </li>
+                    </ol>
+                </td>
+              </tr>
+            </table>
+          </a-card>
+
           <a-form-item :label="$t('role')" name="roleSelected">
             <a-checkbox-group v-model:value="competitionData.roleSelected">
               <a-checkbox
@@ -108,11 +137,12 @@ export default {
   data() {
     return {
       mode: null,
+      showWeightList:false,
       dateFormat: "YYYY-MM-DD",
       dateList: ["2023-01-02"],
       competitionData: {},
       rules: {
-        title_en: { required: true },
+        title_zh: { required: true },
         period: { required: true },
         match_date: { required: true },
         categoreis_weights: { required: true },
