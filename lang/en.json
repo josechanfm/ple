@@ -1,5 +1,6 @@
 {
     "dashboard":"Dashboard",
+    "memberDashboard":"Member",
     "professional":"Professionals",
     "attendances":"Attendances",
     "profile":"Profile",
@@ -120,6 +121,8 @@
     "event_title_en":"Event Title (English)",
     "event_title_fn":"Event Title (Foreign)",
     "applications":"Applications",
+    "staff_options":"Staff Options",
+    "referee_options":"Referee Options",
 
     "role":"Role",
     "roles":"Roles",

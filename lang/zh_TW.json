@@ -1,5 +1,6 @@
 {
-    "dashboard":"主頁",
+    "dashboard":"首頁",
+    "memberDashboard":"會員專業",
     "professional":"專業資格",
     "attendances":"出勤簽到",
     "profile":"會員資訊",
@@ -120,16 +121,18 @@
     "event_title_en":"活動名稱(英文)",
     "event_title_fn":"活動名稱(外文)",
     "applications":"申請",
-
+    "staff_options":"工作人員選項",
+    "referee_options":"裁判選項",
     "role":"角色",
     "roles":"角色",
+    
     "compettitor":"選手",
     "athlete_title":"運動員",
     "coach":"教練",
     "nationality":"國籍",
     "favorite_technique":"最喜愛的技巧",
     "side":"方向",
-    "belt":"腰帶",
+    "belt":"帶別",
     "height":"身高",
     "weight":"體重",
     "category":"組別",

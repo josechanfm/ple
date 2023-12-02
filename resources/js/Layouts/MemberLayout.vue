@@ -96,8 +96,8 @@ export default {
               <!-- Navigation Links -->
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                 <NavLink
-                  :href="route('member.dashboard')"
-                  :active="route().current('dashboard')"
+                  :href="route('/')"
+                  :active="route().current('/')"
                 >
                   {{ $t("dashboard") }}
                 </NavLink>

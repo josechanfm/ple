@@ -87,17 +87,17 @@
             </template>
 
             <template v-if="application.role=='referee'">
-              <a-form-item :label="$t('referee_option')" name="referee_option" v-if="application.gender">
-                <a-radio-group v-model:value="application.referee_option">
+              <a-form-item :label="$t('referee_options')" name="referee_options" v-if="application.gender">
+                <a-radio-group v-model:value="application.referee_options">
                   <a-radio v-for="option in refereeOptions" :value="option.value" :style="virticalStyle">{{option.label}}</a-radio>
                 </a-radio-group>
               </a-form-item>
             </template>
 
-            <template v-if="application.role=='volunteer'">
-              <a-form-item :label="$t('volunteer_option')" name="referee_option" v-if="application.gender">
-                <a-checkbox-group v-model:value="application.volunteer_option">
-                  <a-checkbox v-for="option in volunteerOptions" :value="option.value" :style="virticalStyle">{{option.label}}</a-checkbox>
+            <template v-if="application.role=='staff'">
+              <a-form-item :label="$t('staff_options')" name="staff_options" v-if="application.gender">
+                <a-checkbox-group v-model:value="application.staff_options">
+                  <a-checkbox v-for="option in staffOptions" :value="option.value" :style="virticalStyle">{{option.label}}</a-checkbox>
                 </a-checkbox-group>
               </a-form-item>
             </template>
@@ -152,7 +152,7 @@ export default {
         {value:"Other_Country", label:"其他地區裁判資格"},
         {value:"Trainee", label:"實習裁判"}
       ],
-      volunteerOptions:[
+      staffOptions:[
         {value:"parent",label:"家長義工"},
         {value:"student",label:"學生義工"},
         {value:"weighting",label:"過磅工作人員(裁判人員或已有相關工作經驗優先)"},
@@ -259,6 +259,7 @@ export default {
       this.$inertia.post(route('competitions.store',this.competition.id), this.application, {
         onSuccess: (page) => {
             console.log(page);
+            this.competition={};
         },
         onError: (error) => {
           this.modal.content=error.message
