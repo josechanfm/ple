@@ -95,6 +95,7 @@ class CompetitionController extends Controller
         if($competition->organization_id<>session('organization')->id){
             return redirect()->route('manage.competitions.index');
         }
+        $competition->getMedia('competitionBanner');
         return Inertia::render('Organization/Competition',[
             'competition'=>$competition,
             'categories_weights'=>Config::items('categories_weights',0),
@@ -113,18 +114,14 @@ class CompetitionController extends Controller
     {
 
         $competition->update($request->all());
-        // $competition->title_en=$request->title_en;
-        // $competition->title_fn=$request->title_fn??null;
-        // $competition->brief=$request->brief;
-        // $competition->description=$request->description;
-        // $competition->start_date=date('Y-m-d',strtotime($request->period[0]));
-        // $competition->end_date=date('Y-m-d',strtotime($request->period[1]));
-        // $competition->match_dates=$request->match_dates;
-        // $competition->categories_weights=$request->categories_weights;
-        // $competition->roles=$request->roles;
-        // $competition->save();
+        if($request->file('banner')){
+            foreach($request->file('banner') as $file){
+                $competition->addMedia($file['originFileObj'])->toMediaCollection('competitionBanner');
+                //$enquiryQuestion->addMedia($file['originFileObj'])->toMediaCollection('enquiryQuestionAttachments');
+            }
+        };
 
-        return redirect()->route('manage.competitions.index');
+        //return redirect()->route('manage.competitions.index');
         //return response($request->all());
     }
 
@@ -137,5 +134,14 @@ class CompetitionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function deleteMedia(Request $request){
+        if($request->type=='banner'){
+            Competition::find($request->id)->clearMediaCollection('competitionBanner');
+        }elseif($request->type=='attachement'){
+            Competition::find($request->id)->getMedia('competitionAttachment')[$request->media_id]->delete();
+        }
+        return response($request->all());
     }
 }

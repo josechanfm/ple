@@ -75,6 +75,12 @@ return [
             //     ]
             // ]
         ],
+        'competition' => [
+            'driver' => 'local',
+            'root'   => public_path('/media/competition'),
+            'url'    => env('APP_URL').'/media/competition',
+        ],
+
         'certificate' => [
             'driver' => 'local',
             'root'   => public_path('/media/certificate'),

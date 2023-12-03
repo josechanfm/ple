@@ -8,9 +8,9 @@
         {{ $t("edit_competition") }}
       </h2>
     </template>
-
     <div class="container mx-auto">
       <div class="bg-white relative shadow rounded-lg p-5">
+
         <a-form
           :model="competitionData"
           name="nest-messages"
@@ -99,6 +99,34 @@
               >
             </a-checkbox-group>
           </a-form-item>
+
+            <a-form-item label="Banner image" name="cert_logo">
+                <div v-if="competition.media.length" >
+                    <inertia-link :href="route('manage.competition.deleteMedia',{type:'banner',id:competition.id})" method="post" class="float-right text-red-500">
+                        <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor" aria-hidden="true" viewBox="64 64 896 896">
+                            <path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"></path>
+                        </svg>
+                    </inertia-link>
+                    <img :src="competition.media[0].original_url" width="500"/>
+                </div>
+                <div v-else>
+                  <a-upload
+                      v-model:file-list="competitionData.banner"
+                      :multiple="false"
+                      :beforeUpload="()=>false"
+                      :max-count="1"
+                      list-type="picture"
+                  >
+                      <a-button>
+                          <upload-outlined></upload-outlined>
+                          upload
+                      </a-button>
+                  </a-upload>
+
+                </div>
+            </a-form-item>            
+
+
           <a-form-item :label="$t('published')" name="published">
             <a-switch
               v-model:checked="competitionData.published"
@@ -106,6 +134,7 @@
               :unCheckedValue="0"
             />
           </a-form-item>
+
           <a-form-item :label="$t('scope')" name="scope">
             <a-radio-group v-model:value="competitionData.scope" button-style="solid">
               <a-radio-button value="PUB">{{ $t("public") }}</a-radio-button>
@@ -117,6 +146,8 @@
             <a-button type="primary" html-type="submit">{{ $t("submit") }}</a-button>
           </div>
         </a-form>
+        
+
       </div>
     </div>
   </OrganizationLayout>
@@ -126,14 +157,16 @@
 import OrganizationLayout from "@/Layouts/OrganizationLayout.vue";
 import { quillEditor } from "vue3-quill";
 import dayjs from "dayjs";
+import { UploadOutlined } from '@ant-design/icons-vue';
 
 export default {
   components: {
     OrganizationLayout,
     quillEditor,
     dayjs,
+    UploadOutlined
   },
-  props: ["competition", "categories_weights", "roles"],
+  props: ["competition","medias", "categories_weights", "roles"],
   data() {
     return {
       mode: null,
@@ -222,6 +255,7 @@ export default {
       );
       this.competitionData.end_date = this.competitionData.period[1].format("YYYY-MM-DD");
 
+
       if (this.mode == "CREATE") {
         this.$inertia.post(route("manage.competitions.store"), this.competitionData, {
           onSuccess: (page) => {
@@ -232,7 +266,8 @@ export default {
           },
         });
       } else {
-        this.$inertia.put(
+        this.competitionData._method = 'PATCH';
+        this.$inertia.post(
           route("manage.competitions.update", this.competitionData.id),
           this.competitionData,
           {

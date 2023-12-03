@@ -25,6 +25,8 @@ class Config extends Model
             if(empty($item)){
                 $item = Config::where('organization_id',0)->where('key', $key)->first();
             }
+        }else{
+            $item = Config::where('organization_id',0)->where('key', $key)->first();
         }
         if ($item) {
             return json_decode($item->value);
