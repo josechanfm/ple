@@ -18,7 +18,7 @@ class Competition extends Model implements HasMedia
     protected $fillable=['organization_id','title_zh','title_fn','brief','description','start_date','end_date','match_dates','categories_weights','roles','scope','for_member','published'];
     protected $casts=['match_dates'=>'json','categories_weights'=>'json','roles'=>'json'];
     protected $attributes=[
-        'title_en'=>'',                                                                                                                                                                                                                                                                             
+        'title_zh'=>'',                                                                                                                                                                                                                                                                             
         'title_fn'=>'',
         'description'=>'',
         'start_date'=>'',

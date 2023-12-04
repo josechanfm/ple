@@ -46,23 +46,15 @@ class CompetitionController extends Controller
     {
         $data=$request->all();
         $data['organization_id']=session('organization')->id;
-        Competition::create($data);
-        // $competition=new Competition();
-        // $competition->organization_id=session('organization')->id;
-        // $competition->title_en=$request->title_en;
-        // $competition->title_fn=$request->title_fn??null;
-        // $competition->brief=$request->brief;
-        // $competition->description=$request->description;
-        // $competition->start_date=date('Y-m-d',strtotime($request->period[0]));
-        // $competition->end_date=date('Y-m-d',strtotime($request->period[1]));
-        // $competition->match_dates=$request->match_dates;
-        // $competition->categories_weights=$request->categories_weights;
-        // $competition->roles=$request->roles;
-        // $competition->save();
+        $competition=Competition::create($data);
+
+        if($request->file('banner')){
+            foreach($request->file('banner') as $file){
+                $competition->addMedia($file['originFileObj'])->toMediaCollection('competitionBanner');
+            }
+        };
 
         return redirect()->route('manage.competitions.index');
-        // return response($competition);
-        //return response()->json($request->all());
     }
 
     /**
@@ -76,6 +68,7 @@ class CompetitionController extends Controller
         if($competition->organization_id<>session('organization')->id){
             return redirect()->route('manage.competitions.index');
         }
+        $competition->getMedia();
         return Inertia::render('Organization/CompetitionShow',[
             'competition'=>$competition,
             'categories_weights'=>Config::items('categories_weights',0),
@@ -95,7 +88,7 @@ class CompetitionController extends Controller
         if($competition->organization_id<>session('organization')->id){
             return redirect()->route('manage.competitions.index');
         }
-        $competition->getMedia('competitionBanner');
+        $competition->getMedia();
         return Inertia::render('Organization/Competition',[
             'competition'=>$competition,
             'categories_weights'=>Config::items('categories_weights',0),
@@ -117,10 +110,14 @@ class CompetitionController extends Controller
         if($request->file('banner')){
             foreach($request->file('banner') as $file){
                 $competition->addMedia($file['originFileObj'])->toMediaCollection('competitionBanner');
-                //$enquiryQuestion->addMedia($file['originFileObj'])->toMediaCollection('enquiryQuestionAttachments');
             }
         };
-
+        if($request->file('attachment')){
+            foreach($request->file('attachment') as $file){
+                $competition->addMedia($file['originFileObj'])->toMediaCollection('competitionAttachment');
+            }
+        };
+        return redirect()->back();
         //return redirect()->route('manage.competitions.index');
         //return response($request->all());
     }
@@ -138,9 +135,10 @@ class CompetitionController extends Controller
 
     public function deleteMedia(Request $request){
         if($request->type=='banner'){
-            Competition::find($request->id)->clearMediaCollection('competitionBanner');
-        }elseif($request->type=='attachement'){
-            Competition::find($request->id)->getMedia('competitionAttachment')[$request->media_id]->delete();
+            Competition::find($request->competition_id)->clearMediaCollection('competitionBanner');
+        }elseif($request->type=='attachment'){
+            //dd(Competition::find($request->competition_id)->getMedia('competitionAttachment'));
+            Competition::find($request->competition_id)->deleteMedia($request->media_id);
         }
         return response($request->all());
     }

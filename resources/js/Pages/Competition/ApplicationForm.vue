@@ -8,6 +8,9 @@
     <div class="py-0">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="p-5 bg-white overflow-hidden shadow-xl sm:rounded-lg">
+          <div v-if="competition.media.find(m=>m.collection_name=='competitionBanner').original_url">
+            <img :src="competition.media.find(m=>m.collection_name=='competitionBanner').original_url"  style="width: 100%"/>
+          </div>
           <a-typography-title :level="3" class="text-center">{{ competition.title_zh }}</a-typography-title>
           <a-typography-title :level="4" >賽事日: 
             <span v-for="date in competition.match_dates">{{date}}</span>
@@ -20,6 +23,12 @@
           <div id="pure-html">
               <div v-html="competition.description"/>
           </div>
+
+          <ol>
+            <li v-for="file in competition.media.filter(m=>m.collection_name=='competitionAttachment')">
+              <a :href="file.original_url" target="_blank">{{ file.file_name }}</a>
+            </li>
+          </ol>
           <a-form 
             :model="application" 
             v-bind="layout" 

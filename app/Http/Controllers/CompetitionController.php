@@ -92,6 +92,8 @@ class CompetitionController extends Controller
      */
     public function show(Competition $competition)
     {
+
+        $competition->getMedia();
         return Inertia::render('Competition/ApplicationForm',[
             'belt_ranks'=>Config::item("belt_ranks"),
             'competition'=>$competition,

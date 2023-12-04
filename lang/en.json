@@ -88,6 +88,7 @@
     "require_login":"Require login",
     "published":"Published",
     "banner_image":"Banner image",
+    "attachment":"attachment",
     "for_member":"For member",
     "require_login_note":"For public and required login",
     "for_member_note":"For member only",

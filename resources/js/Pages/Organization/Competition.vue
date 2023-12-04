@@ -1,7 +1,7 @@
 <template>
   <OrganizationLayout title="Dashboard">
     <template #header>
-      <h2 v-if="mode=='CREATE'" class="font-semibold text-xl text-gray-800 leading-tight">
+      <h2 v-if="mode == 'CREATE'" class="font-semibold text-xl text-gray-800 leading-tight">
         {{ $t("create_competition") }}
       </h2>
       <h2 v-else class="font-semibold text-xl text-gray-800 leading-tight">
@@ -11,14 +11,8 @@
     <div class="container mx-auto">
       <div class="bg-white relative shadow rounded-lg p-5">
 
-        <a-form
-          :model="competitionData"
-          name="nest-messages"
-          :validate-messages="validateMessages"
-          layout="vertical"
-          :rules="rules"
-          @finish="onFinish"
-        >
+        <a-form :model="competitionData" name="nest-messages" :validate-messages="validateMessages" layout="vertical"
+          :rules="rules" @finish="onFinish">
           <a-form-item :label="$t('competition_title_zh')" name="title_zh">
             <a-input v-model:value="competitionData.title_zh" />
           </a-form-item>
@@ -29,17 +23,11 @@
             <a-textarea v-model:value="competitionData.brief" style="min-height: 100px" />
           </a-form-item>
           <a-form-item :label="$t('description')" name="description">
-            <quill-editor
-              v-model:value="competitionData.description"
-              style="min-height: 200px"
-            />
+            <quill-editor v-model:value="competitionData.description" style="min-height: 200px" />
           </a-form-item>
           <a-form-item :label="$t('competition_period')" name="period">
-            <a-range-picker
-              v-model:value="competitionData.period"
-              :format="dateFormat"
-              @change="onCompetitionPeriodChange"
-            />
+            <a-range-picker v-model:value="competitionData.period" :format="dateFormat"
+              @change="onCompetitionPeriodChange" />
           </a-form-item>
           <a-form-item :label="$t('competition_dates')" name="match_dates">
             <a-select v-model:value="competitionData.match_dates" mode="multiple">
@@ -47,11 +35,11 @@
             </a-select>
           </a-form-item>
 
-          <a @click="showWeightList=!showWeightList" class="float-right">詳細內容</a>
+          <a @click="showWeightList = !showWeightList" class="float-right">詳細內容</a>
           <a-checkbox-group v-model:value="competitionData.cwSelected" class="w-full">
             <a-row :span="24">
               <template v-for="cw in categories_weights">
-                <a-col :span="24/categories_weights.length">
+                <a-col :span="24 / categories_weights.length">
                   <a-checkbox :value="cw.code">{{ cw.name }}</a-checkbox><br>
                 </a-col>
               </template>
@@ -67,23 +55,23 @@
             <table width="100%">
               <tr>
                 <th v-for="cw in categories_weights" class="text-left">
-                  <a-typography-title :level="5">{{cw.name}}</a-typography-title>
+                  <a-typography-title :level="5">{{ cw.name }}</a-typography-title>
                 </th>
               </tr>
               <tr class="align-top">
                 <td v-for="cw in categories_weights">
-                    <a-typography-text strong>男子組</a-typography-text>
-                    <ol>
-                      <li v-for="male in cw.male">
-                        {{ male.name }} : {{ male.limit[0] }} - {{ male.limit[1] }}
-                      </li>
-                    </ol>
-                    <a-typography-text strong>女子組</a-typography-text>
-                    <ol>
-                      <li v-for="female in cw.female">
-                        {{ female.name }} : {{ female.limit[0] }} - {{ female.limit[1] }}
-                      </li>
-                    </ol>
+                  <a-typography-text strong>男子組</a-typography-text>
+                  <ol>
+                    <li v-for="male in cw.male">
+                      {{ male.name }} : {{ male.limit[0] }} - {{ male.limit[1] }}
+                    </li>
+                  </ol>
+                  <a-typography-text strong>女子組</a-typography-text>
+                  <ol>
+                    <li v-for="female in cw.female">
+                      {{ female.name }} : {{ female.limit[0] }} - {{ female.limit[1] }}
+                    </li>
+                  </ol>
                 </td>
               </tr>
             </table>
@@ -91,62 +79,83 @@
 
           <a-form-item :label="$t('role')" name="roleSelected">
             <a-checkbox-group v-model:value="competitionData.roleSelected">
-              <a-checkbox
-                v-for="role in roles"
-                :style="virticalStyle"
-                :value="role.value"
-                >{{ role.label }}</a-checkbox
-              >
+              <a-checkbox v-for="role in roles" :style="virticalStyle" :value="role.value">{{ role.label }}</a-checkbox>
             </a-checkbox-group>
           </a-form-item>
 
-            <a-form-item label="Banner image" name="cert_logo">
-                <div v-if="competition.media.length" >
-                    <inertia-link :href="route('manage.competition.deleteMedia',{type:'banner',id:competition.id})" method="post" class="float-right text-red-500">
-                        <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor" aria-hidden="true" viewBox="64 64 896 896">
-                            <path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"></path>
-                        </svg>
-                    </inertia-link>
-                    <img :src="competition.media[0].original_url" width="500"/>
-                </div>
-                <div v-else>
-                  <a-upload
-                      v-model:file-list="competitionData.banner"
-                      :multiple="false"
-                      :beforeUpload="()=>false"
-                      :max-count="1"
-                      list-type="picture"
-                  >
-                      <a-button>
-                          <upload-outlined></upload-outlined>
-                          upload
-                      </a-button>
-                  </a-upload>
+          <a-form-item :label="$t('banner_image')" name="competition_banner">
+            <div v-if="mode == 'EDIT' && competition.media.find(m=>m.collection_name=='competitionBanner')">
+              <inertia-link :href="route('manage.competition.deleteMedia', { type: 'banner', competition_id: competition.id })"
+                    method="post" as="button" type="button" class="float-right text-red-500">
+                <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor"
+                  aria-hidden="true" viewBox="64 64 896 896">
+                  <path
+                    d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z">
+                  </path>
+                </svg>
+              </inertia-link>
+              <img :src="competition.media.find(m=>m.collection_name=='competitionBanner').preview_url" />
+            </div>
+            <div v-else>
+              <a-upload v-model:file-list="competitionData.banner" :multiple="false" :beforeUpload="() => false"
+                :max-count="1" list-type="picture">
+                <a-button>
+                  <upload-outlined></upload-outlined>
+                  upload
+                </a-button>
+              </a-upload>
 
-                </div>
-            </a-form-item>            
+            </div>
+          </a-form-item>
+          <a-form-item :label="$t('attachment')" name="attachment">
+            <div v-if="mode == 'EDIT'">
+              <div v-for="file in competition.media.filter(m=>m.collection_name=='competitionAttachment')">
+                  <inertia-link :href="route('manage.competition.deleteMedia', { type: 'attachment', competition_id: competition.id, media_id:file.id })"
+                    method="post" as="button" type="button" class="float-right text-red-500">
+                    <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor"
+                      aria-hidden="true" viewBox="64 64 896 896">
+                      <path
+                        d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z">
+                      </path>
+                    </svg>
+                  </inertia-link>
 
+                  <div v-if="file.mime_type.includes('image')">
+                    <img :src="file.preview_url"/>
+                  </div>
+                  <div v-else>
+                    <a :href="file.original_url" target="_blank">{{ file.file_name }}</a>
+                  </div>
+                  
+              </div>
+            </div>
+            <div>
+              <a-upload v-model:file-list="competitionData.attachment" :multiple="true" :beforeUpload="() => false"
+                :max-count="5" list-type="picture">
+                <a-button>
+                  <upload-outlined></upload-outlined>
+                  upload
+                </a-button>
+              </a-upload>
+            </div>
+          </a-form-item>
 
           <a-form-item :label="$t('published')" name="published">
-            <a-switch
-              v-model:checked="competitionData.published"
-              :checkedValue="1"
-              :unCheckedValue="0"
-            />
+            <a-switch v-model:checked="competitionData.published" :checkedValue="1" :unCheckedValue="0" />
           </a-form-item>
 
           <a-form-item :label="$t('scope')" name="scope">
             <a-radio-group v-model:value="competitionData.scope" button-style="solid">
               <a-radio-button value="PUB">{{ $t("public") }}</a-radio-button>
               <a-radio-button value="MJA">MJA {{ $t("members") }}</a-radio-button>
-              <a-radio-button value="ORG">{{$t("organization_member_only")}}</a-radio-button>
+              <a-radio-button value="ORG">{{ $t("organization_member_only") }}</a-radio-button>
             </a-radio-group>
           </a-form-item>
           <div class="flex flex-row item-center justify-center">
             <a-button type="primary" html-type="submit">{{ $t("submit") }}</a-button>
           </div>
         </a-form>
-        
+
 
       </div>
     </div>
@@ -166,11 +175,11 @@ export default {
     dayjs,
     UploadOutlined
   },
-  props: ["competition","medias", "categories_weights", "roles"],
+  props: ["competition", "medias", "categories_weights", "roles"],
   data() {
     return {
       mode: null,
-      showWeightList:false,
+      showWeightList: false,
       dateFormat: "YYYY-MM-DD",
       dateList: ["2023-01-02"],
       competitionData: {},
@@ -209,27 +218,27 @@ export default {
   },
   mounted() {
     if (this.competition == null) {
-      this.mode = "CREATE";
+      this.mode = "CREATE"
     } else {
       this.mode = "EDIT";
-      this.competitionData = { ...this.competition };
-      this.competitionData.period = [];
-      this.competitionData.period[0] = dayjs(this.competition.start_date);
-      this.competitionData.period[1] = dayjs(this.competition.end_date);
+      this.competitionData = { ...this.competition }
+      this.competitionData.period = []
+      this.competitionData.period[0] = dayjs(this.competition.start_date)
+      this.competitionData.period[1] = dayjs(this.competition.end_date)
       this.competitionData.cwSelected = this.competition.categories_weights.map(
         (cw) => cw.code
-      );
-      this.competitionData.roleSelected = this.competition.roles.map((cw) => cw.value);
-      this.getDaysArray(this.competitionData.period[0], this.competitionData.period[1]);
+      )
+      this.competitionData.roleSelected = this.competition.roles.map((cw) => cw.value)
+      this.getDaysArray(this.competitionData.period[0], this.competitionData.period[1])
       // this.competition.period[1] = this.competitionSource.end_date
     }
   },
-  created() {},
+  created() { },
   methods: {
     onCompetitionPeriodChange() {
       //var days = (this.competition.period[1]-this.competition.period[0])/(1000*60*60*24)+1
       //var getDaysArray = function(s,e) {for(var a=[],d=new Date(s);d<=new Date(e);d.setDate(d.getDate()+1)){ a.push(new Date(d));}return a;};
-      this.competitionData.match_dates=[]
+      this.competitionData.match_dates = []
       this.getDaysArray(this.competitionData.period[0], this.competitionData.period[1]);
     },
     getDaysArray(start, end) {
@@ -257,6 +266,7 @@ export default {
 
 
       if (this.mode == "CREATE") {
+        console.log(this.competitionData);
         this.$inertia.post(route("manage.competitions.store"), this.competitionData, {
           onSuccess: (page) => {
             console.log(page);
