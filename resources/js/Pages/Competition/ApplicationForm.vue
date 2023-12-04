@@ -25,17 +25,18 @@
               <a :href="file.original_url" target="_blank">{{ file.file_name }}</a>
             </li>
           </ol>
+
           <a-form :model="application" v-bind="layout" name="nest-messages" :validate-messages="validateMessages"
             layout="vertical" :rules="rules" @finish="onFinish">
             <a-form-item :label="$t('organization')" name="organization_id">
               <a-select v-model:value="application.organization_id" :options="organizations"
                 :field-names="{ value: 'value', label: 'label' }" />
             </a-form-item>
-            <a-form-item :label="$t('given_name')" name="given_name">
-              <a-input v-model:value="application.given_name" />
+            <a-form-item :label="$t('name_zh')" name="name_zh">
+              <a-input v-model:value="application.name_zh" />
             </a-form-item>
-            <a-form-item :label="$t('family_name')" name="family_name">
-              <a-input v-model:value="application.family_name" />
+            <a-form-item :label="$t('name_fn')" name="name_fn">
+              <a-input v-model:value="application.name_fn" />
             </a-form-item>
             <!-- <a-form-item :label="$t('middle_name')" name="middle_name">
               <a-input v-model:value="application.middle_name"/>
@@ -59,7 +60,7 @@
             <a-form-item :label="$t('email')" name="email">
               <a-input v-model:value="application.email" />
             </a-form-item>
-            <a-form-item :label="$t('mobile')" name="mobile">
+            <a-form-item :label="$t('mobile_number')" name="mobile">
               <a-input v-model:value="application.mobile" />
             </a-form-item>
             <a-form-item :label="$t('role')" name="role" v-if="application.gender">
@@ -104,6 +105,26 @@
               </a-form-item>
             </template>
 
+              <a-button @click="showCropModal = true">{{$t("upload_profile_image")}}</a-button>
+                <CropperModal
+                  v-if="showCropModal"
+                  :minAspectRatioProp="{ width: 8, height: 8 }"
+                  :maxAspectRatioProp="{ width: 8, height: 8 }"
+                  @croppedImageData="setCroppedImageData"
+                  @showModal="showCropModal = false"
+                />
+                <div class="flex flex-wrap mt-4 mb-6">
+                  <div class="w-full md:w-1/2 px-3">
+                    <div v-if="avatarPreview !== null">
+                      <img :src="avatarPreview" />
+                    </div>
+                    <div v-else>
+                      <img :src="competition.avata_url" />
+                    </div>
+                  </div>
+                </div>
+
+
             <div class="flex flex-row item-center justify-center">
               <a-button type="primary" html-type="submit">{{ $t('submit') }}</a-button>
             </div>
@@ -127,17 +148,21 @@ import WebLayout from "@/Layouts/WebLayout.vue";
 import dayjs from "dayjs";
 import { message } from 'ant-design-vue';
 import { Modal } from 'ant-design-vue';
+import CropperModal from "@/Components/Member/CropperModal.vue";
 
 export default {
   components: {
     WebLayout,
     dayjs,
     message,
-    Modal
+    Modal,
+    CropperModal
   },
   props: ["belt_ranks", "member", "competition"],
   data() {
     return {
+      showCropModal: false,
+      avatarPreview: null,
       modal: {
         isOpen: false,
         title: 'Application Failed',
@@ -182,6 +207,7 @@ export default {
         belt_rank: { required: true },
         dob: { required: true },
         gender: { required: true },
+        email: { required: true, type: "email" },
         category: { required: true },
         weight: { required: true },
         role: { required: true }
@@ -231,6 +257,11 @@ export default {
 
   },
   methods: {
+    setCroppedImageData(data) {
+      this.avatarPreview = data.imageUrl;
+      this.avatarData = data;
+      console.log(data);
+    },
     onGenderChange(event) {
       if (this.application.category) {
         this.weightSelection(event.target.value, this.application.category);
@@ -258,8 +289,9 @@ export default {
       }
     },
     onFinish() {
-      console.log(this.competition);
-      this.$inertia.post(route('competitions.store', this.competition.id), this.application, {
+
+      this.application.avatar = this.avatarData.blob;
+      this.$inertia.post(route('competitions.store'), this.application, {
         onSuccess: (page) => {
           console.log(page);
           this.competition = {};

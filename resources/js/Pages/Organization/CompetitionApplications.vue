@@ -12,9 +12,13 @@
       <template #bodyCell="{ column, text, record, index }">
         <template v-if="column.dataIndex == 'operation'">
           <a-button @click="editRecord(record)">{{ $t("edit") }}</a-button>
+          <a-button @click="deleteRecord(record)">{{ $t("delete") }}</a-button>
         </template>
         <template v-else-if="column.dataIndex == 'full_name'">
           {{ record.given_name }} {{ record.middle_name }} {{ record.family_name }}
+        </template>
+        <template v-else-if="column.dataIndex == 'avatar'">
+          <img :src="record.avatar_url" width="60"/>
         </template>
         <template v-else>
           {{ record[column.dataIndex] }}
@@ -27,7 +31,7 @@
         ref="modalRef"
         :model="modal.data"
         name="Teacher"
-        :label-col="{ span: 8 }"
+        :label-col="{ span: 4 }"
         :wrapper-col="{ span: 16 }"
         autocomplete="off"
         :rules="rules"
@@ -52,47 +56,57 @@
         >
           <a-input v-model:value="modal.data.display_name" />
         </a-form-item>
-        <a-form-item :label="$t('gender')" name="gender" :rules="[{ required: true }]">
-          <a-radio-group
-            v-model:value="modal.data.gender"
-            button-style="solid"
-            @change="onChangeGender"
-          >
-            <a-radio-button value="M">{{$t('male')}}</a-radio-button>
-            <a-radio-button value="F">{{$t('female')}}</a-radio-button>
-          </a-radio-group>
-        </a-form-item>
-        <a-form-item :label="$t('dob')" name="dob" :rules="[{ required: true }]">
-          <a-date-picker
-            v-model:value="modal.data.dob"
-            :format="dateFormat"
-            :valueFormat="dateFormat"
-          />
-        </a-form-item>
-        <a-form-item :label="$t('role')" name="role" :rules="[{ required: true }]">
-          <a-select v-model:value="modal.data.role" :options="competition.roles" />
-        </a-form-item>
-        <template v-if="modal.data.role == 'athlete'">
-          <a-form-item
-            :label="$t('category')"
-            name="category"
-            :rules="[{ required: true }]"
-          >
-            <a-select
-              v-model:value="modal.data.category"
-              :options="competition.categories_weights"
-              :fieldNames="{ value: 'code', label: 'name' }"
-              @change="onChangeCategory"
-            />
-          </a-form-item>
-          <a-form-item :label="$t('weight')" name="weight" :rules="[{ required: true }]">
-            <a-select
-              v-model:value="modal.data.weight"
-              :options="modal.data.weight_list"
-              :fieldNames="{ value: 'code', label: 'name' }"
-            />
-          </a-form-item>
-        </template>
+        <a-row :span="24">
+          <a-col :span="18">
+            <a-form-item :label="$t('gender')" :label-col="{ span: 5 }" name="gender" :rules="[{ required: true }]">
+              <a-radio-group
+                v-model:value="modal.data.gender"
+                button-style="solid"
+                @change="onChangeGender"
+              >
+                <a-radio-button value="M">{{$t('male')}}</a-radio-button>
+                <a-radio-button value="F">{{$t('female')}}</a-radio-button>
+              </a-radio-group>
+            </a-form-item>
+            <a-form-item :label="$t('dob')" :label-col="{ span: 5 }" name="dob" :rules="[{ required: true }]">
+              <a-date-picker
+                v-model:value="modal.data.dob"
+                :format="dateFormat"
+                :valueFormat="dateFormat"
+              />
+            </a-form-item>
+            <a-form-item :label="$t('role')" :label-col="{ span: 5 }" name="role" :rules="[{ required: true }]">
+              <a-select v-model:value="modal.data.role" :options="competition.roles" />
+            </a-form-item>
+            <template v-if="modal.data.role == 'athlete'">
+              <a-form-item
+                :label="$t('category')"
+                :label-col="{ span: 5 }"
+                name="category"
+                :rules="[{ required: true }]"
+              >
+                <a-select
+                  v-model:value="modal.data.category"
+                  :options="competition.categories_weights"
+                  :fieldNames="{ value: 'code', label: 'name' }"
+                  @change="onChangeCategory"
+                />
+              </a-form-item>
+              <a-form-item :label="$t('weight')" :label-col="{ span: 5 }" name="weight" :rules="[{ required: true }]">
+                <a-select
+                  v-model:value="modal.data.weight"
+                  :options="modal.data.weight_list"
+                  :fieldNames="{ value: 'code', label: 'name' }"
+                />
+              </a-form-item>
+            </template>
+          </a-col>
+          <a-col>
+              <img :src="modal.data.avatar_url" width="200"/>
+          </a-col>
+        </a-row>
+        
+
       </a-form>
       <template #footer>
         <a-button
@@ -118,10 +132,13 @@
 <script>
 import OrganizationLayout from "@/Layouts/OrganizationLayout.vue";
 import { defineComponent, reactive } from "vue";
+import { Modal } from 'ant-design-vue';
+import { ref, createVNode } from 'vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 export default {
   components: {
-    OrganizationLayout,
+    OrganizationLayout,Modal,createVNode,ExclamationCircleOutlined
   },
   props: ["competition"],
   data() {
@@ -136,36 +153,38 @@ export default {
       teacherStateLabels: {},
       columns: [
         {
-          title: "Full Name",
-          i18n:"full_name",
-          dataIndex: "full_name",
-        },
-        {
+          title: "Name (zh)",
+          i18n:"name_zh",
+          dataIndex: "name_zh",
+        },{
+          title: "Name (fn)",
+          i18n:"name_fn",
+          dataIndex: "name_fn",
+        },{
           title: "Gender",
           i18n:"gender",
           dataIndex: "gender",
-        },
-        {
+        },{
           title: "Date of Birth",
           i18n:"dob",
           dataIndex: "dob",
-        },
-        {
+        },{
           title: "Role",
           i18n:"role",
           dataIndex: "role",
-        },
-        {
+        },{
           title: "Category",
           i18n:"category",
           dataIndex: "category",
-        },
-        {
+        },{
           title: "Weight",
           i18n:"weight",
           dataIndex: "weight",
-        },
-        {
+        },{
+          title: "Avatar",
+          i18n:"avatar",
+          dataIndex: "avatar",
+        },{
           title: "Operation",
           i18n:"operation",
           dataIndex: "operation",
@@ -214,6 +233,32 @@ export default {
         this.genWeightList();
       }
     },
+    deleteRecord(record){
+      console.log(record);
+      Modal.confirm({
+                title: '是否確定',
+                icon: createVNode(ExclamationCircleOutlined),
+                content: '刪除報名記錄?'+record.name_zh +' / ' + record.name_fn,
+                okText: '確定',
+                cancelText: '取消',
+                onOk: () => {
+                  this.$inertia.delete(route('manage.competition.applications.destroy',
+                    {
+                      competition: this.competition.id,
+                      application: record.id,
+                    }),{
+                    onSuccess: (page) => {
+                      console.log(page);
+                    },
+                    onError: (error) => {
+                      console.log(error);
+                    },
+                  })
+                }
+            })
+
+
+    }, 
     genWeightList() {
       if (this.modal.data.gender == "M") {
         this.modal.data.weight_list = this.competition.categories_weights.find(

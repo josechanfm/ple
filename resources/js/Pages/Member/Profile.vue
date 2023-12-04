@@ -83,7 +83,7 @@
                     <a-form-item :label="$t('vat')" name="vat">
                       <a-input v-model:value="member.vat" />
                     </a-form-item>
-                    <a-form-item :label="$t('mobile')" name="mobile">
+                    <a-form-item :label="$t('mobile_number')" name="mobile">
                       <a-input v-model:value="member.mobile" />
                     </a-form-item>
                   </a-col>
@@ -208,9 +208,7 @@
               </a-collapse-panel>
               -->
               <a-collapse-panel key="9" :header="$t('picture_title')">
-                <a-button @click="showCropModal = true">{{
-                  $t("upload_profile_image")
-                }}</a-button>
+                <a-button @click="showCropModal = true">{{$t("upload_profile_image")}}</a-button>
                 <CropperModal
                   v-if="showCropModal"
                   :minAspectRatioProp="{ width: 8, height: 8 }"
@@ -224,7 +222,7 @@
                       <img :src="avatarPreview" />
                     </div>
                     <div v-else>
-                      <img :src="member.url" />
+                      <img :src="member.avata_url" />
                     </div>
                   </div>
                 </div>
@@ -316,7 +314,6 @@ export default {
     setCroppedImageData(data) {
       this.avatarPreview = data.imageUrl;
       this.avatarData = data;
-      console.log(data);
     },
 
     handleUploaded({ form, request, response }) {

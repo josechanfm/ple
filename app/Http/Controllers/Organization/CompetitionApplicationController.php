@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Competition;
 use App\Models\CompetitionApplication;
+use Illuminate\Support\Facades\Storage;
 
 class CompetitionApplicationController extends Controller
 {
@@ -88,8 +89,12 @@ class CompetitionApplicationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy(Competition $competition, $id)
+    {   
+        $competitionApplication=CompetitionApplication::find($id);
+        Storage::delete($competitionApplication->avatar);
+        $competitionApplication->delete();
+
+        return redirect()->back();
     }
 }

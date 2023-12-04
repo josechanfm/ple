@@ -45,9 +45,9 @@ class Member extends Model
     ];
     protected $casts=['positions'=>'json','federation_officials'=>'json','organization_officials'=>'json'];
 
-    protected $appends=['url','member_number'];
+    protected $appends=['avata_url','member_number'];
 
-    public function getUrlAttribute(){
+    public function getAvataUrlAttribute(){
         return $this->avatar?Storage::url($this->avatar):'';
     }
     public function getMemberNumberAttribute(){

@@ -53,7 +53,7 @@
             <a-form-item :label="$t('email')" name="email">
               <a-input v-model:value="application.email"/>
             </a-form-item>
-            <a-form-item :label="$t('mobile')" name="mobile">
+            <a-form-item :label="$t('mobile_number')" name="mobile">
               <a-input v-model:value="application.mobile"/>
             </a-form-item>
             <a-form-item :label="$t('role')" name="role">

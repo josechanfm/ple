@@ -90,7 +90,7 @@
         <a-form-item :label="$t('email')" name="email">
           <a-input v-model:value="modal.data.email" />
         </a-form-item>
-        <a-form-item :label="$t('mobile')" name="mobile">
+        <a-form-item :label="$t('mobile_number')" name="mobile">
           <a-input v-model:value="modal.data.mobile" />
         </a-form-item>
       </a-form>

@@ -55,7 +55,7 @@
     "email":"Email",
     "nickname":"Nickname",
     "phone":"Phone",
-    "mobile":"Mobile",
+    "mobile_number":"Mobile Number",
     "address":"Address",
     "website":"Website",
     "dod":"Date of Death",

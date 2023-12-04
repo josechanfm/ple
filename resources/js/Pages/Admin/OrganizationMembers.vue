@@ -57,7 +57,7 @@
         <a-form-item :label="$t('nickname')" name="nickname">
           <a-input v-model:value="modal.data.nickname" />
         </a-form-item>
-        <a-form-item :label="$t('mobile')" name="mobile">
+        <a-form-item :label="$t('mobile_number')" name="mobile">
           <a-input v-model:value="modal.data.mobile" />
         </a-form-item>
         <a-form-item :label="$t('status')" name="status">

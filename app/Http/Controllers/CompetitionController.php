@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use App\Models\Config;
 use App\Models\Competition;
 use App\Models\CompetitionApplication;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CompetitionController extends Controller
 {
@@ -40,7 +42,8 @@ class CompetitionController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($competition);
+
+        
         $data=$request->all();
         $competition=Competition::find($data['competition_id']);
         if($competition->scope!='PUB'){
@@ -79,8 +82,14 @@ class CompetitionController extends Controller
                 
             }
         }
+
+        if($request->file('avatar')){
+            $file = $request->file('avatar');
+            $path = Storage::putFile('public/images/competitions/avatar', $file);
+            $data['avatar'] = $path;
+        }
         CompetitionApplication::create($data);
-        //return redirect()->back();
+
         return redirect()->route('competitions.index');
     }
 
@@ -92,7 +101,6 @@ class CompetitionController extends Controller
      */
     public function show(Competition $competition)
     {
-
         $competition->getMedia();
         return Inertia::render('Competition/ApplicationForm',[
             'belt_ranks'=>Config::item("belt_ranks"),

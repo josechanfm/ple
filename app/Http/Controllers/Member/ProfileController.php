@@ -90,7 +90,6 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request->file());
         $data = $request->all();
         $member = Member::find($id);
         //$data['positions']=$request->positions;
@@ -103,7 +102,7 @@ class ProfileController extends Controller
                 }
             }
             $file = $request->file('avatar');
-            $path = Storage::putFile('public/images/avatar', $file);
+            $path = Storage::putFile('public/images/members/avatar', $file);
             $member->avatar = $path;
             $member->save();
 
