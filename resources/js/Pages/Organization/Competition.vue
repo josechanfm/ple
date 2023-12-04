@@ -84,9 +84,10 @@
           </a-form-item>
 
           <a-form-item :label="$t('banner_image')" name="competition_banner">
-            <div v-if="mode == 'EDIT' && competition.media.find(m=>m.collection_name=='competitionBanner')">
-              <inertia-link :href="route('manage.competition.deleteMedia', { type: 'banner', competition_id: competition.id })"
-                    method="post" as="button" type="button" class="float-right text-red-500">
+            <div v-if="mode == 'EDIT' && competition.media.find(m => m.collection_name == 'competitionBanner')">
+              <inertia-link
+                :href="route('manage.competition.deleteMedia', { type: 'banner', competition_id: competition.id })"
+                method="post" as="button" type="button" class="float-right text-red-500">
                 <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor"
                   aria-hidden="true" viewBox="64 64 896 896">
                   <path
@@ -94,11 +95,11 @@
                   </path>
                 </svg>
               </inertia-link>
-              <img :src="competition.media.find(m=>m.collection_name=='competitionBanner').preview_url" />
+              <img :src="competition.media.find(m => m.collection_name == 'competitionBanner').preview_url" />
             </div>
             <div v-else>
-              <a-upload v-model:file-list="competitionData.banner" :multiple="false" :beforeUpload="() => false"
-                :max-count="1" list-type="picture">
+              <a-upload v-model:file-list="competitionData.banner" :multiple="false" :beforeUpload="beforeBannerUpload"
+                :max-count="1" :accept="uploadValidator.banner.format.toString()" list-type="picture">
                 <a-button>
                   <upload-outlined></upload-outlined>
                   upload
@@ -109,29 +110,30 @@
           </a-form-item>
           <a-form-item :label="$t('attachment')" name="attachment">
             <div v-if="mode == 'EDIT'">
-              <div v-for="file in competition.media.filter(m=>m.collection_name=='competitionAttachment')">
-                  <inertia-link :href="route('manage.competition.deleteMedia', { type: 'attachment', competition_id: competition.id, media_id:file.id })"
-                    method="post" as="button" type="button" class="float-right text-red-500">
-                    <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor"
-                      aria-hidden="true" viewBox="64 64 896 896">
-                      <path
-                        d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z">
-                      </path>
-                    </svg>
-                  </inertia-link>
+              <div v-for="file in competition.media.filter(m => m.collection_name == 'competitionAttachment')">
+                <inertia-link
+                  :href="route('manage.competition.deleteMedia', { type: 'attachment', competition_id: competition.id, media_id: file.id })"
+                  method="post" as="button" type="button" class="float-right text-red-500">
+                  <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor"
+                    aria-hidden="true" viewBox="64 64 896 896">
+                    <path
+                      d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z">
+                    </path>
+                  </svg>
+                </inertia-link>
 
-                  <div v-if="file.mime_type.includes('image')">
-                    <img :src="file.preview_url"/>
-                  </div>
-                  <div v-else>
-                    <a :href="file.original_url" target="_blank">{{ file.file_name }}</a>
-                  </div>
-                  
+                <div v-if="file.mime_type.includes('image')">
+                  <img :src="file.preview_url" />
+                </div>
+                <div v-else>
+                  <a :href="file.original_url" target="_blank">{{ file.file_name }}</a>
+                </div>
+
               </div>
             </div>
             <div>
-              <a-upload v-model:file-list="competitionData.attachment" :multiple="true" :beforeUpload="() => false"
-                :max-count="5" list-type="picture">
+              <a-upload v-model:file-list="competitionData.attachment" :multiple="true"  :beforeUpload="beforeAttachmentUpload"
+                :max-count="5" :accept="uploadValidator.attachment.format.toString()" list-type="picture">
                 <a-button>
                   <upload-outlined></upload-outlined>
                   upload
@@ -167,13 +169,15 @@ import OrganizationLayout from "@/Layouts/OrganizationLayout.vue";
 import { quillEditor } from "vue3-quill";
 import dayjs from "dayjs";
 import { UploadOutlined } from '@ant-design/icons-vue';
+import { message, Upload } from 'ant-design-vue';
 
 export default {
   components: {
     OrganizationLayout,
     quillEditor,
     dayjs,
-    UploadOutlined
+    UploadOutlined,
+
   },
   props: ["competition", "medias", "categories_weights", "roles"],
   data() {
@@ -183,6 +187,25 @@ export default {
       dateFormat: "YYYY-MM-DD",
       dateList: ["2023-01-02"],
       competitionData: {},
+      uploadValidator: {
+        banner: {
+          size: 1, //Magabyte
+          format: ['image/jpeg', 'image/png']
+        },
+        attachment: {
+          size: 1, //Magabyte
+          format: [
+            'image/jpeg', 
+            'image/png',
+            'application/pdf', 
+            'application/msword', 
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 
+            'application/vnd.ms-excel', 
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            '.doc','.docx','.xls','.xlsx'
+          ],
+        },
+      },
       rules: {
         title_zh: { required: true },
         period: { required: true },
@@ -251,6 +274,36 @@ export default {
         arr.push(dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate());
       }
       this.dateList = arr;
+    },
+    beforeBannerUpload(file) {
+      var isOverSize = file.size / 1024 / 1024 > this.uploadValidator.banner.size;
+      var isFormatInvalid = !this.uploadValidator.banner.format.includes(file.type);
+
+      if (isOverSize || isFormatInvalid) {
+        message.error({
+          content: () => '檔案格式不符或大小超過限制. The file format does not match or the size exceeds the limit.',
+          class: 'custom-class',
+          style: {
+            marginTop: '50vh'
+          }
+        });
+        return false || Upload.LIST_IGNORE;
+      }
+    },
+    beforeAttachmentUpload(file) {
+      var isOverSize = file.size / 1024 / 1024 > this.uploadValidator.attachment.size;
+      var isFormatInvalid = !this.uploadValidator.attachment.format.includes(file.type);
+
+      if (isOverSize || isFormatInvalid) {
+        message.error({
+          content: () => '檔案格式不符或大小超過限制. The file format does not match or the size exceeds the limit.',
+          class: 'custom-class',
+          style: {
+            marginTop: '50vh'
+          }
+        });
+        return false || Upload.LIST_IGNORE;
+      }
     },
     onFinish() {
       this.competitionData.categories_weights = this.categories_weights.filter((cw) =>

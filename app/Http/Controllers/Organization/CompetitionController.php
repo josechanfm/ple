@@ -140,6 +140,6 @@ class CompetitionController extends Controller
             //dd(Competition::find($request->competition_id)->getMedia('competitionAttachment'));
             Competition::find($request->competition_id)->deleteMedia($request->media_id);
         }
-        return response($request->all());
+        return redirect()->back();
     }
 }
