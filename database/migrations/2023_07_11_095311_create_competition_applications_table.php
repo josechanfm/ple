@@ -18,6 +18,8 @@ return new class extends Migration
             $table->bigInteger('competition_id');
             $table->bigInteger('organization_id')->nullable();
             $table->bigInteger('member_id')->nullable();
+            $table->string('name_zh')->nullable();
+            $table->string('name_fn')->nullable();
             $table->string('given_name')->nullable();
             $table->string('family_name')->nullable();
             $table->string('middle_name')->nullable();

@@ -92,7 +92,10 @@ class CompetitionApplicationController extends Controller
     public function destroy(Competition $competition, $id)
     {   
         $competitionApplication=CompetitionApplication::find($id);
-        Storage::delete($competitionApplication->avatar);
+        if($competitionApplication->avatar){
+            Storage::delete($competitionApplication->avatar);
+        }
+        
         $competitionApplication->delete();
 
         return redirect()->back();
