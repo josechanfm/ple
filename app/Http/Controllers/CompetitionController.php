@@ -7,8 +7,11 @@ use Inertia\Inertia;
 use App\Models\Config;
 use App\Models\Competition;
 use App\Models\CompetitionApplication;
+use App\Models\Organization;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
+
 
 class CompetitionController extends Controller
 {
@@ -42,8 +45,6 @@ class CompetitionController extends Controller
      */
     public function store(Request $request)
     {
-
-        
         $data=$request->all();
         $competition=Competition::find($data['competition_id']);
         if($competition->scope!='PUB'){
@@ -103,6 +104,7 @@ class CompetitionController extends Controller
     {
         $competition->getMedia();
         return Inertia::render('Competition/ApplicationForm',[
+            'organizations'=>Organization::all(),
             'belt_ranks'=>Config::item("belt_ranks"),
             'competition'=>$competition,
             'member'=>auth()->user()?auth()->user()->member:null
@@ -118,7 +120,9 @@ class CompetitionController extends Controller
      */
     public function edit($id)
     {
-        //
+        Session::flash('competitionApplication', $id); 
+
+        return redirect()->route('competition.application.success',$id);
     }
 
     /**
@@ -143,4 +147,15 @@ class CompetitionController extends Controller
     {
         //
     }
+    public function applicationSuccess($id, Request $request){
+        if(!session('competitionApplication') || session('competitionApplication')!=$id){
+            return redirect()->route('/');
+        }
+        return Inertia::render('Competition/Success',[
+            'belt_ranks'=>Config::item("belt_ranks"),
+            'application'=>CompetitionApplication::with('competition')->find($id)
+        ]);
+
+    }
+    
 }

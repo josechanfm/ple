@@ -30,7 +30,7 @@
             layout="vertical" :rules="rules" @finish="onFinish">
             <a-form-item :label="$t('organization')" name="organization_id">
               <a-select v-model:value="application.organization_id" :options="organizations"
-                :field-names="{ value: 'value', label: 'label' }" />
+                :field-names="{ value: 'id', label: 'title' }" />
             </a-form-item>
             <a-form-item :label="$t('name_zh')" name="name_zh">
               <a-input v-model:value="application.name_zh" />
@@ -92,7 +92,7 @@
             <template v-if="application.role == 'referee'">
               <a-form-item :label="$t('referee_options')" name="referee_options" v-if="application.gender">
                 <a-radio-group v-model:value="application.referee_options">
-                  <a-radio v-for="option in refereeOptions" :value="option.value"
+                  <a-radio v-for="option in competition.referee_options" :value="option.value"
                     :style="virticalStyle">{{ option.label }}</a-radio>
                 </a-radio-group>
               </a-form-item>
@@ -101,7 +101,7 @@
             <template v-if="application.role == 'staff'">
               <a-form-item :label="$t('staff_options')" name="staff_options" v-if="application.gender">
                 <a-checkbox-group v-model:value="application.staff_options">
-                  <a-checkbox v-for="option in staffOptions" :value="option.value"
+                  <a-checkbox v-for="option in competition.staff_options" :value="option.value"
                     :style="virticalStyle">{{ option.label }}</a-checkbox>
                 </a-checkbox-group>
               </a-form-item>
@@ -160,7 +160,7 @@ export default {
     Modal,
     CropperModal
   },
-  props: ["belt_ranks", "member", "competition"],
+  props: ["organizations","belt_ranks", "member", "competition"],
   data() {
     return {
       showCropModal: false,
@@ -174,33 +174,33 @@ export default {
       dateFormat: "YYYY-MM-DD",
       dateList: ["2023-01-02"],
       application: {},
-      refereeOptions: [
-        { value: "International_A", label: "已持有國際A級裁判資格" },
-        { value: "International_B", label: "已持有國際B級裁判資格" },
-        { value: "Local_A", label: "已持有本地裁判A級資格" },
-        { value: "Local_B", label: "已持有本地裁判B級資格" },
-        { value: "Other_Country", label: "其他地區裁判資格" },
-        { value: "Trainee", label: "實習裁判" }
-      ],
-      staffOptions: [
-        { value: "parent", label: "家長義工" },
-        { value: "student", label: "學生義工" },
-        { value: "weighting", label: "過磅工作人員(裁判人員或已有相關工作經驗優先)" },
-        { value: "mc_match", label: "賽事司儀(已有相關工作經驗優先)" },
-        { value: "checker", label: "檢錄組(已有相關工作經驗優先)" },
-        { value: "score_digital", label: "電子計分操作員(已持有IJF 國際柔道賽事計時記分系統操作員培訓優先報名)" },
-        { value: "score_manual", label: "計時記分操作員(手動計時記分)" },
-        { value: "control", label: "司令台(已有相關工作經驗優先)" },
-        { value: "mc_award", label: "頒獎禮司儀(已有相關工作經驗優先)" },
-        { value: "helper_award", label: "頒獎小組(已有相關工作經驗優先)" },
-        { value: "general", label: "總務小組" },
-        { value: "venue_setup", label: "場地佈置" }
-      ],
-      organizations: [
-        { value: "1", label: "澳門柔道館" },
-        { value: "2", label: "宣道堂柔道會" },
-        { value: "3", label: "一本柔道部" },
-      ],
+      // refereeOptions: [
+      //   { value: "International_A", label: "已持有國際A級裁判資格" },
+      //   { value: "International_B", label: "已持有國際B級裁判資格" },
+      //   { value: "Local_A", label: "已持有本地裁判A級資格" },
+      //   { value: "Local_B", label: "已持有本地裁判B級資格" },
+      //   { value: "Other_Country", label: "其他地區裁判資格" },
+      //   { value: "Trainee", label: "實習裁判" }
+      // ],
+      // staffOptions: [
+      //   { value: "parent", label: "家長義工" },
+      //   { value: "student", label: "學生義工" },
+      //   { value: "weighting", label: "過磅工作人員(裁判人員或已有相關工作經驗優先)" },
+      //   { value: "mc_match", label: "賽事司儀(已有相關工作經驗優先)" },
+      //   { value: "checker", label: "檢錄組(已有相關工作經驗優先)" },
+      //   { value: "score_digital", label: "電子計分操作員(已持有IJF 國際柔道賽事計時記分系統操作員培訓優先報名)" },
+      //   { value: "score_manual", label: "計時記分操作員(手動計時記分)" },
+      //   { value: "control", label: "司令台(已有相關工作經驗優先)" },
+      //   { value: "mc_award", label: "頒獎禮司儀(已有相關工作經驗優先)" },
+      //   { value: "helper_award", label: "頒獎小組(已有相關工作經驗優先)" },
+      //   { value: "general", label: "總務小組" },
+      //   { value: "venue_setup", label: "場地佈置" }
+      // ],
+      // organizations: [
+      //   { value: "1", label: "澳門柔道館" },
+      //   { value: "2", label: "宣道堂柔道會" },
+      //   { value: "3", label: "一本柔道部" },
+      // ],
       rules: {
         organization_id: { required: true },
         given_name: { required: true },
@@ -292,8 +292,9 @@ export default {
       }
     },
     onFinish() {
-
-      this.application.avatar = this.avatarData.blob;
+      if(this.avatarData){
+        this.application.avatar = this.avatarData.blob;
+      }
       this.$inertia.post(route('competitions.store'), this.application, {
         onSuccess: (page) => {
           console.log(page);

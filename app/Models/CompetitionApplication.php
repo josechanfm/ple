@@ -17,4 +17,8 @@ class CompetitionApplication extends Model
         return $this->avatar?Storage::url($this->avatar):'';
     }
 
+    public function competition(){
+        return $this->belongsTo(Competition::class);
+    }
+
 }

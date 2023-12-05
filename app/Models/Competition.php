@@ -15,23 +15,23 @@ class Competition extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $fillable=['organization_id','title_zh','title_fn','brief','description','start_date','end_date','match_dates','categories_weights','roles','scope','for_member','published'];
-    protected $casts=['match_dates'=>'json','categories_weights'=>'json','roles'=>'json'];
-    protected $attributes=[
-        'title_zh'=>'',                                                                                                                                                                                                                                                                             
-        'title_fn'=>'',
-        'description'=>'',
-        'start_date'=>'',
-        'end_date'=>'',
-        // 'period'=>'[]',
-        // 'match_dates'=>'[]',
-        // // 'categories_weights'=>'',
-        // // 'roles'=>'[]',
-        // // 'period'=>'[]',
-        // 'cwSelected'=>'[]',
-        // 'roleSelected'=>''
-        // 'roles'=>''
-    ];
+    protected $fillable=['organization_id','title_zh','title_fn','brief','description','start_date','end_date','match_dates','categories_weights','roles','scope','for_member','staff_options','referee_options','published'];
+    protected $casts=['match_dates'=>'json','categories_weights'=>'json','roles'=>'json','staff_options'=>'json','referee_options'=>'json'];
+    // protected $attributes=[
+    //     'title_zh'=>'',                                                                                                                                                                                                                                                                             
+    //     'title_fn'=>'',
+    //     'description'=>'',
+    //     'start_date'=>'',
+    //     'end_date'=>'',
+    //     // 'period'=>'[]',
+    //     // 'match_dates'=>'[]',
+    //     // // 'categories_weights'=>'',
+    //     // // 'roles'=>'[]',
+    //     // // 'period'=>'[]',
+    //     // 'cwSelected'=>'[]',
+    //     // 'roleSelected'=>''
+    //     // 'roles'=>''
+    // ];
 
     public function registerMediaConversions(Media $media = null): void
     {

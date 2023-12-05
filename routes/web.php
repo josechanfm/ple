@@ -84,6 +84,7 @@ Route::group([
 
 Route::resource('forms', App\Http\Controllers\FormController::class)->names('forms');
 Route::resource('competitions', App\Http\Controllers\CompetitionController::class)->names('competitions');
+Route::get('competition/application/{competitionApplication}/success', [App\Http\Controllers\CompetitionController::class,'applicationSuccess'])->name('competition.application.success');
 
 Route::group([
     'prefix'=>'/manage',
