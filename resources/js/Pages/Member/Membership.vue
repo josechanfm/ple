@@ -40,7 +40,7 @@ export default {
                 'rank_caption':'段數',
                 'rank':'1',
                 'background':'/storage/card1.png',
-                'avata':'',
+                'avatar':'',
                 'description':'澳門柔道總會裁判資格認證<br><ul><li>aaa</li></ul>'
             },{
                 'cert_body':'澳門柔道協會教練員',
@@ -49,7 +49,7 @@ export default {
                 'number':'0012',
                 'rank_caption':'級別',//'段數',
                 'rank':'1',
-                'avata':'',
+                'avatar':'',
                 'background':'/storage/card2.png',
                 'description':'aaaaaaaaaaaaaaa'
             }],

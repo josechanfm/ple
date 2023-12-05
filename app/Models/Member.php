@@ -45,11 +45,12 @@ class Member extends Model
     ];
     protected $casts=['positions'=>'json','federation_officials'=>'json','organization_officials'=>'json'];
 
-    protected $appends=['avata_url','member_number'];
+    protected $appends=['avatar_url','member_number'];
 
-    public function getAvataUrlAttribute(){
+    public function getAvatarUrlAttribute(){
         return $this->avatar?Storage::url($this->avatar):'';
     }
+    
     public function getMemberNumberAttribute(){
         return substr('000000'.$this->id,-5);
     }
@@ -93,7 +94,7 @@ class Member extends Model
     }
     public function certificates(){
         return $this->belongsToMany(Certificate::class)->withPivot(
-            'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');
+            'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avatar');
     }
 
     // public function portfolio(){

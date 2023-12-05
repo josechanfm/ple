@@ -41,6 +41,9 @@
             <template v-else-if="column.dataIndex == 'state'">
               {{ teacherStateLabels[text] }}
             </template>
+            <template v-else-if="column.dataIndex == 'avatar'">
+              <img :src="record.avatar_url" width="60"/>
+            </template>
             <template v-else>
               {{ record[column.dataIndex] }}
             </template>
@@ -55,7 +58,7 @@
         ref="modalRef"
         :model="modal.data"
         name="Teacher"
-        :label-col="{ span: 8 }"
+        :label-col="{ span: 6 }"
         :wrapper-col="{ span: 16 }"
         autocomplete="off"
         :rules="rules"
@@ -74,25 +77,34 @@
         <a-form-item :label="$t('display_name')" name="display_name">
           <a-input v-model:value="modal.data.display_name" />
         </a-form-item>
-        <a-form-item :label="$t('gender')" name="gender">
-          <a-radio-group v-model:value="modal.data.gender" button-style="solid">
-            <a-radio-button value="M">{{ $t("male") }}</a-radio-button>
-            <a-radio-button value="F">{{ $t("female") }}</a-radio-button>
-          </a-radio-group>
-        </a-form-item>
-        <a-form-item :label="$t('dob')" name="dob">
-          <a-date-picker
-            v-model:value="modal.data.dob"
-            :format="dateFormat"
-            :valueFormat="dateFormat"
-          />
-        </a-form-item>
-        <a-form-item :label="$t('email')" name="email">
-          <a-input v-model:value="modal.data.email" />
-        </a-form-item>
-        <a-form-item :label="$t('mobile_number')" name="mobile">
-          <a-input v-model:value="modal.data.mobile" />
-        </a-form-item>
+        <a-row :span="24" :gutter="16">
+          <a-col :span="18" >
+            <a-form-item :label="$t('gender')" :label-col="{span:8}" name="gender">
+              <a-radio-group v-model:value="modal.data.gender" button-style="solid">
+                <a-radio-button value="M">{{ $t("male") }}</a-radio-button>
+                <a-radio-button value="F">{{ $t("female") }}</a-radio-button>
+              </a-radio-group>
+            </a-form-item>
+            <a-form-item :label="$t('dob')" :label-col="{span:8}" name="dob">
+              <a-date-picker
+                v-model:value="modal.data.dob"
+                :format="dateFormat"
+                :valueFormat="dateFormat"
+              />
+            </a-form-item>
+            <a-form-item :label="$t('email')" :label-col="{span:8}" name="email">
+              <a-input v-model:value="modal.data.email" />
+            </a-form-item>
+            <a-form-item :label="$t('mobile_number')" :label-col="{span:8}" name="mobile">
+              <a-input v-model:value="modal.data.mobile" />
+            </a-form-item>
+          </a-col>
+          <a-col>
+            <img :src="modal.data.avatar_url" width="200"/>
+          </a-col>
+
+        </a-row>
+
       </a-form>
       <template #footer>
         <a-button
@@ -142,28 +154,27 @@ export default {
           dataIndex: "given_name",
           i18n: "given_name",
           responsive: ["md"],
-        },
-        {
+        },{
           title: "Family name",
           dataIndex: "family_name",
           i18n: "family_name",
-        },
-        {
+        },{
           title: "Gender",
           dataIndex: "gender",
           i18n: "gender",
-        },
-        {
+        },{
           title: "Date of birth",
           dataIndex: "dob",
           i18n: "dob",
-        },
-        {
+        },{
           title: "State",
           dataIndex: "state",
           i18n: "state",
-        },
-        {
+        },{
+          title: "Avatar",
+          dataIndex: "avatar",
+          i18n: "avatar",
+        },{
           title: "Operation",
           dataIndex: "operation",
           key: "operation",

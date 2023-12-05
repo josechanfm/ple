@@ -31,8 +31,8 @@
             <a-form-item name="href" label="Official Website" >
                 <a-input v-model:value="organization.href" />
             </a-form-item>
-            <a-form-item name="avata" label="Avata" >
-                <a-input v-model:value="organization.avata" />
+            <a-form-item name="avatar" label="Avatar" >
+                <a-input v-model:value="organization.avatar" />
             </a-form-item>
             <a-form-item name="description" label="Description" >
                 <a-input v-model:value="organization.description" />

@@ -35,6 +35,10 @@
                 {{ record["user"].email }}
               </span>
             </template>
+            <template v-else-if="column.dataIndex == 'avatar'">
+              <img :src="record.avatar_url" width="60"/>
+            </template>
+
             <template v-else>
               {{ record[column.dataIndex] }}
             </template>
@@ -48,38 +52,12 @@
         ref="modalRef"
         :model="modal.data"
         name="Teacher"
-        :label-col="{ span: 8 }"
+        :label-col="{ span: 3 }"
         :wrapper-col="{ span: 16 }"
         autocomplete="off"
         :rules="rules"
         :validate-messages="validateMessages"
       >
-        <a-form-item :label="$t('given_name')" name="given_name">
-          <a-input v-model:value="modal.data.given_name" />
-        </a-form-item>
-        <a-form-item :label="$t('middle_name')" name="middle_name">
-          <a-input v-model:value="modal.data.middle_name" />
-        </a-form-item>
-        <a-form-item :label="$t('family_name')" name="family_name">
-          <a-input v-model:value="modal.data.family_name" />
-        </a-form-item>
-        <a-form-item :label="$t('email')" name="email">
-          <a-input v-model:value="modal.data.email" />
-        </a-form-item>
-        <a-form-item :label="$t('gender')" name="gender">
-          <a-switch
-            v-model:checked="modal.data.gender"
-            :checkedValue="1"
-            :unCheckedValue="0"
-          />
-        </a-form-item>
-        <a-form-item :label="$t('dob')" name="dob">
-          <a-date-picker
-            v-model:value="modal.data.dob"
-            :format="dateFormat"
-            :valueFormat="dateFormat"
-          />
-        </a-form-item>
         <a-form-item :label="$t('organizations')" name="organization_ids">
           <a-select
             v-model:value="modal.data.organization_ids"
@@ -90,21 +68,58 @@
             :fieldNames="{ value: 'id', label: 'full_name' }"
           />
         </a-form-item>
-        <template v-if="modal.data.user_id">
-          <a-form-item :label="$t('users')" name="user_id">
-            <p>{{ modal.data.user.email }}</p>
-          </a-form-item>
-        </template>
-        <template v-else>
-          <a-form-item :label="$t('users')" name="user_id">
-            <a-select
-              v-model:value="modal.data.user_id"
-              show-search
-              :options="users"
-              :fieldNames="{ value: 'id', label: 'email' }"
-            />
-          </a-form-item>
-        </template>
+
+        <a-form-item :label="$t('given_name')" name="given_name">
+          <a-input v-model:value="modal.data.given_name" />
+        </a-form-item>
+        <a-form-item :label="$t('middle_name')" name="middle_name">
+          <a-input v-model:value="modal.data.middle_name" />
+        </a-form-item>
+        <a-form-item :label="$t('family_name')" name="family_name">
+          <a-input v-model:value="modal.data.family_name" />
+        </a-form-item>
+
+        <a-row :span="24">
+          <a-col :span="18">
+            <a-form-item :label="$t('email')" :label-col="{span: 4}" name="email">
+              <a-input v-model:value="modal.data.email" />
+            </a-form-item>
+            <a-form-item :label="$t('gender')" :label-col="{span: 4}" name="gender">
+              <a-switch
+                v-model:checked="modal.data.gender"
+                :checkedValue="1"
+                :unCheckedValue="0"
+              />
+            </a-form-item>
+            <a-form-item :label="$t('dob')" :label-col="{span: 4}" name="dob">
+              <a-date-picker
+                v-model:value="modal.data.dob"
+                :format="dateFormat"
+                :valueFormat="dateFormat"
+              />
+            </a-form-item>
+            <template v-if="modal.data.user_id">
+              <a-form-item :label="$t('users')" :label-col="{span: 4}" name="user_id">
+                <p>{{ modal.data.user.email }}</p>
+              </a-form-item>
+            </template>
+            <template v-else>
+              <a-form-item :label="$t('users')" :label-col="{span: 4}" name="user_id">
+                <a-select
+                  v-model:value="modal.data.user_id"
+                  show-search
+                  :options="users"
+                  :fieldNames="{ value: 'id', label: 'email' }"
+                />
+              </a-form-item>
+            </template>
+
+          </a-col>
+          <a-col :span="6">
+            <img :src="modal.data.avatar_url" width="200"/>
+          </a-col>
+        </a-row>
+                
       </a-form>
       <template #footer>
         <a-button
@@ -151,23 +166,23 @@ export default {
           title: "Given Name",
           i18n: "given_name",
           dataIndex: "given_name",
-        },
-        {
+        },{
           title: "Family Name",
           i18n: "family_name",
           dataIndex: "family_name",
-        },
-        {
+        },{
           title: "Display Name",
           i18n: "display_name",
           dataIndex: "display_name",
-        },
-        {
+        },{
           title: "Login Email",
           i18n: "login_email",
           dataIndex: "login",
-        },
-        {
+        },{
+          title: "Avatar",
+          dataIndex: "avatar",
+          i18n: "avatar",
+        },{
           title: "Operation",
           i18n: "operation",
           dataIndex: "operation",

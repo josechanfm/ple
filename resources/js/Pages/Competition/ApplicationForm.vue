@@ -41,9 +41,11 @@
             <!-- <a-form-item :label="$t('middle_name')" name="middle_name">
               <a-input v-model:value="application.middle_name"/>
             </a-form-item> -->
+            <!--
             <a-form-item :label="$t('display_name')" name="display_name">
               <a-input v-model:value="application.display_name" />
             </a-form-item>
+            -->
             <a-form-item :label="$t('belt_rank')" name="belt_rank">
               <a-select v-model:value="application.belt_rank" :options="belt_ranks"
                 :field-names="{ value: 'rankCode', label: 'name_zh' }" />
@@ -119,7 +121,7 @@
                       <img :src="avatarPreview" />
                     </div>
                     <div v-else>
-                      <img :src="competition.avata_url" />
+                      <img :src="competition.avatar_url" />
                     </div>
                   </div>
                 </div>
@@ -208,6 +210,7 @@ export default {
         dob: { required: true },
         gender: { required: true },
         email: { required: true, type: "email" },
+        mobile: { required: true },
         category: { required: true },
         weight: { required: true },
         role: { required: true }

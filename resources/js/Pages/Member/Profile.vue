@@ -222,7 +222,7 @@
                       <img :src="avatarPreview" />
                     </div>
                     <div v-else>
-                      <img :src="member.avata_url" />
+                      <img :src="member.avatar_url" />
                     </div>
                   </div>
                 </div>

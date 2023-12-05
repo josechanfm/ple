@@ -41,7 +41,7 @@ defineProps({
                                 {{ card.pivot.display_name }}
                             </p>
                         </div>
-                        <img class="w-14 h-14" :src="card.pivot.avata" />
+                        <img class="w-14 h-14" :src="card.pivot.avatar" />
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div class="pt-1">
