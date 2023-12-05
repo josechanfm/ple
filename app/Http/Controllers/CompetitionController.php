@@ -11,7 +11,7 @@ use App\Models\Organization;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
-
+use PDF;
 
 class CompetitionController extends Controller
 {
@@ -89,9 +89,11 @@ class CompetitionController extends Controller
             $path = Storage::putFile('public/images/competitions/avatar', $file);
             $data['avatar'] = $path;
         }
-        CompetitionApplication::create($data);
+        $application=CompetitionApplication::create($data);
 
-        return redirect()->route('competitions.index');
+        //return redirect()->route('competitions.index');
+        Session::flash('competitionApplication', $application->id); 
+        return redirect()->route('competition.application.success',$application->id);
     }
 
     /**
@@ -148,9 +150,26 @@ class CompetitionController extends Controller
         //
     }
     public function applicationSuccess($id, Request $request){
-        if(!session('competitionApplication') || session('competitionApplication')!=$id){
-            return redirect()->route('/');
-        }
+        // if(!session('competitionApplication') || session('competitionApplication')!=$id){
+        //     return redirect()->route('/');
+        // }
+        $application=CompetitionApplication::with('competition')->find($id);
+
+        // $medias=$application->competition->getFirstMedia('competitionBanner');
+        // dd($medias);
+
+        if(strtoupper($request->format)=='PDF'){
+            $pdf=PDF::loadView('Competition.ApplicationSuccess',[
+                'belt_ranks'=>Config::item("belt_ranks"),
+                'application'=>CompetitionApplication::with('competition')->find($id)
+            ]);
+            $pdf->render();
+            return $pdf->stream('receipt.pdf',array('Attachment'=>false));
+            // return view('Competition/ApplicationSuccess',[
+            //     'belt_ranks'=>Config::item("belt_ranks"),
+            //     'application'=>CompetitionApplication::with('competition')->find($id)
+            // ]);
+        };
         return Inertia::render('Competition/Success',[
             'belt_ranks'=>Config::item("belt_ranks"),
             'application'=>CompetitionApplication::with('competition')->find($id)

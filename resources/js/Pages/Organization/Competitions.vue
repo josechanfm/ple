@@ -28,12 +28,12 @@
               <inertia-link
                 :href="route('manage.competitions.edit', record.id)"
                 class="ant-btn"
-                >{{ $t("edit") }}</inertia-link
+              >{{ $t("edit") }}</inertia-link
               >
               <inertia-link
                 :href="route('manage.competition.applications.index', record.id)"
                 class="ant-btn"
-                >{{ $t("applications") }}</inertia-link
+              >{{ $t("applications") }}</inertia-link
               >
             </template>
             <template v-else-if="column.dataIndex == 'state'">

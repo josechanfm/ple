@@ -2,7 +2,7 @@
     <div class="relative z-10">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
         <div class="fixed inset-0 z-10 overflow-y-auto mt-6">
-            <div class="min-h-full items-end justify-center p-4 items-center py-2">
+            <div class="flex min-h-full items-end justify-center p-4 items-center py-2">
                 <div 
                     class="
                         relative
@@ -16,6 +16,7 @@
                         my-8
                         mt-10
                         max-w-4xl
+                        w-full
                     "
                 >
                     <div class="bg-white px-4 pt-5 pb-4 p-6">

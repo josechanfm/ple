@@ -24,9 +24,11 @@ return new class extends Migration
             $table->date('end_date');
             $table->text('match_dates')->nullable();
             $table->text('categories_weights');
-            $table->text('roles');
+            $table->text('roles')->nullable();
             $table->text('scope')->nullable();
             $table->boolean('for_member');
+            $table->text('staff_options')->nullable();
+            $table->text('referee_options')->nullable();
             $table->boolean('published');
             $table->timestamps();
         });

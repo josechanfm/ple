@@ -298,7 +298,7 @@ export default {
       this.$inertia.post(route('competitions.store'), this.application, {
         onSuccess: (page) => {
           console.log(page);
-          this.competition = {};
+          
         },
         onError: (error) => {
           this.modal.content = error.message
