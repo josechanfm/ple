@@ -260,7 +260,7 @@ export default {
     setCroppedImageData(data) {
       this.avatarPreview = data.imageUrl;
       this.avatarData = data;
-      console.log(data);
+      //console.log(data);
     },
     onGenderChange(event) {
       if (this.application.category) {

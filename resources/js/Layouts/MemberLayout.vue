@@ -283,7 +283,7 @@ export default {
         >
           <div class="pt-2 pb-3 space-y-1">
             <ResponsiveNavLink
-              :href="route('member.dashboard')"
+              :href="route('/')"
               :active="route().current('dashboard')"
             >
               {{ $t("dashboard") }}
@@ -316,10 +316,10 @@ export default {
 
             <div class="mt-3 space-y-1">
               <ResponsiveNavLink> {{ $t("professional") }} </ResponsiveNavLink>
-              <ResponsiveNavLink> {{ $t("porfolios") }} </ResponsiveNavLink>
+              <ResponsiveNavLink> {{ $t("portfolios") }} </ResponsiveNavLink>
               <ResponsiveNavLink
                 :href="route('member.attendances.index')"
-                :active="route().current('member.profile.index')"
+                :active="route().current('member.attendances.index')"
               >
                 {{ $t("attendances") }}
               </ResponsiveNavLink>
@@ -345,7 +345,7 @@ export default {
                 :href="route('manage.dashboard')"
                 v-if="$page.props.user.roles.includes('organizer')"
               >
-                {{$t('manage')}}
+                {{$t('manager')}}
               </ResponsiveNavLink>
               <ResponsiveNavLink
                 v-if="$page.props.jetstream.hasApiFeatures"

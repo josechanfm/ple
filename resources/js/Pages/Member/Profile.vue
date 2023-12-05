@@ -201,7 +201,7 @@
                     </a-form-item>
                   </a-col>
                 </a-row> </a-collapse-panel
-              >this.modal.data.cert_logo_upload=this.cropper.datab
+              >
               <!--
               <a-collapse-panel key="8" :header="$t('guest_title')" v-if="member.positions.includes('GUE')">
                       888

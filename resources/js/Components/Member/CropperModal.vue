@@ -2,7 +2,7 @@
     <div class="relative z-10">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
         <div class="fixed inset-0 z-10 overflow-y-auto mt-6">
-            <div class="flex min-h-full items-end justify-center p-4 items-center py-2">
+            <div class="min-h-full items-end justify-center p-4 items-center py-2">
                 <div 
                     class="
                         relative
@@ -19,9 +19,9 @@
                     "
                 >
                     <div class="bg-white px-4 pt-5 pb-4 p-6">
-                        <div class="flex items-center">
+                        <div class="items-center">
                             <div class="mt-3 text-left">
-                                <h3 class="text-2xl font-medium leading-6 text-gray-900">Crop Image</h3>
+                                <h3 class="text-2xl font-medium leading-6 text-gray-900">裁切照片</h3>
                                 <div class="flex flex-wrap my-4">
                                     <label
                                         class="
@@ -34,9 +34,21 @@
                                             mb-2
                                         "
                                     >
-                                        Select Image
+                                    選擇照片
                                     </label>
                                     <div class="mb-3 w-full">
+                                        <a-upload
+                                            id="avatar"
+                                            name="file"
+                                            ref="avatarUpload"
+                                            @change="getUploadedImage"
+                                        >
+                                            <a-button>
+                                            <upload-outlined></upload-outlined>
+                                            上載照片
+                                            </a-button>
+                                        </a-upload>
+                                        <!--
                                         <input
                                             class="
                                                 form-control
@@ -61,11 +73,13 @@
                                                 focus:border-blue-600
                                                 focus:outline-none
                                             "
+
                                             type="file"
                                             id="image"
                                             ref="fileInput"
                                             @change="getUploadedImage"
                                         >
+                                        -->
                                     </div>
                                 </div>
 
@@ -110,7 +124,7 @@
                                             text-sm
                                         "
                                     >
-                                        Crop Image
+                                    保存裁剪
                                     </button>
 
                                     <button
@@ -140,7 +154,7 @@
                                             text-sm
                                         "
                                     >
-                                        Cancel
+                                    退出
                                     </button>
                                 </div>
 
@@ -158,6 +172,7 @@
     import { ref, defineEmits, defineProps, toRefs } from 'vue';
     import { Cropper } from 'vue-advanced-cropper'
     import 'vue-advanced-cropper/dist/style.css';
+    import { UploadOutlined } from '@ant-design/icons-vue';
 
     const emit = defineEmits(['croppedImageData', 'showModal'])
 
@@ -167,7 +182,7 @@
     })
     const { minAspectRatioProp, maxAspectRatioProp } = toRefs(props)
 
-    let fileInput = ref(null)
+    //let fileInput = ref(null)
     let cropper = ref(null)
     let uploadedImage = ref(null)
     let croppedImageData = {
@@ -183,8 +198,8 @@
     const getUploadedImage = (e) => {
         //const file = e.target.files[0]
         //uploadedImage.value = URL.createObjectURL(file) 
-
-        var item = e.target.files[0]
+        var item = e.file.originFileObj
+        //var item = e.target.files[0]
         var resize_width = 800;//var reader=new FileReader()
         var reader = new FileReader();
         //image turned to base64-encoded Data URI.
@@ -209,7 +224,7 @@
                 var srcEncoded = ctx.canvas.toDataURL('image/png', 1);
                 uploadedImage.value = srcEncoded; 
                 //assign it to thumb src
-                document.querySelector('#image').src = srcEncoded;
+                document.querySelector('#avatar').src = srcEncoded;
                 /*Now you can send "srcEncoded" to the server and
                 convert it to a png o jpg. Also can send
                 "el.target.name" that is the file's name.*/
@@ -223,8 +238,8 @@
         canvas.toBlob(blob => {
             croppedImageData.blob = blob
         },'image/jpg');
-        console.log(fileInput.value.files[0]);
-        croppedImageData.file = fileInput.value.files[0]
+        //croppedImageData.file = fileInput.value.files[0]
+        croppedImageData.file = cropper.value.getResult().image
         croppedImageData.imageUrl = canvas.toDataURL()
         croppedImageData.height = coordinates.height
         croppedImageData.width = coordinates.width
