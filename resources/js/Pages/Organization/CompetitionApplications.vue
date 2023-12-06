@@ -40,25 +40,27 @@
         <!-- <a-form-item label="Certificate name" name="name">
                 <a-input v-model:value="modal.data.name" />
             </a-form-item> -->
-        <a-form-item :label="$t('given_name')" name="given_name">
-          <a-input v-model:value="modal.data.given_name" />
+        <a-form-item :label="$t('name_zh')" name="name_zh">
+          <a-input v-model:value="modal.data.name_zh" />
         </a-form-item>
-        <a-form-item :label="$t('middle_name')" name="middle_name">
-          <a-input v-model:value="modal.data.middle_name" />
+        <a-form-item :label="$t('name_fn')" name="name_fn">
+          <a-input v-model:value="modal.data.name_fn" />
         </a-form-item>
-        <a-form-item :label="$t('family_name')" name="family_name">
-          <a-input v-model:value="modal.data.family_name" />
+        <a-form-item :label="$t('id_num')" name="id_num">
+          <a-input v-model:value="modal.data.id_num" />
         </a-form-item>
-        <a-form-item
-          :label="$t('display_name')"
-          name="display_name"
-          :rules="[{ required: true }]"
-        >
+        <a-form-item :label="$t('display_name')" name="display_name">
           <a-input v-model:value="modal.data.display_name" />
+        </a-form-item>
+        <a-form-item :label="$t('email')" name="email">
+          <a-input v-model:value="modal.data.email" />
+        </a-form-item>
+        <a-form-item :label="$t('mobile_number')" name="mobile">
+          <a-input v-model:value="modal.data.mobile" />
         </a-form-item>
         <a-row :span="24">
           <a-col :span="18">
-            <a-form-item :label="$t('gender')" :label-col="{ span: 5 }" name="gender" :rules="[{ required: true }]">
+            <a-form-item :label="$t('gender')" :label-col="{ span: 5 }" name="gender">
               <a-radio-group
                 v-model:value="modal.data.gender"
                 button-style="solid"
@@ -68,14 +70,14 @@
                 <a-radio-button value="F">{{$t('female')}}</a-radio-button>
               </a-radio-group>
             </a-form-item>
-            <a-form-item :label="$t('dob')" :label-col="{ span: 5 }" name="dob" :rules="[{ required: true }]">
+            <a-form-item :label="$t('dob')" :label-col="{ span: 5 }" name="dob">
               <a-date-picker
                 v-model:value="modal.data.dob"
                 :format="dateFormat"
                 :valueFormat="dateFormat"
               />
             </a-form-item>
-            <a-form-item :label="$t('role')" :label-col="{ span: 5 }" name="role" :rules="[{ required: true }]">
+            <a-form-item :label="$t('role')" :label-col="{ span: 5 }" name="role">
               <a-select v-model:value="modal.data.role" :options="competition.roles" />
             </a-form-item>
             <template v-if="modal.data.role == 'athlete'">
@@ -83,7 +85,6 @@
                 :label="$t('category')"
                 :label-col="{ span: 5 }"
                 name="category"
-                :rules="[{ required: true }]"
               >
                 <a-select
                   v-model:value="modal.data.category"
@@ -92,7 +93,7 @@
                   @change="onChangeCategory"
                 />
               </a-form-item>
-              <a-form-item :label="$t('weight')" :label-col="{ span: 5 }" name="weight" :rules="[{ required: true }]">
+              <a-form-item :label="$t('weight')" :label-col="{ span: 5 }" name="weight">
                 <a-select
                   v-model:value="modal.data.weight"
                   :options="modal.data.weight_list"
@@ -192,7 +193,12 @@ export default {
         },
       ],
       rules: {
-        name_zh: { required: true },
+        name_fn: { required: true },
+        display_name: { required: true },
+        id_num: { required: true },
+        dob: { required: true },
+        role: { required: true },
+        email: { required: true, type: "email" },
         mobile: { required: true },
         state: { required: true },
       },
