@@ -82,6 +82,19 @@
               <a-checkbox v-for="role in roles" :style="virticalStyle" :value="role.value">{{ role.label }}</a-checkbox>
             </a-checkbox-group>
           </a-form-item>
+          
+          <a-form-item :label="$t('referee_options')" name="RefereeOpetionsSelected" v-if="competitionData.roleSelected.includes('referee')">
+            <a-checkbox-group v-model:value="competitionData.refereeOptionsSelected">
+              <a-checkbox v-for="option in referee_options" :style="virticalStyle" :value="option.value">{{ option.label }}</a-checkbox>
+            </a-checkbox-group>
+          </a-form-item>
+
+          <a-form-item :label="$t('staff_options')" name="staffOpetionsSelected" v-if="competitionData.roleSelected.includes('staff')">
+            <a-checkbox-group v-model:value="competitionData.staffOptionsSelected">
+              <a-checkbox v-for="option in staff_options" :style="virticalStyle" :value="option.value">{{ option.label }}</a-checkbox>
+            </a-checkbox-group>
+          </a-form-item>
+
 
           <a-form-item :label="$t('banner_image')" name="competition_banner">
             <div v-if="mode == 'EDIT' && competition.media.find(m => m.collection_name == 'competitionBanner')">
@@ -153,12 +166,11 @@
               <a-radio-button value="ORG">{{ $t("organization_member_only") }}</a-radio-button>
             </a-radio-group>
           </a-form-item>
+
           <div class="flex flex-row item-center justify-center">
             <a-button type="primary" html-type="submit">{{ $t("submit") }}</a-button>
           </div>
         </a-form>
-
-
       </div>
     </div>
   </OrganizationLayout>
@@ -179,7 +191,7 @@ export default {
     UploadOutlined,
 
   },
-  props: ["competition", "medias", "categories_weights", "roles"],
+  props: ["competition", "medias", "categories_weights", "roles",'staff_options','referee_options'],
   data() {
     return {
       mode: null,
@@ -240,6 +252,8 @@ export default {
     };
   },
   mounted() {
+  },
+  created() {
     if (this.competition == null) {
       this.mode = "CREATE"
     } else {
@@ -252,11 +266,13 @@ export default {
         (cw) => cw.code
       )
       this.competitionData.roleSelected = this.competition.roles.map((cw) => cw.value)
+      this.competitionData.staffOptionsSelected=this.competition.staff_options.map((so)=>so.value)
+      this.competitionData.refereeOptionsSelected=this.competition.referee_options.map((ro)=>ro.value)
       this.getDaysArray(this.competitionData.period[0], this.competitionData.period[1])
       // this.competition.period[1] = this.competitionSource.end_date
     }
+
   },
-  created() { },
   methods: {
     onCompetitionPeriodChange() {
       //var days = (this.competition.period[1]-this.competition.period[0])/(1000*60*60*24)+1
@@ -309,9 +325,17 @@ export default {
       this.competitionData.categories_weights = this.categories_weights.filter((cw) =>
         this.competitionData.cwSelected.includes(cw.code)
       );
-      this.competitionData.roles = this.roles.filter((r) =>
-        this.competitionData.roleSelected.includes(r.value)
+      this.competitionData.roles = this.roles.filter((rs) =>
+        this.competitionData.roleSelected.includes(rs.value)
       );
+      this.competitionData.staff_options = this.staff_options.filter((sos) =>
+        this.competitionData.staffOptionsSelected.includes(sos.value)
+      );
+
+      this.competitionData.referee_options = this.referee_options.filter((ros) =>
+        this.competitionData.refereeOptionsSelected.includes(ros.value)
+      );
+
       this.competitionData.start_date = this.competitionData.period[0].format(
         "YYYY-MM-DD"
       );

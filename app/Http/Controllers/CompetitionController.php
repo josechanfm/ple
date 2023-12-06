@@ -150,30 +150,34 @@ class CompetitionController extends Controller
         //
     }
     public function applicationSuccess($id, Request $request){
-        // if(!session('competitionApplication') || session('competitionApplication')!=$id){
-        //     return redirect()->route('/');
-        // }
-        $application=CompetitionApplication::with('competition')->find($id);
-
-        // $medias=$application->competition->getFirstMedia('competitionBanner');
-        // dd($medias);
+        //$application=CompetitionApplication::with('competition')->find($id);
+        //dd($application);
 
         if(strtoupper($request->format)=='PDF'){
+            if(!session('competitionApplicationPdf') || session('competitionApplicationPdf')!=$id){
+                return redirect()->route('/');
+            }
             $pdf=PDF::loadView('Competition.ApplicationSuccess',[
                 'belt_ranks'=>Config::item("belt_ranks"),
                 'application'=>CompetitionApplication::with('competition')->find($id)
             ]);
             $pdf->render();
             return $pdf->stream('receipt.pdf',array('Attachment'=>false));
+
             // return view('Competition/ApplicationSuccess',[
             //     'belt_ranks'=>Config::item("belt_ranks"),
             //     'application'=>CompetitionApplication::with('competition')->find($id)
             // ]);
-        };
-        return Inertia::render('Competition/Success',[
-            'belt_ranks'=>Config::item("belt_ranks"),
-            'application'=>CompetitionApplication::with('competition')->find($id)
-        ]);
+        }else{
+            if(!session('competitionApplication') || session('competitionApplication')!=$id){
+                return redirect()->route('/');
+            }
+            Session::flash('competitionApplicationPdf', $id); 
+            return Inertia::render('Competition/Success',[
+                'belt_ranks'=>Config::item("belt_ranks"),
+                'application'=>CompetitionApplication::with('competition')->find($id)
+            ]);
+        }
 
     }
     

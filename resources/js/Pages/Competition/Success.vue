@@ -101,11 +101,9 @@
             <div>
               <a :href="route('/')">返回主頁</a>
             </div>
-            <!--
             <div>
-              <a :href="route('/')">PDF</a>
+              <a :href="'/competition/application/'+application.id+'/success?format=pdf'" >PDF</a>
             </div>
-            -->
             <div>
               <a :href="route('competitions.index')">賽事列表</a>
             </div>
