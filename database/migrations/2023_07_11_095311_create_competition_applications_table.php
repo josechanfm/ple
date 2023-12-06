@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('family_name')->nullable();
             $table->string('middle_name')->nullable();
             $table->string('display_name')->nullable();
+            $table->string('id_num')->nullable();
             $table->char('gender',1)->nullable();
             $table->date('dob')->nullable();
             $table->string('belt_rank')->nullable();

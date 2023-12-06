@@ -22,87 +22,95 @@
               application.competition.title_zh
             }}</a-typography-title>
           </div>
-          <table id="applicationSuccess">
-            <tr>
-              <th>{{ $t("name_zh") }}</th>
-              <td colspan="3">{{ application.name_zh }}</td>
-            </tr>
-            <tr>
-              <th>{{ $t("name_fn") }}</th>
-              <td colspan="3">{{ application.name_fn }}</td>
-            </tr>
-            <tr>
-              <th>{{ $t("gender") }}</th>
-              <td>{{ application.gender }}</td>
-              <th>{{ $t("dob") }}</th>
-              <td>{{ application.dob }}</td>
-            </tr>
-            <tr>
-              <th>{{ $t("email") }}</th>
-              <td>{{ application.email }}</td>
-              <th>{{ $t("mobile_number") }}</th>
-              <td>{{ application.mobile }}</td>
-            </tr>
-            <tr>
-              <th>{{ $t("belt_rank") }}</th>
-              <td>
-                {{
-                  belt_ranks.find((b) => b.rankCode == application.belt_rank)
-                    .name_zh
-                }}
-              </td>
-              <th>{{ $t("role") }}</th>
-              <td>
-                {{
-                  application.competition.roles.find(
-                    (r) => r.value == application.role
-                  ).label
-                }}
-              </td>
-            </tr>
-            <tr v-if="application.role == 'athlete'">
-              <th>{{ $t("category") }}</th>
-              <td>{{ application.category }}</td>
-              <th>{{ $t("weight") }}</th>
-              <td>{{ application.weight }}</td>
-            </tr>
-            <tr v-if="application.role == 'staff'">
-              <th>{{ $t("staff_options") }}</th>
-              <td colspan="3">
-                <ol>
-                  <li v-for="option in application.staff_options">
-                    {{
-                      application.competition.staff_options.find(
-                        (o) => o.value == option
-                      ).label
-                    }}
-                  </li>
-                </ol>
-              </td>
-            </tr>
-            <tr v-if="application.role == 'referee'">
-              <th>{{ $t("referee_options") }}</th>
-              <td colspan="3">
-                {{
-                  application.competition.referee_options.find(
-                    (o) => o.value == application.referee_options
-                  ).label
-                }}
-              </td>
-            </tr>
-            <tr v-if="application.avatar">
-              <th>{{ $t("avatar") }}</th>
-              <td colspan="3">
-                <img :src="application.avatar_url" width="200" />
-              </td>
-            </tr>
-          </table>
+          <div class="ant-table ant-table-bordered">
+            <div class="ant-table-container">
+              <div class="ant-table-content">
+                <table id="applicationSuccess" style="table-layout: auto;">
+                  <tbody class="ant-table-tbody">
+                    <tr>
+                      <td>{{ $t("name_zh") }}</td>
+                      <td colspan="3">{{ application.name_zh }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ $t("name_fn") }}</td>
+                      <td colspan="3">{{ application.name_fn }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ $t("gender") }}</td>
+                      <td>{{ application.gender }}</td>
+                      <td>{{ $t("dob") }}</td>
+                      <td>{{ application.dob }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ $t("email") }}</td>
+                      <td>{{ application.email }}</td>
+                      <td>{{ $t("mobile_number") }}</td>
+                      <td>{{ application.mobile }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ $t("belt_rank") }}</td>
+                      <td>
+                        {{
+                          belt_ranks.find((b) => b.rankCode == application.belt_rank)
+                            .name_zh
+                        }}
+                      </td>
+                      <td>{{ $t("role") }}</td>
+                      <td>
+                        {{
+                          application.competition.roles.find(
+                            (r) => r.value == application.role
+                          ).label
+                        }}
+                      </td>
+                    </tr>
+                    <tr v-if="application.role == 'athlete'">
+                      <td>{{ $t("category") }}</td>
+                      <td>{{ application.category }}</td>
+                      <td>{{ $t("weight") }}</td>
+                      <td>{{ application.weight }}</td>
+                    </tr>
+                    <tr v-if="application.role == 'staff'">
+                      <td>{{ $t("staff_options") }}</td>
+                      <td colspan="3">
+                        <ol>
+                          <li v-for="option in application.staff_options">
+                            {{
+                              application.competition.staff_options.find(
+                                (o) => o.value == option
+                              ).label
+                            }}
+                          </li>
+                        </ol>
+                      </td>
+                    </tr>
+                    <tr v-if="application.role == 'referee'">
+                      <td>{{ $t("referee_options") }}</td>
+                      <td colspan="3">
+                        {{
+                          application.competition.referee_options.find(
+                            (o) => o.value == application.referee_options
+                          ).label
+                        }}
+                      </td>
+                    </tr>
+                    <tr v-if="application.avatar">
+                      <td>{{ $t("avatar") }}</td>
+                      <td colspan="3">
+                        <img :src="application.avatar_url" width="200" />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
           <div class="flex justify-between py-10">
             <div>
               <a :href="route('/')">返回主頁</a>
             </div>
             <div>
-              <a :href="'/competition/application/'+application.id+'/success?format=pdf'" >PDF</a>
+              <a :href="'/competition/application/'+application.id+'/success?format=pdf'">打印發票</a>
             </div>
             <div>
               <a :href="route('competitions.index')">賽事列表</a>
@@ -129,7 +137,7 @@ export default {
     Modal,
     CropperModal,
   },
-  props: ["competition", "application", "belt_ranks"],
+  props: ["organizations","competition", "application", "belt_ranks"],
   data() {
     return {};
   },
@@ -147,12 +155,12 @@ export default {
 #pure-html * {
   all: revert;
 }
+/* 
 table {
   width: 100%;
 }
-table,
-tr,
-td {
+table tr,table td {
   border: 1px solid;
-}
+  padding-left: 5px;
+} */
 </style>

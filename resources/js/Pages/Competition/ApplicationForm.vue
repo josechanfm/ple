@@ -38,6 +38,10 @@
             <a-form-item :label="$t('name_fn')" name="name_fn">
               <a-input v-model:value="application.name_fn" />
             </a-form-item>
+            <a-form-item :label="$t('id_num')" name="id_num">
+              <a-input v-model:value="application.id_num"/>
+            </a-form-item>
+            
             <!-- <a-form-item :label="$t('middle_name')" name="middle_name">
               <a-input v-model:value="application.middle_name"/>
             </a-form-item> -->
@@ -46,9 +50,9 @@
               <a-input v-model:value="application.display_name" />
             </a-form-item>
             -->
-            <a-form-item :label="$t('belt_rank')" name="belt_rank">
+            <a-form-item :label="$t('belt_rank')" name="belt_rank" :rules="[{ required: ['athlete','referee','coach'].includes(application.role) }]" >
               <a-select v-model:value="application.belt_rank" :options="belt_ranks"
-                :field-names="{ value: 'rankCode', label: 'name_zh' }" />
+                :field-names="{ value: 'rankCode', label: 'name_zh' }"/>
             </a-form-item>
             <a-form-item :label="$t('dob')" name="dob">
               <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat" />
@@ -174,39 +178,10 @@ export default {
       dateFormat: "YYYY-MM-DD",
       dateList: ["2023-01-02"],
       application: {},
-      // refereeOptions: [
-      //   { value: "International_A", label: "已持有國際A級裁判資格" },
-      //   { value: "International_B", label: "已持有國際B級裁判資格" },
-      //   { value: "Local_A", label: "已持有本地裁判A級資格" },
-      //   { value: "Local_B", label: "已持有本地裁判B級資格" },
-      //   { value: "Other_Country", label: "其他地區裁判資格" },
-      //   { value: "Trainee", label: "實習裁判" }
-      // ],
-      // staffOptions: [
-      //   { value: "parent", label: "家長義工" },
-      //   { value: "student", label: "學生義工" },
-      //   { value: "weighting", label: "過磅工作人員(裁判人員或已有相關工作經驗優先)" },
-      //   { value: "mc_match", label: "賽事司儀(已有相關工作經驗優先)" },
-      //   { value: "checker", label: "檢錄組(已有相關工作經驗優先)" },
-      //   { value: "score_digital", label: "電子計分操作員(已持有IJF 國際柔道賽事計時記分系統操作員培訓優先報名)" },
-      //   { value: "score_manual", label: "計時記分操作員(手動計時記分)" },
-      //   { value: "control", label: "司令台(已有相關工作經驗優先)" },
-      //   { value: "mc_award", label: "頒獎禮司儀(已有相關工作經驗優先)" },
-      //   { value: "helper_award", label: "頒獎小組(已有相關工作經驗優先)" },
-      //   { value: "general", label: "總務小組" },
-      //   { value: "venue_setup", label: "場地佈置" }
-      // ],
-      // organizations: [
-      //   { value: "1", label: "澳門柔道館" },
-      //   { value: "2", label: "宣道堂柔道會" },
-      //   { value: "3", label: "一本柔道部" },
-      // ],
       rules: {
         organization_id: { required: true },
-        given_name: { required: true },
-        family_name: { required: true },
-        display_name: { required: true },
-        belt_rank: { required: true },
+        name_fn: { required: true },
+        id_num: { required: true },
         dob: { required: true },
         gender: { required: true },
         email: { required: true, type: "email" },

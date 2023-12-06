@@ -154,26 +154,28 @@ class CompetitionController extends Controller
         //dd($application);
 
         if(strtoupper($request->format)=='PDF'){
-            if(!session('competitionApplicationPdf') || session('competitionApplicationPdf')!=$id){
-                return redirect()->route('/');
-            }
+            // if(!session('competitionApplicationPdf') || session('competitionApplicationPdf')!=$id){
+            //     return redirect()->route('/');
+            // }
+            // return view('Competition/ApplicationSuccess',[
+            //     'belt_ranks'=>Config::item("belt_ranks"),
+            //     'application'=>CompetitionApplication::with('competition')->find($id)
+            // ]);
             $pdf=PDF::loadView('Competition.ApplicationSuccess',[
+                'organizations'=>Organization::all()->toArray(),
                 'belt_ranks'=>Config::item("belt_ranks"),
                 'application'=>CompetitionApplication::with('competition')->find($id)
             ]);
             $pdf->render();
             return $pdf->stream('receipt.pdf',array('Attachment'=>false));
 
-            // return view('Competition/ApplicationSuccess',[
-            //     'belt_ranks'=>Config::item("belt_ranks"),
-            //     'application'=>CompetitionApplication::with('competition')->find($id)
-            // ]);
         }else{
             if(!session('competitionApplication') || session('competitionApplication')!=$id){
                 return redirect()->route('/');
             }
             Session::flash('competitionApplicationPdf', $id); 
             return Inertia::render('Competition/Success',[
+                'organizations'=>Organization::all(),
                 'belt_ranks'=>Config::item("belt_ranks"),
                 'application'=>CompetitionApplication::with('competition')->find($id)
             ]);

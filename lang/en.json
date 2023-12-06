@@ -43,6 +43,7 @@
     "given_name":"Given Name",
     "middle_name":"Middle Name",
     "display_name":"Display Name",
+    "id_num":"ID Number",
     "belt_rank":"Belt Rank",
     "dob":"Date of Birth",
     "club":"Club",

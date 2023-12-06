@@ -43,6 +43,7 @@
     "given_name":"名字",
     "middle_name":"中間名稱",
     "display_name":"顯示名稱",
+    "id_num":"證件號碼",
     "belt_rank":"帶別",
     "dob":"出生日期",
     "club":"俱樂部",
