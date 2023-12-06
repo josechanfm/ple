@@ -55,7 +55,7 @@
                 :field-names="{ value: 'rankCode', label: 'name_zh' }"/>
             </a-form-item>
             <a-form-item :label="$t('dob')" name="dob">
-              <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat" />
+              <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat" :disabledDate="disabledDate"/>
             </a-form-item>
             <a-form-item :label="$t('gender')" name="gender">
               <a-radio-group v-model:value="application.gender" @change="onGenderChange">
@@ -228,7 +228,9 @@ export default {
       this.application.dob = this.member.dob;
       this.application.email = this.member.email;
       this.application.mobile = this.member.mobile;
-
+      if(this.application.dob==null){
+        this.application.dob=dayjs(new Date()).subtract(10,'year');
+      }
     }
   },
   created() {
@@ -276,12 +278,13 @@ export default {
           
         },
         onError: (error) => {
-          this.modal.content = error.message
-          this.modal.isOpen = true
+          console.log(error);
         }
       });
-
     },
+    disabledDate(current){
+      return current>dayjs(new Date()).subtract(3,'year');
+    }
   },
 };
 </script>

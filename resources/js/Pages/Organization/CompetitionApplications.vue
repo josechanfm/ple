@@ -5,7 +5,18 @@
         {{ $t("applications") }}
       </h2>
     </template>
-    <a-table :dataSource="competition.applications" :columns="columns">
+
+    <a-button @click="printReceipt">打印收據</a-button>
+    <a-table 
+      :dataSource="competition.applications" 
+      :columns="columns"
+      :rowSelection="{
+        selectedRowKeys:selectedRowKeyIds,
+        onChange:onCheckChange,
+        onSelectAll:onCheckSelectAll,
+        onSelect:onCheckSelect}"
+      rowKey="id"
+    >
       <template #headerCell="{ column }">
         {{ column.i18n ? $t(column.i18n) : column.title }}
       </template>
@@ -16,6 +27,9 @@
         </template>
         <template v-else-if="column.dataIndex == 'full_name'">
           {{ record.given_name }} {{ record.middle_name }} {{ record.family_name }}
+        </template>
+        <template v-else-if="column.dataIndex == 'age'">
+          {{calculateAge(record.dob)}}      
         </template>
         <template v-else-if="column.dataIndex == 'avatar'">
           <img :src="record.avatar_url" width="60"/>
@@ -133,6 +147,7 @@
 <script>
 import OrganizationLayout from "@/Layouts/OrganizationLayout.vue";
 import { defineComponent, reactive } from "vue";
+import dayjs from "dayjs";
 import { Modal } from 'ant-design-vue';
 import { ref, createVNode } from 'vue';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
@@ -157,34 +172,47 @@ export default {
           title: "Name (zh)",
           i18n:"name_zh",
           dataIndex: "name_zh",
+          key:'name_zh',
         },{
           title: "Name (fn)",
           i18n:"name_fn",
           dataIndex: "name_fn",
+          key: "name_fn",
         },{
           title: "Gender",
           i18n:"gender",
           dataIndex: "gender",
+          key: "gender",
+        },{
+          title: "Age",
+          i18n:"age",
+          dataIndex: "age",
+          key: "age",
         },{
           title: "Date of Birth",
           i18n:"dob",
           dataIndex: "dob",
+          key: "dob",
         },{
           title: "Role",
           i18n:"role",
           dataIndex: "role",
+          key: "role",
         },{
           title: "Category",
           i18n:"category",
           dataIndex: "category",
+          key: "category",
         },{
           title: "Weight",
           i18n:"weight",
           dataIndex: "weight",
+          key: "weight",
         },{
           title: "Avatar",
           i18n:"avatar",
           dataIndex: "avatar",
+          key: "avatar",
         },{
           title: "Operation",
           i18n:"operation",
@@ -217,9 +245,11 @@ export default {
           width: "150px",
         },
       },
+      selectedRowKeyIds:[],
     };
   },
-  created() {},
+  created() {
+  },
   methods: {
     onChangeGender(gender) {
       this.modal.data.category = null;
@@ -228,10 +258,10 @@ export default {
     onChangeCategory(category) {
       this.modal.data.weight = null;
       this.genWeightList();
-      console.log(this.modal.data.weight_list);
     },
     editRecord(record) {
       this.modal.data = { ...record };
+      //this.modal.data.dob=dayjs(this.modal.data.dob)
       this.modal.mode = "EDIT";
       this.modal.title = "Modify";
       this.modal.isOpen = true;
@@ -240,7 +270,6 @@ export default {
       }
     },
     deleteRecord(record){
-      console.log(record);
       Modal.confirm({
                 title: '是否確定',
                 icon: createVNode(ExclamationCircleOutlined),
@@ -277,7 +306,6 @@ export default {
       }
     },
     updateRecord() {
-      console.log(this.modal.data);
       this.$refs.modalRef
         .validateFields()
         .then(() => {
@@ -303,6 +331,50 @@ export default {
           console.log("error", err);
         });
     },
+    calculateAge(birthDate) {
+        if (!birthDate) return;
+        const currentDate = new Date();
+        if (new Date(birthDate) > currentDate) {
+            var birthDate = null
+            var years = null;
+            var months = null;
+            var days = null;
+            return 'false';
+        }
+
+        const diffTime = currentDate - new Date(birthDate);
+        const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        years = Math.floor(totalDays / 365.25);
+        months = Math.floor((totalDays % 365.25) / 30.4375);
+        days = Math.floor((totalDays % 365.25) % 30.4375);
+        return years
+    },
+    disabledDate(current){
+      return current>dayjs(new Date()).subtract(3,'year');
+    },
+    onCheckChange(selectedRowKeys, selectedRows){
+    },
+    onCheckSelect(record, selected, selectedRows){
+      if(selected){
+        this.selectedRowKeyIds.push(record.id)
+      }else{
+        console.log()
+        this.selectedRowKeyIds=this.selectedRowKeyIds.filter(x=>x!=record.id)
+        
+      }
+      //console.log(record, selected, selectedRows);
+    },
+    onCheckSelectAll(selected, selectedRows, changeRows) {
+      selectedRows.forEach((r)=>{
+        this.selectedRowKeyIds.push(r.id)
+      })
+      //console.log(selected, selectedRows, changeRows);
+    },      
+    printReceipt(){
+      console.log(this.selectedRowKeyIds);
+    }
+    
+
   },
 };
 </script>
