@@ -25,6 +25,7 @@
               <a :href="file.original_url" target="_blank">{{ file.file_name }}</a>
             </li>
           </ol>
+          <a-typography-title :level="4">{{$t('application_fee')}}：  MOP${{competition.fee}}</a-typography-title>
 
           <a-form :model="application" v-bind="layout" name="nest-messages" :validate-messages="validateMessages"
             layout="vertical" :rules="rules" @finish="onFinish">

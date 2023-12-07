@@ -43,6 +43,7 @@
                                             name="file"
                                             ref="avatarUpload"
                                             @change="getUploadedImage"
+                                            :capture="null"
                                         >
                                             <a-button>
                                             <upload-outlined></upload-outlined>
