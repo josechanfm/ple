@@ -155,6 +155,10 @@
             </div>
           </a-form-item>
 
+          <a-form-item :label="$t('application_fee')" name="fee">
+            <a-input v-model:checked="competitionData.fee" style="width:100px"/>
+          </a-form-item>
+
           <a-form-item :label="$t('published')" name="published">
             <a-switch v-model:checked="competitionData.published" :checkedValue="1" :unCheckedValue="0" />
           </a-form-item>
