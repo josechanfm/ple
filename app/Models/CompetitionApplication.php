@@ -20,5 +20,8 @@ class CompetitionApplication extends Model
     public function competition(){
         return $this->belongsTo(Competition::class)->with('media');
     }
+    public function organization(){
+        return $this->belongsTo(Organization::class);
+    }
 
 }

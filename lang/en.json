@@ -61,6 +61,8 @@
     "website":"Website",
     "dod":"Date of Death",
     "status":"Status",
+    "fee":"Fee",
+    "application_fee":"Application Fee",
     "avatar":"Avatar",
     "key":"Key",
     "registration_code":"Registration Code",

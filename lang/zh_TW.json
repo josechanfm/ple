@@ -61,6 +61,8 @@
     "phone":"電話",
     "dod":"死亡日期",
     "status":"狀態",
+    "fee":"費用",
+    "application_fee":"報名費",
     "avatar":"頭像",
     "key":"關鍵詞",
     "registration_code":"註冊碼",

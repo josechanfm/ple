@@ -5,8 +5,8 @@
         {{ $t("applications") }}
       </h2>
     </template>
-
-    <a-button @click="printReceipt">打印收據</a-button>
+    <a :href="route('manage.competition.applications.receipts',{competition:competition.id,applicationIds:selectedRowKeyIds.toString()})" target="_blank" class="ant-btn">打印收據</a>
+    <a :href="route('manage.competition.applications.export',competition.id)" class="ant-btn">滙出Excel</a>
     <a-table 
       :dataSource="competition.applications" 
       :columns="columns"
@@ -120,8 +120,6 @@
               <img :src="modal.data.avatar_url" width="200"/>
           </a-col>
         </a-row>
-        
-
       </a-form>
       <template #footer>
         <a-button
@@ -141,6 +139,12 @@
       </template>
     </a-modal>
     <!-- Modal End-->
+
+    <form method="post" action="applications/receipts">
+      <input name="selectedRowKeyIds[]" value="10"/>
+      <input name="selectedRowKeyIds[]" value="11"/>
+      <input type="submit" value="Submit">
+    </form>
   </OrganizationLayout>
 </template>
 
@@ -370,9 +374,6 @@ export default {
       })
       //console.log(selected, selectedRows, changeRows);
     },      
-    printReceipt(){
-      console.log(this.selectedRowKeyIds);
-    }
     
 
   },
