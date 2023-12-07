@@ -29,6 +29,7 @@ return new class extends Migration
             $table->boolean('for_member');
             $table->text('staff_options')->nullable();
             $table->text('referee_options')->nullable();
+            $table->string('fee');
             $table->boolean('published');
             $table->timestamps();
         });

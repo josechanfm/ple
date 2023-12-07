@@ -44,6 +44,7 @@
                                             ref="avatarUpload"
                                             @change="getUploadedImage"
                                             :capture="null"
+                                            accept="image/jpeg, image/png"
                                         >
                                             <a-button>
                                             <upload-outlined></upload-outlined>

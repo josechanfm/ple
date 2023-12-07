@@ -114,6 +114,7 @@ class CompetitionApplicationController extends Controller
         $pdf = app('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
         // return view('Competition.ApplicationReceipt',[
+        //     'competition'=>$competition,
         //     'applications'=>$applications
         // ]);
         $pdf=PDF::loadView('Competition.ApplicationReceipt',[

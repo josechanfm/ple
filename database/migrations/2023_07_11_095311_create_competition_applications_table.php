@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('category')->nullable();
             $table->string('weight')->nullable();
             $table->string('role')->nullable();
+            $table->string('avatar')->nullable();
             $table->string('staff_options')->nullable();
             $table->string('referee_options')->nullable();
             $table->timestamps();

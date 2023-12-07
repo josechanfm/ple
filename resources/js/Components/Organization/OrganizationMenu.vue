@@ -53,7 +53,7 @@
           <inertia-link :href="route('manage.competitions.index')"> {{$t('competitions')}} </inertia-link>
         </span>
       </a-menu-item>
-      <a-menu-item key="5">
+      <a-menu-item key="6">
         <template #icon>
           <CalendarOutlined />
         </template>
@@ -61,7 +61,7 @@
           <inertia-link :href="route('manage.events.index')"> {{$t('events')}} </inertia-link>
         </span>
       </a-menu-item>
-      <a-menu-item key="6">
+      <a-menu-item key="7">
         <template #icon>
           <CopyOutlined />
         </template>
@@ -69,7 +69,7 @@
           <inertia-link :href="route('manage.articles.index')"> {{$t('articles')}} </inertia-link>
         </span>
       </a-menu-item>
-      <a-menu-item key="10">
+      <a-menu-item key="8">
         <template #icon>
           <MailOutlined />
         </template>
@@ -147,7 +147,7 @@ export default defineComponent({
     const state = reactive({
       collapsed: false,
       selectedKeys: ["1"],
-      openKeys: ["sub1"],
+      openKeys: [],
       preOpenKeys: ["sub1"],
     });
     watch(

@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
             'user.permissions' => $permissions,
             'current_organization' => session('organization'),
             'by_guardian'=>session('guardian'),
-            'lang'=>session('locale')
+            //'lang'=>session('locale')
         ]);
     }
 }

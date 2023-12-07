@@ -116,11 +116,11 @@ Route::group([
     Route::get('certificates/delete_media/{mediaId}', [App\Http\Controllers\Organization\CertificateController::class, 'deleteMedia'])->name('manage.certificate.deleteMedia');
     Route::resource('certificate/{certificate}/members',App\Http\Controllers\Organization\CertificateMemberController::class)->names('manage.certificate.members');
     Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
-    Route::get('competition/{competition}/applications/export', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'export'])->name('manage.competition.applications.export');
     Route::resource('competitions', App\Http\Controllers\Organization\CompetitionController::class)->names('manage.competitions');
+    Route::get('competition/{competition}/applications/export', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'export'])->name('manage.competition.applications.export');
+    Route::get('competition/{competition}/applications/receipts', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'receipts'])->name('manage.competition.applications.receipts');
     Route::resource('competition/{competition}/applications', App\Http\Controllers\Organization\CompetitionApplicationController::class)->names('manage.competition.applications');
     Route::post('competition/delete_media', [App\Http\Controllers\Organization\CompetitionController::class, 'deleteMedia'])->name('manage.competition.deleteMedia');
-    Route::get('competition/{competition}/applications/receipts', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'receipts'])->name('manage.competition.applications.receipts');
 
     Route::resource('articles',App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
     Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');

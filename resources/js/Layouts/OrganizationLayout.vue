@@ -177,7 +177,7 @@ export default {
     };
   },
   mounted() {
-    this.loadLanguageAsync(this.$page.props.lang);
+    //this.loadLanguageAsync(this.$page.props.lang);
   },
 };
 // defineProps({

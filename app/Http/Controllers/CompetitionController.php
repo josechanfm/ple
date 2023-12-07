@@ -154,9 +154,9 @@ class CompetitionController extends Controller
         //dd($application);
 
         if(strtoupper($request->format)=='PDF'){
-            // if(!session('competitionApplicationPdf') || session('competitionApplicationPdf')!=$id){
-            //     return redirect()->route('/');
-            // }
+            if(!session('competitionApplicationPdf') || session('competitionApplicationPdf')!=$id){
+                return redirect()->route('/');
+            }
             // return view('Competition/ApplicationSuccess',[
             //     'belt_ranks'=>Config::item("belt_ranks"),
             //     'application'=>CompetitionApplication::with('competition')->find($id)
