@@ -111,14 +111,19 @@
               <img :src="competition.media.find(m => m.collection_name == 'competitionBanner').preview_url" />
             </div>
             <div v-else>
-              <a-upload v-model:file-list="competitionData.banner" :multiple="false" :beforeUpload="beforeBannerUpload"
-                :max-count="1" :accept="uploadValidator.banner.format.toString()" list-type="picture">
+              <a-upload v-model:file-list="competitionData.banner" 
+                :multiple="false" 
+                :beforeUpload="beforeBannerUpload"
+                :max-count="1" 
+                :accept="uploadValidator.banner.format.toString()" 
+                list-type="picture"
+                :capture="null"
+              >
                 <a-button>
                   <upload-outlined></upload-outlined>
                   upload
                 </a-button>
               </a-upload>
-
             </div>
           </a-form-item>
           <a-form-item :label="$t('attachment')" name="attachment">
@@ -145,8 +150,12 @@
               </div>
             </div>
             <div>
-              <a-upload v-model:file-list="competitionData.attachment" :multiple="true"  :beforeUpload="beforeAttachmentUpload"
-                :max-count="5" :accept="uploadValidator.attachment.format.toString()" list-type="picture">
+              <a-upload v-model:file-list="competitionData.attachment" 
+                :multiple="true"  
+                :beforeUpload="beforeAttachmentUpload"
+                :max-count="5" 
+                :accept="uploadValidator.attachment.format.toString()" 
+                list-type="picture">
                 <a-button>
                   <upload-outlined></upload-outlined>
                   upload
