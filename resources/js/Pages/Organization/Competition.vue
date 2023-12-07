@@ -156,7 +156,7 @@
           </a-form-item>
 
           <a-form-item :label="$t('application_fee')" name="fee">
-            <a-input v-model:checked="competitionData.fee" style="width:100px"/>
+            <a-input v-model:value="competitionData.fee" style="width:100px"/>
           </a-form-item>
 
           <a-form-item :label="$t('published')" name="published">
@@ -357,6 +357,7 @@ export default {
           },
         });
       } else {
+        console.log(this.competitionData);
         this.competitionData._method = 'PATCH';
         this.$inertia.post(
           route("manage.competitions.update", this.competitionData.id),
