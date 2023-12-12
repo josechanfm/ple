@@ -121,7 +121,7 @@
               >
                 <a-button>
                   <upload-outlined></upload-outlined>
-                  upload
+                  {{ $t('upload_file') }}
                 </a-button>
               </a-upload>
             </div>
@@ -158,7 +158,7 @@
                 list-type="picture">
                 <a-button>
                   <upload-outlined></upload-outlined>
-                  upload
+                  {{ $t('upload_file') }}
                 </a-button>
               </a-upload>
             </div>
@@ -214,7 +214,7 @@ export default {
       competitionData: {},
       uploadValidator: {
         banner: {
-          size: 1, //Magabyte
+          size: 2, //Magabyte
           format: ['image/jpeg', 'image/png']
         },
         attachment: {

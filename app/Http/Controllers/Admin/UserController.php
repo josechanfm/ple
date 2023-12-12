@@ -101,7 +101,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->update($request->all());
+        $data=$request->all();
+        if($request->password){
+            $data['password']=password_hash($request->password,PASSWORD_BCRYPT);
+        }else{
+            unset($data['password']);
+        }
+        $user->update($data);
         $user->roles()->sync($request->role_ids);
         $user->givePermissionTo($request->permission_ids);
         $user->organizations()->sync($request->organization_ids);

@@ -3,7 +3,6 @@
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t("users") }}</h2>
     </template>
-    {{ permissions }}
     <button
       @click="createRecord()"
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3"
@@ -54,7 +53,6 @@
         :rules="rules"
         :validate-messages="validateMessages"
       >
-        <a-input type="hidden" v-model:value="modal.data.id" />
         <a-form-item :label="$t('username')" name="name">
           <a-input v-model:value="modal.data.name" />
         </a-form-item>
@@ -104,6 +102,10 @@
 
           </a-col>
         </a-row>
+        <a-form-item :label="$t('password')" name="password">
+          <a-input v-model:value="modal.data.password" />
+        </a-form-item>
+
       </a-form>
       <template #footer>
         <a-button
