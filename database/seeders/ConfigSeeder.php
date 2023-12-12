@@ -18,28 +18,6 @@ class ConfigSeeder extends Seeder
         
         DB::table('configs')->insert([
             'organization_id'=>0,
-            'key'=>'belt_ranks',
-            'value'=>'[
-                {"rankCode":"white","name_zh":"白帶","name_en":"White Belt (Dan )"},
-                {"rankCode":"yellow","name_zh":"黃帶","name_en":"Yellow Belt"},
-                {"rankCode":"orange","name_zh":"橙帶","name_en":"Orange Belt"},
-                {"rankCode":"green","name_zh":"綠帶","name_en":"Green Belt"},
-                {"rankCode":"blue","name_zh":"藍帶","name_en":"Blue Belt"},
-                {"rankCode":"brown","name_zh":"啡帶","name_en":"Brown Belt"},
-                {"rankCode":"dan_1","name_zh":"黑帶1段","name_en":"Blank Belt (Dan 1)"},
-                {"rankCode":"dan_2","name_zh":"黑帶2段","name_en":"Blank Belt (Dan 2)"},
-                {"rankCode":"dan_3","name_zh":"黑帶3段","name_en":"Blank Belt (Dan 3)"},
-                {"rankCode":"dan_4","name_zh":"黑帶4段","name_en":"Blank Belt (Dan 4)"},
-                {"rankCode":"dan_5","name_zh":"黑帶5段","name_en":"Blank Belt (Dan 5)"},
-                {"rankCode":"dan_6","name_zh":"黑帶6段","name_en":"Blank Belt (Dan 6)"},
-                {"rankCode":"dan_7","name_zh":"黑帶7段","name_en":"Blank Belt (Dan 7)"},
-                {"rankCode":"dan_8","name_zh":"黑帶8段","name_en":"Blank Belt (Dan 8)"},
-                {"rankCode":"dan_9","name_zh":"黑帶9段","name_en":"Blank Belt (Dan 9)"},
-                {"rankCode":"dan_10","name_zh":"黑帶10段","name_en":"Blank Belt (Dan 10)"}
-                ]'
-        ]);
-        DB::table('configs')->insert([
-            'organization_id'=>0,
             'key'=>'categories_weights',
             'value'=>'{
                 "code": "public",
@@ -432,63 +410,112 @@ class ConfigSeeder extends Seeder
             'organization_id'=>0,
             'key'=>'card_style',
             'value'=>'{
-                    "card_01": {
-                        "card_name": "card_01.png",
-                        "font_style": "font-family:sans-serif;color:#c24641"
-                    },
-                    "card_02": {
-                        "card_name": "card_02.png",
-                        "font_style": "font-family:sans-serif;color:white"
-                    },
-                    "card_03": {
-                        "card_name": "card_03.png",
-                        "font_style": "font-family:sans-serif;color:white"
-                    },
-                    "card_04": {
-                        "card_name": "card_04.png",
-                        "font_style": "font-family:sans-serif;color:white"
-                    },
-                    "card_05": {
-                        "card_name": "card_05.png",
-                        "font_style": "font-family:sans-serif;color:white"
-                    },
-                    "card_06": {
-                        "card_name": "card_06.png",
-                        "font_style": "font-family:sans-serif;color:white"
-                    },
-                    "card_07": {
-                        "card_name": "card_07.png",
-                        "font_style": "font-family:sans-serif;color:#c24641"
-                    },
-                    "card_08": {
-                        "card_name": "card_08.png",
-                        "font_style": "font-family:sans-serif;color:#c24641"
-                    },
-                    "card_09": {
-                        "card_name": "card_09.png",
-                        "font_style": "font-family:sans-serif;color:white"
-                    },
-                    "card_10": {
-                        "card_name": "card_10.png",
-                        "font_style": "font-family:sans-serif;color:white"
-                    },
-                    "card_11": {
-                        "card_name": "card_11.png",
-                        "font_style": "font-family:sans-serif;color:white"
-                    },
-                    "card_12": {
-                        "card_name": "card_12.png",
-                        "font_style": "font-family:sans-serif;color:white"
-                    },
-                    "card_13": {
-                        "card_name": "card_13.png",
-                        "font_style": "font-family:sans-serif;color:#c24641"
-                    },
-                    "card_14": {
-                        "card_name": "card_14.png",
-                        "font_style": "font-family:sans-serif;color:white"
-                    }
-                }'
+                "card_01": {
+                    "background": "card_01.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:#c24641"
+                },
+                "card_02": {
+                    "background": "card_02.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:white"
+                },
+                "card_03": {
+                    "background": "card_03.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:white"
+                },
+                "card_04": {
+                    "background": "card_04.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:white"
+                },
+                "card_05": {
+                    "background": "card_05.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:white"
+                },
+                "card_06": {
+                    "background": "card_06.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:white"
+                },
+                "card_07": {
+                    "background": "card_07.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:#c24641"
+                },
+                "card_08": {
+                    "background": "card_08.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:#c24641"
+                },
+                "card_09": {
+                    "background": "card_09.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:white"
+                },
+                "card_10": {
+                    "background": "card_10.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:white"
+                },
+                "card_11": {
+                    "background": "card_11.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:white"
+                },
+                "card_12": {
+                    "background": "card_12.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:white"
+                },
+                "card_13": {
+                    "background": "card_13.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:#c24641"
+                },
+                "card_14": {
+                    "background": "card_14.png",
+                    "logo": "site_logo.png",
+                    "font_style": "font-family:sans-serif;color:white"
+                }
+            }'
             ]);
+
+            DB::table('configs')->insert([
+                'organization_id'=>0,
+                'key'=>'belt_ranks',
+                'value'=>'[
+                    {"rankCode":"white","name_zh":"白帶","name_en":"White Belt (Dan )"},
+                    {"rankCode":"yellow","name_zh":"黃帶","name_en":"Yellow Belt"},
+                    {"rankCode":"orange","name_zh":"橙帶","name_en":"Orange Belt"},
+                    {"rankCode":"green","name_zh":"綠帶","name_en":"Green Belt"},
+                    {"rankCode":"blue","name_zh":"藍帶","name_en":"Blue Belt"},
+                    {"rankCode":"brown","name_zh":"啡帶","name_en":"Brown Belt"},
+                    {"rankCode":"dan_1","name_zh":"黑帶1段","name_en":"Blank Belt (Dan 1)"},
+                    {"rankCode":"dan_2","name_zh":"黑帶2段","name_en":"Blank Belt (Dan 2)"},
+                    {"rankCode":"dan_3","name_zh":"黑帶3段","name_en":"Blank Belt (Dan 3)"},
+                    {"rankCode":"dan_4","name_zh":"黑帶4段","name_en":"Blank Belt (Dan 4)"},
+                    {"rankCode":"dan_5","name_zh":"黑帶5段","name_en":"Blank Belt (Dan 5)"},
+                    {"rankCode":"dan_6","name_zh":"黑帶6段","name_en":"Blank Belt (Dan 6)"},
+                    {"rankCode":"dan_7","name_zh":"黑帶7段","name_en":"Blank Belt (Dan 7)"},
+                    {"rankCode":"dan_8","name_zh":"黑帶8段","name_en":"Blank Belt (Dan 8)"},
+                    {"rankCode":"dan_9","name_zh":"黑帶9段","name_en":"Blank Belt (Dan 9)"},
+                    {"rankCode":"dan_10","name_zh":"黑帶10段","name_en":"Blank Belt (Dan 10)"}
+                    ]'
+            ]);
+            DB::table('configs')->insert([
+                'organization_id'=>0,
+                'key'=>'staff_options',
+                'value'=>'[{"value":"parent","label":"家長義工"},{"value":"student","label":"學生義工"},{"value":"weighting","label":"過磅工作人員(裁判人員或已有相關工作經驗優先)"},{"value":"mc_match","label":"賽事司儀(已有相關工作經驗優先)"},{"value":"checker","label":"檢錄組(已有相關工作經驗優先)"},{"value":"score_digital","label":"電子計分操作員(已持有IJF國際柔道賽事計時記分系統操作員培訓優先報名)"},{"value":"score_manual","label":"計時記分操作員(手動計時記分)"},{"value":"control","label":"司令台(已有相關工作經驗優先)"},{"value":"mc_award","label":"頒獎禮司儀(已有相關工作經驗優先)"},{"value":"helper_award","label":"頒獎小組(已有相關工作經驗優先)"},{"value":"general","label":"總務小組"},{"value":"venue_setup","label":"場地佈置"}]'
+            ]);
+            DB::table('configs')->insert([
+                'organization_id'=>0,
+                'key'=>'referee_options',
+                'value'=>'[{"value": "International_A","label": "已持有國際A級裁判資格"},{"value": "International_B","label": "已持有國際B級裁判資格"},{"value": "Local_A","label": "已持有本地裁判A級資格"},{"value": "Local_B","label": "已持有本地裁判B級資格"},{"value": "Other_Country","label": "其他地區裁判資格"},{"value": "Trainee","label": "實習裁判"}]'
+            ]);
+
+    
     }
 }
