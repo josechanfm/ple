@@ -49,11 +49,10 @@ class Config extends Model
     {
         if($organization){
             $items = Config::where('organization_id',$organization->id)->where('key', 'categories_weights')->get();
-        }elseif(session('organization')){
-            $items = Config::where('organization_id',session('organization')->id)->where('key', 'categories_weights')->get();
+        // }elseif(session('organization')){
+        //     $items = Config::where('organization_id',session('organization')->id)->where('key', 'categories_weights')->get();
         }else{
-            //$items = Config::where('organization_id',0)->where('key', 'categories_weights')->get();
-            $items = null;
+            $items = Config::where('organization_id',0)->where('key', 'categories_weights')->get();
         }
         
         $collections=[];

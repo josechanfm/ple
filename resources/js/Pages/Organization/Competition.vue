@@ -82,13 +82,11 @@
               <a-checkbox v-for="role in roles" :style="virticalStyle" :value="role.value">{{ role.label }}</a-checkbox>
             </a-checkbox-group>
           </a-form-item>
-          
           <a-form-item :label="$t('referee_options')" name="RefereeOpetionsSelected" v-if="competitionData.roleSelected.includes('referee')">
             <a-checkbox-group v-model:value="competitionData.refereeOptionsSelected">
               <a-checkbox v-for="option in referee_options" :style="virticalStyle" :value="option.value">{{ option.label }}</a-checkbox>
             </a-checkbox-group>
           </a-form-item>
-
           <a-form-item :label="$t('staff_options')" name="staffOpetionsSelected" v-if="competitionData.roleSelected.includes('staff')">
             <a-checkbox-group v-model:value="competitionData.staffOptionsSelected">
               <a-checkbox v-for="option in staff_options" :style="virticalStyle" :value="option.value">{{ option.label }}</a-checkbox>
@@ -235,7 +233,7 @@ export default {
         title_zh: { required: true },
         period: { required: true },
         match_date: { required: true },
-        categoreis_weights: { required: true },
+        categories_weights: { required: true },
         roleSelected: { required: true },
       },
       validateMessages: {
@@ -269,6 +267,7 @@ export default {
   created() {
     if (this.competition == null) {
       this.mode = "CREATE"
+      this.competitionData.roleSelected = []
     } else {
       this.mode = "EDIT";
       this.competitionData = { ...this.competition }
@@ -335,26 +334,30 @@ export default {
       }
     },
     onFinish() {
+      console.log(this.competitionData);
       this.competitionData.categories_weights = this.categories_weights.filter((cw) =>
         this.competitionData.cwSelected.includes(cw.code)
       );
+      console.log("A");
       this.competitionData.roles = this.roles.filter((rs) =>
         this.competitionData.roleSelected.includes(rs.value)
       );
+      console.log("B");
       this.competitionData.staff_options = this.staff_options.filter((sos) =>
         this.competitionData.staffOptionsSelected.includes(sos.value)
       );
-
+      console.log("C");
       this.competitionData.referee_options = this.referee_options.filter((ros) =>
         this.competitionData.refereeOptionsSelected.includes(ros.value)
       );
-
+      console.log("D");
       this.competitionData.start_date = this.competitionData.period[0].format(
         "YYYY-MM-DD"
       );
+      console.log("E");
       this.competitionData.end_date = this.competitionData.period[1].format("YYYY-MM-DD");
-
-
+      console.log("F");
+      console.log(this.competitionData)
       if (this.mode == "CREATE") {
         console.log(this.competitionData);
         this.$inertia.post(route("manage.competitions.store"), this.competitionData, {

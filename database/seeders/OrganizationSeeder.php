@@ -73,10 +73,10 @@ class OrganizationSeeder extends Seeder
         foreach($data as $org){
             DB::table('organizations')->insert([
                 'region'=>$org['region'],
-                'territory'=>$org['name'],
+                'territory'=>$org['region'],
                 'abbr'=>$org['abbr'],
-                'full_name'=>$org['title'],
-                'title'=>$org['title'],
+                'full_name'=>$org['name'],
+                'title'=>$org['name'],
                 'address'=>$org['address'],
                 'href'=>$org['web'],
                 'email'=>$org['email'],

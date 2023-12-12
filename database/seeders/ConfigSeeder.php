@@ -323,14 +323,8 @@ class ConfigSeeder extends Seeder
                     "value": "coach",
                     "label": "教練"
                 },{
-                    "value": "scorer",
-                    "label": "計分員"
-                },{
-                    "value": "volunteer_parent",
-                    "label": "家長義工"
-                },{
-                    "value": "volunteer_student",
-                    "label": "學生義工"
+                    "value": "staff",
+                    "label": "工作人員"
                 }
             ]',
         ]);
