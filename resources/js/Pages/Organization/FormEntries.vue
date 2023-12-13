@@ -9,13 +9,13 @@
         <a-select 
             v-model:value="selectedDisplayName"
             style="width: 120px;"
-            :options="columns.filter(c=> c.dataIndex.substring(0,6)=='extra_')"
+            :options="entryColumns.filter(c=> c.dataIndex.substring(0,6)=='extra_')"
             :field-names="{value:'dataIndex',label:'title'}"
         />
         <a-button @click="createEventAttendees" :disabled="!selectedDisplayName">Event Attendees</a-button>
         <a-table 
             :dataSource="entries" 
-            :columns="columns" 
+            :columns="entryColumns" 
             :row-selection="{onChange:onChangeSelection,selectedRowKeys:selectedItems}"
             :rowKey="record=>record.id"
         >
@@ -54,7 +54,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['form','entries','columns'],
+    props: ['form','entries','entryColumns'],
     data() {
         return {
             selectedDisplayName:null,

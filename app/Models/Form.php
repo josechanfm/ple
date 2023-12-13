@@ -14,7 +14,7 @@ class Form extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
-    protected $fillable=[];
+    protected $fillable=['organization_id','name','title','welcome','description','thankyou','require_login','for_member','published','with_attendance'];
 
     public function registerMediaConversions(Media $media = null): void
     {

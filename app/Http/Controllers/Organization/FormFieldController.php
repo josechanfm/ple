@@ -25,7 +25,7 @@ class FormFieldController extends Controller
     public function index(Form $form)
     {
         $this->authorize('view',$form);
-        return Inertia::render('Organization/FormField',[
+        return Inertia::render('Organization/FormFields',[
             'form'=>$form,
             'fields'=>$form->fields,
         ]);

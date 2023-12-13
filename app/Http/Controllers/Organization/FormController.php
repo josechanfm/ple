@@ -44,9 +44,21 @@ class FormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Organization $organization)
+    public function create()
     {
-        //
+        $form=Form::make([
+            'organization_id'=>session('organization')->id,
+            'require_login'=>false,
+            'for_member'=>false,
+            'published'=>false
+        ]);
+        $form->media;
+        return Inertia::render('Organization/Form',[
+            //'organization' => Organization::find(session('organization')->id),
+            //'forms'=>Organization::find(session('organization')->id)->forms
+            'organization' => Organization::find($form->organization_id),
+            'form'=>$form
+        ]);
     }
 
     /**
@@ -63,17 +75,17 @@ class FormController extends Controller
             'title'=>'required',
         ]);
         $organization = Organization::find($request->organization_id);
-
-            $form=new Form();
-            $form->organization_id=$request->organization_id;
-            $form->name=$request->name;
-            $form->title=$request->title;
-            $form->description=$request->description;
-            $form->require_login=$request->require_login;
-            $form->for_member=$request->for_member;
-            $form->published=$request->published;
-            $form->save();
-            return redirect()->back();
+        $form=new Form();
+        $form->organization_id=$request->organization_id;
+        $form->name=$request->name;
+        $form->title=$request->title;
+        $form->description=$request->description;
+        $form->require_login=$request->require_login;
+        $form->for_member=$request->for_member;
+        $form->published=$request->published;
+        $form->save();
+        return to_route('manage.forms.index');
+        return redirect()->back();
     }
 
     /**
@@ -96,13 +108,16 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Organization $organization, Form $form)
+    public function edit(Form $form)
     {
-        //$this->authorize('update',$organization);
-        //$this->authorize('update',$form);
-        // return Inertia::render('Organization/FormEdit',[
-        //     'fields'=>$form->fields
-        // ]);
+        //dd(Organization::find($form->organization_id));
+        $form->media;
+        return Inertia::render('Organization/Form',[
+            //'organization' => Organization::find(session('organization')->id),
+            //'forms'=>Organization::find(session('organization')->id)->forms
+            'organization' => Organization::find($form->organization_id),
+            'form'=>$form
+        ]);
         
     }
 

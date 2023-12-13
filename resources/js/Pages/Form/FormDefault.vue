@@ -7,6 +7,9 @@
         </template>
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
+                <div class="text-center">
+                    <a-typography-title :level="3">{{ form.title }}</a-typography-title>
+                </div>
                 <div id="pure-html">
                     <div v-html="form.description"/>
                 </div>
@@ -29,12 +32,17 @@
                                 <a-input v-model:value="formData[field.id]" />
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='dropdown'">
+                        <div v-else-if="field.type=='textarea'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
-                                <a-select
+                                <a-textarea v-model:value="formData[field.id]" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='richtext'">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
+                                <quill-editor
                                     v-model:value="formData[field.id]"
-                                    :options="JSON.parse(field.options)"
-                                ></a-select>
+                                    style="min-height:200px"
+                                />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='radio'">
@@ -61,22 +69,27 @@
                                 </a-checkbox-group>
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='textarea'">
+                        <div v-else-if="field.type=='dropdown'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
-                                <a-textarea v-model:value="formData[field.id]" />
+                                <a-select
+                                    v-model:value="formData[field.id]"
+                                    :options="JSON.parse(field.options)"
+                                ></a-select>
                             </a-form-item>                        
                         </div>
-                        <div v-else-if="field.type=='richtext'">
-                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]">
-                                <quill-editor
-                                    v-model:value="formData[field.id]"
-                                    style="min-height:200px"
-                                />
+                        <div v-else-if="field.type=='true_false'">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]" >
+                                <a-switch v-model:checked="formData[field.id]"/>
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='date'">
                             <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]" >
                                 <a-date-picker v-model:value="formData[field.id]" :format="dateFormat" :valueFormat="dateFormat" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='datetime'">
+                            <a-form-item :label="field.field_label" :name="field.id" :rules="[{required:field.required}]" >
+                                <a-date-picker v-model:value="formData[field.id]" show-time :format="dateTimeFormat" :valueFormat="dateTimeFormat" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='email'">
@@ -120,6 +133,7 @@ export default {
             },
             richText:'<p>Jose</p>',
             dateFormat:'YYYY-MM-DD',
+            dateTimeFormat:'YYYY-MM-DD HH:mm',
             columns:[
                 {
                     title: 'Name',

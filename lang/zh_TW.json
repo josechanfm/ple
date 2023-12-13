@@ -83,6 +83,8 @@
     "forms":"表格列表",
     "form_generator":"表格生成器",
     "form_name":"表格名稱",
+    "form_welcome":"歡迎詞",
+    "form_thankyou":"感謝詞",
     "title":"標題",
     "title_en":"標題(英文)",
     "title_fn":"標題(外文)",
@@ -106,6 +108,7 @@
     "with_attendance_note":"附有出席紀錄",
     "organization_member_only":"只供屬會成員",
     "attended_mebmers":"出席會員",
+    "backup":"備份",
 
     "competitions":"賽事列表",
     "create_competition":"創建賽事",

@@ -27,7 +27,7 @@ class EntryController extends Controller
             'organization'=>session('organization'),
             'form'=>$form,
             'entries'=>$entries,
-            'columns'=>$form->entry_columns()
+            'entryColumns'=>$form->entry_columns()
         ]);
         
     }

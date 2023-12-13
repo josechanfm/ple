@@ -83,6 +83,8 @@
     "forms":"Forms",
     "form_generator":"Form Generator",
     "form_name":"Form name",
+    "form_welcome":"Welcome Messsage",
+    "form_thankyou":"Thank you page",
     "title":"Title",
     "title_en":"Title (English)",
     "title_fn":"Title (Foreign)",
@@ -106,6 +108,7 @@
     "with_attendance_note":"With Attendance Note",
     "organization_member_only":"Organization member only",
     "attended_mebmers":"Attended members",
+    "backup":"Backup",
 
     "competitions":"Competitions",
     "create_competition":"Create Competition",
