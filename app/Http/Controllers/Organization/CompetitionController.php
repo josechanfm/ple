@@ -30,7 +30,9 @@ class CompetitionController extends Controller
     public function create()
     {
         return Inertia::render('Organization/Competition',[
-            'categories_weights'=>Config::items('categories_weights',0),
+            'categories_weights'=>Config::items('categories_weights',null),
+            'staff_options'=>Config::item('staff_options'),
+            'referee_options'=>Config::item('referee_options'),
             'roles'=>Config::item('competition_roles')
         ]);
     }

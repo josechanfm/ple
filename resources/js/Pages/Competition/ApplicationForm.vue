@@ -229,9 +229,10 @@ export default {
       this.application.dob = this.member.dob;
       this.application.email = this.member.email;
       this.application.mobile = this.member.mobile;
-      if(this.application.dob==null){
-        this.application.dob=dayjs(new Date()).subtract(10,'year');
-      }
+    }
+    if(this.application.dob==null){
+      console.log('preset dob');
+      this.application.dob=dayjs(new Date()).subtract(10,'year').format(this.dateFormat);
     }
   },
   created() {
@@ -252,9 +253,8 @@ export default {
       this.application.weight = null;
     },
     onCategoryChange(event) {
-      console.log(event);
+      this.application.weight=null
       if (this.application.gender) {
-        console.log("ok");
         this.weightSelection(this.application.gender, event.target.value);
       }
     },

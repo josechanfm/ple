@@ -26,11 +26,11 @@ return new class extends Migration
             $table->text('categories_weights');
             $table->text('roles')->nullable();
             $table->text('scope')->nullable();
-            $table->boolean('for_member');
+            $table->boolean('for_member')->nullable();
             $table->text('staff_options')->nullable();
             $table->text('referee_options')->nullable();
-            $table->string('fee');
-            $table->boolean('published');
+            $table->string('fee')->nullable();
+            $table->boolean('published')->default(false);
             $table->timestamps();
         });
     }
