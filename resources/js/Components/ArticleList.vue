@@ -21,8 +21,9 @@ const props = defineProps({
                   {{ item.intro_en }}
                 </div>
                 <div v-else>
-                  {{ item.content_en.replace(/<[^>]+>/g, '').substring(0,100) }}
+                  {{ item.content_en.replace(/<[^>]+>/g, '').substring(0,100) }} ...
                 </div>
+                <a :href="item.url">{{ item.url }}</a>
               </template>
               <template #avatar>
                 <a-avatar style="color: #f56a00; background-color: #fde3cf">
