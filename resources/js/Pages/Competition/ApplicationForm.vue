@@ -18,9 +18,9 @@
               style="width: 100%" />
           </div>
           <a-typography-title :level="3" class="text-center">{{ competition.title_zh }}</a-typography-title>
-          <a-typography-title :level="4">賽事日:
+          <!-- <a-typography-title :level="4">賽事日:
             <span v-for="date in competition.match_dates">{{ date }}</span>
-          </a-typography-title>
+          </a-typography-title> -->
           <div id="pure-html">
             <div v-html="competition.description" />
           </div>
