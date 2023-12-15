@@ -46,6 +46,7 @@
     "id_num":"證件號碼",
     "belt_rank":"帶別",
     "dob":"出生日期",
+    "age":"年齡",
     "club":"俱樂部",
     "gender":"性別",
     "country":"國家",
@@ -80,6 +81,7 @@
     "organization_officials":"屬會官員",
     "created_at":"創建於",
     "updated_at":"更改於",
+    "receipt":"收據",
 
     "forms":"表格列表",
     "form_generator":"表格生成器",

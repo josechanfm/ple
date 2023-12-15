@@ -145,4 +145,6 @@ class CompetitionController extends Controller
         }
         return redirect()->back();
     }
+
+
 }

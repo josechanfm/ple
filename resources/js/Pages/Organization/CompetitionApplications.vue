@@ -22,6 +22,7 @@
       </template>
       <template #bodyCell="{ column, text, record, index }">
         <template v-if="column.dataIndex == 'operation'">
+          <a :href="route('manage.competition.application.success',record.id)" target="_blank" class="ant-btn">{{ $t('receipt') }}</a>
           <a-button @click="editRecord(record)">{{ $t("edit") }}</a-button>
           <a-button @click="deleteRecord(record)">{{ $t("delete") }}</a-button>
         </template>

@@ -29,7 +29,9 @@
                   <tbody class="ant-table-tbody">
                     <tr>
                       <td>{{ $t("name_zh") }}</td>
-                      <td colspan="3">{{ application.name_zh }}</td>
+                      <td>{{ application.name_zh }}</td>
+                      <td>{{ $t("id_num") }}</td>
+                      <td>{{ application.id_num }}</td>
                     </tr>
                     <tr>
                       <td>{{ $t("name_fn") }}</td>

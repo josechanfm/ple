@@ -46,6 +46,7 @@
     "id_num":"ID Number",
     "belt_rank":"Belt Rank",
     "dob":"Date of Birth",
+    "age":"Age",
     "club":"Club",
     "gender":"Gender",
     "country":"Country",
@@ -80,6 +81,7 @@
     "organization_officials":"Organization Officials",
     "created_at":"Created at",
     "updated_at":"Updated at",
+    "receipt":"Receipt",
 
     "forms":"Forms",
     "form_generator":"Form Generator",

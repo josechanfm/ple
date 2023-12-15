@@ -132,4 +132,11 @@ class CompetitionApplicationController extends Controller
         //dd($competition);
         return Excel::download(new CompetitionApplicationExport($competition), 'applications.xlsx');
     }
+
+    public function success(CompetitionApplication $competitionApplication){
+        Session::flash('competitionApplication', $competitionApplication->id); 
+        return redirect()->route('competition.application.success',$competitionApplication->id);
+
+    }
+    
 }

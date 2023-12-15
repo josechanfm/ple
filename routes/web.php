@@ -121,6 +121,7 @@ Route::group([
     Route::get('competition/{competition}/applications/receipts', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'receipts'])->name('manage.competition.applications.receipts');
     Route::resource('competition/{competition}/applications', App\Http\Controllers\Organization\CompetitionApplicationController::class)->names('manage.competition.applications');
     Route::post('competition/delete_media', [App\Http\Controllers\Organization\CompetitionController::class, 'deleteMedia'])->name('manage.competition.deleteMedia');
+    Route::get('competition/application/{competition_application}/success', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'success'])->name('manage.competition.application.success');
 
     Route::resource('articles',App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
     Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
