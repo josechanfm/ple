@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{session('applocale')}}">
+
 
 <head>
     <meta charset="utf-8">
@@ -15,6 +16,7 @@
     @routes
     @vite('resources/js/app.js')
     @inertiaHead
+
 </head>
 
 <body class="font-sans antialiased">

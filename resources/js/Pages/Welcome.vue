@@ -30,7 +30,7 @@ defineProps({
     </div>
 
     <div class="px-4 py-2 mt-2 bg-white rounded-md">
-      <h2 class="font-bold text-2xl text-gray-800">最新消息</h2>
+      <h2 class="font-bold text-2xl text-gray-800">最新消息{{ $t('group') }}</h2>
       <ArticleList :articles="articles"/>
     </div>
 

@@ -11,9 +11,13 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
+
     public function register()
     {
         //
+        $this->app->singleton('locale', function () {
+            return app()->getLocale();
+        });
     }
 
     /**

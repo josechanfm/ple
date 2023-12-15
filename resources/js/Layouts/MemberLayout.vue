@@ -159,7 +159,7 @@ export default {
                   <template #content>
                     <div class="w-20">
                       <template v-if="$page.props.jetstream.hasTeamFeatures">
-                        <DropdownLink :href="route('language', 'zh_TW')">
+                        <DropdownLink :href="route('language', 'zh-TW')">
                           {{ $t("chinese") }}
                         </DropdownLink>
                         <DropdownLink :href="route('language', 'en')">

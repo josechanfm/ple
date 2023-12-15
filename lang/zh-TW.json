@@ -121,6 +121,7 @@
     "competition_title_fn":"賽事名稱(外文)",
     "competition_period":"時間段",
     "competition_dates":"比賽日",
+    "group":"組別",
     "start_date":"開始日期",
     "end_date":"結束日期",
     "classification":"分類",

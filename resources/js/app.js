@@ -26,19 +26,19 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, app, props, plugin }) {
-        return createApp({ render: () => h(app, props) })
+        createApp({ render: () => h(app, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(Antd)
             .use(i18nVue, {
-                lang: 'zh_TW',
                 resolve: async lang => {
                     const langs = import.meta.glob('../../lang/*.json');
                     return await langs[`../../lang/${lang}.json`]();
-                }
+
+                },
             })
-            .component('inertia-head',Head)
-            .component('inertia-link',Link)
+            .component('inertia-head', Head)
+            .component('inertia-link', Link)
             .mount(el);
     },
 });
