@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Organization;
 use App\Models\Member;
 use App\Models\User;
+use App\Models\Config;
 use Illuminate\Support\Facades\Password;
 
 class OrganizationController extends Controller
@@ -22,6 +23,7 @@ class OrganizationController extends Controller
         $organizations=Organization::with('users')->get();
         // dd($organizations);
         return Inertia::render('Admin/Organizations',[
+            'regions'=>Config::item('regions'),
             'organizations'=>$organizations,
             'users'=>User::all()
         ]);

@@ -75,6 +75,7 @@
     "user_id":"User ID",
     "id":"ID",
     "positions":"Postitions",
+    "card_style":"Card Style",
     "federation_officials":"Federation Officials",
     "organization_officials":"Organization Officials",
     "created_at":"Created at",

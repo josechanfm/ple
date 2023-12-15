@@ -93,7 +93,7 @@
 			<table>
 				<tr>
 					<td width="50%">屬會：{{ $organization }}</td>
-					<td colspan="2" rowspan="2" width="50%">身份証號碼：</td>
+					<td colspan="2" rowspan="2" width="50%">身份証號碼：{{$application->id_num}}</td>
 				</tr>
 				<tr>
 					<td  width="50%">是否已完成年度體檢：沒有 {{ $application->organization_id }}</td>

@@ -35,7 +35,7 @@
               </a-popconfirm>
             </template>
             <template v-else-if="column.dataIndex == 'region'">
-              {{ zones.find((z) => z.value == record[column.dataIndex]).label }}
+              {{ regions.find((z) => z.value == record[column.dataIndex]).label }}
             </template>
             <template v-else-if="column.dataIndex == 'manager'">
               <ol class="list-decimal">
@@ -65,7 +65,7 @@
       >
         <a-input type="hidden" v-model:value="modal.data.id" />
         <a-form-item :label="$t('region')" name="region" :rules="[{ required: true }]">
-          <a-select v-model:value="modal.data.region" :options="zones" />
+          <a-select v-model:value="modal.data.region" :options="regions" />
         </a-form-item>
         <a-form-item
           :label="$t('abbreviation')"
@@ -74,13 +74,12 @@
         >
           <a-input v-model:value="modal.data.abbr" />
         </a-form-item>
-        <a-form-item
+        <!-- <a-form-item
           :label="$t('territory')"
           name="territory"
-          :rules="[{ required: true }]"
         >
           <a-input v-model:value="modal.data.territory" />
-        </a-form-item>
+        </a-form-item> -->
         <a-form-item :label="$t('country')" name="country">
           <a-input v-model:value="modal.data.country" />
         </a-form-item>
@@ -90,6 +89,9 @@
           :rules="[{ required: true }]"
         >
           <a-input v-model:value="modal.data.full_name" />
+        </a-form-item>
+        <a-form-item :label="$t('title')" name="title">
+          <a-input v-model:value="modal.data.title" />
         </a-form-item>
         <a-form-item :label="$t('email')" name="email">
           <a-input v-model:value="modal.data.email" />
@@ -106,19 +108,19 @@
         <a-form-item :label="$t('registration_code')" name="registration_code">
           <a-input v-model:value="modal.data.registration_code" />
         </a-form-item>
-        <a-form-item :label="$t('title')" name="title">
-          <a-input v-model:value="modal.data.title" />
-        </a-form-item>
         <a-form-item :label="$t('avatar')" name="avatar">
           <a-input v-model:value="modal.data.avatar" />
         </a-form-item>
+        <a-form-item :label="$t('card_style')" name="card_style">
+          <a-input v-model:value="modal.data.card_style" />
+        </a-form-item>
         <a-form-item :label="$t('content')" name="content">
-          <a-input v-model:value="modal.data.content" />
+          <a-textarea v-model:value="modal.data.content" />
         </a-form-item>
         <a-form-item :label="$t('president')" name="president">
           <a-input v-model:value="modal.data.president" />
         </a-form-item>
-        <a-form-item :label="$t('status')" name="status" :rules="[{ required: true }]">
+        <a-form-item :label="$t('status')" name="status">
           <a-switch
             v-model:checked="modal.data.status"
             :checkedValue="1"
@@ -163,7 +165,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["organizations", "users"],
+  props: ["regions","organizations", "users"],
   data() {
     return {
       modal: {
@@ -224,8 +226,10 @@ export default {
       ],
       rules: {
         name_zh: { required: true },
+        title: { required: true },
+        email: { required: true },
         mobile: { required: true },
-        state: { required: true },
+        card_style: { required: true }
       },
       validateMessages: {
         required: "${label} is required!",
