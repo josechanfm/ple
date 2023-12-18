@@ -38,7 +38,7 @@ Route::get('/language/{language}', function ($language) {
 
     Session::put('applocale', $language);
 
-    return Redirect::back()->with('lt',$language);
+    return Redirect::back();
 })->name('language');
 
 Route::group([
