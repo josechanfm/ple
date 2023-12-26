@@ -384,10 +384,10 @@ export default {
         (cw) => cw.code
       );
       this.competitionData.roleSelected = this.competition.roles.map((cw) => cw.value);
-      this.competitionData.staffOptionsSelected = this.competition.staff_options.map(
+      this.competitionData.staffOptionsSelected = this.competition.staff_options?.map(
         (so) => so.value
       );
-      this.competitionData.refereeOptionsSelected = this.competition.referee_options.map(
+      this.competitionData.refereeOptionsSelected = this.competition.referee_options?.map(
         (ro) => ro.value
       );
       this.getDaysArray(this.competitionData.period[0], this.competitionData.period[1]);
