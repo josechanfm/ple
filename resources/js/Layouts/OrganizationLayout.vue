@@ -168,7 +168,7 @@ export default {
     const logout = () => {
       Inertia.post(route("logout"));
     };
-    console.log(document.documentElement.lang);
+
     return {
       showingNavigationDropdown,
       selectedKeys,
@@ -180,6 +180,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.$page.props.user.locale);
     this.loadLanguageAsync(this.$page.props.user.locale);
   },
 };
