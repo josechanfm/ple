@@ -24,10 +24,10 @@ class FormFieldController extends Controller
      */
     public function index(Form $form)
     {
-        $this->authorize('view',$form);
-        return Inertia::render('Organization/FormFields',[
-            'form'=>$form,
-            'fields'=>$form->fields,
+        $this->authorize('view', $form);
+        return Inertia::render('Organization/FormFields', [
+            'form' => $form,
+            'fields' => $form->fields,
         ]);
     }
 
@@ -49,27 +49,27 @@ class FormFieldController extends Controller
      */
     public function store(Form $form, Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'form_id' => 'required',
-            'field_label'=>'required',
-            'type'=>'required',
+            'field_label' => 'required',
+            'type' => 'required',
         ]);
 
-        $field=new FormField();
-        $field->form_id=$request->form_id;
-        $field->field_name=$request->field_name;
-        $field->field_label=$request->field_label;
-        $field->type=$request->type;
-        $field->options=json_encode($request->options);
-        $field->required=isset($request->required)?$request->required:false;
-        $field->in_column=isset($request->in_column)?$request->in_column:false;
-        $field->direction=isset($request->direction)?$request->direction:'H';
-        $field->rule=$request->rule;
-        $field->validate=$request->validate;
-        $field->remark=$request->remark;
+        $field = new FormField();
+        $field->form_id = $request->form_id;
+        $field->sequence = FormField::where('form_id', $request->form_id)->count() + 1;
+        $field->field_name = $request->field_name;
+        $field->field_label = $request->field_label;
+        $field->type = $request->type;
+        $field->options = json_encode($request->options);
+        $field->required = isset($request->required) ? $request->required : false;
+        $field->in_column = isset($request->in_column) ? $request->in_column : false;
+        $field->direction = isset($request->direction) ? $request->direction : 'H';
+        $field->rule = $request->rule;
+        $field->validate = $request->validate;
+        $field->remark = $request->remark;
         $field->save();
         return redirect()->back();
-
     }
 
     /**
@@ -91,7 +91,6 @@ class FormFieldController extends Controller
      */
     public function edit($id)
     {
-        
     }
 
     /**
@@ -101,23 +100,23 @@ class FormFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Form $form, Request $request )
+    public function update(Form $form, Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'form_id' => 'required',
-            'field_label'=>'required',
-            'type'=>'required',
+            'field_label' => 'required',
+            'type' => 'required',
         ]);
-        $field=FormField::find($request->id);
-        $field->form_id=$request->form_id;
-        $field->field_name=$request->field_name;
-        $field->field_label=$request->field_label;
-        $field->type=$request->type;
-        $field->options=json_encode($request->options);
-        $field->direction=isset($request->direction)?$request->direction:'H';
-        $field->required=isset($request->required)?$request->required:false;
-        $field->in_column=isset($request->in_column)?$request->in_column:false;
-        $field->remark=$request->remark;
+        $field = FormField::find($request->id);
+        $field->form_id = $request->form_id;
+        $field->field_name = $request->field_name;
+        $field->field_label = $request->field_label;
+        $field->type = $request->type;
+        $field->options = json_encode($request->options);
+        $field->direction = isset($request->direction) ? $request->direction : 'H';
+        $field->required = isset($request->required) ? $request->required : false;
+        $field->in_column = isset($request->in_column) ? $request->in_column : false;
+        $field->remark = $request->remark;
         $field->save();
         return redirect()->back();
     }
@@ -130,14 +129,15 @@ class FormFieldController extends Controller
      */
     public function destroy(Organization $organization, Form $form, FormField $field)
     {
-        $field->delete();        
+        $field->delete();
     }
 
-    public function fieldsSequence(Form $form, Request $request){
-        foreach($request->all() as $record){
-            $field=FormField::find($record['id']);
-            if($field->form_id==$record['form_id']){
-                $field->sequence=$record['sequence'];
+    public function fieldsSequence(Form $form, Request $request)
+    {
+        foreach ($request->all() as $record) {
+            $field = FormField::find($record['id']);
+            if ($field->form_id == $record['form_id']) {
+                $field->sequence = $record['sequence'];
                 $field->save();
             }
         }
