@@ -156,7 +156,7 @@ const switchToTeam = (team) => {
 };
 const page = usePage();
 
-loadLanguageAsync(page.props.value.user.locale);
+loadLanguageAsync(page.props.value.lang);
 
 const logout = () => {
   Inertia.post(route("logout"));

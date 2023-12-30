@@ -166,8 +166,7 @@ export default {
       );
     };
     const page = usePage();
-    console.log(page.props.value.user.locale);
-    loadLanguageAsync(page.props.value.user.locale);
+    loadLanguageAsync(page.props.value.lang);
     const logout = () => {
       Inertia.post(route("logout"));
     };
