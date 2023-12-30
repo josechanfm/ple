@@ -123,6 +123,7 @@
 <script>
 import { ref, reactive } from "vue";
 import { Inertia } from "@inertiajs/inertia";
+import { usePage } from "@inertiajs/inertia-vue3";
 import PageHeader from "@/Components/Organization/PageHeader.vue";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
@@ -164,7 +165,9 @@ export default {
         }
       );
     };
-
+    const page = usePage();
+    console.log(page.props.value.user.locale);
+    loadLanguageAsync(page.props.value.user.locale);
     const logout = () => {
       Inertia.post(route("logout"));
     };
@@ -178,10 +181,6 @@ export default {
       logout,
       loadLanguageAsync,
     };
-  },
-  mounted() {
-    console.log(this.$page.props.user.locale);
-    this.loadLanguageAsync(this.$page.props.user.locale);
   },
 };
 // defineProps({
