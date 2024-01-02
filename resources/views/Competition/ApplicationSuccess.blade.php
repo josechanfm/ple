@@ -82,7 +82,7 @@
 				</tr>
 				<tr>
 					<td>性別：{{ $application->gender=='M'?'男':'女' }}</td>
-					<td>帶別：{{ $belt_ranks[array_search('dan_1',array_column($belt_ranks,'rankCode'))]->name_zh }}</td>
+					<td>帶別：{{ $belt_ranks[array_search($application->belt,array_column($belt_ranks,'rankCode'))]->name_zh }}</td>
 				</tr>
 				<tr>
 					<td>年齡：{{ $age}}
@@ -118,7 +118,7 @@
 						□ 參加者未滿十八歲
 						<hr style="border-top: 2px dotted gray; border-bottom:none">
 						本人 ________________(家長)，與參加者 _________________(運動員)為 _________________<br>
-						關係，謹此聲明參加者的健康及體能良好，同意其參加「2023全澳門柔道公開賽」。<br>
+						關係，謹此聲明參加者的健康及體能良好，同意其參加「2024全澳柔道計分賽」。<br>
 						特此聲明。<br>
 						家長簽名：＿＿＿＿＿＿＿＿＿＿＿＿＿　　　　　日期：＿＿日/＿＿月/＿＿＿＿年<br>
 						*註：未滿十八歲之參加者須家長簽署同意方可參與是次比賽
@@ -129,7 +129,7 @@
 					<td colspan="3" height="400px" style="vertical-align:top">
 						□　參加者已滿十八歲
 						<hr style="border-top: 2px dotted gray; border-bottom:none">
-						本人 ______________ (運動員)，謹此聲明本人的健康及體能良好，同意其參加「2023全澳門柔道公開賽」。<br>
+						本人 ______________ (運動員)，謹此聲明本人的健康及體能良好，同意其參加「2024全澳柔道計分賽」。<br>
 						特此聲明。<br>
 					  　參加者簽名： ＿＿＿＿＿＿＿＿	　　　　　　　　日期：＿＿日/＿＿月/＿＿＿＿年
 					</td>

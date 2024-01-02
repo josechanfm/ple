@@ -1,9 +1,7 @@
 <template>
   <WebLayout title="Dashboard">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        表格例表
-      </h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">表格例表</h2>
     </template>
     <div class="py-0">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -25,7 +23,7 @@
           <div class="ant-table ant-table-bordered">
             <div class="ant-table-container">
               <div class="ant-table-content">
-                <table id="applicationSuccess" style="table-layout: auto;">
+                <table id="applicationSuccess" style="table-layout: auto">
                   <tbody class="ant-table-tbody">
                     <tr>
                       <td>{{ $t("name_zh") }}</td>
@@ -112,7 +110,12 @@
               <a :href="route('/')">返回主頁</a>
             </div>
             <div>
-              <a :href="'/competition/application/'+application.id+'/success?format=pdf'">打印發票</a>
+              <a
+                :href="
+                  '/competition/application/' + application.id + '/success?format=pdf'
+                "
+                >打印發票</a
+              >
             </div>
             <div>
               <a :href="route('competitions.index')">賽事列表</a>
@@ -139,7 +142,7 @@ export default {
     Modal,
     CropperModal,
   },
-  props: ["organizations","competition", "application", "belt_ranks"],
+  props: ["organizations", "competition", "application", "belt_ranks"],
   data() {
     return {};
   },

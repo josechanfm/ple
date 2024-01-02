@@ -183,6 +183,7 @@ export default {
         { value: "datetime", label: "日期時間" },
         { value: "email", label: "電郵欄位" },
         { value: "number", label: "數值欄位" },
+        { value: "photo", label: "上傳相片" },
       ],
       columns: [
         {

@@ -13,14 +13,18 @@ class EntryRecord extends Model
     protected $casts = [
         'options' => 'array',
     ];
-    
+
     public function getOptionsAttribute($value)
     {
         return json_decode($value, true);
     }
 
-    public function entry(){
+    public function entry()
+    {
         return $this->belongsTo(Entry::class);
     }
-
+    public function form_field()
+    {
+        return $this->belongsTo(FormField::class);
+    }
 }
