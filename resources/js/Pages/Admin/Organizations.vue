@@ -174,14 +174,6 @@ export default {
         title: "Modal",
         mode: "",
       },
-      zones: [
-        { value: "L", label: "Macao Local"},
-        { value: "C", label: "Central Zone" },
-        { value: "SE", label: "South East Zone" },
-        { value: "E", label: "East Zone" },
-        { value: "W", label: "West Zone" },
-        { value: "S", label: "South Zone" },
-      ],
       organizationStates: [
         { value: "ACTIVE", label: "Active" },
         { value: "SUSPENDED", label: "Suspended" },

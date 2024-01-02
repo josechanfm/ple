@@ -23,7 +23,6 @@ class DashboardController extends Controller
                 'message' => "You are not a register member."
             ]);
         }
-        //dd(Config::item('card_style'));
         $member->organizations;
         return Inertia::render('Member/Dashboard', [
             'member' => $member,

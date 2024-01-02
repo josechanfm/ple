@@ -407,7 +407,8 @@ class ConfigSeeder extends Seeder
                 "card_01": {
                     "background": "card_01.png",
                     "logo": "site_logo.png",
-                    "font_style": "font-family:sans-serif;color:#c24641"
+                    "font_style": "font-family:sans-serif;color:#c24641",
+                    "cart_style":"card_01"
                 },
                 "card_02": {
                     "background": "card_02.png",
@@ -509,7 +510,21 @@ class ConfigSeeder extends Seeder
                 'key'=>'referee_options',
                 'value'=>'[{"value": "International_A","label": "已持有國際A級裁判資格"},{"value": "International_B","label": "已持有國際B級裁判資格"},{"value": "Local_A","label": "已持有本地裁判A級資格"},{"value": "Local_B","label": "已持有本地裁判B級資格"},{"value": "Other_Country","label": "其他地區裁判資格"},{"value": "Trainee","label": "實習裁判"}]'
             ]);
+            DB::table('configs')->insert([
+                'organization_id'=>0,
+                'key'=>'regions',
+                'value'=>'[
+                    { "value": "L", "label": "Macao Local"},
+                    { "value": "C", "label": "Central Zone" },
+                    { "value": "SE", "label": "South East Zone" },
+                    { "value": "E", "label": "East Zone" },
+                    { "value": "W", "label": "West Zone" },
+                    { "value": "S", "label": "South Zone" }
+                ]'
+            ]);
 
+
+            
     
     }
 }
