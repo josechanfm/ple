@@ -50,7 +50,7 @@
           <MergeCellsOutlined/>
         </template>
         <span>
-          <inertia-link :href="route('manage.competitions.index')"> {{$t('competitions')}} </inertia-link>
+          <inertia-link :href="route('manage.courses.index')"> {{$t('courses')}} </inertia-link>
         </span>
       </a-menu-item>
       <a-menu-item key="6">

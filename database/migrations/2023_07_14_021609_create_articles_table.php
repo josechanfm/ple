@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->nullable()->unique();
-            $table->bigInteger('organization_id');
+            $table->bigInteger('organization_id')->unsigned();
             $table->string('category_code',5);
             $table->string('title_en');
             $table->string('title_fn')->nullable();

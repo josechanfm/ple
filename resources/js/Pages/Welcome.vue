@@ -12,6 +12,7 @@ defineProps({
   isMember: Boolean,
   isOrganizer: Boolean,
   articles: Array,
+  courses: Array
 });
 </script>
 
@@ -31,7 +32,23 @@ defineProps({
 
     <div class="px-4 py-2 mt-2 bg-white rounded-md">
       <h2 class="font-bold text-2xl text-gray-800">最新消息{{ $t('group') }}</h2>
-      <ArticleList :articles="articles"/>
+      <ArticleList :articles="articles" />
+    </div>
+
+    <div class="px-4 py-2 mt-2 bg-white rounded-md">
+      <a-row :gutter="16">
+        <a-col v-for="course in courses" :span="8">
+          <a-card hoverable class="shadow border rounded p-4">
+            <template #cover>
+              <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
+            </template>
+            <a-card-meta :title="course.title">
+              <template #description>{{ course.brief }}</template>
+            </a-card-meta>
+            <inertia-link :href="route('course',course.id)" class="ant-btn">Start</inertia-link>
+          </a-card>
+        </a-col>
+      </a-row>
     </div>
 
   </WebLayout>

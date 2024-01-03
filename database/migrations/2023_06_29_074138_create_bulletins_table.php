@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('bulletins', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('organization_id');
+            $table->bigInteger('organization_id')->unsigned();
             $table->string('category');
             $table->date('date');
             $table->string('title');

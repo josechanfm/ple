@@ -19,7 +19,7 @@ use App\Models\Article;
 |
 */
 
-Route::get('/', function () {
+Route::get('/abc', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -27,10 +27,15 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
         'isMember' => Auth()->user() ? Auth()->user()->member : false,
         'isOrganizer' => Auth()->user() ? Auth()->user()->hasRole('organizer') : false,
-        'articles' => Article::publics()
+        'articles' => Article::publics(),
     ]);
-})->name('/');;
+})->name('/');
+
+Route::get('/',[\App\Http\Controllers\WelcomeController::class,'index'])->name('/');
+
 Route::get('article', [\App\Http\Controllers\ArticleController::class, 'item'])->name('article.item');
+Route::get('course/{course}', [\App\Http\Controllers\CourseController::class, 'show'])->name('course');
+
 Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
 Route::post('registration', [\App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');
 
@@ -123,6 +128,8 @@ Route::group([
     Route::resource('competition/{competition}/applications', App\Http\Controllers\Organization\CompetitionApplicationController::class)->names('manage.competition.applications');
     Route::post('competition/delete_media', [App\Http\Controllers\Organization\CompetitionController::class, 'deleteMedia'])->name('manage.competition.deleteMedia');
     Route::get('competition/application/{competition_application}/success', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'success'])->name('manage.competition.application.success');
+    Route::resource('courses', App\Http\Controllers\Organization\CourseController::class)->names('manage.courses');
+    Route::resource('course/{course}/materials', App\Http\Controllers\Organization\MaterialController::class)->names('manage.course.materials');
 
     Route::resource('articles', App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
     Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
@@ -146,5 +153,5 @@ Route::group([
     Route::resource('members', App\Http\Controllers\Admin\MemberController::class)->names('admin.members');
     Route::resource('users', App\Http\Controllers\Admin\UserController::class)->names('admin.users');
     Route::resource('configs', App\Http\Controllers\Admin\ConfigController::class)->names('admin.configs');
-    Route::resource('permissions', App\Http\Controllers\Admin\PermissionController::class)->names('admin.permissions');
+    //Route::resource('permissions', App\Http\Controllers\Admin\PermissionController::class)->names('admin.permissions');
 });

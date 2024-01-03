@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('organization_id');
+            $table->bigInteger('organization_id')->unsigned();
             $table->string('category_code');
             $table->string('title');
             $table->text('content');

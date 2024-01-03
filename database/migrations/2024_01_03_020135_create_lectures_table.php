@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('portfolios', function (Blueprint $table) {
+        Schema::create('lectures', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('member_id')->unsigned();
-            $table->bigInteger('approbate_id')->unsigned();
-            $table->string('abbreviation')->nullable();
-            $table->string('title')->nullable();
+            $table->bigInteger('course_id')->unsigned();
+            $table->string('title');
+            $table->string('brief')->nullable();
             $table->text('description')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->boolean('approved')->nullable();
+            $table->string('image')->nullable();
+            $table->date('start_on')->nullable();
+            $table->date('finish_on')->nullable();
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
         });
     }
@@ -34,9 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('portfolios');
+        Schema::dropIfExists('lectures');
     }
 };
-
-
-
