@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('competition_applications', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('competition_id')->unsigned();
-            $table->bigInteger('organization_id')->unsigned()->nullable();
-            $table->bigInteger('member_id')->nullable();
+            $table->foreignId('competition_id');
+            $table->foreignId('organization_id')->nullable();
+            $table->foreignId('member_id')->nullable();
             $table->string('name_zh')->nullable();
             $table->string('name_fn')->nullable();
             $table->string('given_name')->nullable();

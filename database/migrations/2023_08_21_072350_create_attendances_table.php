@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('organization_id')->unsigned();
+            $table->foreignId('organization_id');
             $table->string('title');
             $table->date('date')->nullable();
-            $table->bigInteger('user_id')->nullable();
+            $table->foreignId('user_id');
             $table->boolean('with_attendance'); 
             $table->timestamps();
         });

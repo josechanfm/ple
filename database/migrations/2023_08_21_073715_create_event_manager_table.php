@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('event_manager', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('event_id')->unsigned();
-            $table->bigInteger('member_id')->unsigned();
-            $table->timestamps();
+            $table->foreignId('event_id'));
+            $table->foreignId('member_id');
         });
     }
 

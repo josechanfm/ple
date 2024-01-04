@@ -35,6 +35,9 @@ Route::get('/',[\App\Http\Controllers\WelcomeController::class,'index'])->name('
 
 Route::get('article', [\App\Http\Controllers\ArticleController::class, 'item'])->name('article.item');
 Route::get('course/{course}', [\App\Http\Controllers\CourseController::class, 'show'])->name('course');
+Route::get('course/{course}/study', [\App\Http\Controllers\CourseController::class, 'study'])->name('course.study');
+Route::get('course/{course}/content/{content}', [\App\Http\Controllers\CourseController::class, 'content'])->name('course.content');
+Route::get('course/{course}/discussion', [\App\Http\Controllers\CourseController::class, 'discussion'])->name('course.discussion');
 
 Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
 Route::post('registration', [\App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');
@@ -129,7 +132,6 @@ Route::group([
     Route::post('competition/delete_media', [App\Http\Controllers\Organization\CompetitionController::class, 'deleteMedia'])->name('manage.competition.deleteMedia');
     Route::get('competition/application/{competition_application}/success', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'success'])->name('manage.competition.application.success');
     Route::resource('courses', App\Http\Controllers\Organization\CourseController::class)->names('manage.courses');
-    Route::resource('course/{course}/materials', App\Http\Controllers\Organization\MaterialController::class)->names('manage.course.materials');
 
     Route::resource('articles', App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
     Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');

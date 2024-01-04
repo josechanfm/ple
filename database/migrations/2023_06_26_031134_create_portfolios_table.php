@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('member_id')->unsigned();
-            $table->bigInteger('approbate_id')->unsigned();
+            $table->foreignId('member_id')->();
+            $table->foreignId('approbate_id');
             $table->string('abbreviation')->nullable();
             $table->string('title')->nullable();
             $table->text('description')->nullable();

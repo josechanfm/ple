@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('classifies', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('organization_id')->unsigned();
+            $table->foreignId('organization_id');
             $table->string('title');
             $table->string('description')->nullable();
             $table->timestamps();

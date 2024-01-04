@@ -15,15 +15,16 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('organization_id')->unsigned();
+            $table->foreignId('organization_id');
             $table->string('title');
+            $table->string('learn');
             $table->string('brief')->nullable();
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->date('start_on')->nullable();
             $table->date('finish_on')->nullable();
             $table->boolean('finish_on');
-            $table->bigInteger('user_id')->unsigned();
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

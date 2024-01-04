@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('discussions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('organization_id');
-            $table->string('category_code');
+            $table->foreignId('forum_id')->nullable();
+            $table->foreignId('discussion_id')->nullable();
             $table->string('title');
             $table->text('content');
-            $table->string('sender')->nullable();
-            $table->string('receiver')->nullable();
-            $table->foreignId('created_by');
-            $table->foreignId('updated_by');
+            $table->foreignId('created_id')->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('discussions');
     }
 };

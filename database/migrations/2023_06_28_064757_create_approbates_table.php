@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('approbates', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('organization_id')->unsigned();
+            $table->foreignId('organization_id');
             $table->string('name');
             $table->string('title')->nullable();
             $table->string('description')->nullable();

@@ -13,16 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lectures', function (Blueprint $table) {
+        Schema::create('contents', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('course_id')->unsigned();
+            $table->foreignId('course_id');
             $table->string('title');
             $table->string('brief')->nullable();
             $table->text('description')->nullable();
+            $table->string('content_type');
+            $table->text('content')->nullable();
             $table->string('image')->nullable();
             $table->date('start_on')->nullable();
             $table->date('finish_on')->nullable();
-            $table->bigInteger('user_id')->unsigned();
+            $table->boolean('frontpage');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }
@@ -34,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lectures');
+        Schema::dropIfExists('contents');
     }
 };

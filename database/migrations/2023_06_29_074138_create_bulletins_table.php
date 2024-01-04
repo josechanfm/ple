@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('bulletins', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('organization_id')->unsigned();
+            $table->foreignId('organization_id');
             $table->string('category');
             $table->date('date');
             $table->string('title');
@@ -24,8 +24,8 @@ return new class extends Migration
             $table->boolean('published')->default(1);
             $table->string('post_id')->nullable();
             $table->text('cover_image_path')->nullable();
-            $table->bigInteger('created_by')->nullable();
-            $table->bigInteger('updated_by')->nullable();
+            $table->foreignId('created_by');
+            $table->foreignId('updated_by');
             $table->timestamps();
         });
     }

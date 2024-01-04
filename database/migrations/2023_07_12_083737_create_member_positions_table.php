@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('member_position', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('member_id')->unsigned();
-            $table->bigInteger('position_id')->unsigned();
+            $table->foreignId('member_id');
+            $table->foreignId('position_id');
             $table->date('started_at')->nullable();
             $table->date('expired_at')->nullable();
             $table->timestamps();

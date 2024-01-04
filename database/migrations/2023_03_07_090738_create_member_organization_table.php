@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('member_organization', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('member_id');
-            $table->bigInteger('organization_id');
+            $table->foreignId('member_id');
+            $table->foreignId('organization_id');
             $table->timestamps();
         });
     }

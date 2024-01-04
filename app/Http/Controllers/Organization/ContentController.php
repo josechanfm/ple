@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Course;
-use App\Models\Material;
+use App\Models\Content;
 
-class MaterialController extends Controller
+class ContentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class MaterialController extends Controller
      */
     public function index(Course $course)
     {
-        $course->materials;
-        return Inertia::render('Organization/Materials',[
+        $course->contents;
+        return Inertia::render('Organization/Contents',[
             'course'=>$course,
         ]);
     }
@@ -30,9 +30,9 @@ class MaterialController extends Controller
      */
     public function create(Course $course)
     {
-        return Inertia::render('Organization/Material',[
+        return Inertia::render('Organization/Content',[
             'course'=>$course,
-            'material'=>Material::make([
+            'content'=>Content::make([
                 'course_id'=>$course->id
             ])
         ]);
@@ -48,8 +48,8 @@ class MaterialController extends Controller
     {
         $data=$request->all();
         $data['course_id']=$course->id;
-        Material::create($data);
-        return redirect()->route('manage.course.materials.index',$course->id);
+        Content::create($data);
+        return redirect()->route('manage.course.contents.index',$course->id);
         
     }
 
@@ -70,11 +70,11 @@ class MaterialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Course $course, Material $material)
+    public function edit(Course $course, Content $content)
     {
-        return Inertia::render('Organization/Material',[
+        return Inertia::render('Organization/Content',[
             'course'=>$course,
-            'material'=>$material
+            'content'=>$content
         ]);
         
     }
@@ -86,9 +86,9 @@ class MaterialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Course $course, Material $material, Request $request)
+    public function update(Course $course, Content $content, Request $request)
     {
-        $material->update($request->all());
+        $content->update($request->all());
         return redirect()->back();
     }
 

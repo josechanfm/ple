@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->nullable()->unique();
-            $table->bigInteger('organization_id')->unsigned();
+            $table->foreignId('organization_id');
             $table->string('category_code',5);
             $table->string('title_en');
             $table->string('title_fn')->nullable();
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->text('url')->nullable();
             $table->string('reference')->nullable();
             $table->text('author')->nullable();
-            $table->bigInteger('user_id');
+            $table->foreignId('user_id');
             $table->boolean('public');
             $table->boolean('published');
             $table->timestamps();
