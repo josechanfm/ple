@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class LectureSeeder extends Seeder
+class ContentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,9 +18,7 @@ class LectureSeeder extends Seeder
         DB::table('contents')->insert([
             'course_id'=>1,
             'title'=>'Lecture 1',
-            'brief'=>'Lecture 1 of course 1',
-            'description'=>'',
-            'content_type'=>'PAGE',
+            'type'=>'PAGE',
             'content'=>'
                 Lecture 1 of course 1
                 Lecture 1 of course 1
@@ -32,9 +30,7 @@ class LectureSeeder extends Seeder
         DB::table('contents')->insert([
             'course_id'=>1,
             'title'=>'Lecture 1 reference',
-            'brief'=>'Lecture 1 of course 1 reference',
-            'description'=>'',
-            'content_type'=>'URL',
+            'type'=>'URL',
             'content'=>'
                 https://www.mpu.edu.mo
             ',
@@ -44,9 +40,7 @@ class LectureSeeder extends Seeder
         DB::table('contents')->insert([
             'course_id'=>1,
             'title'=>'Lecture 1',
-            'brief'=>'Lecture 1 of course 1',
-            'description'=>'',
-            'content_type'=>'PAGE',
+            'type'=>'PAGE',
             'content'=>'
                 Lecture 1 of course 1
                 Lecture 1 of course 1

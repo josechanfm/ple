@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('member_id')->();
+            $table->foreignId('member_id');
             $table->foreignId('approbate_id');
             $table->string('abbreviation')->nullable();
             $table->string('title')->nullable();

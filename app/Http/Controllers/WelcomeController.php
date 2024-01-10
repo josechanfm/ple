@@ -10,6 +10,7 @@ use App\Models\Course;
 class WelcomeController extends Controller
 {
     public function index(){
+        //dd(Article::publics());
         return Inertia::render('Welcome',[
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),

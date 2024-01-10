@@ -34,7 +34,12 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             GuardianSeeder::class,
             ConfigSeeder::class,
-            PositionSeeder::class
+            PositionSeeder::class,
+            CourseSeeder::class,
+            ContentSeeder::class,
+            DiscussionSeeder::class,
+            ForumSeeder::class,
+            ArticleSeeder::class,
         ]);
 
 

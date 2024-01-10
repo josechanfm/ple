@@ -21,14 +21,15 @@ class CourseSeeder extends Seeder
             'learn'=>'
                 <ul>
                 <li>Principles of 2D and 3D graphics, animation, sound, and collision detection</li>
-                <li>Unity and LÖVE 2D</li>
+                <li>Unity and Love 2D</li>
                 <li>Lua, C#</li>
                 <li>Basics of game design and development</li>
                 </ul>
             ',
             'brief'=>'Brief introduction',
             'description'=>'<p>description</p><p>https://pll.harvard.edu/course/cs50s-introduction-game-development</p>',
-
+            'published'=>true,
+            'user_id'=>1
         ]);
 
     }

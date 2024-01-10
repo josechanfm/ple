@@ -24,8 +24,8 @@
                   class="ant-btn">{{ $t("edit") }}</inertia-link
                 >
                 <inertia-link
-                  :href="route('manage.course.materials.index', record.id)"
-                  class="ant-btn">{{ $t("course_materials") }}</inertia-link
+                  :href="route('manage.course.contents.index', record.id)"
+                  class="ant-btn">{{ $t("course_contents") }}</inertia-link
                 >
               </template>
               <template v-else-if="column.dataIndex == 'state'">

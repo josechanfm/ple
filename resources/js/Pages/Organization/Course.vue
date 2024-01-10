@@ -21,11 +21,29 @@
           <a-form-item :label="$t('course_title')" name="title">
             <a-input v-model:value="course.title" />
           </a-form-item>
+          <a-form-item :label="$t('learn')" name="learn">
+            <a-textarea v-model:value="course.learn" />
+          </a-form-item>
           <a-form-item :label="$t('brief')" name="brief">
-            <a-input v-model:value="course.brief" />
+            <a-textarea v-model:value="course.brief" />
           </a-form-item>
           <a-form-item :label="$t('description')" name="description">
-            <a-input v-model:value="course.description" />
+            <a-textarea v-model:value="course.description" />
+          </a-form-item>
+          <a-form-item :label="$t('image')" name="image">
+            <a-input v-model:value="course.image" />
+          </a-form-item>
+          <a-form-item :label="$t('start_on')" name="start_on">
+            <a-date-picker v-model:value="course.start_on" />
+          </a-form-item>
+          <a-form-item :label="$t('finish_on')" name="finish_on">
+            <a-date-picker v-model:value="course.finish_on" />
+          </a-form-item>
+          <a-form-item :label="$t('finish_on')" name="finish_on">
+            <a-switch v-model:checked="course.published" />
+          </a-form-item>
+          <a-form-item :label="$t('user_id')" name="user_id">
+            <a-input v-model:value="course.user_id" />
           </a-form-item>
           <div class="flex flex-row item-center justify-center">
             <a-button type="primary" html-type="submit">{{ $t('submit') }}</a-button>

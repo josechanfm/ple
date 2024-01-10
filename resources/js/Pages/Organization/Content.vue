@@ -2,21 +2,20 @@
     <OrganizationLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ $t("material") }}
+                {{ $t("content") }}
             </h2>
         </template>
-        <div v-if="material.id">
+        <div v-if="content.id">
             On Edit
         </div>
         <div v-else>
             On Create
         </div>
-
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <a-form 
                     ref="modalRef" 
-                    :model="material" 
+                    :model="content" 
                     name="Lecture" 
                     :label-col="{ span: 8 }"
                     :wrapper-col="{ span: 16 }" 
@@ -26,16 +25,31 @@
                     enctype="multipart/form-data" 
                     @finish="onFinish"
                 >
-                    <a-form-item :label="$t('material_title')" name="title">
-                        <a-input v-model:value="material.title" />
+                    <a-form-item :label="$t('content_type')" name="type">
+                        <a-select v-model:value="content.type" :options="content_types"/>
                     </a-form-item>
-                    <a-form-item :label="$t('brief')" name="brief">
-                        <a-input v-model:value="material.brief" />
+                    <a-form-item :label="$t('content_title')" name="title">
+                        <a-input v-model:value="content.title" />
                     </a-form-item>
-                    <a-form-item :label="$t('description')" name="description">
-                        <a-input v-model:value="material.description" />
-                    </a-form-item>
-                    <div class="flex flex-row item-center justify-center">
+                    <a-form-item :label="$t('content_description')" name="description">
+                        <a-textarea v-model:value="content.description" />
+                      </a-form-item>
+                      <a-form-item :label="$t('image')" name="image">
+                        <a-input v-model:value="content.image" />
+                      </a-form-item>
+                      <a-form-item :label="$t('start_on')" name="start_on">
+                        <a-date-picker v-model:value="content.start_on" />
+                      </a-form-item>
+                      <a-form-item :label="$t('finish_on')" name="finish_on">
+                        <a-date-picker v-model:value="content.finish_on" />
+                      </a-form-item>
+                      <a-form-item :label="$t('finish_on')" name="finish_on">
+                        <a-switch v-model:checked="content.published" />
+                      </a-form-item>
+                      <a-form-item :label="$t('user_id')" name="user_id">
+                        <a-input v-model:value="content.user_id" />
+                      </a-form-item>
+                                <div class="flex flex-row item-center justify-center">
                         <a-button type="primary" html-type="submit">{{$t('submit')}}</a-button>
                     </div>
 
@@ -67,7 +81,7 @@ export default {
         InfoCircleFilled,
         CropperModal,
     },
-    props: ["course", "material"],
+    props: ["course", "content","content_types"],
     data() {
         return {
             rules: {
@@ -93,8 +107,8 @@ export default {
     created() { },
     methods: {
         onFinish() {
-            if(this.material.id===undefined){
-                this.$inertia.post(route('manage.course.materials.store'), this.material,{
+            if(this.content.id===undefined){
+                this.$inertia.post(route('manage.course.contents.store'), this.content,{
                     onSuccess:(page)=>{
                         console.log(page);
                     },
@@ -103,7 +117,7 @@ export default {
                     }
                 });
             }else{
-                this.$inertia.patch(route('manage.course.materials.update',{course: this.material.course_id,material:this.material.id}), this.material,{
+                this.$inertia.patch(route('manage.course.contents.update',{course: this.content.course_id,content:this.content.id}), this.content,{
                     onSuccess:(page)=>{
                         console.log(page);
                     },

@@ -7,21 +7,21 @@
       </template>
       <div class="flex-auto pb-3 text-right">
         <inertia-link
-            :href="route('manage.course.materials.create', course.id)"
-            class="ant-btn">{{ $t("create_material") }}</inertia-link
+            :href="route('manage.course.contents.create', course.id)"
+            class="ant-btn">{{ $t("create_content") }}</inertia-link
         >
 
       </div>
       <div class="container mx-auto pt-5">
         <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-          <a-table :dataSource="course.materials" :columns="columns">
+          <a-table :dataSource="course.contents" :columns="columns">
             <template #headerCell="{ column }">
               {{ column.i18n ? $t(column.i18n) : column.title }}
             </template>
             <template #bodyCell="{ column, text, record, index }">
               <template v-if="column.dataIndex == 'operation'">
                 <inertia-link
-                  :href="route('manage.course.materials.edit', {course:record.course_id, material:record.id})"
+                  :href="route('manage.course.contents.edit', {course:record.course_id, content:record.id})"
                   class="ant-btn">{{ $t("edit") }}</inertia-link
                 >
               </template>

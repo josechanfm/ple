@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Organization;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Config;
 use App\Models\Course;
 use App\Models\Content;
 
@@ -74,7 +75,8 @@ class ContentController extends Controller
     {
         return Inertia::render('Organization/Content',[
             'course'=>$course,
-            'content'=>$content
+            'content'=>$content,
+            'content_types'=>Config::item('content_type')
         ]);
         
     }
