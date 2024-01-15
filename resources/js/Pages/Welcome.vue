@@ -22,7 +22,7 @@ defineProps({
       <div class="ml-5 lg:ml-20 lg:w-3/5 py-5">
         <h2 class="text-white text-4xl">這是什麼?</h2>
         <p class="lg:text-lg text-indigo-100 mt-4 capitalize font-thick tracking-wider leading-7">
-          澳門柔道協會會員系統是為全澳柔道愛好者提供的綜合服務平台。作為會員，您可以建立您的個人會員卡和個人資料，這使您可以連接與其他柔道運動員一起展示您在這項運動中的成就。
+          我们提供一个与研究人员、教育工作者和学习者共同构建的综合性平台。我们的目标是通过多方面的合作，建立起澳门首个集研究、教学和学习于一体的个人学习环境平台。
         </p>
         <!-- <a href="#"
           class="uppercase inline-block mt-8 text-sm bg-white py-2 px-4 rounded font-semibold hover:bg-indigo-100"> Learn More

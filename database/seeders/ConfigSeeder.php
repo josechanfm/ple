@@ -167,7 +167,7 @@ class ConfigSeeder extends Seeder
             ]);
             DB::table('configs')->insert([
                 'organization_id'=>0,
-                'key'=>'content_type',
+                'key'=>'content_types',
                 'value'=>'[
                     { "value": "FILE", "label": "File"},
                     { "value": "URL", "label": "Url" },
@@ -178,6 +178,15 @@ class ConfigSeeder extends Seeder
                     { "value": "ASSIGNMENT", "label": "Assignment" }
                   ]'
             ]);
+            DB::table('configs')->insert([
+                'organization_id'=>0,
+                'key'=>'actors',
+                'value'=>'[
+                    {"value":"STD","label":"Student"},
+                    {"value":"TCH","label":"Teacher"}
+                ]'
+            ]);
+            
             
 
 

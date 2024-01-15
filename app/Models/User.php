@@ -91,5 +91,8 @@ class User extends Authenticatable
     public function guardian(){
         return $this->hasOne(Guardian::class);
     }
+    public function courses(){
+        return $this->belongsToMany(Course::class);
+    }
 
 }

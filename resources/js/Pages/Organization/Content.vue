@@ -25,6 +25,9 @@
                     enctype="multipart/form-data" 
                     @finish="onFinish"
                 >
+                    <a-form-item :label="$t('module')" name="module">
+                        <a-select v-model:value="content.module" :options="course.modules"/>
+                    </a-form-item>
                     <a-form-item :label="$t('content_type')" name="type">
                         <a-select v-model:value="content.type" :options="content_types"/>
                     </a-form-item>

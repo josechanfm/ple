@@ -1,30 +1,3 @@
-<script>
-import CourseLayout from '@/Layouts/CourseLayout.vue';
-
-export default {
-    components: {
-        CourseLayout,
-    },
-    props: ['course'],
-    data() {
-        return {
-            courseSetup:{
-                "Duration":"12 weeks long",
-                "Time Commitment":"6-9 hours per week",
-                "Pace":"Self-paced",
-                "Subject":"Programming",
-                "Course Language":"English",
-                "Video Transcription":"English",
-                "Difficulty":"Intermediate",
-                "Credit":"Aduit for free",
-                "Platform":"PLE",
-                "Topics":"Video Games",
-            }
-        }
-    }
-}
-</script>
-
 <template>
     <CourseLayout title="Dashboard">
         <template #header>
@@ -65,6 +38,32 @@ export default {
     </CourseLayout>
 </template>
 
+<script>
+import CourseLayout from '@/Layouts/CourseLayout.vue';
+
+export default {
+    components: {
+        CourseLayout,
+    },
+    props: ['course'],
+    data() {
+        return {
+            courseSetup:{
+                "Duration":"12 weeks long",
+                "Time Commitment":"6-9 hours per week",
+                "Pace":"Self-paced",
+                "Subject":"Programming",
+                "Course Language":"English",
+                "Video Transcription":"English",
+                "Difficulty":"Intermediate",
+                "Credit":"Aduit for free",
+                "Platform":"PLE",
+                "Topics":"Video Games",
+            }
+        }
+    }
+}
+</script>
 <style >
 .ql-align-right {
     text-align: right;

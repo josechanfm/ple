@@ -1,18 +1,3 @@
-<script>
-import CourseLayout from '@/Layouts/CourseLayout.vue';
-
-export default {
-    components: {
-        CourseLayout,
-    },
-    props:['course','forum'],
-    data() {
-        return{
-        }
-    }
-}
-</script>
-
 <template>
     <CourseLayout title="Dashboard">
         <template #header>
@@ -29,12 +14,26 @@ export default {
                 <a-timeline-item v-for="item in forum.main_discussions" >
                     <a-typography-text strong>{{ item.title }}</a-typography-text>
                     <div>{{ item.content }}</div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="border-t-2 border-b-2">Like</div>
+                        <div class="border-t-2 border-b-2">Comment</div>
+                        <div class="border-t-2 border-b-2">Share</div>
+                    </div>
+                    <div class="flex">
+                        <a-avatar>U</a-avatar>
+                        <div class="pl-5 w-full">
+                            <a-input :name="'discussion_comment'" :data-discussion_id="item.id" @keyup.enter="sentComment"/>
+                        </div>
+                        <div class="w-1/6">
+                            Icons | Icons | Icons
+                        </div>
+                    </div>
                 </a-timeline-item>
             </a-timeline>
             </div>
 
             <div class="h-96 col-span-2">
-                <inertia-link :href="route('course.discussion',course.id)" class="ant-btn">Discussion</inertia-link>
+                <inertia-link :href="route('course',course.id)" class="ant-btn">Study</inertia-link>
                 <div class="bg-white rounded-md">
                     <h1 class="text-center text-xl my-4 bg-white py-2 rounded-md border-b-2 cursor-pointer text-gray-600">
                         Forums
@@ -54,6 +53,28 @@ export default {
         </div>
     </CourseLayout>
 </template>
+
+<script>
+import CourseLayout from '@/Layouts/CourseLayout.vue';
+
+export default {
+    components: {
+        CourseLayout,
+    },
+    props:['course','forum'],
+    data() {
+        return{
+        }
+    },
+    methods:{
+        sentComment(event){
+            console.log(event.currentTarget)
+            console.log(event.currentTarget.dataset.discussion_id + ":"+event.currentTarget.value)
+            event.currentTarget.value=null
+        }
+    }
+}
+</script>
 
 <style >
 .ql-align-right {

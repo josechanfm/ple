@@ -5,59 +5,97 @@
         {{ $t("course") }}
       </h2>
     </template>
+    <CourseBuilder :course="course">
+        <a-collapse>
+          <template v-for="modul in course.modules">
+            <a-collapse-panel :header="modul.label">
+              <ul class="module-list">
+                <template v-for="content in course.contents">
+                  <li v-if="content.module==modul.value" class="module-list-item">
+                    {{ content.title }}
+                    <a-button @click="editRecord(content)">edit</a-button>
+                  </li>
+                </template>
+              </ul>
+            </a-collapse-panel>
+          </template>
+        </a-collapse>
+        <a-collapse>
+            <a-collapse-panel header="Individual">
+              <ul class="module-list">
+                <template v-for="content in course.contents">
+                  <li v-if="!content.module" class="module-list-item">{{ content.title }}</li>
+                </template>
+              </ul>
+            </a-collapse-panel>
+        </a-collapse>
+      
+      
+    </CourseBuilder>
 
-    <div v-if="course.id">
-      On Edit
-    </div>
-    <div v-else>
-      On Create
-    </div>
 
-    <div class="container mx-auto pt-5">
-      <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-        <a-form ref="modalRef" :model="course" name="Course" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
-          autocomplete="off" :rules="rules" :validate-messages="validateMessages" enctype="multipart/form-data"
-          @finish="onFinish">
-          <a-form-item :label="$t('course_title')" name="title">
-            <a-input v-model:value="course.title" />
-          </a-form-item>
-          <a-form-item :label="$t('learn')" name="learn">
-            <a-textarea v-model:value="course.learn" />
-          </a-form-item>
-          <a-form-item :label="$t('brief')" name="brief">
-            <a-textarea v-model:value="course.brief" />
-          </a-form-item>
-          <a-form-item :label="$t('description')" name="description">
-            <a-textarea v-model:value="course.description" />
-          </a-form-item>
-          <a-form-item :label="$t('image')" name="image">
-            <a-input v-model:value="course.image" />
-          </a-form-item>
-          <a-form-item :label="$t('start_on')" name="start_on">
-            <a-date-picker v-model:value="course.start_on" />
-          </a-form-item>
-          <a-form-item :label="$t('finish_on')" name="finish_on">
-            <a-date-picker v-model:value="course.finish_on" />
-          </a-form-item>
-          <a-form-item :label="$t('finish_on')" name="finish_on">
-            <a-switch v-model:checked="course.published" />
-          </a-form-item>
-          <a-form-item :label="$t('user_id')" name="user_id">
-            <a-input v-model:value="course.user_id" />
-          </a-form-item>
-          <div class="flex flex-row item-center justify-center">
-            <a-button type="primary" html-type="submit">{{ $t('submit') }}</a-button>
-          </div>
-        </a-form>
+    <!-- Modal Start-->
+    <a-modal
+      v-model:visible="modal.isOpen"
+      :title="$t(modal.title)"
+      width="60%"
+      :afterClose="modalClose"
+    >
+      <a-form
+        ref="modalRef"
+        :model="modal.data"
+        name="Certificate"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        autocomplete="off"
+        :rules="rules"
+        :validate-messages="validateMessages"
+        enctype="multipart/form-data"
+      >
+        <a-form-item label="Module" name="module">
+          <a-select v-model:value="modal.data.module" :options="course.modules" />
+        </a-form-item>
+        <a-form-item label="Type" name="type">
+          <a-select v-model:value="modal.data.type" :options="content_types" />
+        </a-form-item>
+        <a-form-item label="Title" name="title">
+          <a-input v-model:value="modal.data.title" />
+        </a-form-item>
+        <a-form-item label="Content" name="content">
+          <a-textarea v-model:value="modal.data.content" />
+        </a-form-item>
+        <a-form-item label="Brief" name="brief">
+          <a-textarea v-model:value="modal.data.brief" />
+        </a-form-item>
+      </a-form>
+      <template #footer>
+        <a-button @click="onSubmit" type="primary">{{ $t("submit") }}</a-button>
+        <a-button
+          v-if="modal.mode == 'EDIT'"
+          key="Update"
+          type="primary"
+          @click="updateRecord()"
+          >{{ $t("update") }}</a-button
+        >
+        <a-button
+          v-if="modal.mode == 'CREATE'"
+          key="Store"
+          type="primary"
+          @click="storeRecord()"
+          >{{ $t("Add") }}</a-button
+        >
+      </template>
+    </a-modal>
+    <!-- Modal End-->
 
-      </div>
-    </div>
+
 
   </OrganizationLayout>
 </template>
   
 <script>
 import OrganizationLayout from "@/Layouts/OrganizationLayout.vue";
+import CourseBuilder from "@/Components/Organization/CourseBuilder.vue";
 import {
   UploadOutlined,
   LoadingOutlined,
@@ -75,10 +113,18 @@ export default {
     PlusOutlined,
     InfoCircleFilled,
     CropperModal,
+    CourseBuilder
   },
-  props: ["course"],
+  props: ["course",'content_types'],
   data() {
     return {
+      open:false,
+      modal: {
+        isOpen: false,
+        data: {},
+        title: "Modal",
+        mode: "",
+      },
       rules: {
         category_code: { required: true },
         cert_title: { required: true },
@@ -102,6 +148,23 @@ export default {
   },
   created() { },
   methods: {
+    showDrawer(){
+      console.log('oepn drawer');
+        this.open=true
+        console.log(this.open);
+    }, 
+    editRecord(record) {
+      this.modal.data = { ...record };
+      this.modal.mode = "EDIT";
+      this.modal.isOpen = true;
+    },
+    modalClose(){
+      console.log('Close modal');
+    },
+    onClose(){
+        this.open=false
+    },
+
     onFinish() {
       if (this.course.id === undefined) {
         this.$inertia.post(route('manage.courses.store'), this.course, {
@@ -129,4 +192,16 @@ export default {
   },
 };
 </script>
-  
+
+<style>
+.ant-collapse-content > .ant-collapse-content-box {
+  padding:0!important
+}
+.module-list-item{
+  padding-left:10px;
+  border-bottom: 1px solid lightgray;
+}
+.module-list{
+  line-height:30px;
+}
+</style>

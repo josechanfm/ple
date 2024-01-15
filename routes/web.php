@@ -29,7 +29,7 @@ Route::get('/abc', function () {
         'isOrganizer' => Auth()->user() ? Auth()->user()->hasRole('organizer') : false,
         'articles' => Article::publics(),
     ]);
-})->name('/');
+})->name('abc');
 
 Route::get('/',[\App\Http\Controllers\WelcomeController::class,'index'])->name('/');
 
@@ -67,7 +67,6 @@ Route::group([
     Route::resource('profile', App\Http\Controllers\Member\ProfileController::class)->names('member.profile');
     Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class)->names('member.professionals');
     Route::get('membership', [App\Http\Controllers\Member\MembershipController::class, 'index'])->name('member.membership');
-    Route::resource('competition/{competition}/applications', App\Http\Controllers\Member\CompetitionApplicationController::class)->names('member.competition.applications');
     Route::resource('events', App\Http\Controllers\Member\EventController::class)->names('member.events');
 
     Route::resource('attendances', App\Http\Controllers\Member\AttendanceController::class)->names('member.attendances');
@@ -92,8 +91,6 @@ Route::group([
 });
 
 Route::resource('forms', App\Http\Controllers\FormController::class)->names('forms');
-Route::resource('competitions', App\Http\Controllers\CompetitionController::class)->names('competitions');
-Route::get('competition/application/{competitionApplication}/success', [App\Http\Controllers\CompetitionController::class, 'applicationSuccess'])->name('competition.application.success');
 
 Route::group([
     'prefix' => '/manage',
@@ -125,14 +122,10 @@ Route::group([
     Route::get('certificates/delete_media/{mediaId}', [App\Http\Controllers\Organization\CertificateController::class, 'deleteMedia'])->name('manage.certificate.deleteMedia');
     Route::resource('certificate/{certificate}/members', App\Http\Controllers\Organization\CertificateMemberController::class)->names('manage.certificate.members');
     Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
-    Route::resource('competitions', App\Http\Controllers\Organization\CompetitionController::class)->names('manage.competitions');
-    Route::get('competition/{competition}/applications/export', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'export'])->name('manage.competition.applications.export');
-    Route::get('competition/{competition}/applications/receipts', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'receipts'])->name('manage.competition.applications.receipts');
-    Route::resource('competition/{competition}/applications', App\Http\Controllers\Organization\CompetitionApplicationController::class)->names('manage.competition.applications');
-    Route::post('competition/delete_media', [App\Http\Controllers\Organization\CompetitionController::class, 'deleteMedia'])->name('manage.competition.deleteMedia');
-    Route::get('competition/application/{competition_application}/success', [App\Http\Controllers\Organization\CompetitionApplicationController::class, 'success'])->name('manage.competition.application.success');
     Route::resource('courses', App\Http\Controllers\Organization\CourseController::class)->names('manage.courses');
     Route::resource('course/{course}/contents', App\Http\Controllers\Organization\ContentController::class)->names('manage.course.contents');
+    Route::resource('files', App\Http\Controllers\Organization\FileController::class)->names('manage.files');
+    Route::resource('pages', App\Http\Controllers\Organization\PageController::class)->names('manage.pages');
 
     Route::resource('articles', App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
     Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');

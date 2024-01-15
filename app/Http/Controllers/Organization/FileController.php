@@ -5,16 +5,10 @@ namespace App\Http\Controllers\Organization;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Course;
-use App\Models\Config;
+use App\Models\File;
 
-class CourseController extends Controller
+class FileController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Course::class);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -22,11 +16,9 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //dd(auth()->user()->courses);
-        return Inertia::render('Organization/Courses',[
-            'courses'=>auth()->user()->courses
+        return Inertia::render('Organization/Files',[
+            'fiels'=>File::all()
         ]);
-
     }
 
     /**
@@ -36,12 +28,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        // return Inertia::render('Organization/Course',[
-        //     'course'=>Course::make([
-        //         'organization_id'=>session('organization')->id,
-        //     ])
-        // ]);
-        
+        //
     }
 
     /**
@@ -52,11 +39,7 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        $data=$request->all();
-        $data['organization_id']=session('organization')->id;
-        Course::create($data);
-        return redirect()->route('manage.courses.index');
-        
+        //
     }
 
     /**
@@ -65,13 +48,9 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show($id)
     {
-        // return Inertia::render('Organization/Course',[
-        //     'course'=>$course->with('contents')->first(),
-        //     'content_types'=>Config::item('content_types')
-        // ]);
-
+        //
     }
 
     /**
@@ -80,14 +59,9 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Course $course)
+    public function edit($id)
     {
-        $course->contents;
-        return Inertia::render('Organization/Course',[
-            'course'=>$course,
-            'content_types'=>Config::item('content_types')
-        ]);
-
+        //
     }
 
     /**
@@ -97,11 +71,9 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Course $course, Request $request)
+    public function update(Request $request, $id)
     {
-        $course->update($request->all());
-        return redirect()->back();
-
+        //
     }
 
     /**

@@ -6,10 +6,11 @@
         </h2>
       </template>
       <div class="flex-auto pb-3 text-right">
-        <inertia-link
+        <a-button @click="createRecord" type="primary">Create Course</a-button>
+        <!-- <inertia-link
             :href="route('manage.courses.create')"
             class="ant-btn">{{ $t("create_course") }}</inertia-link
-          >
+          > -->
       </div>
       <div class="container mx-auto pt-5">
         <div class="bg-white relative shadow rounded-lg overflow-x-auto">
@@ -28,8 +29,8 @@
                   class="ant-btn">{{ $t("course_contents") }}</inertia-link
                 >
               </template>
-              <template v-else-if="column.dataIndex == 'state'">
-                {{ teacherStateLabels[text] }}
+              <template v-else-if="column.dataIndex == 'teachers'">
+                <span v-for="teacher in record.teachers">{{ teacher.name }}, </span>
               </template>
               <template v-else>
                 {{ record[column.dataIndex] }}
@@ -38,6 +39,55 @@
           </a-table>
         </div>
       </div>
+
+    <!-- Modal Start-->
+    <a-modal
+      v-model:visible="modal.isOpen"
+      :title="$t(modal.title)"
+      width="60%"
+      :afterClose="modalClose"
+      @ok="onRecordSave"
+      ok-text="Save"
+    >
+    <a-form
+        ref="modalRef"
+        :model="modal.data"
+        name="Certificate"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        autocomplete="off"
+        :rules="rules"
+        :validate-messages="validateMessages"
+        enctype="multipart/form-data"
+      >
+        <a-form-item label="Title" name="title">
+          <a-input v-model:value="modal.data.title" />
+        </a-form-item>
+        <a-form-item label="Learn" name="learn">
+          <a-textarea v-model:value="modal.data.learn" />
+        </a-form-item>
+        <a-form-item label="Brief" name="brief">
+          <a-textarea v-model:value="modal.data.brief" />
+        </a-form-item>
+        <a-form-item label="Description" name="description">
+          <a-textarea v-model:value="modal.data.description" />
+        </a-form-item>
+        <a-form-item label="Image" name="image">
+          <a-input v-model:value="modal.data.image" />
+        </a-form-item>
+        <a-form-item label="Start on" name="start_on">
+          <a-date-picker v-model:value="modal.data.start_on" />
+        </a-form-item>
+        <a-form-item label="Finish on" name="finish_on">
+          <a-date-picker v-model:value="modal.data.finish_on" />
+        </a-form-item>
+        <a-form-item label="Published" name="published">
+          <a-switch v-model:checked="modal.data.published" />
+        </a-form-item>
+
+      </a-form>
+    </a-modal>
+
 
     </OrganizationLayout>
   </template>
@@ -65,11 +115,21 @@
     props: ["courses"],
     data() {
       return {
+        modal: {
+          isOpen: false,
+          data: {},
+          title: "Modal",
+          mode: "",
+        },
         columns: [
           {
             title: "Title",
             dataIndex: "title",
             i18n: "course_title",
+          },{
+            title: "Teachers",
+            dataIndex: "teachers",
+            i18n: "course_teachers",
           },{
             title: "操作",
             dataIndex: "operation",
@@ -77,6 +137,19 @@
             i18n: "operation",
           },
         ],
+        rules: {
+          title: { required: true },
+        },
+        validateMessages: {
+          required: "${label} is required!",
+          types: {
+            email: "${label} is not a valid email!",
+            number: "${label} is not a valid number!",
+          },
+          number: {
+            range: "${label} must be between ${min} and ${max}",
+          },
+        },
         labelCol: {
           style: {
             width: "150px",
@@ -86,6 +159,20 @@
     },
     created() {},
     methods: {
+      createRecord(){
+        this.modal.data = {};
+        this.modal.mode = "CREATE";
+        this.modal.isOpen = true;
+      },
+      modalClose(){
+        console.log('Close modal');
+      },
+      onRecordSave(e){
+        console.log(e);
+        console.log(this.modal.data)
+        this.modal.isOpen = false;
+      }
+
    },
   };
   </script>
