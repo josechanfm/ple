@@ -17,6 +17,10 @@ class CourseSeeder extends Seeder
     {
         DB::table('courses')->insert([
             'organization_id'=>1,
+            'modules'=>'[
+                {"value":"module1","label":"Module 1"},
+                {"value":"module2","label":"Module 2"}
+              ]',
             'title'=>'First course 1',
             'learn'=>'
                 <ul>

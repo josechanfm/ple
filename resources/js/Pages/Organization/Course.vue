@@ -23,8 +23,8 @@
         <a-collapse>
             <a-collapse-panel header="Individual">
               <ul class="module-list">
-                <template v-for="content in course.contents">
-                  <li v-if="!content.module" class="module-list-item">{{ content.title }}</li>
+                <template v-for="content in individualContents">
+                  <li class="module-list-item">{{ content.title }}</li>
                 </template>
               </ul>
             </a-collapse-panel>
@@ -119,6 +119,7 @@ export default {
   data() {
     return {
       open:false,
+      individualContents:[],
       modal: {
         isOpen: false,
         data: {},
@@ -147,6 +148,12 @@ export default {
     };
   },
   created() { },
+  mounted() {
+    const modules=this.course.modules.map(m=>m.value)
+    console.log(modules)
+    this.individualContents = this.course.contents.filter(c=>!modules.includes(c.module))
+    console.log(this.individualContents);
+  },
   methods: {
     showDrawer(){
       console.log('oepn drawer');

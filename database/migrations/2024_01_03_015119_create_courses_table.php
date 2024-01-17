@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('organization_id');
+            $table->text('modules')->nullable();
             $table->string('title');
             $table->text('learn');
             $table->text('brief')->nullable();

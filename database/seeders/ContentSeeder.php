@@ -17,6 +17,7 @@ class ContentSeeder extends Seeder
     {
         DB::table('contents')->insert([
             'course_id'=>1,
+            'module'=>'module1',
             'title'=>'Lecture 1',
             'type'=>'PAGE',
             'content'=>'
@@ -29,6 +30,7 @@ class ContentSeeder extends Seeder
         ]);
         DB::table('contents')->insert([
             'course_id'=>1,
+            'module'=>'module2',
             'title'=>'Lecture 1 reference',
             'type'=>'URL',
             'content'=>'
@@ -39,6 +41,7 @@ class ContentSeeder extends Seeder
         ]);
         DB::table('contents')->insert([
             'course_id'=>1,
+            'module'=>'module3',
             'title'=>'Lecture 1',
             'type'=>'PAGE',
             'content'=>'

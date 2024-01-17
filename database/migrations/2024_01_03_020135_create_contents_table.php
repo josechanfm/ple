@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_id');
+            $table->string('module')->nullable();
             $table->string('type');
             $table->string('title');
             $table->text('content')->nullable();
