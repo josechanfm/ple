@@ -31,6 +31,10 @@ class CourseSeeder extends Seeder
             'published'=>true,
             'user_id'=>1
         ]);
-
+        DB::table('course_user')->insert([
+            'course_id'=>1,
+            'user_id'=>3,
+            'actor_code'=>'TCH'
+        ]);
     }
 }

@@ -31,6 +31,6 @@ class Course extends Model
         return in_array($user->id,$this->users->pluck('id')->toArray());
     }
     public function users(){
-        return $this->belongsToMany(User::class)->withPivot('actor_id');
+        return $this->belongsToMany(User::class)->withPivot('actor_code');
     }
 }
