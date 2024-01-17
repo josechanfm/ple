@@ -169,6 +169,7 @@ class ConfigSeeder extends Seeder
                 'organization_id'=>0,
                 'key'=>'content_types',
                 'value'=>'[
+                    { "value": "PAGE", "label": "Page" },
                     { "value": "FILE", "label": "File"},
                     { "value": "URL", "label": "Url" },
                     { "value": "VIDEO", "label": "Video" },

@@ -50,7 +50,7 @@
       ok-text="Save"
     >
     <a-form
-        ref="modalRef"
+        ref="modalFormRef"
         :model="modal.data"
         name="Certificate"
         :label-col="{ span: 8 }"
@@ -76,15 +76,14 @@
           <a-input v-model:value="modal.data.image" />
         </a-form-item>
         <a-form-item label="Start on" name="start_on">
-          <a-date-picker v-model:value="modal.data.start_on" />
+          <a-date-picker v-model:value="modal.data.start_on" :valueFormat="dateFormat" />
         </a-form-item>
         <a-form-item label="Finish on" name="finish_on">
-          <a-date-picker v-model:value="modal.data.finish_on" />
+          <a-date-picker v-model:value="modal.data.finish_on" :valueFormat="dateFormat"/>
         </a-form-item>
         <a-form-item label="Published" name="published">
           <a-switch v-model:checked="modal.data.published" />
         </a-form-item>
-
       </a-form>
     </a-modal>
 
@@ -115,6 +114,7 @@
     props: ["courses"],
     data() {
       return {
+        dateFormat:'YYYY-MM-DD',
         modal: {
           isOpen: false,
           data: {},
@@ -139,6 +139,7 @@
         ],
         rules: {
           title: { required: true },
+          start_on: {required:true}
         },
         validateMessages: {
           required: "${label} is required!",
@@ -170,9 +171,30 @@
       onRecordSave(e){
         console.log(e);
         console.log(this.modal.data)
-        this.modal.isOpen = false;
+        this.$refs.modalFormRef.validateFields().then(()=>{
+          this.$inertia.post(route('manage.courses.store'), this.modal.data, {
+            onSuccess: (page) => {
+              console.log(page);
+              this.modal.isOpen = false;
+            },
+            onError: (err) => {
+              console.log(err);
+            }
+          });
+        })
+        
       }
-
+      // onFormFinish(){
+      //   console.log("form finished");
+      //   this.$inertia.post(route('manage.courses.store'), this.modal.data, {
+      //       onSuccess: (page) => {
+      //         console.log(page);
+      //       },
+      //       onError: (err) => {
+      //         console.log(err);
+      //       }
+      //     });
+      // }
    },
   };
   </script>

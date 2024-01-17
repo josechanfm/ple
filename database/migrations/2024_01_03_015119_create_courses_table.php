@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('organization_id');
             $table->text('modules')->nullable();
             $table->string('title');
-            $table->text('learn');
+            $table->text('learn')->nullable();
             $table->text('brief')->nullable();
             $table->text('description')->nullable();
             $table->string('image')->nullable();

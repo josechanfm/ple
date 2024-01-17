@@ -40,6 +40,8 @@
       :title="$t(modal.title)"
       width="60%"
       :afterClose="modalClose"
+      @ok="onRecordUpdate"
+      ok-text="Update"
     >
       <a-form
         ref="modalRef"
@@ -64,27 +66,7 @@
         <a-form-item label="Content" name="content">
           <a-textarea v-model:value="modal.data.content" />
         </a-form-item>
-        <a-form-item label="Brief" name="brief">
-          <a-textarea v-model:value="modal.data.brief" />
-        </a-form-item>
       </a-form>
-      <template #footer>
-        <a-button @click="onSubmit" type="primary">{{ $t("submit") }}</a-button>
-        <a-button
-          v-if="modal.mode == 'EDIT'"
-          key="Update"
-          type="primary"
-          @click="updateRecord()"
-          >{{ $t("update") }}</a-button
-        >
-        <a-button
-          v-if="modal.mode == 'CREATE'"
-          key="Store"
-          type="primary"
-          @click="storeRecord()"
-          >{{ $t("Add") }}</a-button
-        >
-      </template>
     </a-modal>
     <!-- Modal End-->
 
@@ -195,7 +177,21 @@ export default {
       }
 
     },
-
+    onRecordUpdate(e){
+      console.log(e);
+        console.log(this.modal.data)
+        this.$refs.modalRef.validateFields().then(()=>{
+          this.$inertia.patch(route('manage.contents.update', this.modal.data.id), this.modal.data, {
+            onSuccess: (page) => {
+              console.log(page);
+              this.modal.isOpen = false;
+            },
+            onError: (err) => {
+              console.log(err);
+            }
+          });
+        })
+    }
   },
 };
 </script>

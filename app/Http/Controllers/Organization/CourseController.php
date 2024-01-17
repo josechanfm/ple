@@ -23,6 +23,7 @@ class CourseController extends Controller
     public function index()
     {
         //dd(auth()->user()->courses);
+
         return Inertia::render('Organization/Courses',[
             'courses'=>auth()->user()->courses
         ]);
@@ -52,9 +53,13 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $data=$request->all();
+        $data['user_id']=auth()->user()->id;
         $data['organization_id']=session('organization')->id;
-        Course::create($data);
+        $course=Course::create($data);
+        $course->users()->attach(auth()->user(),['actor_code'=>'OTH']);
+
         return redirect()->route('manage.courses.index');
         
     }
@@ -82,6 +87,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
+        dd($course->modules);
         $course->contents;
         return Inertia::render('Organization/Course',[
             'course'=>$course,
@@ -99,6 +105,8 @@ class CourseController extends Controller
      */
     public function update(Course $course, Request $request)
     {
+        dd($request->all());
+        dd($course->update($request->all()));
         $course->update($request->all());
         return redirect()->back();
 

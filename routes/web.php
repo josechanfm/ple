@@ -123,6 +123,7 @@ Route::group([
     Route::resource('certificate/{certificate}/members', App\Http\Controllers\Organization\CertificateMemberController::class)->names('manage.certificate.members');
     Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
     Route::resource('courses', App\Http\Controllers\Organization\CourseController::class)->names('manage.courses');
+    Route::resource('contents', App\Http\Controllers\Organization\ContentController::class)->names('manage.contents');
     Route::resource('course/{course}/contents', App\Http\Controllers\Organization\ContentController::class)->names('manage.course.contents');
     Route::resource('files', App\Http\Controllers\Organization\FileController::class)->names('manage.files');
     Route::resource('pages', App\Http\Controllers\Organization\PageController::class)->names('manage.pages');
