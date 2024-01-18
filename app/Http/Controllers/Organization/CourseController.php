@@ -57,8 +57,16 @@ class CourseController extends Controller
         $data=$request->all();
         $data['user_id']=auth()->user()->id;
         $data['organization_id']=session('organization')->id;
+        $data['modules']='[{"value": "defaultmodule", "label": "Default Module"}]';
         $course=Course::create($data);
         $course->users()->attach(auth()->user(),['actor_code'=>'OTH']);
+
+        // $d['course_id']=$course->id;
+        // $d[]=;
+        // Content::create($d);
+        // $course->content->create();
+
+        // $course->content()->(auth()->user(),['type'=> 'PAGE', 'title'=> 'Default Title']);
 
         return redirect()->route('manage.courses.index');
         
@@ -87,7 +95,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        dd($course->modules);
+        // dd($course->modules);
         $course->contents;
         return Inertia::render('Organization/Course',[
             'course'=>$course,

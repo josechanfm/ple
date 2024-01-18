@@ -1,44 +1,40 @@
 <template>
-    <OrganizationLayout title="Dashboard">
-      <template #header>
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-          {{ $t("courses") }}
-        </h2>
-      </template>
-      <div class="flex-auto pb-3 text-right">
-        <a-button @click="createRecord" type="primary">Create Course</a-button>
-        <!-- <inertia-link
-            :href="route('manage.courses.create')"
-            class="ant-btn">{{ $t("create_course") }}</inertia-link
-          > -->
-      </div>
-      <div class="container mx-auto pt-5">
-        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-          <a-table :dataSource="courses" :columns="columns">
-            <template #headerCell="{ column }">
-              {{ column.i18n ? $t(column.i18n) : column.title }}
+  <OrganizationLayout title="Dashboard">
+    <template #header>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ $t("courses") }}
+      </h2>
+    </template>
+    <div class="flex-auto pb-3 text-right">
+      <a-button @click="createRecord" type="primary">Create Course</a-button>
+    </div>
+    <div class="container mx-auto pt-5">
+      <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+        <a-table :dataSource="courses" :columns="columns">
+          <template #headerCell="{ column }">
+            {{ column.i18n ? $t(column.i18n) : column.title }}
+          </template>
+          <template #bodyCell="{ column, text, record, index }">
+            <template v-if="column.dataIndex == 'operation'">
+              <inertia-link
+                :href="route('manage.courses.edit', record.id)"
+                class="ant-btn">{{ $t("edit") }}</inertia-link
+              >
+              <inertia-link
+                :href="route('manage.course.contents.index', record.id)"
+                class="ant-btn">{{ $t("course_contents") }}</inertia-link
+              >
             </template>
-            <template #bodyCell="{ column, text, record, index }">
-              <template v-if="column.dataIndex == 'operation'">
-                <inertia-link
-                  :href="route('manage.courses.edit', record.id)"
-                  class="ant-btn">{{ $t("edit") }}</inertia-link
-                >
-                <inertia-link
-                  :href="route('manage.course.contents.index', record.id)"
-                  class="ant-btn">{{ $t("course_contents") }}</inertia-link
-                >
-              </template>
-              <template v-else-if="column.dataIndex == 'teachers'">
-                <span v-for="teacher in record.teachers">{{ teacher.name }}, </span>
-              </template>
-              <template v-else>
-                {{ record[column.dataIndex] }}
-              </template>
+            <template v-else-if="column.dataIndex == 'teachers'">
+              <span v-for="teacher in record.teachers">{{ teacher.name }}, </span>
             </template>
-          </a-table>
-        </div>
+            <template v-else>
+              {{ record[column.dataIndex] }}
+            </template>
+          </template>
+        </a-table>
       </div>
+    </div>
 
     <!-- Modal Start-->
     <a-modal
@@ -49,7 +45,7 @@
       @ok="onRecordSave"
       ok-text="Save"
     >
-    <a-form
+      <a-form
         ref="modalFormRef"
         :model="modal.data"
         name="Certificate"
@@ -86,116 +82,100 @@
         </a-form-item>
       </a-form>
     </a-modal>
-
-
-    </OrganizationLayout>
-  </template>
+  </OrganizationLayout>
+</template>
   
-  <script>
-  import OrganizationLayout from "@/Layouts/OrganizationLayout.vue";
-  import {
+<script>
+import OrganizationLayout from "@/Layouts/OrganizationLayout.vue";
+import {
+  UploadOutlined,
+  LoadingOutlined,
+  PlusOutlined,
+  InfoCircleFilled,
+} from "@ant-design/icons-vue";
+import CropperModal from "@/Components/Member/CropperModal.vue";
+  
+export default {
+  components: {
+    OrganizationLayout,
     UploadOutlined,
     LoadingOutlined,
     PlusOutlined,
     InfoCircleFilled,
-  } from "@ant-design/icons-vue";
-  import { defineComponent, reactive } from "vue";
-  import CropperModal from "@/Components/Member/CropperModal.vue";
-  
-  export default {
-    components: {
-      OrganizationLayout,
-      UploadOutlined,
-      LoadingOutlined,
-      PlusOutlined,
-      InfoCircleFilled,
-      CropperModal,
-    },
-    props: ["courses"],
-    data() {
-      return {
-        dateFormat:'YYYY-MM-DD',
-        modal: {
-          isOpen: false,
-          data: {},
-          title: "Modal",
-          mode: "",
-        },
-        columns: [
-          {
-            title: "Title",
-            dataIndex: "title",
-            i18n: "course_title",
-          },{
-            title: "Teachers",
-            dataIndex: "teachers",
-            i18n: "course_teachers",
-          },{
-            title: "操作",
-            dataIndex: "operation",
-            key: "operation",
-            i18n: "operation",
-          },
-        ],
-        rules: {
-          title: { required: true },
-          start_on: {required:true}
-        },
-        validateMessages: {
-          required: "${label} is required!",
-          types: {
-            email: "${label} is not a valid email!",
-            number: "${label} is not a valid number!",
-          },
-          number: {
-            range: "${label} must be between ${min} and ${max}",
-          },
-        },
-        labelCol: {
-          style: {
-            width: "150px",
-          },
-        },
-      };
-    },
-    created() {},
-    methods: {
-      createRecord(){
-        this.modal.data = {};
-        this.modal.mode = "CREATE";
-        this.modal.isOpen = true;
+    CropperModal,
+  },
+  props: ["courses"],
+  data() {
+    return {
+      dateFormat:'YYYY-MM-DD',
+      modal: {
+        isOpen: false,
+        data: {},
+        title: "Modal",
+        mode: "",
       },
-      modalClose(){
-        console.log('Close modal');
+      columns: [
+        {
+          title: "Title",
+          i18n: "course_title",
+          dataIndex: "title",
+        },{
+          title: "Teachers",
+          i18n: "course_teachers",
+          dataIndex: "teachers",
+        },{
+          title: "Operation",
+          i18n: "operation",
+          dataIndex: "operation",
+        }
+      ],
+      rules: {
+        title: { required: true },
+        start_on: { required:true },
       },
-      onRecordSave(e){
-        console.log(e);
-        console.log(this.modal.data)
-        this.$refs.modalFormRef.validateFields().then(()=>{
-          this.$inertia.post(route('manage.courses.store'), this.modal.data, {
-            onSuccess: (page) => {
-              console.log(page);
-              this.modal.isOpen = false;
-            },
-            onError: (err) => {
-              console.log(err);
-            }
-          });
-        })
-        
-      }
-      // onFormFinish(){
-      //   console.log("form finished");
-      //   this.$inertia.post(route('manage.courses.store'), this.modal.data, {
-      //       onSuccess: (page) => {
-      //         console.log(page);
-      //       },
-      //       onError: (err) => {
-      //         console.log(err);
-      //       }
-      //     });
-      // }
-   },
-  };
-  </script>
+      validateMessages: {
+        required: "${label} is required!",
+        types: {
+          email: "${label} is not a valid email!",
+          number: "${label} is not a valid number!",
+        },
+        number: {
+          range: "${label} must be between ${min} and ${max}",
+        },
+      },
+      labelCol: {
+        style: {
+          width: "150px",
+        },
+      },
+    };
+  },
+  created() {},
+  methods: {
+    createRecord(){
+      this.modal.data = {};
+      this.modal.mode = "CREATE";
+      this.modal.isOpen = true;
+    },
+    modalClose(){
+      console.log('Close modal');
+    },
+    onRecordSave(e){
+      console.log(e);
+      console.log(this.modal.data)
+      this.$refs.modalFormRef.validateFields().then(()=>{
+        this.$inertia.post(route('manage.courses.store'), this.modal.data, {
+          onSuccess: (page) => {
+            console.log(page);
+            this.modal.isOpen = false;
+          },
+          onError: (err) => {
+            console.log(err);
+          }
+        });
+      })
+    }
+  }
+};
+</script>
   

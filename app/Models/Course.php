@@ -15,6 +15,9 @@ class Course extends Model
     public function getTeachersAttribute(){
         return $this->users->where('pivot.actor_id','TCH');
     }
+    public function content(){
+        return $this->belongsTo(Course::class)->withPivot('type', 'title');
+    }
     public function contents(){
         return $this->hasMany(Content::class);
     }
