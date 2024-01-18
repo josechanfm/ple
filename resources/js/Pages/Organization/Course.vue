@@ -5,10 +5,16 @@
         {{ $t("course") }}
       </h2>
     </template>
+    <div class="flex-auto pb-3 text-right">
+      <a-button @click="createModuleRecord" type="primary">Create Module</a-button>
+    </div>
     <CourseBuilder :course="course">
         <a-collapse>
           <template v-for="modul in course.modules">
             <a-collapse-panel :header="modul.label">
+              <div class="flex-auto pb-3 text-right">
+                <a-button @click="createContentRecord" type="primary">Create Content</a-button>
+              </div>
               <ul class="module-list">
                 <template v-for="content in course.contents">
                   <li v-if="content.module==modul.value" class="module-list-item">
@@ -33,6 +39,33 @@
       
     </CourseBuilder>
 
+    <!-- Modal Start-->
+     <a-modal
+      v-model:visible="modalCreateModule.isOpen"
+      :title="$t(modalCreateModule.title)"
+      width="60%"
+      :afterClose="modalCreateModuleClose"
+      @ok="onRecordSave"
+      ok-text="Save"
+    >
+      <a-form
+        ref="modalFormRef"
+        :model="modalCreateModule.data"
+        name="Certificate"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        autocomplete="off"
+        :rules="rules"
+        :validate-messages="validateMessages"
+        enctype="multipart/form-data"
+      >
+        <a-form-item label="Module Name" name="module_name">
+          <a-input v-model:value="modalCreateModule.data.module_name" />
+        </a-form-item>
+        
+      </a-form>
+    </a-modal>
+
 
     <!-- Modal Start-->
     <a-modal
@@ -43,6 +76,7 @@
       @ok="onRecordUpdate"
       ok-text="Update"
     >
+
       <a-form
         ref="modalRef"
         :model="modal.data"
@@ -105,12 +139,20 @@ export default {
       modal: {
         isOpen: false,
         data: {},
-        title: "Modal",
+        title: "Edit Content",
+        mode: "",
+      },
+      modalCreateModule: {
+        isOpen: false,
+        data: {},
+        title: "Create Module",
         mode: "",
       },
       rules: {
         category_code: { required: true },
         cert_title: { required: true },
+
+        module_name: { required: true },
       },
       validateMessages: {
         required: "${label} is required!",
@@ -137,6 +179,27 @@ export default {
     console.log(this.individualContents);
   },
   methods: {
+    createModuleRecord(){
+      this.modalCreateModule.data = {};
+      this.modalCreateModule.mode = "CREATE";
+      this.modalCreateModule.isOpen = true;
+      this.modal.isOpen = false;
+    },
+    onRecordSave(e){
+      console.log(e);
+      console.log(this.modalCreateModule.data)
+      this.$refs.modalFormRef.validateFields().then(()=>{
+        this.$inertia.post(route('manage.courses.createModule', this.course), this.modalCreateModule.data, {
+          onSuccess: (page) => {
+            console.log(page);
+            this.modalCreateModule.isOpen = false;
+          },
+          onError: (err) => {
+            console.log(err);
+          }
+        });
+      })
+    },
     showDrawer(){
       console.log('oepn drawer');
         this.open=true
@@ -146,37 +209,41 @@ export default {
       this.modal.data = { ...record };
       this.modal.mode = "EDIT";
       this.modal.isOpen = true;
+      this.modalCreateModule.isOpen = false;
     },
     modalClose(){
       console.log('Close modal');
     },
-    onClose(){
-        this.open=false
+    modalCreateModuleClose(){
+      console.log('test');
     },
+    // onClose(){
+    //     this.open=false
+    // },
 
-    onFinish() {
-      if (this.course.id === undefined) {
-        this.$inertia.post(route('manage.courses.store'), this.course, {
-          onSuccess: (page) => {
-            console.log(page);
-          },
-          onError: (err) => {
-            console.log(err);
-          }
-        });
-      } else {
-        this.$inertia.patch(route('manage.courses.update', this.course.id), this.course, {
-          onSuccess: (page) => {
-            console.log(page);
-          },
-          onError: (err) => {
-            console.log(err);
-          }
-        });
+    // onFinish() {
+    //   if (this.course.id === undefined) {
+    //     this.$inertia.post(route('manage.courses.store'), this.course, {
+    //       onSuccess: (page) => {
+    //         console.log(page);
+    //       },
+    //       onError: (err) => {
+    //         console.log(err);
+    //       }
+    //     });
+    //   } else {
+    //     this.$inertia.patch(route('manage.courses.update', this.course.id), this.course, {
+    //       onSuccess: (page) => {
+    //         console.log(page);
+    //       },
+    //       onError: (err) => {
+    //         console.log(err);
+    //       }
+    //     });
 
-      }
+    //   }
 
-    },
+    // },
     onRecordUpdate(e){
       console.log(e);
         console.log(this.modal.data)

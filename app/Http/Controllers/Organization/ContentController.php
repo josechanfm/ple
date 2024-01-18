@@ -90,7 +90,7 @@ class ContentController extends Controller
      */
     public function update(Course $course, Content $content, Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         $content->update($request->all());
         return redirect()->back();
     }
