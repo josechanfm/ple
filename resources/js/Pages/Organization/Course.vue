@@ -189,7 +189,7 @@ export default {
       console.log(e);
       console.log(this.modalCreateModule.data)
       this.$refs.modalFormRef.validateFields().then(()=>{
-        this.$inertia.post(route('manage.courses.createModule', this.course), this.modalCreateModule.data, {
+        this.$inertia.post(route('manage.course.createModule', this.course.id), this.modalCreateModule.data, {
           onSuccess: (page) => {
             console.log(page);
             this.modalCreateModule.isOpen = false;

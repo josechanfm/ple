@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Content;
 use App\Models\Course;
 use App\Models\Config;
+use Illuminate\Support\Str;
 
 class CourseController extends Controller
 {
@@ -97,6 +98,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
+        //dd(Str::uuid());
         // dd($course->modules);
         $course->contents;
         return Inertia::render('Organization/Course',[
@@ -128,14 +130,26 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Course $course, Request $request)
     {
-        //
+        dd($course);
+        $course->delete();
+
     }
 
-    public function createModule(Request $request)
+    public function createModule(Course $course, Request $request)
     {
-        dd($request->all());
-        
+        // dd($request->all());
+        $old_modules=($course->modules);
+        $new_module=[["value"=>$request->module_name,"label"=>$request->module_name]];
+        $module_merge=array_merge($old_modules,$new_module);
+        $course->update(['modules'=>$module_merge]);
+        dd($module_merge);
+
+        $course->modules[]=["value"=>$request->module_name,"label"=>$request->module_name];
+        $course->update(['modules'=>$module_merge]);
+
+        // dd($course);
+
     }
 }

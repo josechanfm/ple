@@ -35,7 +35,7 @@
                         <a-input v-model:value="content.title" />
                     </a-form-item>
                     <a-form-item :label="$t('content_description')" name="description">
-                        <a-textarea v-model:value="content.description" />
+                        <a-textarea v-model:value="content.content" />
                       </a-form-item>
                       <a-form-item :label="$t('image')" name="image">
                         <a-input v-model:value="content.image" />

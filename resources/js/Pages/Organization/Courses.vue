@@ -24,6 +24,7 @@
                 :href="route('manage.course.contents.index', record.id)"
                 class="ant-btn">{{ $t("course_contents") }}</inertia-link
               >
+              <a-button @click="deleteRecord" type="primary">Delete</a-button>
             </template>
             <template v-else-if="column.dataIndex == 'teachers'">
               <span v-for="teacher in record.teachers">{{ teacher.name }}, </span>
@@ -82,6 +83,30 @@
         </a-form-item>
       </a-form>
     </a-modal>
+
+    <!-- Modal Start-->
+    <a-modal
+      v-model:visible="deleteModal.isOpen"
+      :title="$t(deleteModal.title)"
+      width="60%"
+      :afterClose="deleteModalClose"
+      @ok="onRecordDelete"
+      ok-text="Confirm"
+    >
+      <a-form
+        ref="modalRef"
+        :model="modal.data"
+        name="Certificate"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        autocomplete="off"
+        :rules="rules"
+        :validate-messages="validateMessages"
+        enctype="multipart/form-data"
+      >
+        <p>Are you sure you want to delete this course?</p>
+      </a-form>
+    </a-modal>
   </OrganizationLayout>
 </template>
   
@@ -112,6 +137,12 @@ export default {
         isOpen: false,
         data: {},
         title: "Modal",
+        mode: "",
+      },
+      deleteModal: {
+        isOpen: false,
+        data: {},
+        title: "Delete Course",
         mode: "",
       },
       columns: [
@@ -156,6 +187,7 @@ export default {
       this.modal.data = {};
       this.modal.mode = "CREATE";
       this.modal.isOpen = true;
+      this.deleteModal.isOpen = false;
     },
     modalClose(){
       console.log('Close modal');
@@ -168,6 +200,31 @@ export default {
           onSuccess: (page) => {
             console.log(page);
             this.modal.isOpen = false;
+          },
+          onError: (err) => {
+            console.log(err);
+          }
+        });
+      })
+    },
+
+    deleteRecord(){
+      this.deleteModal.data = {};
+      this.deleteModal.mode = "DELETE";
+      this.deleteModal.isOpen = true;
+      this.modal.isOpen = false;
+    },
+    deleteModalClose(){
+      console.log('Close delete modal');
+    },
+    onRecordDelete(e){
+      console.log(e);
+      console.log(this.deleteModal.data)
+      this.$refs.modalRef.validateFields().then(()=>{
+        this.$inertia.delete(route('manage.courses.destroy', this.courses), this.deleteModal.data, {
+          onSuccess: (page) => {
+            console.log(page);
+            this.deleteModal.isOpen = false;
           },
           onError: (err) => {
             console.log(err);
