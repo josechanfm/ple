@@ -20,12 +20,11 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * // @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
-        //dd(auth()->user()->courses);
-
         return Inertia::render('Organization/Courses',[
             'courses'=>auth()->user()->courses
         ]);
@@ -72,40 +71,38 @@ class CourseController extends Controller
         Content::create($content_data);
 
         return redirect()->route('manage.courses.index');
-        
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * // @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function show(Course $course)
     {
-        // return Inertia::render('Organization/Course',[
-        //     'course'=>$course->with('contents')->first(),
-        //     'content_types'=>Config::item('content_types')
-        // ]);
-
+        return Inertia::render('Organization/Course',[
+            'course'=>$course->with('contents')->first(),
+            'content_types'=>Config::item('content_types')
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * // @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function edit(Course $course)
     {
-        //dd(Str::uuid());
-        // dd($course->modules);
+        // dd(Str::uuid());
         $course->contents;
         return Inertia::render('Organization/Course',[
             'course'=>$course,
             'content_types'=>Config::item('content_types')
         ]);
-
     }
 
     /**
@@ -117,11 +114,8 @@ class CourseController extends Controller
      */
     public function update(Course $course, Request $request)
     {
-        dd($request->all());
-        dd($course->update($request->all()));
         $course->update($request->all());
         return redirect()->back();
-
     }
 
     /**
@@ -133,22 +127,14 @@ class CourseController extends Controller
     public function destroy(Course $course, Request $request)
     {
         $course->delete();
-
+        return redirect()->back();
     }
 
     public function createModule(Course $course, Request $request)
     {
-        // dd($request->all());
         $old_modules=($course->modules);
         $new_module=[["value"=>$request->module_name,"label"=>$request->module_name]];
         $module_merge=array_merge($old_modules,$new_module);
         $course->update(['modules'=>$module_merge]);
-        dd($module_merge);
-
-        $course->modules[]=["value"=>$request->module_name,"label"=>$request->module_name];
-        $course->update(['modules'=>$module_merge]);
-
-        // dd($course);
-
     }
 }
