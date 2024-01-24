@@ -132,7 +132,6 @@ class CourseController extends Controller
      */
     public function destroy(Course $course, Request $request)
     {
-        dd($course);
         $course->delete();
 
     }

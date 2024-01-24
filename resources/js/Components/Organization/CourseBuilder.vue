@@ -1,7 +1,15 @@
 <template>
   <a-row>
     <a-col flex="auto">
-        <p>{{ course.title }}</p>
+        <p>Title: {{ course.title }}</p>
+        <p>Learn: {{ course.learn }}</p>
+        <p>Brief: {{ course.brief }}</p>
+        <p>Description: {{ course.description }}</p>
+        <p>Start On: {{ course.start_on }}</p>
+        <p>Finish On: {{ course.finish_on }}</p>
+        <span v-if="!course.published">
+          <p>This course is not yet published!</p>
+        </span>
         <slot/>
     </a-col>
     <a-col flex="300px" class="bg-white">

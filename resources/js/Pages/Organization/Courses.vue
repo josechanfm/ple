@@ -5,9 +5,11 @@
         {{ $t("courses") }}
       </h2>
     </template>
+
     <div class="flex-auto pb-3 text-right">
       <a-button @click="createRecord" type="primary">Create Course</a-button>
     </div>
+
     <div class="container mx-auto pt-5">
       <div class="bg-white relative shadow rounded-lg overflow-x-auto">
         <a-table :dataSource="courses" :columns="columns">
@@ -16,15 +18,11 @@
           </template>
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <inertia-link
-                :href="route('manage.courses.edit', record.id)"
-                class="ant-btn">{{ $t("edit") }}</inertia-link
-              >
-              <inertia-link
-                :href="route('manage.course.contents.index', record.id)"
-                class="ant-btn">{{ $t("course_contents") }}</inertia-link
-              >
-              <a-button @click="deleteRecord" type="primary">Delete</a-button>
+              <inertia-link :href="route('manage.courses.edit', record.id)" class="ant-btn">{{ $t("detail")
+              }}</inertia-link>
+              <inertia-link :href="route('manage.course.contents.index', record.id)" class="ant-btn">{{
+                $t("View contents") }}</inertia-link>
+              <a-button @click="deleteRecord(record.id)" type="danger">Delete</a-button>
             </template>
             <template v-else-if="column.dataIndex == 'teachers'">
               <span v-for="teacher in record.teachers">{{ teacher.name }}, </span>
@@ -37,76 +35,50 @@
       </div>
     </div>
 
-    <!-- Modal Start-->
-    <a-modal
-      v-model:visible="modal.isOpen"
-      :title="$t(modal.title)"
-      width="60%"
-      :afterClose="modalClose"
-      @ok="onRecordSave"
-      ok-text="Save"
-    >
-      <a-form
-        ref="modalFormRef"
-        :model="modal.data"
-        name="Certificate"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        autocomplete="off"
-        :rules="rules"
-        :validate-messages="validateMessages"
-        enctype="multipart/form-data"
-      >
+    <!-- Modal Start for Create Course -->
+    <a-modal v-model:visible="createModal.isOpen" :title="$t(createModal.title)" width="60%"
+      :afterClose="createModalClose" @ok="onRecordSave" ok-text="Save">
+      <a-form ref="modalRef" :model="createModal.data" name="Certificate" :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
+        enctype="multipart/form-data">
         <a-form-item label="Title" name="title">
-          <a-input v-model:value="modal.data.title" />
+          <a-input v-model:value="createModal.data.title" />
         </a-form-item>
         <a-form-item label="Learn" name="learn">
-          <a-textarea v-model:value="modal.data.learn" />
+          <a-textarea v-model:value="createModal.data.learn" />
         </a-form-item>
         <a-form-item label="Brief" name="brief">
-          <a-textarea v-model:value="modal.data.brief" />
+          <a-textarea v-model:value="createModal.data.brief" />
         </a-form-item>
         <a-form-item label="Description" name="description">
-          <a-textarea v-model:value="modal.data.description" />
+          <a-textarea v-model:value="createModal.data.description" />
         </a-form-item>
         <a-form-item label="Image" name="image">
-          <a-input v-model:value="modal.data.image" />
+          <a-input v-model:value="createModal.data.image" />
         </a-form-item>
         <a-form-item label="Start on" name="start_on">
-          <a-date-picker v-model:value="modal.data.start_on" :valueFormat="dateFormat" />
+          <a-date-picker v-model:value="createModal.data.start_on" :valueFormat="dateFormat" />
         </a-form-item>
         <a-form-item label="Finish on" name="finish_on">
-          <a-date-picker v-model:value="modal.data.finish_on" :valueFormat="dateFormat"/>
+          <a-date-picker v-model:value="createModal.data.finish_on" :valueFormat="dateFormat" />
         </a-form-item>
         <a-form-item label="Published" name="published">
-          <a-switch v-model:checked="modal.data.published" />
+          <a-switch v-model:checked="createModal.data.published" />
         </a-form-item>
       </a-form>
     </a-modal>
+    <!-- Modal End -->
 
-    <!-- Modal Start-->
-    <a-modal
-      v-model:visible="deleteModal.isOpen"
-      :title="$t(deleteModal.title)"
-      width="60%"
-      :afterClose="deleteModalClose"
-      @ok="onRecordDelete"
-      ok-text="Confirm"
-    >
-      <a-form
-        ref="modalRef"
-        :model="modal.data"
-        name="Certificate"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        autocomplete="off"
-        :rules="rules"
-        :validate-messages="validateMessages"
-        enctype="multipart/form-data"
-      >
+    <!-- Modal Start for Delete Course -->
+    <a-modal v-model:visible="deleteModal.isOpen" :title="$t(deleteModal.title)" width="60%"
+      :afterClose="deleteModalClose" @ok="onRecordDelete" ok-text="Confirm">
+      <a-form ref="modalRef" :model="deleteModal.data" name="Certificate" :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
+        enctype="multipart/form-data">
         <p>Are you sure you want to delete this course?</p>
       </a-form>
     </a-modal>
+    <!-- Modal End -->
   </OrganizationLayout>
 </template>
   
@@ -119,7 +91,7 @@ import {
   InfoCircleFilled,
 } from "@ant-design/icons-vue";
 import CropperModal from "@/Components/Member/CropperModal.vue";
-  
+
 export default {
   components: {
     OrganizationLayout,
@@ -132,11 +104,11 @@ export default {
   props: ["courses"],
   data() {
     return {
-      dateFormat:'YYYY-MM-DD',
-      modal: {
+      dateFormat: 'YYYY-MM-DD',
+      createModal: {
         isOpen: false,
         data: {},
-        title: "Modal",
+        title: "Create Course",
         mode: "",
       },
       deleteModal: {
@@ -150,11 +122,11 @@ export default {
           title: "Title",
           i18n: "course_title",
           dataIndex: "title",
-        },{
+        }, {
           title: "Teachers",
           i18n: "course_teachers",
           dataIndex: "teachers",
-        },{
+        }, {
           title: "Operation",
           i18n: "operation",
           dataIndex: "operation",
@@ -162,7 +134,7 @@ export default {
       ],
       rules: {
         title: { required: true },
-        start_on: { required:true },
+        start_on: { required: true },
       },
       validateMessages: {
         required: "${label} is required!",
@@ -181,25 +153,35 @@ export default {
       },
     };
   },
-  created() {},
+  created() { },
   methods: {
-    createRecord(){
-      this.modal.data = {};
-      this.modal.mode = "CREATE";
-      this.modal.isOpen = true;
+    createRecord() {
+      this.createModal.data = {};
+      this.createModal.mode = "CREATE";
+      this.createModal.isOpen = true;
       this.deleteModal.isOpen = false;
     },
-    modalClose(){
-      console.log('Close modal');
+    createModalClose() {
+      console.log('Close create modal');
     },
-    onRecordSave(e){
+    deleteRecord(courseId) {
+      this.deleteModal.data = {};
+      this.deleteModal.mode = "DELETE";
+      this.deleteModal.isOpen = true;
+      this.createModal.isOpen = false;
+      this.deleteModal.data.courseId = courseId;
+    },
+    deleteModalClose() {
+      console.log('Close delete modal');
+    },
+    onRecordSave(e) {
       console.log(e);
-      console.log(this.modal.data)
-      this.$refs.modalFormRef.validateFields().then(()=>{
-        this.$inertia.post(route('manage.courses.store'), this.modal.data, {
+      console.log(this.createModal.data)
+      this.$refs.modalRef.validateFields().then(() => {
+        this.$inertia.post(route('manage.courses.store'), this.createModal.data, {
           onSuccess: (page) => {
             console.log(page);
-            this.modal.isOpen = false;
+            this.createModal.isOpen = false;
           },
           onError: (err) => {
             console.log(err);
@@ -207,21 +189,11 @@ export default {
         });
       })
     },
-
-    deleteRecord(){
-      this.deleteModal.data = {};
-      this.deleteModal.mode = "DELETE";
-      this.deleteModal.isOpen = true;
-      this.modal.isOpen = false;
-    },
-    deleteModalClose(){
-      console.log('Close delete modal');
-    },
-    onRecordDelete(e){
+    onRecordDelete(e) {
       console.log(e);
       console.log(this.deleteModal.data)
-      this.$refs.modalRef.validateFields().then(()=>{
-        this.$inertia.delete(route('manage.courses.destroy', this.courses), this.deleteModal.data, {
+      this.$refs.modalRef.validateFields().then(() => {
+        this.$inertia.delete(route('manage.courses.destroy', this.deleteModal.data.courseId), {
           onSuccess: (page) => {
             console.log(page);
             this.deleteModal.isOpen = false;

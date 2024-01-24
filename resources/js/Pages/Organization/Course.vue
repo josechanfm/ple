@@ -5,89 +5,65 @@
         {{ $t("course") }}
       </h2>
     </template>
-    <div class="flex-auto pb-3 text-right">
-      <a-button @click="createModuleRecord" type="primary">Create Module</a-button>
+
+    <div>
+      <div class="flex-auto pb-3 text-left">
+        <a-button @click="goBack" type="dashed">Go Back</a-button>
+      </div>
+      <div class="flex-auto pb-3 text-right">
+        <a-button @click="" type="primary">Edit</a-button>
+        <inertia-link :href="route('manage.course.contents.index', course.id)" class="ant-btn">{{
+          $t("View Contents") }}</inertia-link>
+      </div>
     </div>
+
     <CourseBuilder :course="course">
-        <a-collapse>
-          <template v-for="modul in course.modules">
-            <a-collapse-panel :header="modul.label">
-              <div class="flex-auto pb-3 text-right">
-                <a-button @click="createContentRecord" type="primary">Create Content</a-button>
-              </div>
-              <ul class="module-list">
-                <template v-for="content in course.contents">
-                  <li v-if="content.module==modul.value" class="module-list-item">
-                    {{ content.title }}
-                    <a-button @click="editRecord(content)">edit</a-button>
-                  </li>
-                </template>
-              </ul>
-            </a-collapse-panel>
-          </template>
-        </a-collapse>
-        <a-collapse>
-            <a-collapse-panel header="Individual">
-              <ul class="module-list">
-                <template v-for="content in individualContents">
-                  <li class="module-list-item">{{ content.title }}</li>
-                </template>
-              </ul>
-            </a-collapse-panel>
-        </a-collapse>
-      
-      
+      <div class="flex-auto pb-3 text-left">
+        <a-button @click="createModuleRecord" type="primary">Create Module</a-button>
+      </div>
+      <a-collapse>
+        <template v-for="modul in course.modules">
+          <a-collapse-panel :header="modul.label">
+            <ul class="module-list">
+              <template v-for="content in course.contents">
+                <li v-if="content.module == modul.value" class="module-list-item">
+                  {{ content.title }}
+                  <a-button @click="editRecord(content)">edit</a-button>
+                </li>
+              </template>
+            </ul>
+          </a-collapse-panel>
+        </template>
+      </a-collapse>
+      <a-collapse>
+        <a-collapse-panel header="Individual">
+          <ul class="module-list">
+            <template v-for="content in individualContents">
+              <li class="module-list-item">{{ content.title }}</li>
+            </template>
+          </ul>
+        </a-collapse-panel>
+      </a-collapse>
     </CourseBuilder>
 
     <!-- Modal Start-->
-     <a-modal
-      v-model:visible="modalCreateModule.isOpen"
-      :title="$t(modalCreateModule.title)"
-      width="60%"
-      :afterClose="modalCreateModuleClose"
-      @ok="onRecordSave"
-      ok-text="Save"
-    >
-      <a-form
-        ref="modalFormRef"
-        :model="modalCreateModule.data"
-        name="Certificate"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        autocomplete="off"
-        :rules="rules"
-        :validate-messages="validateMessages"
-        enctype="multipart/form-data"
-      >
+    <a-modal v-model:visible="modalCreateModule.isOpen" :title="$t(modalCreateModule.title)" width="60%"
+      :afterClose="modalCreateModuleClose" @ok="onRecordSave" ok-text="Save">
+      <a-form ref="modalFormRef" :model="modalCreateModule.data" name="Certificate" :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
+        enctype="multipart/form-data">
         <a-form-item label="Module Name" name="module_name">
           <a-input v-model:value="modalCreateModule.data.module_name" />
         </a-form-item>
-        
       </a-form>
     </a-modal>
 
-
     <!-- Modal Start-->
-    <a-modal
-      v-model:visible="modal.isOpen"
-      :title="$t(modal.title)"
-      width="60%"
-      :afterClose="modalClose"
-      @ok="onRecordUpdate"
-      ok-text="Update"
-    >
+    <a-modal v-model:visible="modal.isOpen" :title="$t(modal.title)" width="60%" :afterClose="modalClose"
+      @ok="onRecordUpdate" ok-text="Update">
 
-      <a-form
-        ref="modalRef"
-        :model="modal.data"
-        name="Certificate"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        autocomplete="off"
-        :rules="rules"
-        :validate-messages="validateMessages"
-        enctype="multipart/form-data"
-      >
+      <a-form ref="modalRef" :model="modal.data" name="Certificate" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
+        autocomplete="off" :rules="rules" :validate-messages="validateMessages" enctype="multipart/form-data">
         <a-form-item label="Module" name="module">
           <a-select v-model:value="modal.data.module" :options="course.modules" />
         </a-form-item>
@@ -103,9 +79,6 @@
       </a-form>
     </a-modal>
     <!-- Modal End-->
-
-
-
   </OrganizationLayout>
 </template>
   
@@ -131,11 +104,11 @@ export default {
     CropperModal,
     CourseBuilder
   },
-  props: ["course",'content_types'],
+  props: ["course", 'content_types'],
   data() {
     return {
-      open:false,
-      individualContents:[],
+      open: false,
+      individualContents: [],
       modal: {
         isOpen: false,
         data: {},
@@ -173,22 +146,25 @@ export default {
   },
   created() { },
   mounted() {
-    const modules=this.course.modules.map(m=>m.value)
+    const modules = this.course.modules.map(m => m.value)
     console.log(modules)
-    this.individualContents = this.course.contents.filter(c=>!modules.includes(c.module))
+    this.individualContents = this.course.contents.filter(c => !modules.includes(c.module))
     console.log(this.individualContents);
   },
   methods: {
-    createModuleRecord(){
+    goBack() {
+      window.history.back();
+    },
+    createModuleRecord() {
       this.modalCreateModule.data = {};
       this.modalCreateModule.mode = "CREATE";
       this.modalCreateModule.isOpen = true;
       this.modal.isOpen = false;
     },
-    onRecordSave(e){
+    onRecordSave(e) {
       console.log(e);
       console.log(this.modalCreateModule.data)
-      this.$refs.modalFormRef.validateFields().then(()=>{
+      this.$refs.modalFormRef.validateFields().then(() => {
         this.$inertia.post(route('manage.course.createModule', this.course.id), this.modalCreateModule.data, {
           onSuccess: (page) => {
             console.log(page);
@@ -200,21 +176,21 @@ export default {
         });
       })
     },
-    showDrawer(){
+    showDrawer() {
       console.log('oepn drawer');
-        this.open=true
-        console.log(this.open);
-    }, 
+      this.open = true
+      console.log(this.open);
+    },
     editRecord(record) {
       this.modal.data = { ...record };
       this.modal.mode = "EDIT";
       this.modal.isOpen = true;
       this.modalCreateModule.isOpen = false;
     },
-    modalClose(){
+    modalClose() {
       console.log('Close modal');
     },
-    modalCreateModuleClose(){
+    modalCreateModuleClose() {
       console.log('test');
     },
     // onClose(){
@@ -244,34 +220,36 @@ export default {
     //   }
 
     // },
-    onRecordUpdate(e){
+    onRecordUpdate(e) {
       console.log(e);
-        console.log(this.modal.data)
-        this.$refs.modalRef.validateFields().then(()=>{
-          this.$inertia.patch(route('manage.contents.update', this.modal.data.id), this.modal.data, {
-            onSuccess: (page) => {
-              console.log(page);
-              this.modal.isOpen = false;
-            },
-            onError: (err) => {
-              console.log(err);
-            }
-          });
-        })
+      console.log(this.modal.data)
+      this.$refs.modalRef.validateFields().then(() => {
+        this.$inertia.patch(route('manage.contents.update', this.modal.data.id), this.modal.data, {
+          onSuccess: (page) => {
+            console.log(page);
+            this.modal.isOpen = false;
+          },
+          onError: (err) => {
+            console.log(err);
+          }
+        });
+      })
     }
   },
 };
 </script>
 
 <style>
-.ant-collapse-content > .ant-collapse-content-box {
-  padding:0!important
+.ant-collapse-content>.ant-collapse-content-box {
+  padding: 0 !important
 }
-.module-list-item{
-  padding-left:10px;
+
+.module-list-item {
+  padding-left: 10px;
   border-bottom: 1px solid lightgray;
 }
-.module-list{
-  line-height:30px;
+
+.module-list {
+  line-height: 30px;
 }
 </style>
