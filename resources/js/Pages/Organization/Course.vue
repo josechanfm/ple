@@ -22,11 +22,17 @@
         <a-button @click="createModuleRecord" type="primary">Create Module</a-button>
       </div>
       <a-collapse>
-        <template v-for="modul in course.modules">
-          <a-collapse-panel :header="modul.label">
+        <template v-for="module in course.modules">
+          <a-collapse-panel>
+            <template #header>
+              <span>{{ module.label }}</span>
+              <a-button @click="moduleUpdateRecord(module)">Edit</a-button>
+              <a-button @click="moduleDeleteRecord(module)" type="danger">Delete</a-button>
+            </template>
+            
             <ul class="module-list">
               <template v-for="content in course.contents">
-                <li v-if="content.module == modul.value" class="module-list-item">
+                <li v-if="content.module == module.value" class="module-list-item">
                   {{ content.title }}
                   <a-button @click="editRecord(content)">edit</a-button>
                 </li>
@@ -46,39 +52,42 @@
       </a-collapse>
     </CourseBuilder>
 
-    <!-- Modal Start-->
-    <a-modal v-model:visible="modalCreateModule.isOpen" :title="$t(modalCreateModule.title)" width="60%"
-      :afterClose="modalCreateModuleClose" @ok="onRecordSave" ok-text="Save">
-      <a-form ref="modalFormRef" :model="modalCreateModule.data" name="Certificate" :label-col="{ span: 8 }"
+    <!-- Modal Start -->
+    <a-modal v-model:visible="moduleCreateModal.isOpen" :title="$t(moduleCreateModal.title)" width="60%"
+      :afterClose="moduleCreateModalClose" @ok="onRecordSave" ok-text="Save">
+      <a-form ref="modalFormRef" :model="moduleCreateModal.data" name="Certificate" :label-col="{ span: 8 }"
         :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
         enctype="multipart/form-data">
         <a-form-item label="Module Name" name="module_name">
-          <a-input v-model:value="modalCreateModule.data.module_name" />
+          <a-input v-model:value="moduleCreateModal.data.module_name" />
         </a-form-item>
       </a-form>
     </a-modal>
+    <!-- Modal End -->
 
-    <!-- Modal Start-->
-    <a-modal v-model:visible="modal.isOpen" :title="$t(modal.title)" width="60%" :afterClose="modalClose"
-      @ok="onRecordUpdate" ok-text="Update">
-
-      <a-form ref="modalRef" :model="modal.data" name="Certificate" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
-        autocomplete="off" :rules="rules" :validate-messages="validateMessages" enctype="multipart/form-data">
-        <a-form-item label="Module" name="module">
-          <a-select v-model:value="modal.data.module" :options="course.modules" />
-        </a-form-item>
-        <a-form-item label="Type" name="type">
-          <a-select v-model:value="modal.data.type" :options="content_types" />
-        </a-form-item>
-        <a-form-item label="Title" name="title">
-          <a-input v-model:value="modal.data.title" />
-        </a-form-item>
-        <a-form-item label="Content" name="content">
-          <a-textarea v-model:value="modal.data.content" />
+    <!-- Modal Start -->
+    <a-modal v-model:visible="moduleEditModal.isOpen" :title="$t(moduleEditModal.title)" width="60%"
+      :afterClose="moduleEditModalClose" @ok="onRecordUpdate" ok-text="Update">
+      <a-form ref="modalRef" :model="moduleEditModal.data" name="Certificate" :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
+        enctype="multipart/form-data">
+        <a-form-item label="Module Name" name="label">
+          <a-input v-model:value="moduleEditModal.data.label" />
         </a-form-item>
       </a-form>
     </a-modal>
-    <!-- Modal End-->
+    <!-- Modal End -->
+
+    <!-- Modal Start for Delete Module -->
+    <a-modal v-model:visible="moduleDeleteModal.isOpen" :title="$t(moduleDeleteModal.title)" width="60%"
+      :afterClose="moduleDeleteModalClose" @ok="onRecordDelete" ok-text="Confirm">
+      <a-form ref="modalRef" :model="moduleDeleteModal.data" name="Certificate" :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
+        enctype="multipart/form-data">
+        <p>Are you sure you want to delete this course?</p>
+      </a-form>
+    </a-modal>
+    <!-- Modal End -->
   </OrganizationLayout>
 </template>
   
@@ -109,16 +118,22 @@ export default {
     return {
       open: false,
       individualContents: [],
-      modal: {
-        isOpen: false,
-        data: {},
-        title: "Edit Content",
-        mode: "",
-      },
-      modalCreateModule: {
+      moduleCreateModal: {
         isOpen: false,
         data: {},
         title: "Create Module",
+        mode: "",
+      },
+      moduleEditModal: {
+        isOpen: false,
+        data: {},
+        title: "Edit Module",
+        mode: "",
+      },
+      moduleDeleteModal: {
+        isOpen: false,
+        data: {},
+        title: "Delete Module",
         mode: "",
       },
       rules: {
@@ -156,19 +171,23 @@ export default {
       window.history.back();
     },
     createModuleRecord() {
-      this.modalCreateModule.data = {};
-      this.modalCreateModule.mode = "CREATE";
-      this.modalCreateModule.isOpen = true;
-      this.modal.isOpen = false;
+      this.moduleCreateModal.data = {};
+      this.moduleCreateModal.mode = "CREATE";
+      this.moduleCreateModal.isOpen = true;
+      this.moduleEditModal.isOpen = false;
+      this.moduleDeleteModal.isOpen = false;
+    },
+    moduleCreateModalClose() {
+      console.log('Close create module modal.');
     },
     onRecordSave(e) {
       console.log(e);
-      console.log(this.modalCreateModule.data)
-      this.$refs.modalFormRef.validateFields().then(() => {
-        this.$inertia.post(route('manage.course.createModule', this.course.id), this.modalCreateModule.data, {
+      console.log(this.moduleCreateModal.data)
+      this.$refs.modalRef.validateFields().then(() => {
+        this.$inertia.post(route('manage.course.createModule', this.course.id), this.moduleCreateModal.data, {
           onSuccess: (page) => {
             console.log(page);
-            this.modalCreateModule.isOpen = false;
+            this.moduleCreateModal.isOpen = false;
           },
           onError: (err) => {
             console.log(err);
@@ -176,58 +195,49 @@ export default {
         });
       })
     },
-    showDrawer() {
-      console.log('oepn drawer');
-      this.open = true
-      console.log(this.open);
+    moduleUpdateRecord(module) {
+      this.moduleEditModal.data = { value: module.value, label : module.label };
+      this.moduleEditModal.mode = "UPDATE";
+      this.moduleEditModal.isOpen = true;
+      this.moduleCreateModal.isOpen = false;
+      this.moduleDeleteModal.isOpen = false;
     },
-    editRecord(record) {
-      this.modal.data = { ...record };
-      this.modal.mode = "EDIT";
-      this.modal.isOpen = true;
-      this.modalCreateModule.isOpen = false;
+    moduleEditModalClose() {
+      console.log('Close edit module modal.');
     },
-    modalClose() {
-      console.log('Close modal');
-    },
-    modalCreateModuleClose() {
-      console.log('test');
-    },
-    // onClose(){
-    //     this.open=false
-    // },
-
-    // onFinish() {
-    //   if (this.course.id === undefined) {
-    //     this.$inertia.post(route('manage.courses.store'), this.course, {
-    //       onSuccess: (page) => {
-    //         console.log(page);
-    //       },
-    //       onError: (err) => {
-    //         console.log(err);
-    //       }
-    //     });
-    //   } else {
-    //     this.$inertia.patch(route('manage.courses.update', this.course.id), this.course, {
-    //       onSuccess: (page) => {
-    //         console.log(page);
-    //       },
-    //       onError: (err) => {
-    //         console.log(err);
-    //       }
-    //     });
-
-    //   }
-
-    // },
     onRecordUpdate(e) {
       console.log(e);
-      console.log(this.modal.data)
+      console.log(this.moduleEditModal.data)
       this.$refs.modalRef.validateFields().then(() => {
-        this.$inertia.patch(route('manage.contents.update', this.modal.data.id), this.modal.data, {
+        this.$inertia.patch(route('manage.course.updateModule', this.course.id), this.moduleEditModal.data, {
           onSuccess: (page) => {
             console.log(page);
-            this.modal.isOpen = false;
+            this.moduleEditModal.isOpen = false;
+          },
+          onError: (err) => {
+            console.log(err);
+          }
+        });
+      })
+    },
+    moduleDeleteRecord(module) {
+      this.moduleDeleteModal.data = { value: module.value, label : module.label };
+      this.moduleDeleteModal.mode = "DELETE";
+      this.moduleDeleteModal.isOpen = true;
+      this.moduleCreateModal.isOpen = false;
+      this.moduleEditModal.isOpen = false;
+    },
+    moduleDeleteModalClose() {
+      console.log('Close delete module modal.');
+    },
+    onRecordDelete(e) {
+      console.log(e);
+      console.log(this.moduleDeleteModal.data)
+      this.$refs.modalRef.validateFields().then(() => {
+        this.$inertia.delete(route('manage.course.destroyModule', this.course.id), this.moduleDeleteModal.data, {
+          onSuccess: (page) => {
+            console.log(page);
+            this.moduleDeleteModal.isOpen = false;
           },
           onError: (err) => {
             console.log(err);
@@ -235,7 +245,7 @@ export default {
         });
       })
     }
-  },
+  }
 };
 </script>
 
