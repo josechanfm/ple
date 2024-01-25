@@ -154,7 +154,7 @@
               </template>
             </template>
           </a-table>
--->
+        -->
       </div>
     </div>
 
@@ -214,6 +214,10 @@ export default {
           dataIndex: "title",
           i18n: "course_title",
         }, {
+          title: "Type",
+          dataIndex: "type",
+          i18n: "type",
+        }, {
           title: "操作",
           dataIndex: "operation",
           key: "operation",
@@ -245,6 +249,14 @@ export default {
     onModuleLabelUpdate(courseModule) {
       console.log(courseModule);
       courseModule.edit = false
+      this.$inertia.patch(route('manage.course.updateModule', this.course.id), courseModule, {
+        onSuccess: (page) => {
+          console.log(page);
+        },
+        onError: (err) => {
+          console.log(err);
+        }
+      })
     },
     deleteRecord(courseId, contentId) {
       this.deleteModal.data = {};
@@ -260,14 +272,15 @@ export default {
       console.log(e);
       console.log(this.deleteModal.data)
       this.$refs.modalRef.validateFields().then(() => {
-        this.$inertia.delete(route('manage.course.contents.destroy', { course: this.deleteModal.data.courseId, content: this.deleteModal.data.contentId }), {
-          onSuccess: (page) => {
-            console.log(page);
-            this.deleteModal.isOpen = false;
-          },
-          onError: (err) => {
-            console.log(err);
-          }
+        this.$inertia.delete(route('manage.course.contents.destroy',
+          { course: this.deleteModal.data.courseId, content: this.deleteModal.data.contentId }), {
+            onSuccess: (page) => {
+              console.log(page);
+              this.deleteModal.isOpen = false;
+            },
+            onError: (err) => {
+              console.log(err);
+            }
         });
       })
     }

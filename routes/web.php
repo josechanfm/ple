@@ -126,6 +126,8 @@ Route::group([
     Route::resource('contents', App\Http\Controllers\Organization\ContentController::class)->names('manage.contents');
     Route::resource('course/{course}/contents', App\Http\Controllers\Organization\ContentController::class)->names('manage.course.contents');
     Route::post('course/{course}/create_module', [App\Http\Controllers\Organization\CourseController::class,'createModule'])->name('manage.course.createModule');
+    Route::patch('course/{course}/update_module', [App\Http\Controllers\Organization\CourseController::class,'updateModule'])->name('manage.course.updateModule');
+    Route::delete('course/{course}/destroy_module', [App\Http\Controllers\Organization\CourseController::class,'destroyModule'])->name('manage.course.destroyModule');
     Route::resource('files', App\Http\Controllers\Organization\FileController::class)->names('manage.files');
     Route::resource('pages', App\Http\Controllers\Organization\PageController::class)->names('manage.pages');
     Route::resource('articles', App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');

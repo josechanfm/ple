@@ -132,9 +132,38 @@ class CourseController extends Controller
 
     public function createModule(Course $course, Request $request)
     {
-        $old_modules=($course->modules);
-        $new_module=[["value"=>$request->module_name,"label"=>$request->module_name]];
-        $module_merge=array_merge($old_modules,$new_module);
-        $course->update(['modules'=>$module_merge]);
+        $newModule = [[
+            "value" => $request->module_name,
+            "label" => $request->module_name
+        ]];
+        $course->update(['modules'=>array_merge($course->modules, $newModule)]);
+    }
+
+    public function updateModule(Course $course, Request $request)
+    {
+        $modules=($course->modules);
+        
+        foreach ($modules as $key => $module) {
+            if (isset($module['value']) && $module['value'] == $request->value) {
+                $modules[$key]['label'] = $request->label;
+                break;
+            }
+        }
+
+        $course->update(['modules'=>$modules]);
+    }
+
+    public function destroyModule(Course $course, Request $request) {
+        $modules = $course->modules;
+        $newModules = [];
+
+        foreach ($modules as $module) {
+            if ($module['value'] == $request->value && $module['label'] == $request->label) {
+                continue;
+            }
+            $newModules[] = $module;
+        }
+
+        $course->update(['modules' => $newModules]);
     }
 }
