@@ -23,7 +23,7 @@
         <div v-for="courseModule in course.modules">
           <a-typography-title :level="3">
             <span v-if="courseModule.edit">
-              <input v-model="courseModule.label" :readonly="true" @keyup.enter="onModuleLabelUpdate(courseModule)" />
+              <input v-model="courseModule.label" :readonly="false" @keyup.enter="onModuleLabelUpdate(courseModule)" />
             </span>
             <span v-else>
               {{ courseModule.label }}
@@ -121,6 +121,7 @@
                         <inertia-link
                           :href="route('manage.course.contents.edit', { course: content.course_id, content: content.id })"
                           class="ant-btn">{{ $t("edit") }}</inertia-link>
+                          <a-button @click="deleteRecord(content.course_id, content.id)" type="danger">Delete</a-button>
                       </div>
                       <div v-else>
                         {{ content[column.dataIndex] }}
@@ -157,6 +158,29 @@
       </div>
     </div>
 
+
+    <!-- Modal Start for Delete Course -->
+    <a-modal
+      v-model:visible="deleteModal.isOpen"
+      :title="$t(deleteModal.title)"
+      width="60%"
+      :afterClose="deleteModalClose"
+      @ok="onRecordDelete"
+      ok-text="Confirm"
+    >
+      <a-form
+        ref="modalRef"
+        :model="deleteModal.data"
+        name="Certificate"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        autocomplete="off"
+        enctype="multipart/form-data"
+      >
+        <p>Are you sure you want to delete this course?</p>
+      </a-form>
+    </a-modal>
+    <!-- Modal End -->
   </OrganizationLayout>
 </template>
   
@@ -201,6 +225,12 @@ export default {
           width: "150px",
         },
       },
+      deleteModal: {
+        isOpen: false,
+        data: {},
+        title: "Delete Content",
+        mode: "",
+      },
     };
   },
   created() { },
@@ -212,11 +242,36 @@ export default {
       console.log(content);
       this.orphenContents[content.id] = content
     },
-    onModuleLabelUpdate(module) {
-      console.log(module);
-      module.edit = false
+    onModuleLabelUpdate(courseModule) {
+      console.log(courseModule);
+      courseModule.edit = false
+    },
+    deleteRecord(courseId, contentId) {
+      this.deleteModal.data = {};
+      this.deleteModal.mode = "DELETE";
+      this.deleteModal.isOpen = true;
+      this.deleteModal.data.contentId = contentId;
+      this.deleteModal.data.courseId = courseId;
+    },
+    deleteModalClose() {
+      console.log('Close delete modal');
+    },
+    onRecordDelete(e) {
+      console.log(e);
+      console.log(this.deleteModal.data)
+      this.$refs.modalRef.validateFields().then(() => {
+        this.$inertia.delete(route('manage.course.contents.destroy', { course: this.deleteModal.data.courseId, content: this.deleteModal.data.contentId }), {
+          onSuccess: (page) => {
+            console.log(page);
+            this.deleteModal.isOpen = false;
+          },
+          onError: (err) => {
+            console.log(err);
+          }
+        });
+      })
     }
-  },
+  }
 };
 </script>
   

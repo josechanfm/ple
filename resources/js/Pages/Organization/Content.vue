@@ -13,54 +13,53 @@
         </div>
         <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-form 
-                    ref="modalRef" 
-                    :model="content" 
-                    name="Lecture" 
+                <a-form
+                    ref="modalRef"
+                    :model="content"
+                    name="Lecture"
                     :label-col="{ span: 8 }"
-                    :wrapper-col="{ span: 16 }" 
-                    autocomplete="off" 
-                    :rules="rules" 
+                    :wrapper-col="{ span: 16 }"
+                    autocomplete="off"
+                    :rules="rules"
                     :validate-messages="validateMessages"
-                    enctype="multipart/form-data" 
+                    enctype="multipart/form-data"
                     @finish="onFinish"
                 >
                     <a-form-item :label="$t('module')" name="module">
-                        <a-select v-model:value="content.module" :options="course.modules"/>
+                        <a-select v-model:value="content.module" :options="course.modules" />
                     </a-form-item>
                     <a-form-item :label="$t('content_type')" name="type">
-                        <a-select v-model:value="content.type" :options="content_types"/>
+                        <a-select v-model:value="content.type" :options="content_types" />
                     </a-form-item>
                     <a-form-item :label="$t('content_title')" name="title">
                         <a-input v-model:value="content.title" />
                     </a-form-item>
                     <a-form-item :label="$t('content_description')" name="description">
                         <a-textarea v-model:value="content.content" />
-                      </a-form-item>
-                      <a-form-item :label="$t('image')" name="image">
+                    </a-form-item>
+                    <a-form-item :label="$t('image')" name="image">
                         <a-input v-model:value="content.image" />
-                      </a-form-item>
-                      <a-form-item :label="$t('start_on')" name="start_on">
+                    </a-form-item>
+                    <a-form-item :label="$t('start_on')" name="start_on">
                         <a-date-picker v-model:value="content.start_on" />
-                      </a-form-item>
-                      <a-form-item :label="$t('finish_on')" name="finish_on">
+                    </a-form-item>
+                    <a-form-item :label="$t('finish_on')" name="finish_on">
                         <a-date-picker v-model:value="content.finish_on" />
-                      </a-form-item>
-                      <a-form-item :label="$t('finish_on')" name="finish_on">
+                    </a-form-item>
+                    <a-form-item :label="$t('finish_on')" name="finish_on">
                         <a-switch v-model:checked="content.published" />
-                      </a-form-item>
-                      <a-form-item :label="$t('user_id')" name="user_id">
+                    </a-form-item>
+                    <a-form-item :label="$t('user_id')" name="user_id">
                         <a-input v-model:value="content.user_id" />
-                      </a-form-item>
-                                <div class="flex flex-row item-center justify-center">
-                        <a-button type="primary" html-type="submit">{{$t('submit')}}</a-button>
+                    </a-form-item>
+                    <div class="flex flex-row item-center justify-center">
+                        <a-button type="primary" html-type="submit">{{ $t('submit') }}</a-button>
                     </div>
-
                 </a-form>
-
             </div>
         </div>
 
+        
     </OrganizationLayout>
 </template>
   
@@ -84,10 +83,11 @@ export default {
         InfoCircleFilled,
         CropperModal,
     },
-    props: ["course", "content","content_types"],
+    props: ["course", "content", "content_types"],
     data() {
         return {
             rules: {
+                type: { required: true },
                 title: { required: true },
             },
             validateMessages: {
@@ -110,29 +110,29 @@ export default {
     created() { },
     methods: {
         onFinish() {
-            if(this.content.id===undefined){
-                this.$inertia.post(route('manage.course.contents.store'), this.content,{
-                    onSuccess:(page)=>{
-                        console.log(page);
-                    },
-                    onError:(err)=>{
-                        console.log(err);
-                    }
-                });
-            }else{
-                this.$inertia.patch(route('manage.course.contents.update',{course: this.content.course_id,content:this.content.id}), this.content,{
-                    onSuccess:(page)=>{
-                        console.log(page);
-                    },
-                    onError:(err)=>{
-                        console.log(err);
-                    }
-                });
-
-            }
-        },
-
-    },
+            this.$refs.modalRef.validateFields().then(() => {
+                console.log(this.content);
+                if (this.content.id === undefined) {
+                    this.$inertia.post(route('manage.course.contents.store', this.content.course_id), this.content, {
+                        onSuccess: (page) => {
+                            console.log(page);
+                        },
+                        onError: (err) => {
+                            console.log(err);
+                        }
+                    });
+                } else {
+                    this.$inertia.patch(route('manage.course.contents.update', { course: this.content.course_id, content: this.content.id }), this.content, {
+                        onSuccess: (page) => {
+                            console.log(page);
+                        },
+                        onError: (err) => {
+                            console.log(err);
+                        }
+                    });
+                }
+            })
+        }
+    }
 };
 </script>
-  
