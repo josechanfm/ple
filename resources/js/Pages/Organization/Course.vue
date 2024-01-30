@@ -53,11 +53,24 @@
     </CourseBuilder>
 
     <!-- Modal Start -->
-    <a-modal v-model:visible="moduleCreateModal.isOpen" :title="$t(moduleCreateModal.title)" width="60%"
-      :afterClose="moduleCreateModalClose" @ok="onRecordSave" ok-text="Save">
-      <a-form ref="modalFormRef" :model="moduleCreateModal.data" name="Certificate" :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
-        enctype="multipart/form-data">
+    <a-modal
+      v-model:visible="moduleCreateModal.isOpen"
+      :title="$t(moduleCreateModal.title)"
+      width="60%"
+      :afterClose="moduleCreateModalClose"
+      @ok="onRecordSave"
+      ok-text="Save"
+    >
+      <a-form ref="modalFormRef"
+        :model="moduleCreateModal.data"
+        name="Certificate"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        autocomplete="off"
+        :rules="rules"
+        :validate-messages="validateMessages"
+        enctype="multipart/form-data"
+      >
         <a-form-item label="Module Name" name="module_name">
           <a-input v-model:value="moduleCreateModal.data.module_name" />
         </a-form-item>
@@ -66,11 +79,25 @@
     <!-- Modal End -->
 
     <!-- Modal Start -->
-    <a-modal v-model:visible="moduleEditModal.isOpen" :title="$t(moduleEditModal.title)" width="60%"
-      :afterClose="moduleEditModalClose" @ok="onRecordUpdate" ok-text="Update">
-      <a-form ref="modalRef" :model="moduleEditModal.data" name="Certificate" :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
-        enctype="multipart/form-data">
+    <a-modal
+      v-model:visible="moduleEditModal.isOpen"
+      :title="$t(moduleEditModal.title)"
+      width="60%"
+      :afterClose="moduleEditModalClose"
+      @ok="onRecordUpdate"
+      ok-text="Update"
+    >
+      <a-form
+        ref="modalRef"
+        :model="moduleEditModal.data"
+        name="Certificate"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        autocomplete="off"
+        :rules="rules"
+        :validate-messages="validateMessages"
+        enctype="multipart/form-data"
+      >
         <a-form-item label="Module Name" name="label">
           <a-input v-model:value="moduleEditModal.data.label" />
         </a-form-item>
@@ -79,11 +106,24 @@
     <!-- Modal End -->
 
     <!-- Modal Start for Delete Module -->
-    <a-modal v-model:visible="moduleDeleteModal.isOpen" :title="$t(moduleDeleteModal.title)" width="60%"
-      :afterClose="moduleDeleteModalClose" @ok="onRecordDelete" ok-text="Confirm">
-      <a-form ref="modalRef" :model="moduleDeleteModal.data" name="Certificate" :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
-        enctype="multipart/form-data">
+    <a-modal
+      v-model:visible="moduleDeleteModal.isOpen"
+      :title="$t(moduleDeleteModal.title)"
+      width="60%"
+      :afterClose="moduleDeleteModalClose"
+      @ok="onRecordDelete"
+      ok-text="Confirm"
+    >
+      <a-form ref="modalRef"
+        :model="moduleDeleteModal.data"
+        name="Certificate"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        autocomplete="off"
+        :rules="rules"
+        :validate-messages="validateMessages"
+        enctype="multipart/form-data"
+      >
         <p>Are you sure you want to delete this course?</p>
       </a-form>
     </a-modal>

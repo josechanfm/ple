@@ -36,23 +36,46 @@
     </div>
 
     <!-- Modal Start for Create Course -->
-    <a-modal v-model:visible="createModal.isOpen" :title="$t(createModal.title)" width="60%"
-      :afterClose="createModalClose" @ok="onRecordSave" ok-text="Save">
-      <a-form ref="modalRef" :model="createModal.data" name="Certificate" :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
-        enctype="multipart/form-data">
+    <a-modal
+      v-model:visible="createModal.isOpen"
+      :title="$t(createModal.title)"
+      width="60%"
+      :afterClose="createModalClose"
+      @ok="onRecordSave"
+      ok-text="Save"
+    >
+      <a-form
+        ref="modalRef"
+        :model="createModal.data"
+        name="Certificate"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        autocomplete="off"
+        :rules="rules"
+        :validate-messages="validateMessages"
+        enctype="multipart/form-data"
+      >
         <a-form-item label="Title" name="title">
           <a-input v-model:value="createModal.data.title" />
         </a-form-item>
 
-        <a-form ref="formRef" name="dynamic_form_item" :model="dynamicValidateForm" v-bind="formItemLayoutWithOutLabel">
-          <a-form-item v-for="(domain, index) in dynamicValidateForm.domains" :key="domain.key"
+        <a-form
+          ref="formRef"
+          name="dynamic_form_item"
+          :model="dynamicValidateForm"
+          v-bind="formItemLayoutWithOutLabel"
+        >
+          <a-form-item
+            v-for="(domain, index) in dynamicValidateForm.domains"
+            :key="domain.key"
             v-bind="index === 0 ? formItemLayout : {}" :label="index === 0 ? 'Domains' : ''"
-            :name="['domains', index, 'value']" :rules="{
+            :name="['domains', index, 'value']"
+            :rules="{
               required: true,
               message: 'domain can not be null',
               trigger: 'change',
-            }">
+            }"
+          >
             <a-input v-model:value="domain.value" placeholder="please input domain"
               style="width: 60%; margin-right: 8px" />
             <MinusCircleOutlined v-if="dynamicValidateForm.domains.length > 1" class="dynamic-delete-button"
@@ -82,6 +105,35 @@
         </a-form-item>
         <a-form-item label="Image" name="image">
           <a-input v-model:value="createModal.data.image" />
+          <!-- PENDING TO REPLACE -->
+          <!--
+        <a-form-item name="upload" label="Upload" extra="longgggggggggggggggggggggggggggggggggg">
+          <a-upload
+            v-model:fileList="formState.upload"
+            name="logo"
+            action="/upload.do"
+            list-type="picture"
+          >
+            <a-button>
+              <template #icon><UploadOutlined /></template>
+              Click to upload
+            </a-button>
+          </a-upload>
+        </a-form-item>
+        -->
+        <!-- OR
+        <a-form-item label="Dragger">
+          <a-form-item name="dragger" no-style>
+            <a-upload-dragger v-model:fileList="formState.dragger" name="files" action="/upload.do">
+              <p class="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p class="ant-upload-text">Click or drag file to this area to upload</p>
+              <p class="ant-upload-hint">Support for a single or bulk upload.</p>
+            </a-upload-dragger>
+          </a-form-item>
+        </a-form-item>
+        -->
         </a-form-item>
         <a-form-item label="Start on" name="start_on">
           <a-date-picker v-model:value="createModal.data.start_on" :valueFormat="dateFormat" />
@@ -97,11 +149,25 @@
     <!-- Modal End -->
 
     <!-- Modal Start for Delete Course -->
-    <a-modal v-model:visible="deleteModal.isOpen" :title="$t(deleteModal.title)" width="60%"
-      :afterClose="deleteModalClose" @ok="onRecordDelete" ok-text="Confirm">
-      <a-form ref="modalRef" :model="deleteModal.data" name="Certificate" :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }" autocomplete="off" :rules="rules" :validate-messages="validateMessages"
-        enctype="multipart/form-data">
+    <a-modal
+      v-model:visible="deleteModal.isOpen"
+      :title="$t(deleteModal.title)"
+      width="60%"
+      :afterClose="deleteModalClose"
+      @ok="onRecordDelete"
+      ok-text="Confirm"
+    >
+      <a-form
+        ref="modalRef"
+        :model="deleteModal.data"
+        name="Certificate"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        autocomplete="off"
+        :rules="rules"
+        :validate-messages="validateMessages"
+        enctype="multipart/form-data"
+      >
         <p>Are you sure you want to delete this course?</p>
       </a-form>
     </a-modal>
