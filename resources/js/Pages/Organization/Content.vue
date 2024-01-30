@@ -29,16 +29,64 @@
                         <a-select v-model:value="content.module" :options="course.modules" />
                     </a-form-item>
                     <a-form-item :label="$t('content_type')" name="type">
-                        <a-select v-model:value="content.type" :options="content_types" />
+                        <a-select v-model:value="content.type" :options="content_types" @change="handleChange"/>
                     </a-form-item>
                     <a-form-item :label="$t('content_title')" name="title">
                         <a-input v-model:value="content.title" />
                     </a-form-item>
-                    <a-form-item :label="$t('content_description')" name="description">
+                    <!-- <a-form-item :label="$t('content_description')" name="description">
                         <a-textarea v-model:value="content.content" />
-                    </a-form-item>
+                    </a-form-item> -->
                     <a-form-item :label="$t('image')" name="image">
                         <a-input v-model:value="content.image" />
+                    </a-form-item>
+                    <a-form-item v-if="this.selected.value=='PAGE'" :label="$t('content')" name="content">
+                        <a-textarea v-model:value="content.content" />
+                    </a-form-item>
+                    <a-form-item v-else-if="this.selected.value=='FILE'" :label="$t('content')" name="content">
+                        <a-upload-dragger
+                            v-model:value="content.content"
+                            :multiple="true"
+                            action="route('manage.files.store')"
+                            @change="handleChange"
+                            @drop="handleDrop"
+                        >
+                            <p class="ant-upload-drag-icon">
+                                <InboxOutlined />
+                            </p>
+                            <p class="ant-upload-text">Click or drag file to this area to upload</p>
+                            <p class="ant-upload-hint">Support for a single or bulk upload.</p>
+                        </a-upload-dragger>
+                    </a-form-item>
+                    <a-form-item v-else-if="this.selected.value=='URL'" :label="$t('content')" name="content">
+                        <a-input v-model:value="content.content" />
+                    </a-form-item>
+                    <a-form-item v-else-if="this.selected.value=='VIDEO'" :label="$t('content')" name="content">
+                        <a-upload-dragger v-model:value="content.content" multiple>
+                            <p class="ant-upload-drag-icon">
+                                <InboxOutlined />
+                            </p>
+                            <p class="ant-upload-text">Click or drag file to this area to upload</p>
+                            <p class="ant-upload-hint">Support for a single or bulk upload.</p>
+                        </a-upload-dragger>
+                    </a-form-item>
+                    <a-form-item v-else-if="this.selected.value=='AUDIO'" :label="$t('content')" name="content">
+                        <a-upload-dragger v-model:value="content.content" multiple>
+                            <p class="ant-upload-drag-icon">
+                                <InboxOutlined />
+                            </p>
+                            <p class="ant-upload-text">Click or drag file to this area to upload</p>
+                            <p class="ant-upload-hint">Support for a single or bulk upload.</p>
+                        </a-upload-dragger>
+                    </a-form-item>
+                    <a-form-item v-else-if="this.selected.value=='TEXT'" :label="$t('content')" name="content">
+                        <a-textarea v-model:value="content.content" />
+                    </a-form-item>
+                    <a-form-item v-else-if="this.selected.value=='QUIZ'" :label="$t('content')" name="content">
+                        <a-button type="" @onClick="console.log('Create Quiz')">Click to set the quiz</a-button>
+                    </a-form-item>
+                    <a-form-item v-else-if="this.selected.value=='ASSIGNMENT'" :label="$t('content')" name="content">
+                        <a-button type="" @onClick="console.log('Create Assignment')">Click to set the assignment</a-button>
                     </a-form-item>
                     <a-form-item :label="$t('start_on')" name="start_on">
                         <a-date-picker v-model:value="content.start_on" />
@@ -71,7 +119,8 @@ import {
     PlusOutlined,
     InfoCircleFilled,
 } from "@ant-design/icons-vue";
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
+import { message } from 'ant-design-vue';
 import CropperModal from "@/Components/Member/CropperModal.vue";
 
 export default {
@@ -105,10 +154,18 @@ export default {
                     width: "150px",
                 },
             },
+            selected: {
+                value: ""
+            },
+            fileList: ref([])
         };
     },
-    created() { },
+    created() { this.selected.value=this.content.type },
     methods: {
+        handleChange(value) {
+            console.log(value);
+            this.selected.value = value;
+        },
         onFinish() {
             this.$refs.modalRef.validateFields().then(() => {
                 console.log(this.content);
@@ -132,6 +189,20 @@ export default {
                     });
                 }
             })
+        },
+        handleChange(info) {
+            const status = info.file.status;
+            if (status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully.`);
+            } else if (status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+        handleDrop(e) {
+            console.log(e);
         }
     }
 };

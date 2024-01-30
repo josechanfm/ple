@@ -50,6 +50,7 @@ class ContentController extends Controller
      */
     public function store(Course $course, Request $request)
     {
+        dd($request->all());
         $data=$request->all();
         $data['course_id']=$course->id;
         Content::create($data);
