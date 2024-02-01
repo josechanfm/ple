@@ -51,6 +51,7 @@
                             v-model:value="content.content"
                             :multiple="true"
                             action="/manage/files"
+                            enctype="multipart/form-data"
                             @change="handleFileChange"
                             @drop="handleDrop"
                         >
