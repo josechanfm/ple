@@ -50,9 +50,11 @@ class ContentController extends Controller
      */
     public function store(Course $course, Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $data=$request->all();
+
         $data['course_id']=$course->id;
+        $data['frontpage']=$data['frontpage']??0;
         Content::create($data);
         return redirect()->route('manage.course.contents.index',$course->id);
     }
@@ -82,7 +84,7 @@ class ContentController extends Controller
             'content'=>$content,
             'content_types'=>Config::item('content_types')
         ]);
-        
+
     }
 
     /**

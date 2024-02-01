@@ -2,10 +2,10 @@
     <CourseLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Discusson
+                Discussion
             </h2>
         </template>
-      
+
         <div class="bg-gray-100 sm:grid grid-cols-6 grid-rows-1 px-4 py-4 min-h-full lg:min-h-screen space-y-6 sm:space-y-0 sm:gap-4">
             <div class="col-span-4">
             <a-typography-title :level="5">{{ course.title }}</a-typography-title>

@@ -52,17 +52,17 @@ const SubMenu = {
 };
 const list = [
   {
-    key: '1',
+    key: 'course',
     title: 'Overview',
     route: 'course',
   },
   {
-    key: '2',
+    key: 'course.study',
     title: 'Content',
     route: 'course.study',
   },
   {
-    key: '4',
+    key: 'course.discussion',
     route: 'course.discussion',
     title: 'Discussion',
   },
@@ -100,8 +100,8 @@ const list = [
 
   <nav class="max-w-7xl mx-auto">
     <a-menu
-      v-model:openKeys="openKeys"
-      v-model:selectedKeys="selectedKeys"
+      :openKeys="[route().current()]"
+      :selectedKeys="[route().current()]"
       mode="horizontal"
     >
       <template v-for="item in list" :key="item.key">
