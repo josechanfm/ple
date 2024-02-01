@@ -39,7 +39,29 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+
+            foreach ($files as $file) {
+                $filename = time().'_'.$file->getClientOriginalName();
+
+                // Store the file in the local storage (or any disk configured in config/filesystems.php)
+                $path = $file->storeAs('{$request->Session->id}/uploads', $filename, 'file');
+
+                // Do something with the file info if needed, like saving info to the database
+                // ...
+
+                // You can also access other properties of the file like
+                // $file->getSize();
+                // $file->getMimeType();
+                // $file->getClientOriginalExtension();
+                // ...
+            }
+
+            return response()->json(['message' => 'Files uploaded successfully', 'path' => $path]);
+        } else {
+            return response()->json(['message' => 'No files were uploaded'], 400);
+        }
     }
 
     /**

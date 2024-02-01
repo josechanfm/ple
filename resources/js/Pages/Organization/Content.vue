@@ -5,6 +5,9 @@
                 {{ $t("content") }}
             </h2>
         </template>
+        <div class="flex-auto pb-3 text-left">
+            <a-button @click="goBack" type="dashed">Go Back</a-button>
+        </div>
         <div v-if="content.id">
             On Edit
         </div>
@@ -29,7 +32,7 @@
                         <a-select v-model:value="content.module" :options="course.modules" />
                     </a-form-item>
                     <a-form-item :label="$t('content_type')" name="type">
-                        <a-select v-model:value="content.type" :options="content_types" @change="handleChange"/>
+                        <a-select v-model:value="content.type" :options="content_types" @change="handleTypeChange"/>
                     </a-form-item>
                     <a-form-item :label="$t('content_title')" name="title">
                         <a-input v-model:value="content.title" />
@@ -47,8 +50,8 @@
                         <a-upload-dragger
                             v-model:value="content.content"
                             :multiple="true"
-                            action="route('manage.files.store')"
-                            @change="handleChange"
+                            action="/manage/files"
+                            @change="handleFileChange"
                             @drop="handleDrop"
                         >
                             <p class="ant-upload-drag-icon">
@@ -162,7 +165,10 @@ export default {
     },
     created() { this.selected.value=this.content.type },
     methods: {
-        handleChange(value) {
+        goBack() {
+            window.history.back();
+        },
+        handleTypeChange(value) {
             console.log(value);
             this.selected.value = value;
         },
@@ -190,14 +196,21 @@ export default {
                 }
             })
         },
-        handleChange(info) {
-            const status = info.file.status;
-            if (status !== 'uploading') {
+        handleFileChange(info) {
+            if (info.file.status !== 'uploading') {
                 console.log(info.file, info.fileList);
             }
-            if (status === 'done') {
+            if (info.file.status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully.`);
-            } else if (status === 'error') {
+                this.content.content = info.fileList.map(file => {
+                    return {
+                        name: file.name,
+                        status: file.status,
+                        response: file.response,
+                        // add other file properties you need
+                    };
+                });
+            } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
             }
         },
