@@ -23,18 +23,15 @@
       </div>
       <a-collapse>
         <template v-for="module in course.modules">
-          <a-collapse-panel>
-            <component #header>
-              <span>{{ module.label }}</span>
-              <a-button @click="moduleUpdateRecord(module)">Edit</a-button>
+          <a-collapse-panel :header=module.label>
+              <a-button  @click="moduleUpdateRecord(module)">Edit</a-button>
               <a-button @click="moduleDeleteRecord(module)" type="danger">Delete</a-button>
-            </component>
             
             <ul class="module-list">
               <span v-for="content in course.contents">
                 <li v-if="content.module == module.value" class="module-list-item">
                   {{ content.title }}
-                  <a-button @click="editRecord(content)">edit</a-button>
+                  <a-button @click="contentEditRecord(content)">edit</a-button>
                 </li>
               </span>
             </ul>
@@ -284,7 +281,9 @@ export default {
           console.log(err);
         }
       });
-      
+    },
+    contentEditRecord(content) {
+      this.$inertia.get(route('manage.course.contents.edit', { course: content.course_id, content: content.id }))
     }
   }
 };
