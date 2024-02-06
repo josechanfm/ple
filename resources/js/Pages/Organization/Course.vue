@@ -24,19 +24,19 @@
       <a-collapse>
         <template v-for="module in course.modules">
           <a-collapse-panel>
-            <template #header>
+            <component #header>
               <span>{{ module.label }}</span>
               <a-button @click="moduleUpdateRecord(module)">Edit</a-button>
               <a-button @click="moduleDeleteRecord(module)" type="danger">Delete</a-button>
-            </template>
+            </component>
             
             <ul class="module-list">
-              <template v-for="content in course.contents">
+              <span v-for="content in course.contents">
                 <li v-if="content.module == module.value" class="module-list-item">
                   {{ content.title }}
                   <a-button @click="editRecord(content)">edit</a-button>
                 </li>
-              </template>
+              </span>
             </ul>
           </a-collapse-panel>
         </template>
@@ -52,7 +52,7 @@
       </a-collapse>
     </CourseBuilder>
 
-    <!-- Modal Start -->
+    <!-- Modal Start for Create Module -->
     <a-modal
       v-model:visible="moduleCreateModal.isOpen"
       :title="$t(moduleCreateModal.title)"
@@ -79,7 +79,7 @@
     </a-modal>
     <!-- Modal End -->
 
-    <!-- Modal Start -->
+    <!-- Modal Start for Edit Module -->
     <a-modal
       v-model:visible="moduleEditModal.isOpen"
       :title="$t(moduleEditModal.title)"
@@ -115,7 +115,8 @@
       @ok="onRecordDelete"
       ok-text="Confirm"
     >
-      <a-form ref="modalRef"
+      <a-form
+        ref="modalRef"
         :model="moduleDeleteModal.data"
         name="Certificate"
         :label-col="{ span: 8 }"
@@ -125,7 +126,7 @@
         :validate-messages="validateMessages"
         enctype="multipart/form-data"
       >
-        <p>Are you sure you want to delete this course?</p>
+        <p>Are you sure you want to delete this module?</p>
       </a-form>
     </a-modal>
     <!-- Modal End -->
@@ -262,7 +263,7 @@ export default {
       })
     },
     moduleDeleteRecord(module) {
-      this.moduleDeleteModal.data = { value: module.value, label : module.label };
+      this.moduleDeleteModal.data = { value: module.value, label: module.label };
       this.moduleDeleteModal.mode = "DELETE";
       this.moduleDeleteModal.isOpen = true;
       this.moduleCreateModal.isOpen = false;
@@ -273,18 +274,17 @@ export default {
     },
     onRecordDelete(e) {
       console.log(e);
-      console.log(this.moduleDeleteModal.data)
-      this.$refs.modalRef.validateFields().then(() => {
-        this.$inertia.delete(route('manage.course.destroyModule', this.course.id), this.moduleDeleteModal.data, {
-          onSuccess: (page) => {
-            console.log(page);
-            this.moduleDeleteModal.isOpen = false;
-          },
-          onError: (err) => {
-            console.log(err);
-          }
-        });
-      })
+      console.log(this.moduleDeleteModal.data)      
+      this.$inertia.delete(route('manage.course.destroyModule', this.course.id), this.moduleDeleteModal.data, {
+        onSuccess: (page) => {
+          console.log(page);
+          this.moduleDeleteModal.isOpen = false;
+        },
+        onError: (err) => {
+          console.log(err);
+        }
+      });
+      
     }
   }
 };

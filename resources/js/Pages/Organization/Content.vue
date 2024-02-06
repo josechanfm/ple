@@ -50,6 +50,7 @@
                         <a-upload-dragger
                             v-model:value="content.content"
                             :multiple="true"
+                            name="Certificate"
                             action="/manage/files"
                             enctype="multipart/form-data"
                             @change="handleFileChange"

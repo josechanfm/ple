@@ -39,7 +39,7 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->files);
+        dd($request->hasFile);
         // if ($request->hasFile('content.content')) {
         if ($request->file('file')) {
             $files = $request->file('content');

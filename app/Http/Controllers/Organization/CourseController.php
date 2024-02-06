@@ -154,8 +154,10 @@ class CourseController extends Controller
     }
 
     public function destroyModule(Course $course, Request $request) {
+        dd($request->all());
         $modules = $course->modules;
         $newModules = [];
+        
 
         foreach ($modules as $module) {
             if ($module['value'] == $request->value && $module['label'] == $request->label) {
