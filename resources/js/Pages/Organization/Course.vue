@@ -61,7 +61,8 @@
       @ok="onRecordSave"
       ok-text="Save"
     >
-      <a-form ref="modalFormRef"
+      <a-form
+        ref="modalRef"
         :model="moduleCreateModal.data"
         name="Certificate"
         :label-col="{ span: 8 }"
@@ -71,8 +72,8 @@
         :validate-messages="validateMessages"
         enctype="multipart/form-data"
       >
-        <a-form-item label="Module Name" name="module_name">
-          <a-input v-model:value="moduleCreateModal.data.module_name" />
+        <a-form-item label="Module Name" name="label">
+          <a-input v-model:value="moduleCreateModal.data.label" />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -180,7 +181,7 @@ export default {
         category_code: { required: true },
         cert_title: { required: true },
 
-        module_name: { required: true },
+        label: { required: true },
       },
       validateMessages: {
         required: "${label} is required!",

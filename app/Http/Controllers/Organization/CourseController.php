@@ -133,8 +133,8 @@ class CourseController extends Controller
     public function createModule(Course $course, Request $request)
     {
         $newModule = [[
-            "value" => $request->module_name,
-            "label" => $request->module_name
+            "value" => $request->label,
+            "label" => $request->label
         ]];
         $course->update(['modules'=>array_merge($course->modules, $newModule)]);
     }
