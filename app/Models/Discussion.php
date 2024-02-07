@@ -10,6 +10,8 @@ class Discussion extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['title', 'content', 'discussion_id'];
+
     /**
      * Get the replies for the discussion
      *

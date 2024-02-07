@@ -37,8 +37,9 @@ Route::get('article', [\App\Http\Controllers\ArticleController::class, 'item'])-
 Route::get('course/{course}', [\App\Http\Controllers\CourseController::class, 'show'])->name('course');
 Route::get('course/{course}/study', [\App\Http\Controllers\CourseController::class, 'study'])->name('course.study');
 Route::get('course/{course}/content/{content}', [\App\Http\Controllers\CourseController::class, 'content'])->name('course.content');
-Route::get('course/{course}/discussion', [\App\Http\Controllers\CourseController::class, 'discussion'])->name('course.discussion');
-Route::get('course/{course}/discussion/{discussion}', [\App\Http\Controllers\CourseController::class, 'thread'])->name('course.discussion.thread');
+Route::get('course/{course}/discussion', [\App\Http\Controllers\CourseDiscussionController::class, 'index'])->name('course.discussion');
+Route::get('course/{course}/discussion/{discussion}', [\App\Http\Controllers\CourseDiscussionController::class, 'show'])->name('course.discussion.thread');
+Route::post('course/{course}/discussion/{discussion}', [\App\Http\Controllers\CourseDiscussionController::class, 'store'])->name('course.discussion.create');
 
 Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
 Route::post('registration', [\App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');

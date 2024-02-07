@@ -13,11 +13,11 @@
                 <p>{{ discussion.content }}</p>
 
                 <p>
-                  <CalendarOutlined /> {{ discussion.created_at ?? "Unknown Date" }}
+                  <CalendarOutlined /> {{ discussion.created_at ? dayjs(discussion.created_at).format('YYYY-MM-DD HH:mm:ss') : "Unknown Date" }}
                 </p>
               </a-card>
 
-              <a-card title="Replies">
+              <a-card title="Replies" class="!mb-4">
                 <a-list :data-source="discussion.posts">
                   <template #renderItem="{ item }">
                     <a-list-item>
@@ -27,7 +27,7 @@
                         </template>
                         <template #description>
                           <p>
-                            <CalendarOutlined /> {{ discussion.created_at ?? "Unknown Date" }}
+                            <CalendarOutlined /> {{ item.created_at ? dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss') : "Unknown Date" }}
                           </p>
                           <div>{{ item.content }}</div>
                         </template>
@@ -37,6 +37,21 @@
                 </a-list>
               </a-card>
 
+              <a-card>
+                <a-form>
+                  <a-form-item>
+                    <a-input v-model:value="form.title" placeholder="Enter a subject" />
+                  </a-form-item>
+
+                  <a-form-item>
+                    <a-textarea v-model:value="form.content" placeholder="Enter your reply" />
+                  </a-form-item>
+
+                  <a-form-item>
+                    <a-button @click="post">Post</a-button>
+                  </a-form-item>
+                </a-form>
+              </a-card>
             </div>
 
             <div class="h-96 col-span-2">
@@ -64,6 +79,7 @@
 <script>
 import CourseLayout from '@/Layouts/CourseLayout.vue';
 import { CalendarOutlined } from "@ant-design/icons-vue";
+import dayjs from "dayjs";
 
 export default {
     components: {
@@ -73,13 +89,22 @@ export default {
     props:['course','discussion'],
     data() {
         return{
+          form: {
+            title: "",
+            content: ""
+          }
         }
     },
     methods:{
+        dayjs: dayjs,
         sentComment(event){
             console.log(event.currentTarget)
             console.log(event.currentTarget.dataset.discussion_id + ":"+event.currentTarget.value)
             event.currentTarget.value=null
+        },
+        post () {
+          this.$inertia.post(route('course.discussion.create', [this.course.id, this.discussion.id]),
+            { ...this.form, discussion_id: this.discussion.id })
         }
     }
 }
