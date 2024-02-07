@@ -38,6 +38,7 @@ Route::get('course/{course}', [\App\Http\Controllers\CourseController::class, 's
 Route::get('course/{course}/study', [\App\Http\Controllers\CourseController::class, 'study'])->name('course.study');
 Route::get('course/{course}/content/{content}', [\App\Http\Controllers\CourseController::class, 'content'])->name('course.content');
 Route::get('course/{course}/discussion', [\App\Http\Controllers\CourseController::class, 'discussion'])->name('course.discussion');
+Route::get('course/{course}/discussion/{discussion}', [\App\Http\Controllers\CourseController::class, 'thread'])->name('course.discussion.thread');
 
 Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
 Route::post('registration', [\App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');

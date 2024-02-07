@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Discussion;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Course;
@@ -47,10 +48,33 @@ class CourseController extends Controller
             'content'=>$content
         ]);
     }
+
+    /**
+     * 與該課程關聯的討論串
+     *
+     * @param Course $course
+     * @return Response
+     */
     public function discussion(Course $course){
         return Inertia::render('Course/Discussion', [
             'course'=>$course,
             'forum'=>$course->forum
+        ]);
+    }
+
+    /**
+     * 討論串
+     *
+     * @param Course $course
+     * @param Discussion $discussion
+     * @return Response
+     */
+    public function thread(Course $course, Discussion $discussion){
+        $discussion->load('posts');
+
+        return Inertia::render('Course/DiscussionDetail', [
+            'course'=>$course,
+            'discussion'=>$discussion
         ]);
     }
 }

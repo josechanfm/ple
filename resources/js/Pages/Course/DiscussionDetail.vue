@@ -2,33 +2,41 @@
     <CourseLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Discussion
+              Discussion
             </h2>
         </template>
 
         <div class="bg-gray-100 sm:grid grid-cols-6 grid-rows-1 px-4 py-4 min-h-full lg:min-h-screen space-y-6 sm:space-y-0 sm:gap-4">
             <div class="col-span-4">
               <a-card class="!mb-4">
-                <a-typography-title :level="5">{{ course.title }}</a-typography-title>
-                <p>{{ forum.description }}</p>
+                <a-typography-title :level="5">{{ discussion.title }}</a-typography-title>
+                <p>{{ discussion.content }}</p>
+
+                <p>
+                  <CalendarOutlined /> {{ discussion.created_at ?? "Unknown Date" }}
+                </p>
               </a-card>
-              <a-card>
-                <a-list :data-source="forum.main_discussions">
+
+              <a-card title="Replies">
+                <a-list :data-source="discussion.posts">
                   <template #renderItem="{ item }">
-                    <inertia-link :href="route('course.discussion.thread', [course.id, item.id])">
                     <a-list-item>
-                      <a-list-item-meta
-                        :description="item.content"
-                      >
+                      <a-list-item-meta>
                         <template #title>
                          {{ item.title }}
                         </template>
+                        <template #description>
+                          <p>
+                            <CalendarOutlined /> {{ discussion.created_at ?? "Unknown Date" }}
+                          </p>
+                          <div>{{ item.content }}</div>
+                        </template>
                       </a-list-item-meta>
                     </a-list-item>
-                    </inertia-link>
                   </template>
                 </a-list>
               </a-card>
+
             </div>
 
             <div class="h-96 col-span-2">
@@ -55,12 +63,14 @@
 
 <script>
 import CourseLayout from '@/Layouts/CourseLayout.vue';
+import { CalendarOutlined } from "@ant-design/icons-vue";
 
 export default {
     components: {
         CourseLayout,
+        CalendarOutlined
     },
-    props:['course','forum'],
+    props:['course','discussion'],
     data() {
         return{
         }
@@ -84,5 +94,9 @@ export default {
 }
 .ql-align-left {
 	text-align: left;
+}
+
+.anticon svg {
+  display: block;
 }
 </style>
