@@ -159,5 +159,18 @@ Route::group([
     //Route::resource('permissions', App\Http\Controllers\Admin\PermissionController::class)->names('admin.permissions');
 });
 
+// development only
+if (app()->environment('local')) {
+    Route::group(['prefix' => 'dev'], function () {
+        Route::get('/login-as/{user}', function (\App\Models\User $user) {
+            Auth::logout();
+            Auth::login($user);
+            return redirect('/');
+        })->name('dev.login-as');
 
+        Route::get('/current-user', function () {
+            return Auth::user();
+        })->name('dev.current-user');
+    });
+}
 
