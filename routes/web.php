@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -40,6 +41,7 @@ Route::get('course/{course}/content/{content}', [\App\Http\Controllers\CourseCon
 Route::get('course/{course}/discussion', [\App\Http\Controllers\CourseDiscussionController::class, 'index'])->name('course.discussion');
 Route::get('course/{course}/discussion/{discussion}', [\App\Http\Controllers\CourseDiscussionController::class, 'show'])->name('course.discussion.thread');
 Route::post('course/{course}/discussion/{discussion}', [\App\Http\Controllers\CourseDiscussionController::class, 'store'])->name('course.discussion.create');
+Route::delete('course/{course}/discussion/{discussion}', [\App\Http\Controllers\CourseDiscussionController::class, 'destroy'])->name('course.discussion.destroy');
 
 Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
 Route::post('registration', [\App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');
@@ -156,3 +158,6 @@ Route::group([
     Route::resource('configs', App\Http\Controllers\Admin\ConfigController::class)->names('admin.configs');
     //Route::resource('permissions', App\Http\Controllers\Admin\PermissionController::class)->names('admin.permissions');
 });
+
+
+
