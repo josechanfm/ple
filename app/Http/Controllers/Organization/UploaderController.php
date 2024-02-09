@@ -9,6 +9,7 @@ use App\Models\Article;
 class UploaderController extends Controller
 {
     public function image(Request $request){
+        dd($request->file("image"));
         $article=new Article();
         $article->id=0;
         $article->exists=true;

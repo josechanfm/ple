@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->date('start_on')->nullable();
             $table->date('finish_on')->nullable();
-            $table->boolean('frontpage');
+            $table->boolean('frontpage')->nullable();
             $table->foreignId('user_id');
             $table->timestamps();
         });

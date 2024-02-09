@@ -2,34 +2,33 @@
     <CourseLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Discusson
+                Discussion
             </h2>
         </template>
-      
+
         <div class="bg-gray-100 sm:grid grid-cols-6 grid-rows-1 px-4 py-4 min-h-full lg:min-h-screen space-y-6 sm:space-y-0 sm:gap-4">
             <div class="col-span-4">
-            <a-typography-title :level="5">{{ course.title }}</a-typography-title>
-            <p>{{ forum.description }}</p>
-            <a-timeline>
-                <a-timeline-item v-for="item in forum.main_discussions" >
-                    <a-typography-text strong>{{ item.title }}</a-typography-text>
-                    <div>{{ item.content }}</div>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="border-t-2 border-b-2">Like</div>
-                        <div class="border-t-2 border-b-2">Comment</div>
-                        <div class="border-t-2 border-b-2">Share</div>
-                    </div>
-                    <div class="flex">
-                        <a-avatar>U</a-avatar>
-                        <div class="pl-5 w-full">
-                            <a-input :name="'discussion_comment'" :data-discussion_id="item.id" @keyup.enter="sentComment"/>
-                        </div>
-                        <div class="w-1/6">
-                            Icons | Icons | Icons
-                        </div>
-                    </div>
-                </a-timeline-item>
-            </a-timeline>
+              <a-card class="!mb-4">
+                <a-typography-title :level="5">{{ course.title }}</a-typography-title>
+                <p>{{ forum.description }}</p>
+              </a-card>
+              <a-card>
+                <a-list :data-source="forum.main_discussions">
+                  <template #renderItem="{ item }">
+                    <inertia-link :href="route('course.discussion.thread', [course.id, item.id])">
+                    <a-list-item>
+                      <a-list-item-meta
+                        :description="item.content"
+                      >
+                        <template #title>
+                         {{ item.title }}
+                        </template>
+                      </a-list-item-meta>
+                    </a-list-item>
+                    </inertia-link>
+                  </template>
+                </a-list>
+              </a-card>
             </div>
 
             <div class="h-96 col-span-2">

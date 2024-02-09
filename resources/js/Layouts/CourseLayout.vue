@@ -9,6 +9,7 @@ defineProps({
   laravelVersion: String,
   phpVersion: String,
   title: String,
+  course: Object,
 });
 const logout = () => {
   console.log("logout");
@@ -16,6 +17,74 @@ const logout = () => {
 };
 
 const showingNavigationDropdown = ref(false);
+
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  PieChartOutlined,
+  MailOutlined,
+} from '@ant-design/icons-vue';
+
+// you can rewrite it to a single file component, if not, you should config vue alias to vue/dist/vue.esm-bundler.js
+const SubMenu = {
+  name: 'SubMenu',
+  props: {
+    menuInfo: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  template: `
+    <a-sub-menu :key="menuInfo.key">
+      <template #title>{{ menuInfo.title }}</template>
+      <template v-for="item in menuInfo.children" :key="item.key">
+        <template v-if="!item.children">
+          <a-menu-item :key="item.key">
+            {{ item.title }}
+          </a-menu-item>
+        </template>
+        <template v-else>
+          <sub-menu :menu-info="item" :key="item.key" />
+        </template>
+      </template>
+    </a-sub-menu>
+  `
+};
+const list = [
+  {
+    key: 'course',
+    title: 'Overview',
+    route: 'course',
+  },
+  {
+    key: 'course.study',
+    title: 'Content',
+    route: 'course.study',
+  },
+  {
+    key: 'course.discussion',
+    route: 'course.discussion',
+    title: 'Discussion',
+  },
+  // {
+  //   key: '3',
+  //   title: 'Evaluations',
+  //   children: [
+  //     {
+  //       key: '2.1',
+  //       title: 'Grades',
+  //     },
+  //     {
+  //       key: '2.2',
+  //       title: 'Quizzes',
+  //     },
+  //     {
+  //       key: '2.3',
+  //       title: 'Assignments',
+  //     },
+  //   ],
+  // },
+];
 </script>
 
 <template>
@@ -29,13 +98,34 @@ const showingNavigationDropdown = ref(false);
     </template>
   </PageHeader>
 
+  <nav class="max-w-7xl mx-auto">
+    <a-menu
+      :openKeys="[route().current()]"
+      :selectedKeys="[route().current()]"
+      mode="horizontal"
+    >
+      <template v-for="item in list" :key="item.key">
+        <template v-if="!item.children">
+            <a-menu-item :key="item.key">
+              <inertia-link :href="route(item.route, $page.props.course.id ?? 0)" :key="item.key">
+              {{ item.title }}
+              </inertia-link>
+            </a-menu-item>
+        </template>
+        <template v-else>
+          <sub-menu :key="item.key" :menu-info="item" />
+        </template>
+      </template>
+    </a-menu>
+  </nav>
+
   <main>
     <!-- section hero -->
     <section>
       <div class="bg-gray-100">
         <div class="col-span-4">
           <!-- Page Content -->
-          <main>
+          <main class="max-w-7xl mx-auto">
             <slot />
           </main>
         </div>

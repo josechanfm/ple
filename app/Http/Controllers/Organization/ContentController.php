@@ -14,7 +14,8 @@ class ContentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * // @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index(Course $course)
     {
@@ -27,7 +28,8 @@ class ContentController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * // @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function create(Course $course)
     {
@@ -35,7 +37,8 @@ class ContentController extends Controller
             'course'=>$course,
             'content'=>Content::make([
                 'course_id'=>$course->id
-            ])
+            ]),
+            'content_types'=>Config::item('content_types')
         ]);
     }
 
@@ -48,37 +51,39 @@ class ContentController extends Controller
     public function store(Course $course, Request $request)
     {
         $data=$request->all();
+
         $data['course_id']=$course->id;
+        $data['frontpage']=$data['frontpage']??0;
         Content::create($data);
         return redirect()->route('manage.course.contents.index',$course->id);
-        
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * // @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        dd($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * // @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function edit(Course $course, Content $content)
     {
         return Inertia::render('Organization/Content',[
             'course'=>$course,
             'content'=>$content,
-            'content_types'=>Config::item('content_type')
+            'content_types'=>Config::item('content_types')
         ]);
-        
+
     }
 
     /**
@@ -90,8 +95,9 @@ class ContentController extends Controller
      */
     public function update(Course $course, Content $content, Request $request)
     {
+        // dd($request->all());
         $content->update($request->all());
-        return redirect()->back();
+        return redirect()->route('manage.course.contents.index',$course->id);
     }
 
     /**
@@ -100,8 +106,9 @@ class ContentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Course $course, Content $content, Request $request)
     {
-        //
+        $content->delete();
+        return redirect()->back();
     }
 }

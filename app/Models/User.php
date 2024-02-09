@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDiscussion;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,6 +19,7 @@ use Illuminate\Foundation\Concerns\ResolvesDumpSource;
 
 class User extends Authenticatable
 {
+    use HasDiscussion;
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
@@ -95,4 +97,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class);
     }
 
+    public static function DELETED_USER() {
+        return new User(['name' => 'Deleted User']);
+    }
 }

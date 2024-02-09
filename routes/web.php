@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -37,7 +38,10 @@ Route::get('article', [\App\Http\Controllers\ArticleController::class, 'item'])-
 Route::get('course/{course}', [\App\Http\Controllers\CourseController::class, 'show'])->name('course');
 Route::get('course/{course}/study', [\App\Http\Controllers\CourseController::class, 'study'])->name('course.study');
 Route::get('course/{course}/content/{content}', [\App\Http\Controllers\CourseController::class, 'content'])->name('course.content');
-Route::get('course/{course}/discussion', [\App\Http\Controllers\CourseController::class, 'discussion'])->name('course.discussion');
+Route::get('course/{course}/discussion', [\App\Http\Controllers\CourseDiscussionController::class, 'index'])->name('course.discussion');
+Route::get('course/{course}/discussion/{discussion}', [\App\Http\Controllers\CourseDiscussionController::class, 'show'])->name('course.discussion.thread');
+Route::post('course/{course}/discussion/{discussion}', [\App\Http\Controllers\CourseDiscussionController::class, 'store'])->name('course.discussion.create');
+Route::delete('course/{course}/discussion/{discussion}', [\App\Http\Controllers\CourseDiscussionController::class, 'destroy'])->name('course.discussion.destroy');
 
 Route::get('registration', [\App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
 Route::post('registration', [\App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');
@@ -123,10 +127,13 @@ Route::group([
     Route::resource('certificate/{certificate}/members', App\Http\Controllers\Organization\CertificateMemberController::class)->names('manage.certificate.members');
     Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class)->names('manage.organizations');
     Route::resource('courses', App\Http\Controllers\Organization\CourseController::class)->names('manage.courses');
+    Route::resource('contents', App\Http\Controllers\Organization\ContentController::class)->names('manage.contents');
     Route::resource('course/{course}/contents', App\Http\Controllers\Organization\ContentController::class)->names('manage.course.contents');
+    Route::post('course/{course}/create_module', [App\Http\Controllers\Organization\CourseController::class,'createModule'])->name('manage.course.createModule');
+    Route::patch('course/{course}/update_module', [App\Http\Controllers\Organization\CourseController::class,'updateModule'])->name('manage.course.updateModule');
+    Route::delete('course/{course}/destroy_module', [App\Http\Controllers\Organization\CourseController::class,'destroyModule'])->name('manage.course.destroyModule');
     Route::resource('files', App\Http\Controllers\Organization\FileController::class)->names('manage.files');
     Route::resource('pages', App\Http\Controllers\Organization\PageController::class)->names('manage.pages');
-
     Route::resource('articles', App\Http\Controllers\Organization\ArticleController::class)->names('manage.articles');
     Route::resource('events', App\Http\Controllers\Organization\EventController::class)->names('manage.events');
     Route::resource('event/{event}/attendees', App\Http\Controllers\Organization\AttendeeController::class)->names('manage.event.attendees');
@@ -151,3 +158,19 @@ Route::group([
     Route::resource('configs', App\Http\Controllers\Admin\ConfigController::class)->names('admin.configs');
     //Route::resource('permissions', App\Http\Controllers\Admin\PermissionController::class)->names('admin.permissions');
 });
+
+// development only
+if (app()->environment('local')) {
+    Route::group(['prefix' => 'dev'], function () {
+        Route::get('/login-as/{user}', function (\App\Models\User $user) {
+            Auth::logout();
+            Auth::login($user);
+            return redirect('/');
+        })->name('dev.login-as');
+
+        Route::get('/current-user', function () {
+            return Auth::user();
+        })->name('dev.current-user');
+    });
+}
+

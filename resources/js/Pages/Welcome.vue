@@ -36,17 +36,22 @@ defineProps({
     </div>
 
     <div class="px-4 py-2 mt-2 bg-white rounded-md">
+      <h2 class="font-bold text-2xl text-gray-800">課程列表</h2>
       <a-row :gutter="16">
         <a-col v-for="course in courses" :span="8">
-          <a-card hoverable class="shadow border rounded p-4">
+          <inertia-link :href="route('course',course.id)" class="group">
+          <a-card class="border !rounded-md overflow-clip hover:-translate-y-2 shadow hover:shadow-lg transition-all">
             <template #cover>
               <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
             </template>
-            <a-card-meta :title="course.title">
+            <a-card-meta>
+              <template #title>
+                <a class="group-hover:underline">{{ course.title }}</a>
+              </template>
               <template #description>{{ course.brief }}</template>
             </a-card-meta>
-            <inertia-link :href="route('course',course.id)" class="ant-btn">Start</inertia-link>
           </a-card>
+          </inertia-link>
         </a-col>
       </a-row>
     </div>

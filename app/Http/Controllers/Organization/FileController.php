@@ -39,7 +39,29 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->hasFile);
+        // if ($request->hasFile('content.content')) {
+        if ($request->file('file')) {
+            $files = $request->file('content');
+
+            foreach ($files as $file) {
+                $filename = $file->name;
+                $path = $file->storeAs('{$request->Session->id}/uploads', $filename, 'file');
+
+                // Store file into the database
+                // ...
+
+                // Samples
+                // $file->getSize();
+                // $file->getMimeType();
+                // $file->getClientOriginalExtension();
+                // ...
+            }
+
+            return response()->json(['message' => 'Files uploaded successfully', 'path' => $path]);
+        } else {
+            return response()->json(['message' => 'No files were uploaded'], 400);
+        }
     }
 
     /**

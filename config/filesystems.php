@@ -91,6 +91,11 @@ return [
             'root'   => public_path('/media/article'),
             'url'    => env('APP_URL').'/media/article',
         ],
+        'file' => [
+            'driver' => 'local',
+            'root'   => public_path('media/file'),
+            'url'    => env('APP_URL').'/media/file',
+        ]
 
 
     ],
