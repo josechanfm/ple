@@ -33,9 +33,8 @@ class ContentController extends Controller
     {
         return Inertia::render('Organization/Content',[
             'course'=>$course,
-            'content'=>Content::make([
-                'course_id'=>$course->id
-            ])
+            'content'=>Content::make(),
+            'content_types'=>Config::item('content_types')   
         ]);
     }
 
@@ -48,8 +47,9 @@ class ContentController extends Controller
     public function store(Course $course, Request $request)
     {
         $data=$request->all();
-        $data['course_id']=$course->id;
-        Content::create($data);
+        $data['user_id']=auth()->user()->id;
+        $course->contents()->create($request->all());
+        return redirect()->back();
         return redirect()->route('manage.course.contents.index',$course->id);
         
     }
@@ -76,7 +76,7 @@ class ContentController extends Controller
         return Inertia::render('Organization/Content',[
             'course'=>$course,
             'content'=>$content,
-            'content_types'=>Config::item('content_type')
+            'content_types'=>Config::item('content_types')   
         ]);
         
     }

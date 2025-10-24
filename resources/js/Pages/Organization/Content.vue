@@ -57,7 +57,6 @@
                     </div>
 
                 </a-form>
-
             </div>
         </div>
 
@@ -72,8 +71,6 @@ import {
     PlusOutlined,
     InfoCircleFilled,
 } from "@ant-design/icons-vue";
-import { defineComponent, reactive } from "vue";
-import CropperModal from "@/Components/Member/CropperModal.vue";
 
 export default {
     components: {
@@ -82,7 +79,6 @@ export default {
         LoadingOutlined,
         PlusOutlined,
         InfoCircleFilled,
-        CropperModal,
     },
     props: ["course", "content","content_types"],
     data() {
@@ -111,7 +107,7 @@ export default {
     methods: {
         onFinish() {
             if(this.content.id===undefined){
-                this.$inertia.post(route('manage.course.contents.store'), this.content,{
+                this.$inertia.post(route('manage.course.contents.store', this.course.id), this.content,{
                     onSuccess:(page)=>{
                         console.log(page);
                     },

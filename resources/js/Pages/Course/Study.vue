@@ -20,7 +20,7 @@ export default {
     },
     methods: {
         selectContent(content){
-            switch(content.content_type){
+            switch(content.type){
                 case "URL":
                     window.open(content.content,'_blank');
                 case "PAGE":
